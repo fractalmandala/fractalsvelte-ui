@@ -20,6 +20,8 @@
 
 	let { colors, class: className }: Props = $props();
 
+	const rootClass = $derived(['confetti-canvas', className].filter(Boolean).join(' '));
+
 	const reduce = useReducedMotion();
 
 	let canvasEl = $state<HTMLCanvasElement | null>(null);
@@ -144,4 +146,14 @@
 	});
 </script>
 
-<canvas bind:this={canvasEl} class={className} data-slot="confetti-canvas" aria-hidden="true"></canvas>
+<canvas bind:this={canvasEl} class={rootClass} data-slot="confetti-canvas" aria-hidden="true"></canvas>
+
+<style lang="sass">
+.confetti-canvas
+	position: fixed
+	inset: 0
+	pointer-events: none
+	z-index: var(--z-modal)
+	width: 100vw
+	height: 100vh
+</style>

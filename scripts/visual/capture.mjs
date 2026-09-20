@@ -5,11 +5,19 @@
  * ticks), optionally stills the page, then captures the viewport.
  */
 import { spawn } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import { setTimeout as delay } from 'node:timers/promises';
 
-export const CHROME_SHELL =
-	process.env.CHROME_SHELL ??
-	`${process.env.HOME}/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell`;
+const CHROME_CANDIDATES = [
+	process.env.CHROME_SHELL,
+	process.env.CHROME_PATH,
+	'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+	'/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary',
+	'/Applications/Chromium.app/Contents/MacOS/Chromium',
+	`${process.env.HOME}/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell`
+].filter(Boolean);
+
+export const CHROME_SHELL = CHROME_CANDIDATES.find((p) => existsSync(p)) ?? CHROME_CANDIDATES[0];
 export const DOCS_BASE = process.env.DOCS_BASE ?? 'http://localhost:5199';
 
 /**
@@ -114,17 +122,17 @@ export async function launchBrowser({ width = 1440, height = 1000 } = {}) {
  *  - suppress caret blinking
  * Returns nothing; throws on navigation failure.
  */
-export async function capturePage(client, url, { settleMs = 1400, freeze = true } = {}) {
+export async function capturePage(client, url, { settleMs = 800, freeze = true } = {}) {
 	await client.send('Page.navigate', { url });
 	await delay(settleMs);
 
 	await client.evaluate(`(() => {
-		const stage = document.querySelector('.playground__stage') || document.querySelector('main');
+		const stage = document.querySelector('.playground-stage') || document.querySelector('.playground__stage') || document.querySelector('main');
 		if (stage) stage.scrollIntoView({ block: 'center' });
 		window.dispatchEvent(new Event('scroll'));
 		return document.readyState;
 	})()`);
-	await delay(500);	if (freeze) {
+	await delay(200);	if (freeze) {
 		await client.evaluate(`(() => {
 			const style = document.createElement('style');
 			style.id = '__vr_freeze';

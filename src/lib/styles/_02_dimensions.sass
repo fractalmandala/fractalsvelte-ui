@@ -8,6 +8,7 @@
 @use 'sass:list'
 @use 'sass:math'
 @use '01_config' as *
+@use '00_tokens' as *
 
 // The literal ladder, built once: the fine tail, then every $literal-step up
 // to $literal-max. Radius and sizing iterate all of it.
@@ -58,8 +59,6 @@ $marg-families: (marg: margin, mx: margin-inline, my: margin-block, mt: margin-t
 	@each $step in $steps
 		.#{$name}-#{$step}
 			#{$prop}: var(--space-#{$step})
-		.#{$name}--#{$step}
-			#{$prop}: calc(var(--space-#{$step}) * var(--gap-scale, 1) * -1)
 	@each $n in $space-literals
 		.#{$name}-#{$n}
 			#{$prop}: #{$n}px
@@ -107,3 +106,10 @@ $marg-families: (marg: margin, mx: margin-inline, my: margin-block, mt: margin-t
 	min-height: 100vh
 .hfull-vh-fitted
 	min-height: calc(100vh - var(--header-height, 48px) - var(--footer-height))
+
+.h32
+	height: var(--h32)
+.h28
+	height: var(--h28)
+.h24
+	height: var(--h24)

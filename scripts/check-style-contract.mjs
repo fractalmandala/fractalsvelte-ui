@@ -31,7 +31,7 @@ const sassPackageImporter = {
 	}
 };
 
-const compiled = sass.compile(resolve(root, 'styles/system.sass'), {
+const compiled = sass.compile(resolve(root, 'src/lib/styles/index.sass'), {
 	style: 'expanded',
 	importers: [sassPackageImporter],
 	loadPaths: [resolve(root, 'node_modules')]

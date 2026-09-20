@@ -10,7 +10,7 @@
 	});
 </script>
 
-<div class="row wrap gap-2xs ycenter">
+<div class="row wrap gap-sm ycenter">
 	<Button loading={saving} onclick={() => (saving = true)}>Save changes</Button>
 	<Button variant="outline" loading>Uploading…</Button>
 </div>

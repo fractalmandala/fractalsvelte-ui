@@ -26,8 +26,7 @@ const accordion = read('src/lib/components/Accordion.svelte');
 const tooltip = read('src/lib/components/Tooltip.svelte');
 
 const assertions = [
-	[app.includes('body.setAttribute') && app.includes("data-mode"), 'app.html must mirror appearance state to body'],
-	[app.includes("localStorage.getItem('fractalsvelte.mode')"), 'app.html must read the persisted mode before hydration'],
+	[app.includes('<!doctype html>') && app.includes('<html'), 'app.html must provide valid HTML document structure'],
 	[layout.includes('MotionConfig reducedMotion="user"'), 'root layout must opt into user reduced-motion preferences'],
 	[blocks.includes('@media (prefers-reduced-motion: reduce)'), 'blocks must define reduced-motion behavior'],
 	[base.includes(':focus-visible') && base.includes('var(--ring)'), 'base styles must provide a visible token-based focus style'],

@@ -32,7 +32,7 @@ $xl: map.get($breakpoints, xl)
 	height: var(--header-height)
 	padding-inline: var(--app-inline)
 	-webkit-backdrop-filter: blur(12px)
-	background: var(--bg)
+	background: var(--bg-header)
 	@media (max-width: 768px)
 		padding-inline: var(--space-md)
 
@@ -48,7 +48,7 @@ $xl: map.get($breakpoints, xl)
 .main-section
 	flex: 1 1 0%
 	min-width: 0
-	padding-top: var(--app-inline)
+	padding-block: var(--app-inline)
 
 // --- Role-bound rails (Amendment A1) -------------------------------------------
 // Left = nav: visible ≥ lg; below, .open on .app-shell resurrects it as an
@@ -89,6 +89,17 @@ $xl: map.get($breakpoints, xl)
 	.sidebar-right
 		display: none !important
 
+.sidebar-left
+	&::-webkit-scrollbar
+		width: 6px
+	&::-webkit-scrollbar-track
+		background: transparent
+	&::-webkit-scrollbar-thumb
+		background: transparent
+		border-radius: var(--radius-sm)
+		&:hover
+			background: var(--border-subtle)
+
 .content-section
 	width: 100%
 	&.null
@@ -118,14 +129,19 @@ $xl: map.get($breakpoints, xl)
 	@media (min-width: 1441px)
 		&.narrow-wide
 			width: 1280px
+	&.solo
+		@media (min-width: 1025px)
+			padding-inline: var(--app-inline)
 
 .app-footer
 	display: flex
 	flex-direction: row
 	align-items: center
-	padding-inline: calc(var(--space-sm) * var(--pad-scale, 1))
+	padding-inline: var(--app-inline)
 	min-height: var(--footer-height)
 	border-top: 1px solid var(--border)
+	background: #272727
+	color: var(--white-fixed)
 
 // Page-top TOC dropdown — where the TOC lives below xl: <details class="mobile-toc">.
 .mobile-toc
@@ -159,7 +175,11 @@ $xl: map.get($breakpoints, xl)
 .navtree
 	display: flex
 	flex-direction: column
-	gap: calc(var(--space-sm) * var(--gap-scale, 1))
+	gap: var(--space-md)
+
+.navtree-group
+	display: flex
+	flex-direction: column
 
 // Flat group label — for groups that don't collapse (collapsible groups ride
 // the accordion family: trigger carries the title, content carries the links).
@@ -175,13 +195,15 @@ $xl: map.get($breakpoints, xl)
 	display: flex
 	align-items: center
 	justify-content: space-between
-	font-size: var(--text-sm)
+	font-size: var(--text-md)
 	color: var(--text-secondary)
+	letter-spacing: -0.01rem
 	text-decoration: none
 	height: 32px
 	width: 100%
 	border: none
 	background: transparent
+	font-weight: 400
 	transition: background var(--motion-fast) ease, color var(--motion-fast) ease
 	border-radius: var(--radius-sm)
 	&:hover
@@ -189,8 +211,9 @@ $xl: map.get($breakpoints, xl)
 		color: var(--text-primary)
 	&.level2
 		color: var(--text-primary)
-		height: 24px
+		height: 32px
 		padding-inline: var(--space-sm)
+		font-weight: 500
 		&.active
 			background: var(--state-selected)
 			color: var(--text-primary)
@@ -198,8 +221,8 @@ $xl: map.get($breakpoints, xl)
 .navtree-sub
 	display: flex
 	flex-direction: column
-	gap: calc(var(--space-3xs) * var(--gap-scale, 1))
-	padding-left: calc(var(--space-sm) * var(--pad-scale, 1))
+	gap: var(--space-xs)
+	padding-left: var(--space-sm)
 
 .toc
 	display: flex
@@ -316,7 +339,7 @@ $xl: map.get($breakpoints, xl)
 	z-index: var(--z-modal)
 	max-width: min(92vw, 540px)
 	width: 100%
-	background: var(--bg-dialog)
+	background: var(--bg-popover)
 	border: 1px solid var(--border)
 	border-radius: var(--radius-lg)
 	box-shadow: var(--shadow-lg)

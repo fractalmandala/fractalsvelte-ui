@@ -22,9 +22,6 @@ $md: map.get($breakpoints, md)
 		max-width: clamp(600px, 58vw, 860px)
 		margin-inline: auto
 
-.docs-nav
-	font-size: var(--text-sm)
-
 .docs-toc
 	font-size: var(--text-sm)
 
@@ -42,31 +39,105 @@ $md: map.get($breakpoints, md)
 	overflow-x: auto
 	border: 1px solid var(--border)
 	border-radius: var(--radius-md)
+	background: var(--bg-sunken)
+
 	table
 		width: 100%
 		border-collapse: collapse
 		font-size: var(--text-sm)
+		text-align: left
+
 	th, td
-		padding: calc(var(--space-2xs) * var(--pad-scale, 1)) calc(var(--space-xs) * var(--pad-scale, 1))
+		padding: var(--space-sm) var(--space-md)
 		text-align: left
 		border-bottom: 1px solid var(--border-subtle)
 		vertical-align: top
+
 	th
+		font-size: var(--text-xs)
 		font-weight: 600
-		color: var(--text-secondary)
+		text-transform: uppercase
+		letter-spacing: 0.05em
+		color: var(--text-muted)
 		background: var(--bg-raised)
-	tbody tr:last-child
-		td
+		border-bottom: 1px solid var(--border)
+		white-space: nowrap
+
+	tbody tr
+		transition: background-color var(--motion-fast) ease
+
+		&:last-child td
 			border-bottom: 0
-	tbody tr:hover
-		background: var(--state-hover-subtle)
-	code
+
+		&:hover
+			background: var(--state-hover)
+
+	.table-prop
+		white-space: nowrap
+
+		code
+			font-family: var(--font-mono)
+			font-size: var(--text-xs)
+			font-weight: 600
+			color: var(--text-primary)
+			background: transparent
+			border: 0
+			padding: 0
+
+	.table-type
 		font-family: var(--font-mono)
 		font-size: var(--text-xs)
-		background: var(--bg-raised)
-		border: 1px solid var(--border-subtle)
-		border-radius: var(--radius-2)
-		padding: 1px 4px
+		color: var(--text-secondary)
+		line-height: 1.5
+		word-break: break-word
+
+		code
+			font-family: var(--font-mono)
+			font-size: var(--text-xs)
+			background: var(--bg-raised)
+			border: 1px solid var(--border-subtle)
+			border-radius: var(--radius-sm)
+			padding: 1px 5px
+			display: inline-block
+			margin: 1px 0
+			white-space: nowrap
+
+		.pipe
+			color: var(--text-muted)
+			padding: 0 4px
+			user-select: none
+
+	.table-default
+		font-family: var(--font-mono)
+		font-size: var(--text-xs)
+		color: var(--text-muted)
+		white-space: nowrap
+
+		code
+			font-family: var(--font-mono)
+			font-size: var(--text-xs)
+			background: var(--bg-raised)
+			border: 1px solid var(--border-subtle)
+			border-radius: var(--radius-sm)
+			padding: 1px 5px
+			color: var(--text-primary)
+			display: inline-block
+
+	.table-badge-required
+		display: inline-block
+		padding: 1px 6px
+		border-radius: var(--radius-sm)
+		font-family: var(--font-sans)
+		font-size: var(--text-xs)
+		font-weight: 500
+		background: color-mix(in srgb, var(--warning) 12%, transparent)
+		color: var(--warning)
+		border: 1px solid color-mix(in srgb, var(--warning) 30%, transparent)
+
+	.table-desc
+		font-size: var(--text-sm)
+		color: var(--text-secondary)
+		line-height: 1.55
 
 // --- Header mobile navigation disclosure ---------------------------------------
 .mobile-nav
@@ -101,7 +172,7 @@ $md: map.get($breakpoints, md)
 			border-radius: var(--radius-2)
 			padding: calc(var(--space-3xs) * var(--pad-scale, 1)) calc(var(--space-2xs) * var(--pad-scale, 1))
 			&:hover
-				background: var(--state-hover-subtle)
+				background: var(--state-hover)
 				color: var(--theme-color)
 		strong
 			margin-top: calc(var(--space-2xs) * var(--gap-scale, 1))
@@ -156,10 +227,10 @@ $md: map.get($breakpoints, md)
 	white-space: nowrap
 	transition: background var(--motion-fast) ease, border-color var(--motion-fast) ease
 	&:hover
-		background: var(--state-hover-subtle)
+		background: var(--state-hover)
 		border-color: var(--border-strong)
 	&[aria-expanded='true']
-		background: var(--state-hover-subtle)
+		background: var(--state-hover)
 		border-color: var(--theme-color)
 
 .toc-trigger-icon
@@ -206,7 +277,7 @@ $md: map.get($breakpoints, md)
 	border-radius: var(--radius-xs)
 	transition: background var(--motion-fast) ease, color var(--motion-fast) ease
 	&:hover
-		background: var(--state-hover-subtle)
+		background: var(--state-hover)
 		color: var(--text-primary)
 	&.level3
 		padding-left: 18px
@@ -215,6 +286,25 @@ $md: map.get($breakpoints, md)
 // --- Mobile Navigation & Drawer (< 1025px) -----------------------------------
 .primary-nav
 	display: flex
+	a
+		letter-spacing: -0.01rem
+		font-family: var(--font-sans)
+		font-weight: 450
+		position: relative
+		padding: 0
+		&:after
+			content: " "
+			position: absolute
+			bottom: 0
+			right: 0
+			height: 2px
+			background: var(--theme-color)
+			width: 0
+			transition: all 210ms ease
+		&:hover
+			&:after
+				width: 100%
+				left: 0
 	@media (max-width: 1024px)
 		display: none !important
 
@@ -234,7 +324,7 @@ $md: map.get($breakpoints, md)
 		cursor: pointer
 		transition: background var(--motion-fast) ease, border-color var(--motion-fast) ease
 		&:hover
-			background: var(--state-hover-subtle)
+			background: var(--state-hover)
 			border-color: var(--border-strong)
 		&:focus-visible
 			outline: 2px solid var(--ring)
@@ -262,7 +352,7 @@ $md: map.get($breakpoints, md)
 	right: 0
 	width: min(85vw, 320px)
 	height: 100dvh
-	background: var(--bg)
+	background: var(--bg-panel)
 	border-left: 1px solid var(--border)
 	box-shadow: var(--shadow-lg)
 	z-index: calc(var(--z-modal) + 1)

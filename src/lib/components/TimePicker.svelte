@@ -49,6 +49,8 @@
 		class: className
 	}: Props = $props();
 
+	const rootClass = $derived(['timepicker', className].filter(Boolean).join(' '));
+
 	const reduce = useReducedMotion();
 
 	let internal = $state<string | null>(untrack(() => defaultValue));
@@ -169,7 +171,7 @@
 
 <div
 	bind:this={rootEl}
-	class={className}
+	class={rootClass}
 	data-slot="timepicker"
 	data-open={open || undefined}
 	data-clearable={clearable && current ? 'true' : undefined}
@@ -260,3 +262,129 @@
 		{/if}
 	</AnimatePresence>
 </div>
+
+<style lang="sass">
+.timepicker
+	position: relative
+	display: inline-flex
+	align-items: center
+	width: 100%
+	max-width: 240px
+
+	&[data-disabled]
+		opacity: 0.5
+		pointer-events: none
+
+	[data-slot='timepicker-input']
+		display: block
+		width: 100%
+		height: var(--control-h-md)
+		padding-left: var(--space-sm)
+		padding-right: 32px
+		font-size: var(--text-sm)
+		background: var(--bg-input)
+		color: var(--text-primary)
+		border: 1px solid var(--border)
+		border-radius: var(--radius-sm)
+		cursor: pointer
+		transition: border-color var(--motion-fast) ease
+		&:focus-visible
+			outline: none
+			border-color: var(--theme-color)
+			box-shadow: 0 0 0 2px var(--ring)
+		&::placeholder
+			color: var(--text-muted)
+
+	&[data-clearable] [data-slot='timepicker-input']
+		padding-right: 56px
+
+	[data-slot='timepicker-clear']
+		position: absolute
+		right: 30px
+		top: 50%
+		transform: translateY(-50%)
+		display: inline-flex
+		align-items: center
+		justify-content: center
+		width: 20px
+		height: 20px
+		border: 0
+		border-radius: var(--radius-full)
+		background: transparent
+		color: var(--text-muted)
+		cursor: pointer
+		transition: all var(--motion-fast) ease
+		&:hover
+			background: var(--state-hover)
+			color: var(--text-primary)
+
+	[data-slot='timepicker-toggle']
+		position: absolute
+		right: 6px
+		top: 50%
+		transform: translateY(-50%)
+		display: inline-flex
+		align-items: center
+		justify-content: center
+		width: 24px
+		height: 24px
+		border: 0
+		border-radius: var(--radius-sm)
+		background: transparent
+		color: var(--text-muted)
+		cursor: pointer
+		transition: color var(--motion-fast) ease
+		&:hover
+			color: var(--text-primary)
+
+	:global([data-slot='timepicker-list'])
+		position: absolute
+		z-index: var(--z-modal)
+		top: calc(100% + 4px)
+		left: 0
+		right: 0
+		max-height: 220px
+		overflow-y: auto
+		padding: 4px
+		background: var(--bg-popover)
+		border: 1px solid var(--border)
+		border-radius: var(--radius-md)
+		box-shadow: var(--shadow-popover)
+		display: flex
+		flex-direction: column
+		gap: 1px
+
+	:global([data-slot='timepicker-option'])
+		display: flex
+		align-items: center
+		justify-content: space-between
+		gap: var(--space-xs)
+		width: 100%
+		padding: var(--space-2xs) var(--space-xs)
+		border: 0
+		border-radius: var(--radius-sm)
+		background: transparent
+		color: var(--text-primary)
+		font-size: var(--text-sm)
+		text-align: left
+		cursor: pointer
+		transition: background var(--motion-fast) ease
+		&[data-highlighted],
+		&:hover
+			background: var(--state-hover)
+		&[data-selected]
+			background: var(--state-selected)
+			font-weight: 500
+
+	:global([data-slot='timepicker-check'])
+		display: inline-flex
+		color: var(--theme-color)
+		flex-shrink: 0
+
+	:global([data-slot='timepicker-empty'])
+		padding: var(--space-sm)
+		font-size: var(--text-sm)
+		color: var(--text-muted)
+		text-align: center
+</style>
+

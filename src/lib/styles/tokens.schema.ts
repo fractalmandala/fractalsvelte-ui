@@ -4,15 +4,14 @@
 import tokenSource from './token-source.json';
 
 export const tokenGroups = {
-	typography: ['--font-sans', '--font-mono', '--text-xs', '--text-sm', '--text-md', '--text-bs', '--text-lg', '--text-xl', '--text-2xl', '--text-3xl', '--text-4xl', '--text-5xl'],
-	space: ['--space-xs', '--space-sm', '--space-md', '--space-bs', '--space-lg', '--space-xl', '--space-2xl', '--space-3xl'],
+	typography: ['--font-sans', '--font-mono', '--text-xs', '--text-sm', '--text-md', '--text-bs', '--text-lg', '--text-xl', '--text-2xl', '--text-3xl', '--text-4xl', '--text-5xl', '--text-6xl'],
+	space: ['--space-3xs', '--space-2xs', '--space-xs', '--space-sm', '--space-md', '--space-bs', '--space-lg', '--space-xl', '--space-2xl', '--space-3xl'],
 	radius: ['--radius-0', '--radius-2', '--radius-3', '--radius-4', '--radius-6', '--radius-8', '--radius-10', '--radius-12', '--radius-16', '--radius-24', '--radius-sm', '--radius-md', '--radius-bs', '--radius-lg', '--radius-full'],
-	controls: ['--control-h-sm', '--control-h-md', '--control-h-lg'],
-	elevation: ['--shadow-sm', '--shadow-md', '--shadow-bs'],
+	controls: ['--control-h-sm', '--control-h-md', '--control-h-bs'],
 	layering: ['--z-base', '--z-raised', '--z-sticky', '--z-modal', '--z-toast'],
 	layout: ['--header-height', '--footer-height', '--measure', '--page-gutter', '--sidebar-width', '--toc-width', '--card-min', '--breakpoint'],
 	motion: ['--motion-fast', '--motion-base', '--motion-slow', '--ease-out', '--ease-spring'],
-	palette: ['--unit-space', '--app-inline', '--fit-height', '--transin1', '--transin2', '--transin3', '--transout1', '--transout2', '--transout3', '--speed1', '--speed2', '--speed3', '--motionin1', '--motionout1', '--motionin2', '--motionout2', '--motionin3', '--motionout3', '--height-bs', '--height-md', '--white-fixed', '--black-fixed', '--bg', '--bg-surface', '--bg-panel', '--bg-sunken', '--bg-raised', '--bg-extra', '--bg-input', '--bg-button', '--text-primary', '--text-secondary', '--text-muted', '--text-inverse', '--state-surface', '--state-hover', '--state-selected', '--border', '--border-subtle', '--border-strong', '--theme-color', '--theme-color-alt', '--success', '--success-hover', '--warning', '--warning-hover', '--danger', '--danger-hover', '--info', '--info-hover', '--ring']
+	palette: ['--unit-space', '--app-inline', '--transin1', '--transin2', '--transin3', '--transout1', '--transout2', '--transout3', '--speed1', '--speed2', '--speed3', '--motionin1', '--motionout1', '--motionin2', '--motionout2', '--motionin3', '--motionout3', '--height-bs', '--height-md', '--h32', '--h28', '--h24', '--h20', '--fit-height', '--widebar-width', '--white-fixed', '--black-fixed', '--bg', '--bg-surface', '--bg-raised', '--bg-panel', '--bg-sunken', '--bg-popover', '--bg-button', '--bg-sidebar', '--bg-input', '--bg-button-soft', '--border', '--border-subtle', '--border-strong', '--text-primary', '--text-secondary', '--text-muted', '--text-inverse', '--state-hover', '--state-selected', '--theme-color', '--theme-color-alt', '--success', '--success-hover', '--warning', '--warning-hover', '--danger', '--danger-hover', '--info', '--info-hover', '--ring']
 } as const;
 
 export type TokenGroup = keyof typeof tokenGroups;
@@ -38,7 +37,6 @@ const groupKinds: Record<TokenGroup, TokenValueKind> = {
 	space: 'space',
 	radius: 'radius',
 	controls: 'length',
-	elevation: 'shadow',
 	layering: 'number',
 	layout: 'length',
 	motion: 'number',
@@ -50,7 +48,6 @@ const groupDescriptions: Record<TokenGroup, string> = {
 	space: 'Fluid spacing scale value.',
 	radius: 'Corner radius value.',
 	controls: 'Native control height value.',
-	elevation: 'Elevation shadow value.',
 	layering: 'Stacking order value.',
 	layout: 'Global layout measurement.',
 	motion: 'Motion duration or easing value.',

@@ -25,4 +25,16 @@ The full rollout (Gates 0–5) is implemented and auditor-approved, pending user
 
 ## Reports
 
+- [Sync Scripts and ThemeBuilder with Token Contract](docs/worklog/2026-09-21-sync-scripts-themebuilder.md) — Synchronize scripts, tokens.ts, themes.ts, color-harmony.ts, and themebuilder components with token contract.
+- [Synchronize Themes with Token Contract](docs/worklog/2026-09-21-sync-themes-tokens.md) — Update all 76 themes in _00_themes.sass to match token definitions in _00_tokens.sass with self-contained tokens.
+- [Enhance ThemeBuilder Sidebar Layout and Controls](docs/worklog/2026-09-20-enhance-theme-builder-sidebar.md) — Upgrade ThemeBuilder left sidebar layout, controls, chips, sliders, and buttons using library design tokens and classes.
+- [Style ModeToggle Component Professionally](docs/worklog/2026-09-20-style-mode-toggle.md) — Refactor ModeToggle with refined proportions, tactile surface depth, accessible states, and crisp stroke icons.
+- [Nested Dynamic Category Slugs for Component Routes](docs/worklog/2026-09-20-nested-category-component-routes.md) — Nest all component routes under dynamic category slugs (/components/[category]/[slug]) with dynamic category index pages.
 - [Refactor Demos and Universal Shiki Highlighting](docs/worklog/2026-09-20-demo-refactor-shiki.md) — Refactored component demos to standalone recipe components with ?raw imports and added Shiki code highlighting.
+- [Fix Sidebar Section Toggle on Active Component Pages](docs/worklog/2026-09-20-sidebar-section-toggle.md) — Prevent reactive effect from forcibly reopening active sidebar accordion sections when toggled closed by user.
+- [Standardize Code Snippet Copy Buttons and Dual Shiki Themes](docs/worklog/2026-09-20-standardize-code-blocks-shiki-theme.md) — Standardize copy buttons across all code blocks and implement theme-aware Shiki highlighting without inversion.
+- [Self-Contained Component Styling Across All Library Components](docs/worklog/2026-09-20-component-inline-sass-button.md) — Colocate pure Sass styles inside each component's .svelte file and eliminate duplicate modifier selectors.
+- [Standardize Component Types](docs/worklog/2026-09-20-standardize-component-types.md) — Standardize component prop types from componentTypes.ts across ComponentPreview, components, and demos.
+- [Component Demo Spacing and Variation Selectors](docs/worklog/2026-09-20-demo-spacing-and-variation-selectors.md) — Unified spacing ladder, section rhythm, and interactive variation selectors across component demo pages.
+- [Improved Table Styling and Formatting](docs/worklog/2026-09-20-improved-table-styling-and-formatting.md) — Developer-grade table typography, comfortable cell padding, refined type formatting, and props deduplication.
+- [Nested Route Layouts for Components and Guides](docs/worklog/2026-09-20-nested-route-layouts.md) — Extracted sidebar and TOC rails from root layout into dedicated layouts for components and guides routes.

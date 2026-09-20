@@ -47,19 +47,19 @@
 		&:hover
 			filter: brightness(0.95)
 	&[data-variant='secondary']
-		background: var(--bg)
+		background: var(--bg-button)
 		border-color: var(--border-strong)
 	&[data-variant='ghost']
 		background: transparent
 		border-color: transparent
 		color: var(--text-secondary)
 		&:hover
-			background: var(--state-hover-subtle)
+			background: var(--state-hover)
 			color: var(--text-primary)
 	&[data-variant='destructive']
-		background: var(--feedback-error)
+		background: var(--warning)
 		color: var(--text-inverse)
-		border-color: var(--feedback-error)
+		border-color: var(--warning)
 		&:hover
 			filter: brightness(0.92)
 	&[data-size='sm']
@@ -85,7 +85,7 @@
 		border-radius: 0
 		background: transparent
 		&:hover
-			background: var(--state-hover-subtle)
+			background: var(--state-hover)
 		&[data-variant='primary']
 			background: var(--theme-color)
 			color: var(--text-inverse)
@@ -113,7 +113,7 @@
 	cursor: pointer
 	transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease
 	&:hover
-		background: var(--state-hover-subtle)
+		background: var(--state-hover)
 		color: var(--text-primary)
 	&:focus-visible
 		outline: 2px solid var(--ring)
@@ -126,7 +126,7 @@
 		height: 44px
 	&[data-variant='outline']
 		border-color: var(--border)
-		background: var(--bg)
+		background: none
 	&[data-variant='solid']
 		background: var(--theme-color)
 		color: var(--text-inverse)
@@ -159,7 +159,7 @@
 	color: var(--text-primary)
 	cursor: pointer
 	&:hover, &[data-highlighted='true']
-		background: var(--state-hover-subtle)
+		background: var(--state-hover)
 	&:focus-visible
 		outline: 2px solid var(--ring)
 		outline-offset: -2px
@@ -167,9 +167,9 @@
 		opacity: 0.5
 		pointer-events: none
 	&[data-variant='danger']
-		color: var(--feedback-error)
+		color: var(--danger)
 		&:hover, &[data-highlighted='true']
-			background: color-mix(in srgb, var(--feedback-error) 12%, transparent)
+			background: color-mix(in srgb, var(--danger) 12%, transparent)
 
 .k-menu-sep
 	height: 1px
@@ -228,17 +228,17 @@
 	font-weight: 500
 	border-radius: var(--radius-6)
 	border: 1px solid var(--border)
-	background: var(--bg)
+	background: var(--bg-button)
 	color: var(--text-secondary)
 	cursor: pointer
 	transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease
 	&:hover
-		background: var(--state-hover-subtle)
+		background: var(--state-hover)
 	&:focus-visible
 		outline: 2px solid var(--ring)
 		outline-offset: 2px
 	&[data-state='on']
-		background: color-mix(in srgb, var(--theme-color) 12%, var(--bg))
+		background: color-mix(in srgb, var(--theme-color) 12%, var(--bg-button))
 		border-color: color-mix(in srgb, var(--theme-color) 40%, var(--border))
 		color: var(--theme-color-alt)
 
@@ -448,7 +448,7 @@
 	overflow: hidden
 	border: 1px solid var(--border)
 	border-radius: var(--radius-8)
-	background: var(--bg-terminal)
+	background: var(--bg-sidebar)
 	color: var(--text-primary)
 
 .k-code-block-header
@@ -536,21 +536,21 @@
 		border-color: var(--theme-color)
 		color: var(--text-inverse)
 	&[data-variant='success']
-		background: color-mix(in srgb, var(--feedback-success) 14%, var(--bg))
-		border-color: color-mix(in srgb, var(--feedback-success) 35%, var(--border))
-		color: var(--feedback-success)
+		background: color-mix(in srgb, var(--success) 14%, var(--bg-panel))
+		border-color: color-mix(in srgb, var(--success) 35%, var(--border))
+		color: var(--success)
 	&[data-variant='warning']
-		background: color-mix(in srgb, var(--feedback-warning) 14%, var(--bg))
-		border-color: color-mix(in srgb, var(--feedback-warning) 35%, var(--border))
-		color: var(--feedback-warning)
+		background: color-mix(in srgb, var(--warning) 14%, var(--bg-panel))
+		border-color: color-mix(in srgb, var(--warning) 35%, var(--border))
+		color: var(--warning)
 	&[data-variant='danger']
-		background: color-mix(in srgb, var(--feedback-error) 12%, var(--bg))
-		border-color: color-mix(in srgb, var(--feedback-error) 35%, var(--border))
-		color: var(--feedback-error)
+		background: color-mix(in srgb, var(--danger) 14%, var(--bg-panel))
+		border-color: color-mix(in srgb, var(--danger) 35%, var(--border))
+		color: var(--danger)
 	&[data-variant='info']
-		background: color-mix(in srgb, var(--feedback-info) 14%, var(--bg))
-		border-color: color-mix(in srgb, var(--feedback-info) 35%, var(--border))
-		color: var(--feedback-info)
+		background: color-mix(in srgb, var(--info) 14%, var(--bg-panel))
+		border-color: color-mix(in srgb, var(--info) 35%, var(--border))
+		color: var(--info)
 	&[data-variant='outline']
 		background: transparent
 	&[data-size='lg']
@@ -568,17 +568,17 @@
 	color: var(--text-primary)
 	font-size: var(--text-md)
 	&[data-variant='success']
-		border-color: color-mix(in srgb, var(--feedback-success) 40%, var(--border))
-		background: color-mix(in srgb, var(--feedback-success) 8%, var(--bg-surface))
+		border-color: color-mix(in srgb, var(--success) 40%, var(--border))
+		background: color-mix(in srgb, var(--success) 8%, var(--bg-surface))
 	&[data-variant='warning']
-		border-color: color-mix(in srgb, var(--feedback-warning) 40%, var(--border))
-		background: color-mix(in srgb, var(--feedback-warning) 8%, var(--bg-surface))
+		border-color: color-mix(in srgb, var(--warning) 40%, var(--border))
+		background: color-mix(in srgb, var(--warning) 8%, var(--bg-surface))
 	&[data-variant='danger']
-		border-color: color-mix(in srgb, var(--feedback-error) 40%, var(--border))
-		background: color-mix(in srgb, var(--feedback-error) 8%, var(--bg-surface))
+		border-color: color-mix(in srgb, var(--danger) 40%, var(--border))
+		background: color-mix(in srgb, var(--danger) 8%, var(--bg-surface))
 	&[data-variant='info']
-		border-color: color-mix(in srgb, var(--feedback-info) 40%, var(--border))
-		background: color-mix(in srgb, var(--feedback-info) 8%, var(--bg-surface))
+		border-color: color-mix(in srgb, var(--info) 40%, var(--border))
+		background: color-mix(in srgb, var(--info) 8%, var(--bg-surface))
 	.k-banner-icon
 		margin-top: 2px
 	&[data-layout='stacked']
@@ -617,7 +617,7 @@
 
 .k-field-error
 	font-size: var(--text-xs)
-	color: var(--feedback-error)
+	color: var(--warning)
 
 .k-input
 	display: block
@@ -636,7 +636,7 @@
 		outline: 2px solid var(--ring)
 		outline-offset: 1px
 	&[data-state='invalid'], &[aria-invalid='true']
-		border-color: var(--feedback-error)
+		border-color: var(--warning)
 	&[data-size='sm']
 		padding: 5px 10px
 		font-size: var(--text-sm)
@@ -801,7 +801,7 @@
 	text-align: left
 	transition: border-color 0.15s ease, background-color 0.15s ease
 	&:hover
-		background: var(--state-hover-subtle)
+		background: var(--state-hover)
 	&:focus-visible
 		outline: 2px solid var(--ring)
 		outline-offset: 2px
@@ -1124,7 +1124,7 @@
 	cursor: pointer
 	text-decoration: none
 	&:hover
-		background: var(--state-hover-subtle)
+		background: var(--state-hover)
 		color: var(--text-primary)
 	&:focus-visible
 		outline: 2px solid var(--ring)
@@ -1165,7 +1165,7 @@
 	cursor: pointer
 	text-decoration: none
 	&:hover
-		background: var(--state-hover-subtle)
+		background: var(--state-hover)
 		color: var(--text-primary)
 	&:focus-visible
 		outline: 2px solid var(--ring)
@@ -1173,7 +1173,7 @@
 	&[data-state='active']
 		color: var(--theme-color-alt)
 	&[data-state='open']
-		background: var(--state-hover-subtle)
+		background: var(--state-hover)
 		color: var(--text-primary)
 
 // Mega menu — wide dropdown panel under a top nav trigger
@@ -1216,7 +1216,7 @@
 	color: var(--text-primary)
 	text-decoration: none
 	&:hover
-		background: var(--state-hover-subtle)
+		background: var(--state-hover)
 		color: var(--theme-color-alt)
 
 .k-megamenu-link-desc
@@ -1289,7 +1289,7 @@
 		border-radius: var(--radius-4)
 		&:hover
 			color: var(--theme-color)
-			background: var(--state-hover-subtle)
+			background: var(--state-hover)
 		&[data-level='2']
 			padding-left: 22px
 		&[data-level='3']
@@ -1315,7 +1315,7 @@
 	color: var(--text-secondary)
 	cursor: pointer
 	&:hover
-		background: var(--state-hover-subtle)
+		background: var(--state-hover)
 	&:focus-visible
 		outline: 2px solid var(--ring)
 		outline-offset: 2px
@@ -1339,7 +1339,7 @@
 	z-index: var(--z-modal)
 	display: flex
 	flex-direction: column
-	background: var(--bg-dialog)
+	background: var(--bg-popover)
 	border-right: 1px solid var(--border)
 	box-shadow: var(--shadow-lg)
 	transform: translateX(-100%)
@@ -1373,7 +1373,7 @@
 	cursor: pointer
 	text-decoration: none
 	&:hover
-		background: var(--state-hover-subtle)
+		background: var(--state-hover)
 	&[data-state='active']
 		color: var(--theme-color-alt)
 		font-weight: 500
@@ -1414,7 +1414,7 @@
 	max-width: min(560px, 92vw)
 	max-height: 85vh
 	overflow: auto
-	background: var(--bg-dialog)
+	background: var(--bg-popover)
 	border: 1px solid var(--border)
 	border-radius: var(--radius-16)
 	box-shadow: var(--shadow-lg)
@@ -1425,7 +1425,7 @@
 	gap: 16px
 	width: min(480px, 92vw)
 	padding: 24px
-	background: var(--bg-dialog)
+	background: var(--bg-popover)
 	border: 1px solid var(--border)
 	border-radius: var(--radius-16)
 	box-shadow: var(--shadow-lg)
@@ -1523,13 +1523,13 @@
 	box-shadow: var(--shadow-popover)
 	font-size: var(--text-md)
 	&[data-variant='success']
-		border-left: 3px solid var(--feedback-success)
+		border-left: 3px solid var(--success)
 	&[data-variant='warning']
-		border-left: 3px solid var(--feedback-warning)
+		border-left: 3px solid var(--warning)
 	&[data-variant='danger']
-		border-left: 3px solid var(--feedback-error)
+		border-left: 3px solid var(--danger)
 	&[data-variant='info']
-		border-left: 3px solid var(--feedback-info)
+		border-left: 3px solid var(--info)
 
 .k-toast-icon
 	margin-top: 2px
@@ -1562,7 +1562,7 @@
 	width: min(560px, 94vw)
 	max-height: 70vh
 	overflow: hidden
-	background: var(--bg-dialog)
+	background: var(--bg-popover)
 	border: 1px solid var(--border)
 	border-radius: var(--radius-16)
 	box-shadow: var(--shadow-lg)
@@ -1603,7 +1603,7 @@
 	color: var(--text-primary)
 	cursor: pointer
 	&[data-highlighted='true']
-		background: var(--state-hover-subtle)
+		background: var(--state-hover)
 	&:focus-visible
 		outline: 2px solid var(--ring)
 		outline-offset: -2px
@@ -1636,19 +1636,19 @@
 		top: 16px
 		right: 16px
 		color: var(--text-primary)
-		background: var(--bg-dialog)
+		background: var(--bg-button)
 		border: 1px solid var(--border)
 		&:hover
-			background: var(--state-hover-subtle)
+			background: var(--state-hover)
 	.k-lightbox-prev, .k-lightbox-next
 		position: absolute
 		top: 50%
 		transform: translateY(-50%)
 		color: var(--text-primary)
-		background: var(--bg-dialog)
+		background: var(--bg-button)
 		border: 1px solid var(--border)
 		&:hover
-			background: var(--state-hover-subtle)
+			background: var(--state-hover)
 	.k-lightbox-prev
 		left: 16px
 	.k-lightbox-next
@@ -1678,7 +1678,7 @@
 	cursor: pointer
 	text-align: left
 	&:hover
-		background: var(--state-hover-subtle)
+		background: var(--state-hover)
 	&:focus-visible
 		outline: 2px solid var(--ring)
 		outline-offset: -2px
@@ -1754,7 +1754,7 @@
 	border-radius: var(--radius-4)
 	&:hover
 		color: var(--theme-color)
-		background: var(--state-hover-subtle)
+		background: var(--state-hover)
 
 .kit-main
 	min-width: 0

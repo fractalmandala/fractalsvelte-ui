@@ -6,7 +6,6 @@
 		AnimatedCard,
 		Avatar,
 		Badge,
-		BitsEffect,
 		Button,
 		Card,
 		Card3D,
@@ -42,8 +41,6 @@
 		Textarea,
 		TextLoop,
 		TextScramble,
-		Theme,
-		ThemeSetter,
 		Toast,
 		Tooltip,
 		AppShell,
@@ -134,10 +131,26 @@
 		CodeBlock
 	} from '#lib/components/index.ts';
 	import { Icon } from 'fractalicons';
+	import type {
+		Variant,
+		Size,
+		Shape,
+		BannerVariant,
+		PadSize,
+		InputType,
+		CheckState,
+		TextAnimationTrigger,
+		PopoverPlacement,
+		TooltipPosition,
+		ToastPosition,
+		DrawerSide,
+		MarqueeDirection,
+		Orientation
+	} from '#lib/data/componentTypes.ts';
 	import { luBell, luPlus, luBold, luItalic, luLink, luImage, luLayoutGrid, luFile } from 'fractalicons/lucide';
-	import MotionCore from './MotionCore.svelte';
-	import { svelteBitsCategoryBySlug, svelteBitsSlugs } from '#lib/docs/catalogue.ts';
 	import { highlight } from '#lib/docs/highlight.ts';
+	import Copy from '#lib/icons/copy.svelte';
+	import Copied from '#lib/icons/copied.svelte';
 
 	let { slug }: { slug: string } = $props();
 
@@ -152,26 +165,25 @@
 
 	let cardStackMaxVisible = $state(3);
 	let cmSnap = $state(true);
-	let themeSetterOpen = $state(false);
 
 	let textScrambleText = $state('Decentralized Future');
-	let textScrambleTrigger = $state<'hover' | 'click' | 'mount'>('hover');
+	let textScrambleTrigger = $state<TextAnimationTrigger>('hover');
 	let textScrambleSpeed = $state(30);
 
 	// Catalogue-extension knob state
 	let shellSidebar = $state(true);
 	let shellFooter = $state(true);
 	let aspectRatio = $state('16/9');
-	let bannerVariant = $state<'default' | 'info' | 'success' | 'warning' | 'danger'>('default');
+	let bannerVariant = $state<BannerVariant>('default');
 	let bannerDismissible = $state(false);
 	let crumbsDepth = $state(3);
-	let groupOrientation = $state<'horizontal' | 'vertical'>('horizontal');
+	let groupOrientation = $state<Orientation>('horizontal');
 	let calendarMonth = $state('July 2026');
 	let formCols = $state<1 | 2 | 3>(2);
 	let kbdKeys = $state('⌘ K');
 	let tableRows = $state(4);
-	let thumbShape = $state<'square' | 'round'>('square');
-	let checkState = $state<'checked' | 'unchecked' | 'indeterminate'>('checked');
+	let thumbShape = $state<Shape>('square');
+	let checkState = $state<CheckState>('checked');
 	let pickerValue = $state('#3b82f6');
 	let pickerSwatches = $state(true);
 	let comboSearchable = $state(true);
@@ -179,22 +191,24 @@
 	let pickerHour12 = $state(true);
 	let fileMultiple = $state(false);
 	let iconBtnLabel = $state('Notifications');
+	let iconBtnVariant = $state<Variant>('ghost');
+	let iconBtnSize = $state<Size>('md');
 	let ratingValue = $state(4);
 	let ratingMax = $state(5);
 	let selectableState = $state(true);
 	let selectorDesc = $state(true);
 	let countdownSeconds = $state(90);
 	let countdownShowDays = $state(false);
-	let drawerSide = $state<'left' | 'right'>('right');
+	let drawerSide = $state<DrawerSide>('right');
 	let drawerOpen = $state(false);
 	let lightboxIndex = $state(0);
 	let paginationPage = $state(2);
 	let paginationTotal = $state(9);
-	let popoverPlacement = $state<'top' | 'bottom' | 'left' | 'right'>('bottom');
+	let popoverPlacement = $state<PopoverPlacement>('bottom');
 	let popoverOpen = $state(false);
 	let overlayModal = $state(true);
 	let outlineLevels = $state(true);
-	let toastPos = $state<'top-right' | 'bottom-right'>('bottom-right');
+	let toastPos = $state<ToastPosition>('bottom-right');
 	let toastCount = $state(2);
 	let navActive = $state('overview');
 	let treeOpen = $state(true);
@@ -216,30 +230,30 @@
 	let copied = $state(false);
 
 	// Core UI Knobs State
-	let btnVariant = $state<'primary' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link' | 'soft'>('primary');
-	let btnSize = $state<'sm' | 'md' | 'lg' | 'icon-sm' | 'icon' | 'icon-lg'>('md');
-	let btnShape = $state<'default' | 'pill'>('default');
+	let btnVariant = $state<Variant>('primary');
+	let btnSize = $state<Size>('md');
+	let btnShape = $state<Shape>('modern');
 	let btnDisabled = $state(false);
 	let btnLoading = $state(false);
 	let btnLabel = $state('Save changes');
 
-	let badgeVariant = $state<'neutral' | 'accent' | 'success' | 'warning' | 'danger'>('accent');
+	let badgeVariant = $state<BannerVariant>('themed');
 	let badgeText = $state('Featured');
 
-	let alertVariant = $state<'info' | 'success' | 'warning' | 'danger'>('info');
+	let alertVariant = $state<BannerVariant>('info');
 	let alertTitle = $state('A thoughtful default');
 	let alertContent = $state('This alert puts context where it is needed.');
 
 	let avatarName = $state('Maya Chen');
-	let avatarSize = $state<'sm' | 'md' | 'lg'>('md');
+	let avatarSize = $state<Size>('md');
 	let avatarSrc = $state('');
 
-	let cardPadding = $state<'none' | 'sm' | 'md' | 'lg'>('md');
+	let cardPadding = $state<PadSize>('md');
 
 	let accordionTitle = $state('How does it work?');
 	let accordionOpen = $state(true);
 
-	let inputType = $state<'text' | 'email' | 'password' | 'search' | 'number'>('email');
+	let inputType = $state<InputType>('email');
 	let inputPlaceholder = $state('you@example.com');
 	let inputDisabled = $state(false);
 	let inputValue = $state('');
@@ -368,7 +382,7 @@
 	let dialogDescription = $state('They will receive an email invitation.');
 
 	let tooltipContent = $state('Create a new workspace');
-	let tooltipPosition = $state<'top' | 'bottom'>('top');
+	let tooltipPosition = $state<TooltipPosition>('top');
 
 	let progressValue = $state(68);
 	let progressMax = $state(100);
@@ -379,10 +393,10 @@
 	let skeletonCircle = $state(false);
 
 	let toastOpen = $state(true);
-	let toastVariant = $state<'info' | 'success' | 'warning' | 'danger'>('success');
+	let toastVariant = $state<BannerVariant>('success');
 	let toastTitle = $state('Changes saved');
 
-	let separatorOrientation = $state<'horizontal' | 'vertical'>('horizontal');
+	let separatorOrientation = $state<Orientation>('horizontal');
 	let sliderValue = $state(50);
 	let sliderDisabled = $state(false);
 	let dropdownReady = $state(false);
@@ -390,12 +404,12 @@
 		dropdownReady = true;
 	});
 
-	let animBtnVariant = $state<'primary' | 'secondary' | 'ghost' | 'danger'>('primary');
-	let animBtnSize = $state<'sm' | 'md' | 'lg'>('md');
+	let animBtnVariant = $state<Variant>('primary');
+	let animBtnSize = $state<Size>('md');
 	let animBtnAnimated = $state(true);
 	let animBtnDisabled = $state(false);
 
-	let animCardPadding = $state<'none' | 'sm' | 'md' | 'lg'>('md');
+	let animCardPadding = $state<PadSize>('md');
 	let animCardInteractive = $state(true);
 
 	let revealDelay = $state(0.08);
@@ -409,7 +423,7 @@
 	let textLoopInterval = $state(2200);
 
 	let marqueeSpeed = $state(18);
-	let marqueeDirection = $state<'left' | 'right'>('left');
+	let marqueeDirection = $state<MarqueeDirection>('left');
 
 	let carouselIndex = $state(0);
 	const carouselItems = [
@@ -443,11 +457,11 @@
 	function resetKnobs() {
 		btnVariant = 'primary';
 		btnSize = 'md';
-		btnShape = 'default';
+		btnShape = 'modern';
 		btnDisabled = false;
 		btnLoading = false;
 		btnLabel = 'Save changes';
-		badgeVariant = 'accent';
+		badgeVariant = 'themed';
 		badgeText = 'Featured';
 		alertVariant = 'info';
 		alertTitle = 'A thoughtful default';
@@ -464,22 +478,24 @@
 		toastVariant = 'success';
 		animBtnVariant = 'primary';
 		animBtnSize = 'md';
+		animCardPadding = 'md';
 		animBtnAnimated = true;
 		magneticDisabled = false;
 		stepperCurrent = 1;
 		carouselIndex = 0;
+		bannerVariant = 'default';
+		bannerDismissible = false;
+		thumbShape = 'square';
+		iconBtnVariant = 'ghost';
+		iconBtnSize = 'md';
 	}
 
 	const generatedCode = $derived.by(() => {
 		switch (slug) {
 			case 'button': {
-				const isIcon = btnSize.startsWith('icon');
-				const iconImports = isIcon ? "\n\timport { Icon } from 'fractalicons';\n\timport { luBell } from 'fractalicons/lucide';" : '';
-				const shapeAttr = btnShape === 'pill' ? '\n\tshape="pill"' : '';
+				const shapeAttr = btnShape !== 'modern' ? `\n\tshape="${btnShape}"` : '';
 				const stateAttrs = `${btnLoading ? '\n\tloading' : ''}${btnDisabled ? '\n\tdisabled' : ''}`;
-				const labelAttr = isIcon ? `aria-label="${btnLabel}"` : `onclick={() => alert('Clicked')}`;
-				const body = isIcon ? '<Icon icon={luBell} />' : btnLabel;
-				return `<script>\n\timport { Button } from 'fractalsvelte/components';${iconImports}\n<\/script>\n\n<Button\n\tvariant="${btnVariant}"\n\tsize="${btnSize}"${shapeAttr}${stateAttrs}\n\t${labelAttr}\n>\n\t${body}\n</Button>`;
+				return `<script>\n\timport { Button } from 'fractalsvelte/components';\n<\/script>\n\n<Button\n\tvariant="${btnVariant}"\n\tsize="${btnSize}"${shapeAttr}${stateAttrs}\n\tonclick={() => alert('Clicked')}\n>\n\t${btnLabel}\n</Button>`;
 			}
 			case 'badge':
 				return `<script>\n\timport { Badge } from 'fractalsvelte/components';\n<\/script>\n\n<Badge variant="${badgeVariant}">\n\t${badgeText}\n</Badge>`;
@@ -535,6 +551,12 @@
 				return `<script>\n\timport { CardStack } from 'fractalsvelte/components';\n\tconst items = [\n\t\t{ id: '1', title: 'Design System', description: 'Composable Sass-first design contracts' },\n\t\t{ id: '2', title: 'Theming Engine', description: 'Real-time custom accent and GPU auras' },\n\t\t{ id: '3', title: 'Svelte 5 Primitives', description: 'Fully accessible UI building blocks' }\n\t];\n<\/script>\n\n<CardStack {items} maxVisible={${cardStackMaxVisible}} onswipe={(item, dir) => console.log(item, dir)} />`;
 			case 'text-scramble':
 				return `<script>\n\timport { TextScramble } from 'fractalsvelte/components';\n<\/script>\n\n<TextScramble text="${textScrambleText}" trigger="${textScrambleTrigger}" speed={${textScrambleSpeed}} />`;
+			case 'banner':
+				return `<script>\n\timport { Banner } from 'fractalsvelte/components';\n<\/script>\n\n<Banner variant="${bannerVariant}" title="Storage almost full"${bannerDismissible ? ' dismissible' : ''}>\n\tUpgrade your subscription to unlock extra workspace capacity.\n</Banner>`;
+			case 'thumbnail':
+				return `<script>\n\timport { Thumbnail } from 'fractalsvelte/components';\n<\/script>\n\n<Thumbnail src="/images/logomotif.png" alt="Fractal motif" fallback="FM" shape="${thumbShape}" width="96px" height="96px" />`;
+			case 'icon-button':
+				return `<script>\n\timport { IconButton } from 'fractalsvelte/components';\n\timport { Icon } from 'fractalicons';\n\timport { luBell } from 'fractalicons/lucide';\n<\/script>\n\n<IconButton label="${iconBtnLabel}" variant="${iconBtnVariant}" size="${iconBtnSize}">\n\t<Icon icon={luBell} />\n</IconButton>`;
 			default:
 				return `<script>\n\timport { ${slug.split('-').map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join('')} } from 'fractalsvelte/components';\n<\/script>\n\n<${slug.split('-').map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join('')} />`;
 		}
@@ -564,7 +586,8 @@
 </script>
 
 <div class="box gap-md">
-	<!-- Stage Control Bar -->
+
+	<!-- Viewport and Canvas Controls -->
 	<div class="row wrap gap-bs">
 		<div class="row wrap gap-sm ycenter">
 			<span class="text-xs weight-600 text-muted mr-xs">Viewport:</span>
@@ -652,15 +675,9 @@
 		>
 			<div style="width: 100%; display: grid; place-items: center;">
 				{#if slug === 'button'}
-					{#if btnSize.startsWith('icon')}
-						<Button variant={btnVariant} size={btnSize} shape={btnShape} disabled={btnDisabled} loading={btnLoading} aria-label={btnLabel}>
-							<Icon icon={luBell} />
-						</Button>
-					{:else}
-						<Button variant={btnVariant} size={btnSize} shape={btnShape} disabled={btnDisabled} loading={btnLoading}>
-							{btnLabel}
-						</Button>
-					{/if}
+					<Button variant={btnVariant} size={btnSize} shape={btnShape} disabled={btnDisabled} loading={btnLoading}>
+						{btnLabel}
+					</Button>
 				{:else if slug === 'badge'}
 					<Badge variant={badgeVariant}>
 						{badgeText}
@@ -769,25 +786,6 @@
 							<Alert title="Changes saved" variant="success">The exit completes before this message is removed.</Alert>
 						</Presence>
 					</div>
-				{:else if slug === 'theme'}
-					<Theme theme="light" tokens={brandTokens}>
-						<Card>
-							<div class="theme-sample stack gap-xs">
-								<Badge variant="accent">Custom tokens</Badge>
-								<strong>Your brand, your radius, your accent.</strong>
-								<Button>Branded action</Button>
-							</div>
-						</Card>
-					</Theme>
-				{:else if slug === 'theme-setter' || slug === 'theme-picker'}
-					<ThemeSetter bind:open={themeSetterOpen}>
-						<div class="card pad-m stack gap-s" style="width: 100%; max-width: 480px;">
-							<p class="text-sm text-muted">Explore the modern <strong>fractalthemer</strong> theme and background engine:</p>
-							<Button onclick={() => (themeSetterOpen = true)}>Open appearance</Button>
-						</div>
-					</ThemeSetter>
-				{:else if slug === 'bits-effect'}
-					<BitsEffect pattern="animated-content" category="animation" label="Bits effect preview" />
 				{:else if slug === 'magnetic'}
 					<Magnetic strength={magneticStrength} maxOffset={magneticMaxOffset} disabled={magneticDisabled}>
 						<Button>Move your pointer here</Button>
@@ -958,7 +956,7 @@
 						<FileInput multiple={fileMultiple} label="Drop files here or click to browse" hint={fileMultiple ? 'Up to 5 files, 10 MB each' : 'Any file type, up to 10 MB'} />
 					</div>
 				{:else if slug === 'icon-button'}
-					<IconButton label={iconBtnLabel}><Icon icon={luBell} /></IconButton>
+					<IconButton label={iconBtnLabel} variant={iconBtnVariant} size={iconBtnSize}><Icon icon={luBell} /></IconButton>
 				{:else if slug === 'multi-selector'}
 					<div style="width: 100%; max-width: 340px;">
 						<MultiSelector options={demoPeople} values={['maya']} label="Assign to" />
@@ -1203,13 +1201,10 @@
 					<div style="width: 100%; max-width: 480px;">
 						<CodeBlock code={demoCodeSnippet} label="Example usage" />
 					</div>
-				{:else if svelteBitsSlugs.has(slug)}
-					<BitsEffect pattern={slug} category={svelteBitsCategoryBySlug[slug] as 'animation' | 'background' | 'component' | 'text'} />
-				{:else}
-					<MotionCore pattern={slug} />
 				{/if}
 			</div>
 		</div>
+
 
 	<!-- Interactive Prop Knobs Panel -->
 	{#if ['button', 'badge', 'alert', 'avatar', 'card', 'accordion', 'input', 'textarea', 'checkbox', 'switch', 'select', 'dialog', 'tooltip', 'progress', 'skeleton', 'toast', 'separator', 'slider', 'animated-button', 'animated-card', 'reveal', 'magnetic', 'text-loop', 'marquee', 'stepper', 'counter', 'card-3d', 'macos-dock', 'card-stack', 'text-scramble', 'app-shell', 'aspect-ratio', 'banner', 'breadcrumbs', 'button-group', 'form-layout', 'kbd', 'table', 'thumbnail', 'check-indicator', 'color-picker', 'combobox', 'time-picker', 'file-input', 'icon-button', 'rating', 'countdown', 'drawer', 'overlay', 'outline', 'pagination', 'popover', 'toast-viewport', 'side-nav', 'top-nav', 'tree-list', 'bouncy-accordion', 'animated-sidebar'].includes(slug)}
@@ -1220,29 +1215,29 @@
 					<select id="btn-variant" bind:value={btnVariant}>
 						<option value="primary">primary</option>
 						<option value="secondary">secondary</option>
-						<option value="soft">soft</option>
+						<option value="destructive">destructive</option>
 						<option value="outline">outline</option>
 						<option value="ghost">ghost</option>
 						<option value="link">link</option>
-						<option value="destructive">destructive</option>
+						<option value="soft">soft</option>
 					</select>
 				</div>
 				<div class="knob-item">
 					<label for="btn-size">Size</label>
 					<select id="btn-size" bind:value={btnSize}>
-						<option value="sm">sm (compact)</option>
-						<option value="md">md (default)</option>
-						<option value="lg">lg (large)</option>
-						<option value="icon-sm">icon-sm</option>
-						<option value="icon">icon</option>
-						<option value="icon-lg">icon-lg</option>
+						<option value="sm">sm</option>
+						<option value="md">md</option>
+						<option value="bs">bs</option>
+						<option value="lg">lg</option>
 					</select>
 				</div>
 				<div class="knob-item">
 					<label for="btn-shape">Shape</label>
 					<select id="btn-shape" bind:value={btnShape}>
-						<option value="default">default</option>
-						<option value="pill">pill</option>
+						<option value="square">square</option>
+						<option value="modern">modern</option>
+						<option value="curved">curved</option>
+						<option value="round">round</option>
 					</select>
 				</div>
 				<div class="knob-item">
@@ -1266,11 +1261,12 @@
 				<div class="knob-item">
 					<label for="badge-variant">Variant</label>
 					<select id="badge-variant" bind:value={badgeVariant}>
-						<option value="neutral">neutral</option>
-						<option value="accent">accent</option>
+						<option value="default">default</option>
+						<option value="info">info</option>
 						<option value="success">success</option>
 						<option value="warning">warning</option>
 						<option value="danger">danger</option>
+						<option value="themed">themed</option>
 					</select>
 				</div>
 				<div class="knob-item">
@@ -1281,10 +1277,12 @@
 				<div class="knob-item">
 					<label for="alert-variant">Variant</label>
 					<select id="alert-variant" bind:value={alertVariant}>
+						<option value="default">default</option>
 						<option value="info">info</option>
 						<option value="success">success</option>
 						<option value="warning">warning</option>
 						<option value="danger">danger</option>
+						<option value="themed">themed</option>
 					</select>
 				</div>
 				<div class="knob-item">
@@ -1301,6 +1299,7 @@
 					<select id="avatar-size" bind:value={avatarSize}>
 						<option value="sm">sm</option>
 						<option value="md">md</option>
+						<option value="bs">bs</option>
 						<option value="lg">lg</option>
 					</select>
 				</div>
@@ -1318,7 +1317,8 @@
 					<select id="card-padding" bind:value={cardPadding}>
 						<option value="none">none</option>
 						<option value="sm">sm</option>
-						<option value="md">md (default)</option>
+						<option value="md">md</option>
+						<option value="bs">bs</option>
 						<option value="lg">lg</option>
 					</select>
 				</div>
@@ -1476,10 +1476,12 @@
 				<div class="knob-item">
 					<label for="toast-variant">Variant</label>
 					<select id="toast-variant" bind:value={toastVariant}>
+						<option value="default">default</option>
 						<option value="info">info</option>
 						<option value="success">success</option>
 						<option value="warning">warning</option>
 						<option value="danger">danger</option>
+						<option value="themed">themed</option>
 					</select>
 				</div>
 				<div class="knob-item">
@@ -1512,8 +1514,11 @@
 					<select id="animbtn-variant" bind:value={animBtnVariant}>
 						<option value="primary">primary</option>
 						<option value="secondary">secondary</option>
+						<option value="destructive">destructive</option>
+						<option value="outline">outline</option>
 						<option value="ghost">ghost</option>
-						<option value="danger">danger</option>
+						<option value="link">link</option>
+						<option value="soft">soft</option>
 					</select>
 				</div>
 				<div class="knob-item">
@@ -1521,6 +1526,7 @@
 					<select id="animbtn-size" bind:value={animBtnSize}>
 						<option value="sm">sm</option>
 						<option value="md">md</option>
+						<option value="bs">bs</option>
 						<option value="lg">lg</option>
 					</select>
 				</div>
@@ -1545,6 +1551,7 @@
 						<option value="none">none</option>
 						<option value="sm">sm</option>
 						<option value="md">md</option>
+						<option value="bs">bs</option>
 						<option value="lg">lg</option>
 					</select>
 				</div>
@@ -1684,6 +1691,7 @@
 						<option value="success">success</option>
 						<option value="warning">warning</option>
 						<option value="danger">danger</option>
+						<option value="themed">themed</option>
 					</select>
 				</div>
 				<div class="knob-item">
@@ -1732,6 +1740,8 @@
 					<label for="thumb-shape">Shape</label>
 					<select id="thumb-shape" bind:value={thumbShape}>
 						<option value="square">square</option>
+						<option value="modern">modern</option>
+						<option value="curved">curved</option>
 						<option value="round">round</option>
 					</select>
 				</div>
@@ -1782,6 +1792,26 @@
 					</div>
 				</div>
 			{:else if slug === 'icon-button'}
+				<div class="knob-item">
+					<label for="iconbtn-variant">Variant</label>
+					<select id="iconbtn-variant" bind:value={iconBtnVariant}>
+						<option value="ghost">ghost</option>
+						<option value="outline">outline</option>
+						<option value="primary">primary</option>
+						<option value="secondary">secondary</option>
+						<option value="soft">soft</option>
+						<option value="destructive">destructive</option>
+					</select>
+				</div>
+				<div class="knob-item">
+					<label for="iconbtn-size">Size</label>
+					<select id="iconbtn-size" bind:value={iconBtnSize}>
+						<option value="sm">sm</option>
+						<option value="md">md</option>
+						<option value="bs">bs</option>
+						<option value="lg">lg</option>
+					</select>
+				</div>
 				<div class="knob-item">
 					<label for="iconbtn-label">Label</label>
 					<input id="iconbtn-label" type="text" bind:value={iconBtnLabel} />
@@ -1894,23 +1924,23 @@
 	{/if}
 
 	<!-- Live Svelte 5 Code Snippet Block -->
-	<div class="playground__code-block">
-		<div class="playground__code-header">
-			<span>Interactive Svelte 5 Code</span>
+	<div class="playground-code-block">
+		<div class="playground-code-header">
+			<span>Svelte</span>
 			<button
 				type="button"
-				class="playground__copy-btn"
+				class="is-icon"
 				class:copied
 				onclick={copySnippet}
 			>
 				{#if copied}
-					✓ Copied!
+					<Copied/>
 				{:else}
-					📋 Copy Code
+					<Copy/>
 				{/if}
 			</button>
 		</div>
-		<div class="playground__code-content">
+		<div class="playground-code-content">
 			{#if highlightedCode}
 				{@html highlightedCode}
 			{:else}

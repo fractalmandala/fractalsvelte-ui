@@ -8,7 +8,7 @@
 	import dropdownMenuTriggerRaw from './demos/dropdown-menu/DropdownMenuTrigger.svelte?raw';
 </script>
 
-<div class="stack gap-s">
+<div class="box gap-2xl">
 	<DemoCard
 		title="Basic"
 		description="Arrow keys cycle items, Home/End jump, Escape closes and restores focus to the trigger."

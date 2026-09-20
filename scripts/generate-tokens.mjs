@@ -57,7 +57,7 @@ const defaults = { ...shared, ...lightTokens };
 const darkFull = { ...defaults, ...dark };
 
 // --- Group vocabulary (schema) -----------------------------------------------------
-const PALETTE_PREFIXES = ['--bg', '--state-', '--border', '--theme-color', '--success', '--warning', '--danger', '--info', '--feedback', '--ring', '--text-primary', '--text-secondary', '--text-muted', '--text-inverse'];
+const PALETTE_PREFIXES = ['--white-fixed', '--black-fixed', '--bg', '--state-', '--border', '--theme-color', '--success', '--warning', '--danger', '--info', '--ring', '--text-primary', '--text-secondary', '--text-muted', '--text-inverse'];
 const LAYOUT_NAMES = ['--header-height', '--footer-height', '--measure', '--page-gutter', '--sidebar-width', '--toc-width', '--card-min', '--breakpoint', '--shell-pad', '--layout-max'];
 
 const groupOf = (name) => {

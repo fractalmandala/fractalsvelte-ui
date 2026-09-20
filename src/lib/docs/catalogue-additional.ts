@@ -29,7 +29,7 @@ export const additionalComponents: Entry[] = [
 <AspectRatio ratio="4/3">
 	<img src="/photo.jpg" alt="A landscape" />
 </AspectRatio>`],
-	['banner', 'Banner', 'Feedback', 'A full-width announcement bar for system-level messages, with optional dismissal.', [p('variant', "'default' | 'success' | 'warning' | 'danger' | 'info'", "'default'", 'The semantic treatment.'), p('title', 'string', snippet, 'Optional bold heading.'), p('layout', "'inline' | 'stacked'", "'inline'", 'Row or column arrangement.'), p('dismissible', 'boolean', 'false', 'Shows a dismiss button.'), p('onDismiss', '() => void', snippet, 'Dismiss callback.'), p('icon', 'Snippet', snippet, 'Leading icon slot.'), p('action', 'Snippet', snippet, 'Trailing action slot.')], `<script>
+	['banner', 'Banner', 'Feedback', 'A full-width announcement bar for system-level messages, with optional dismissal.', [p('variant', "'default' | 'info' | 'success' | 'warning' | 'danger' | 'themed'", "'default'", 'The semantic treatment.'), p('title', 'string', snippet, 'Optional bold heading.'), p('layout', "'inline' | 'stacked'", "'inline'", 'Row or column arrangement.'), p('dismissible', 'boolean', 'false', 'Shows a dismiss button.'), p('onDismiss', '() => void', snippet, 'Dismiss callback.'), p('icon', 'Snippet', snippet, 'Leading icon slot.'), p('action', 'Snippet', snippet, 'Trailing action slot.')], `<script>
 	import { Banner } from 'fractalsvelte/components';
 </script>
 
@@ -115,7 +115,7 @@ export const additionalComponents: Entry[] = [
 <table>
 	<Table columns={columns} rows={rows} rowKey={(r) => r.id} />
 </table>`],
-	['thumbnail', 'Thumbnail', 'Layout', 'A small image preview with a square or round shape and initials fallback.', [p('src', 'string', snippet, 'Image URL.'), p('alt', 'string', snippet, 'Image alternative text.'), p('fallback', 'string', snippet, 'Initials or short text when no image loads.'), p('shape', "'square' | 'round'", "'square'", 'Corner treatment.'), p('width', 'string', "'3rem'", 'CSS width.'), p('height', 'string', "'3rem'", 'CSS height.')], `<script>
+	['thumbnail', 'Thumbnail', 'Layout', 'A small image preview with a square or round shape and initials fallback.', [p('src', 'string', snippet, 'Image URL.'), p('alt', 'string', snippet, 'Image alternative text.'), p('fallback', 'string', snippet, 'Initials or short text when no image loads.'), p('shape', "'square' | 'modern' | 'curved' | 'round'", "'square'", 'Corner treatment.'), p('width', 'string', "'3rem'", 'CSS width.'), p('height', 'string', "'3rem'", 'CSS height.')], `<script>
 	import { Thumbnail } from 'fractalsvelte/components';
 </script>
 
@@ -171,7 +171,7 @@ export const additionalComponents: Entry[] = [
 </script>
 
 <FileInput accept="image/*" multiple onFilesChange={(files) => upload(files)} />`],
-	['icon-button', 'Icon Button', 'Actions', 'A square button that carries its accessible name through a required label.', [p('label', 'string', req, 'Accessible name; required because there is no visible text.'), p('size', "'sm' | 'md' | 'lg'", "'md'", 'Density.'), p('variant', "'ghost' | 'outline' | 'solid'", "'ghost'", 'Visual emphasis.'), p('disabled', 'boolean', 'false', 'Prevents interaction.'), p('type', "'button' | 'submit' | 'reset'", "'button'", 'Native button type.'), p('onclick', '(e: MouseEvent) => void', snippet, 'Click handler.')], `<script>
+	['icon-button', 'Icon Button', 'Actions', 'A square button that carries its accessible name through a required label.', [p('label', 'string', req, 'Accessible name; required because there is no visible text.'), p('size', "'sm' | 'md' | 'bs' | 'lg'", "'md'", 'Density.'), p('variant', "'primary' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link' | 'soft' | 'solid'", "'ghost'", 'Visual emphasis.'), p('disabled', 'boolean', 'false', 'Prevents interaction.'), p('type', "'button' | 'submit' | 'reset'", "'button'", 'Native button type.'), p('onclick', '(e: MouseEvent) => void', snippet, 'Click handler.')], `<script>
 	import { Icon } from 'fractalicons';
 	import { luSettings } from 'fractalicons/lucide';
 	import { IconButton } from 'fractalsvelte/components';
@@ -361,7 +361,7 @@ export const additionalComponents: Entry[] = [
 <HoverCard text="Team plan: unlimited projects" placement="bottom">
 	<a href="/pricing">Pricing</a>
 </HoverCard>`],
-	['toast-item', 'Toast Item', 'Feedback', 'A single toast surface for stacking in a viewport or rendering inline.', [p('variant', 'Variant', "'info'", 'The severity treatment.'), p('title', 'string', snippet, 'Brief heading.'), p('description', 'string', snippet, 'Supporting copy.'), p('duration', 'number', '5000', 'Auto-dismiss delay in ms; 0 disables it.'), p('onDismiss', '() => void', snippet, 'Dismiss callback.')], `<script>
+	['toast-item', 'Toast Item', 'Feedback', 'A single toast surface for stacking in a viewport or rendering inline.', [p('variant', "'default' | 'info' | 'success' | 'warning' | 'danger' | 'themed'", "'default'", 'The severity treatment.'), p('title', 'string', snippet, 'Brief heading.'), p('description', 'string', snippet, 'Supporting copy.'), p('duration', 'number', '5000', 'Auto-dismiss delay in ms; 0 disables it.'), p('onDismiss', '() => void', snippet, 'Dismiss callback.')], `<script>
 	import { ToastItem } from 'fractalsvelte/components';
 </script>
 

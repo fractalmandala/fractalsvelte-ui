@@ -8,7 +8,7 @@
 //
 // Configure before anything else loads 01_config, or Sass rejects it.
 // ============================================================================
-
+@use '00_presets' as *
 // The responsive seam. Every loop-generated class takes -mob (below) and
 // -desk (at or above) this width.
 $breakpoint: 768px !default
@@ -57,6 +57,8 @@ body, html
 	color: var(--text-primary)
 	background: var(--bg)
 	box-sizing: border-box
+	-webkit-font-smoothing: antialiased
+	text-rendering: optimizeLegibility
 
 img,
 video,

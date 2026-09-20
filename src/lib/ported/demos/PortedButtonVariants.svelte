@@ -2,7 +2,7 @@
 	import { PortedButton } from 'fractalsvelte/ported';
 </script>
 
-<div class="row wrap gap-2xs ycenter">
+<div class="row wrap gap-sm ycenter">
 	<PortedButton variant="default">Default</PortedButton>
 	<PortedButton variant="secondary">Secondary</PortedButton>
 	<PortedButton variant="outline">Outline</PortedButton>

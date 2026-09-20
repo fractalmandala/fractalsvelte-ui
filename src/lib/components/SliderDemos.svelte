@@ -8,7 +8,7 @@
 	import sliderRangeRaw from './demos/slider/SliderRange.svelte?raw';
 </script>
 
-<div class="stack gap-s">
+<div class="box gap-2xl">
 	<DemoCard title="Basic" description="A labeled range input bound to state. Keyboard arrows adjust by step." code={sliderBasicRaw}>
 		<SliderBasic />
 	</DemoCard>

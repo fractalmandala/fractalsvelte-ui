@@ -1,3 +1,6 @@
+@use '01_config' as *
+@use '00_tokens' as *
+
 .badge
 	display: inline-flex
 	align-items: center
@@ -50,13 +53,14 @@
 		box-shadow: 0 0 0 2px var(--ring)
 
 .card
-	border: 1px solid transparent
+	header
+		margin-bottom: auto
 	footer
-		margin-top: auto
 		div
 			transition: transform var(--motionout2)
 	&:hover
 		border: 1px solid var(--border-strong)
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)
 		footer
 			div
 				transform: translateX(8px)
@@ -79,6 +83,20 @@
 		.link,
 		.link-plain
 			color: var(--theme-color-alt)
+
+.breadcrumb-link, .breadcrumb-spacer
+	color: var(--text-muted)
+	font-size: var(--text-xs)
+	text-transform: uppercase
+
+.breadcrumb-link
+	&:hover
+		color: var(--theme-color)
+
+.breadcrumb
+	display: flex
+	justify-content: flex-start
+	margin-left: -0.5rem
 
 // --- The button quartet (nested — never standalone) -----------------------------
 button, a
@@ -116,15 +134,14 @@ button, a
 		padding: 0
 		background: 0
 		border: 0
-		color: var(--text-primary)
 		&:hover
 			color: var(--theme-color)
 	&.small
-		height: 24px
+		height: 27px
 		font-size: var(--text-sm)
 		letter-spacing: -0.01rem
-		border: 1px solid var(--border)
-		background: var(--state-surface)
+		border: 1px solid var(--border-strong)
+		background: var(--bg-surface)
 		&:hover
 			background: var(--state-hover)
 	&[data-shape="square"]

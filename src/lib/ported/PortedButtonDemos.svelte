@@ -5,6 +5,8 @@
 	import { Icon } from 'fractalicons';
 	import { luBell } from 'fractalicons/lucide';
 	import { highlight } from '#lib/docs/highlight.ts';
+	import Copy from '#lib/icons/copy.svelte';
+	import Copied from '#lib/icons/copied.svelte';
 
 	import PortedButtonVariants from './demos/PortedButtonVariants.svelte';
 	import portedButtonVariantsRaw from './demos/PortedButtonVariants.svelte?raw';
@@ -31,6 +33,19 @@
 	);
 
 	let highlightedPlayground = $state<string>('');
+	let copiedPlayground = $state(false);
+	let resetTimer: ReturnType<typeof setTimeout> | undefined;
+
+	async function copyPlayground() {
+		try {
+			await navigator.clipboard.writeText(playgroundCode);
+			copiedPlayground = true;
+			clearTimeout(resetTimer);
+			resetTimer = setTimeout(() => (copiedPlayground = false), 2000);
+		} catch {
+			// Clipboard unavailable
+		}
+	}
 
 	$effect(() => {
 		let active = true;
@@ -92,12 +107,30 @@
 				<PortedButton {variant} {size} {disabled}>{label}</PortedButton>
 			{/if}
 		</div>
-		<div class="playground__code-content">
-			{#if highlightedPlayground}
-				{@html highlightedPlayground}
-			{:else}
-				<pre><code>{playgroundCode}</code></pre>
-			{/if}
+		<div class="playground-code-block">
+			<div class="playground-code-header">
+				<span>Interactive Svelte 5 Code</span>
+				<button
+					type="button"
+					class="is-icon"
+					class:copied={copiedPlayground}
+					onclick={copyPlayground}
+					aria-label="Copy interactive code"
+				>
+					{#if copiedPlayground}
+						<Copied />
+					{:else}
+						<Copy />
+					{/if}
+				</button>
+			</div>
+			<div class="playground-code-content">
+				{#if highlightedPlayground}
+					{@html highlightedPlayground}
+				{:else}
+					<pre><code>{playgroundCode}</code></pre>
+				{/if}
+			</div>
 		</div>
 	</section>
 

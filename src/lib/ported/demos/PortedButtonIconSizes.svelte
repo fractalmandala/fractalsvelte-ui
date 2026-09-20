@@ -4,7 +4,7 @@
 	import { luSettings, luBell } from 'fractalicons/lucide';
 </script>
 
-<div class="row wrap gap-2xs ycenter">
+<div class="row wrap gap-sm ycenter">
 	<PortedButton size="icon-xs" aria-label="Settings">
 		<Icon icon={luSettings} />
 	</PortedButton>

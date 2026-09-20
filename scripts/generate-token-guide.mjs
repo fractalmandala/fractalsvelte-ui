@@ -7,12 +7,14 @@
  *   node scripts/generate-token-guide.mjs          # rewrite the tables
  *   node scripts/generate-token-guide.mjs --check  # exit 1 if stale
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const guidePath = resolve(root, 'docs/guides/09-token-reference.md');
+const primaryGuide = resolve(root, 'docs/guides/09-token-reference.md');
+const obsoleteGuide = resolve(root, 'docs/obsolete/guides/09-token-reference.md');
+const guidePath = existsSync(primaryGuide) ? primaryGuide : obsoleteGuide;
 
 const { defaults, dark } = JSON.parse(readFileSync(resolve(root, 'src/lib/styles/token-source.json'), 'utf8'));
 

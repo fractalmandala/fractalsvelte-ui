@@ -8,7 +8,7 @@
 	import contextMenuTriggerSurfaceRaw from './demos/context-menu/ContextMenuTriggerSurface.svelte?raw';
 </script>
 
-<div class="stack gap-s">
+<div class="box gap-2xl">
 	<DemoCard
 		title="Basic"
 		description="Right-click the surface (or focus it and press ContextMenu / Shift+F10). Arrow keys cycle, typing jumps via typeahead, Escape closes."

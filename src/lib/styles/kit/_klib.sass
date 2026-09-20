@@ -7,10 +7,26 @@
 
 // --- Code Highlighting (Shiki) -----------------------------------------------
 .shiki
-	background: var(--bg-terminal) !important
+	background: var(--bg-surface)
+	color: var(--shiki-light)
+	span
+		color: var(--shiki-light)
+
+:root[data-theme='dark'] .shiki,
+:root[data-mode='dark'] .shiki,
+body[data-theme='dark'] .shiki,
+body[data-mode='dark'] .shiki
+	background: var(--bg-sidebar) !important
 	color: var(--shiki-dark) !important
 	span
 		color: var(--shiki-dark)
+
+@media (prefers-color-scheme: dark)
+	:root:not([data-mode='light']):not([data-theme='light']) .shiki
+		background: var(--bg-sidebar) !important
+		color: var(--shiki-dark) !important
+		span
+			color: var(--shiki-dark)
 
 // --- Sidebar Group Accordions ------------------------------------------------
 .sidebar-section
@@ -67,57 +83,25 @@ table
 	text-align: left
 
 th, td
-	padding: var(--space-xs) var(--space-sm)
+	padding: var(--space-sm) var(--space-md)
 	border-bottom: 1px solid var(--border-subtle)
+	vertical-align: top
 
 th
 	+bg(raised)
 	+weight(600)
-	color: var(--text-secondary)
+	color: var(--text-muted)
 	+type(xs)
 	text-transform: uppercase
 	letter-spacing: 0.05em
+	border-bottom: 1px solid var(--border)
+	white-space: nowrap
 
 tr:last-child td
 	border-bottom: none
 
-// --- Demo Cards (docs) ------------------------------------------------------
-.demo-card
-	display: flex
-	flex-direction: column
-	+bg(surface)
-	+border(all, var(--border))
-	+radius(6)
-	overflow: hidden
-
-.demo-card__preview
-	display: grid
-	place-items: center
-	min-height: 7rem
-	padding: var(--space-md)
-	+bg(raised)
-	border-bottom: 1px solid var(--border)
-
-.demo-card__meta
-	display: flex
-	align-items: flex-start
-	justify-content: space-between
-	flex-wrap: wrap
-	+gap(s)
-	padding: var(--space-2xs) var(--space-sm)
-	border-bottom: 1px solid var(--border)
-
-.demo-card__info
-	display: flex
-	flex-direction: column
-	+gap(3xs)
-
-.demo-card__info p
-	margin: 0
-
-.demo-card__title
-	+type(sm)
-	+weight(600)
+tbody tr:hover
+	background: var(--state-hover)
 
 // --- Ported: popover-wrap / menu (DropdownMenu) --------------------------------
 
