@@ -1,0 +1,1488 @@
+// ============================================================================
+// _klib.sass — the docs-shell + ported kit stylesheet. Ported from the frcked
+// project into the fractalsvelte-ui token contract. Mixins come from kit/_fractals.
+// Token renames applied for this project: --space-s/m/l → --space-sm/md/lg.
+// ============================================================================
+@use '../kit/_fractals' as *
+
+// --- Code Highlighting (Shiki) -----------------------------------------------
+.shiki
+	background: var(--bg-terminal) !important
+	color: var(--shiki-dark) !important
+	span
+		color: var(--shiki-dark)
+
+// --- Sidebar Group Accordions ------------------------------------------------
+.sidebar-section
+	margin-top: var(--space-md)
+	&[data-open]
+		.sidebar-section__trigger
+			color: var(--text-primary)
+			.sidebar-section__chevron
+				transform: rotate(180deg)
+
+.sidebar-section__trigger
+	display: flex
+	align-items: center
+	justify-content: space-between
+	width: 100%
+	border: none
+	+radius(3)
+	padding: var(--space-3xs) var(--space-2xs)
+	background: transparent
+	color: var(--text-secondary)
+	+type(sm)
+	+weight(600)
+	text-align: left
+	cursor: pointer
+	&:hover
+		+bg(raised)
+		color: var(--text-primary)
+	&[data-current]
+		background: color-mix(in srgb, var(--theme-color) 12%, var(--bg-surface))
+		color: var(--theme-color)
+
+.sidebar-section__chevron
+	display: inline-block
+	transition: transform 120ms ease
+	font-size: 0.8rem
+
+.sidebar-section__items
+	margin-top: var(--space-3xs)
+	padding-left: var(--space-2xs)
+	border-left: 1px solid var(--border-subtle)
+
+// --- Table & Prose Data ------------------------------------------------------
+.table-wrap
+	width: 100%
+	overflow-x: auto
+	+border(all, var(--border))
+	+radius(4)
+	+bg(surface)
+
+table
+	width: 100%
+	border-collapse: collapse
+	+type(sm)
+	text-align: left
+
+th, td
+	padding: var(--space-xs) var(--space-sm)
+	border-bottom: 1px solid var(--border-subtle)
+
+th
+	+bg(raised)
+	+weight(600)
+	color: var(--text-secondary)
+	+type(xs)
+	text-transform: uppercase
+	letter-spacing: 0.05em
+
+tr:last-child td
+	border-bottom: none
+
+// --- Demo Cards (docs) ------------------------------------------------------
+.demo-card
+	display: flex
+	flex-direction: column
+	+bg(surface)
+	+border(all, var(--border))
+	+radius(6)
+	overflow: hidden
+
+.demo-card__preview
+	display: grid
+	place-items: center
+	min-height: 7rem
+	padding: var(--space-md)
+	+bg(raised)
+	border-bottom: 1px solid var(--border)
+
+.demo-card__meta
+	display: flex
+	align-items: flex-start
+	justify-content: space-between
+	flex-wrap: wrap
+	+gap(s)
+	padding: var(--space-2xs) var(--space-sm)
+	border-bottom: 1px solid var(--border)
+
+.demo-card__info
+	display: flex
+	flex-direction: column
+	+gap(3xs)
+
+.demo-card__info p
+	margin: 0
+
+.demo-card__title
+	+type(sm)
+	+weight(600)
+
+// --- Ported: popover-wrap / menu (DropdownMenu) --------------------------------
+
+.popover-wrap
+	+relative
+	display: inline-flex
+
+.menu
+	+box
+	min-width: 180px
+	+surface(raised, 3xs, 8, m)
+	position: absolute
+	top: calc(100% + 8px)
+	left: 50%
+	transform: translateX(-50%)
+	z-index: var(--z-modal)
+	&[data-placement='top']
+		top: auto
+		bottom: calc(100% + 8px)
+		transform: translateX(-50%)
+	&[data-placement='left']
+		top: 50%
+		left: auto
+		right: calc(100% + 8px)
+		transform: translateY(-50%)
+	&[data-placement='right']
+		top: 50%
+		left: calc(100% + 8px)
+		transform: translateY(-50%)
+	&[data-open='false']
+		display: none
+	&[data-align='end']
+		left: auto
+		right: 0
+		transform: none
+
+.menu-item
+	+row(start, center)
+	+gap(2xs)
+	+w(100%)
+	+px(xs)
+	+py(3xs)
+	+type(md)
+	text-align: left
+	border: none
+	+radius(4)
+	background: transparent
+	+ink(primary)
+	cursor: pointer
+	&:hover
+		+bg(surface)
+	&:focus-visible
+		+ring
+	&[data-state='disabled']
+		opacity: 0.5
+		pointer-events: none
+	&[data-variant='danger']
+		color: var(--danger)
+		&:hover
+			background: color-mix(in srgb, var(--danger) 10%, transparent)
+
+.menu-sep
+	height: 1px
+	margin-block: var(--space-3xs)
+	margin-inline: var(--space-3xs)
+	background: var(--border)
+
+// --- Ported: slider --------------------------------------------------------------
+
+.slider
+	appearance: none
+	-webkit-appearance: none
+	+w(100%)
+	height: 24px
+	background: transparent
+	cursor: pointer
+	&:disabled
+		opacity: 0.5
+		cursor: not-allowed
+	&:focus-visible
+		+ring
+	&::-webkit-slider-runnable-track
+		height: 6px
+		+radius(full)
+		background: linear-gradient(to right, var(--theme-color) var(--fs-slider-pct, 50%), var(--bg-raised) var(--fs-slider-pct, 50%))
+		+border
+	&::-webkit-slider-thumb
+		-webkit-appearance: none
+		appearance: none
+		+square(18px)
+		margin-top: -6px
+		+radius(full)
+		+bg(bg)
+		border: 2px solid var(--theme-color)
+		+shadow(s)
+	&::-moz-range-track
+		height: 6px
+		+radius(full)
+		+bg(raised)
+		+border
+	&::-moz-range-progress
+		height: 6px
+		+radius(full)
+		background: var(--theme-color)
+	&::-moz-range-thumb
+		+square(18px)
+		+radius(full)
+		+bg(bg)
+		border: 2px solid var(--theme-color)
+		+shadow(s)
+
+// --- Ported: context menu (data-slot contract, token-true remap) -----------------
+
+[data-slot="context-menu"]
+	display: contents
+
+[data-slot="context-menu-trigger"]
+	display: inline-flex
+	&[data-disabled="true"]
+		pointer-events: none
+		opacity: 0.5
+
+[data-slot="context-menu-portal"]
+	position: fixed
+	z-index: var(--z-modal)
+	filter: drop-shadow(0 18px 28px rgb(0 0 0 / 0.2))
+	pointer-events: none
+	&[data-state="open"]
+		pointer-events: auto
+
+[data-slot="context-menu-content"]
+	min-width: 14rem
+	overflow: hidden
+	+surface(popover, 2xs, 6, m)
+	outline: none
+
+[data-slot="context-menu-item"]
+	position: relative
+	isolation: isolate
+	display: flex
+	width: 100%
+	align-items: center
+	+gap(xs)
+	+px(xs)
+	+py(2xs)
+	border: 0
+	+radius(4)
+	background: none
+	text-align: left
+	font: inherit
+	+type(xs)
+	+ink(primary)
+	cursor: pointer
+	outline: none
+	&[data-tone="destructive"]
+		color: var(--danger)
+	&[data-inset="true"]
+		padding-left: 2rem
+	&:disabled
+		pointer-events: none
+		opacity: 0.4
+
+[data-slot="context-menu-item-active"]
+	position: absolute
+	inset: 0
+	z-index: -1
+	+radius(4)
+	background: color-mix(in srgb, var(--text-primary) 6.5%, transparent)
+	&[data-tone="destructive"]
+		background: color-mix(in srgb, var(--danger) 10%, transparent)
+
+[data-slot="context-menu-icon"]
+	display: flex
+	width: 1rem
+	height: 1rem
+	flex-shrink: 0
+	align-items: center
+	justify-content: center
+
+[data-slot="context-menu-radio-dot"]
+	width: 0.375rem
+	height: 0.375rem
+	+radius(full)
+	background: currentColor
+	opacity: 0
+	transition: opacity 0.15s ease
+	&[data-checked="true"]
+		opacity: 1
+
+[data-slot="context-menu-label"]
+	+px(xs)
+	+py(2xs)
+	+type(xs)
+	+weight(600)
+	text-transform: uppercase
+	letter-spacing: 0.12em
+	+ink(muted)
+	&[data-inset="true"]
+		padding-left: 2rem
+
+[data-slot="context-menu-separator"]
+	margin: var(--space-3xs) calc(var(--space-3xs) * -1)
+	height: 1px
+	border: 0
+	background: var(--border)
+
+[data-slot="context-menu-shortcut"]
+	margin-left: auto
+	padding-left: var(--space-sm)
+	+type(xs)
+	+weight(500)
+	letter-spacing: 0.025em
+	+ink(muted)
+
+@media (max-width: 768px)
+	.app-header nav
+		display: none
+
+// -------------------------------------------------------
+// Kit batch 1 — Kbd, Breadcrumbs, Blockquote, AspectRatio, Pagination
+// Ported from fractalsvelte-2old kit; tokens remapped to the
+// 30-token contract (--theme → --theme-color).
+// -------------------------------------------------------
+
+.kbd
+	+center
+	display: inline-flex
+	min-height: 20px
+	+px(2xs)
+	+type(sm)
+	+weight(500)
+	+border
+	+radius(4)
+	+bg(surface)
+	+ink(secondary)
+	font-family: var(--font-mono)
+
+.k-blockquote
+	margin: 0
+	+px(m)
+	+py(s)
+	+border(left, 3px solid var(--theme-color))
+	border-radius: 0 radius(8) radius(8) 0
+	+bg(surface)
+	+type(lg)
+	font-style: italic
+	+ink(primary)
+	.k-blockquote-cite
+		display: block
+		margin-top: space(2xs)
+		+type(sm)
+		font-style: normal
+
+.k-aspect
+	+relative
+	+w(100%)
+	aspect-ratio: var(--k-aspect-ratio, 16 / 9)
+	overflow: hidden
+	+radius(8)
+	+surface(raised, 0, 8)
+	.k-aspect-inner
+		+fill
+		+center
+		img, video
+			+full
+			object-fit: cover
+
+.k-breadcrumbs
+	+row(start, center)
+	+wrap
+	+gap(3xs)
+	+type(sm)
+
+.k-breadcrumb-item
+	+row(start, center)
+	display: inline-flex
+	+gap(3xs)
+	a
+		+ink(secondary)
+		text-decoration: none
+		&:hover
+			color: var(--theme-color)
+	&[data-current='true']
+		+ink(primary)
+		+weight(500)
+
+.k-breadcrumb-sep
+	+ink(muted)
+
+.k-pagination
+	+row(start, center)
+	+gap(3xs)
+
+.k-page
+	+center
+	display: inline-flex
+	min-width: 36px
+	height: 36px
+	+px(2xs)
+	+type(sm)
+	+weight(500)
+	+border
+	+radius(6)
+	+bg(bg)
+	+ink(secondary)
+	cursor: pointer
+	&:hover
+		+bg(raised)
+	&:focus-visible
+		+ring
+	&[data-state='active']
+		background: var(--theme-color)
+		border-color: var(--theme-color)
+		+ink(inverse)
+	&[data-state='disabled']
+		opacity: 0.4
+		pointer-events: none
+	&.k-page-ellipsis
+		border-color: transparent
+		background: transparent
+		cursor: default
+
+// -------------------------------------------------------
+// Kit batch 2 — Popover, HoverCard, ButtonGroup, Toolbar, FileInput
+// Ported from fractalsvelte-2old kit; tokens remapped to the
+// 30-token contract (--theme → --theme-color, hardcoded rgba → --success mix).
+// -------------------------------------------------------
+
+.k-popover
+	+stack(2xs)
+	+pad(s)
+	+surface(raised, s, 12, md)
+	max-width: min(320px, 90vw)
+
+.k-popover-wrap
+	+relative
+	display: inline-flex
+
+.k-popover
+	+absolute(calc(100% + 8px) null null 50%)
+	z-index: var(--z-modal)
+	transform: translateX(-50%)
+	&[data-placement='top']
+		top: auto
+		bottom: calc(100% + 8px)
+		transform: translateX(-50%)
+	&[data-placement='left']
+		top: 50%
+		left: auto
+		right: calc(100% + 8px)
+		transform: translateY(-50%)
+	&[data-placement='right']
+		top: 50%
+		left: calc(100% + 8px)
+		transform: translateY(-50%)
+	&[data-open='false']
+		display: none
+	&[data-align='end']
+		left: auto
+		right: 0
+		transform: none
+
+.k-button-group
+	display: inline-flex
+	align-items: stretch
+	+border
+	+radius(6)
+	+bg(raised)
+	overflow: hidden
+	.k-button
+		border: none
+		border-radius: 0
+		background: transparent
+		&:hover
+			+bg(surface)
+		&[data-variant='primary']
+			background: var(--theme-color)
+			+ink(inverse)
+	&[data-variant='segmented']
+		+gap(3xs)
+		+pad(3xs)
+		+bg(raised)
+		.k-button
+			+radius(4)
+	&[data-orientation='vertical']
+		+box
+		align-items: stretch
+
+.k-toolbar
+	+row(start, center)
+	+gap(3xs)
+	+pad(3xs)
+	+surface(raised, 3xs, 8)
+
+.k-toolbar-group
+	+row(start, center)
+	display: inline-flex
+	+gap(3xs)
+	+px(3xs)
+	+border(right)
+	&:last-child
+		border-right: none
+
+.k-file
+	+relative
+	+stack(2xs, center)
+	justify-content: center
+	+pad(l)
+	border: 1.5px dashed var(--border-strong)
+	+radius(12)
+	+bg(surface)
+	+ink(secondary)
+	text-align: center
+	cursor: pointer
+	+transition
+	&:hover
+		border-color: var(--theme-color)
+	&[data-state='dragging']
+		border-color: var(--theme-color)
+		background: color-mix(in srgb, var(--success) 8%, transparent)
+
+// ---------------------------------------------------------------------------
+// KIT batch 3 — icon button, selector, banner, code, grid, command, lightbox, tree
+// ---------------------------------------------------------------------------
+
+.k-icon-button
+	+center
+	display: inline-flex
+	+square(36px)
+	+pad(0)
+	+radius(6)
+	+border(all, transparent)
+	background: transparent
+	+ink(secondary)
+	+transition
+	cursor: pointer
+	&:hover
+		+bg(raised)
+		+ink(primary)
+	&:focus-visible
+		+ring
+	&[data-size='sm']
+		+square(28px)
+	&[data-size='lg']
+		+square(44px)
+	&[data-variant='outline']
+		+border
+		+bg(bg)
+	&[data-variant='solid']
+		background: var(--theme-color)
+		+ink(inverse)
+		&:hover
+			background: var(--theme-color-alt)
+
+.k-code
+	font-family: var(--font-mono)
+	font-size: 0.9em
+	+px(3xs)
+	padding-block: 2px
+	+radius(4)
+	+bg(raised)
+	+border(all, var(--border))
+	+ink(primary)
+
+.k-code-block
+	+relative
+	overflow: hidden
+	+surface(raised, 0, 8)
+	+ink(primary)
+
+.k-code-block-header
+	+row(between, center)
+	+gap(2xs)
+	+px(s)
+	+py(2xs)
+	+border(bottom)
+	+bg(raised)
+	+type(xs)
+	+weight(600)
+	text-transform: uppercase
+	letter-spacing: 0.04em
+	+ink(muted)
+
+.k-code-block-pre
+	margin: 0
+	+pad(s)
+	overflow-x: auto
+	font-family: var(--font-mono)
+	+type(sm)
+	+leading(1.6)
+	code
+		font-family: inherit
+
+.k-banner
+	+row(start, start)
+	+gap(xs)
+	+pad(s)
+	+surface(surface, s, 8)
+	+ink(primary)
+	+type(md)
+	&[data-variant='success']
+		border-color: color-mix(in srgb, var(--success) 40%, transparent)
+		background: color-mix(in srgb, var(--success) 8%, transparent)
+	&[data-variant='warning']
+		border-color: color-mix(in srgb, var(--warning) 40%, transparent)
+		background: color-mix(in srgb, var(--warning) 8%, transparent)
+	&[data-variant='danger']
+		border-color: color-mix(in srgb, var(--danger) 40%, transparent)
+		background: color-mix(in srgb, var(--danger) 8%, transparent)
+	&[data-variant='info']
+		border-color: color-mix(in srgb, var(--info) 40%, transparent)
+		background: color-mix(in srgb, var(--info) 8%, transparent)
+	.k-banner-icon
+		margin-top: 2px
+	&[data-layout='stacked']
+		+box
+		align-items: stretch
+
+.k-check
+	+center
+	display: inline-flex
+	+square(18px)
+	+shrink(0)
+	border: 1.5px solid var(--border-strong)
+	+radius(4)
+	+bg(bg)
+	+ink(inverse)
+	+transition
+	&[data-state='checked'], &[data-state='indeterminate']
+		background: var(--theme-color)
+		border-color: var(--theme-color)
+	&[data-state='disabled']
+		opacity: 0.5
+
+.k-radio
+	+center
+	display: inline-flex
+	+square(18px)
+	+shrink(0)
+	border: 1.5px solid var(--border-strong)
+	+radius(full)
+	+bg(bg)
+	+transition(border-color, 150ms)
+	&::after
+		content: ''
+		+square(8px)
+		+radius(full)
+		background: var(--theme-color)
+		transform: scale(0)
+		+transition(transform, 150ms)
+	&[data-state='checked']
+		border-color: var(--theme-color)
+		&::after
+			transform: scale(1)
+	&[data-state='disabled']
+		opacity: 0.5
+
+.k-selector
+	+row(start, center)
+	+gap(xs)
+	+w(100%)
+	+px(s)
+	+py(xs)
+	+border
+	+radius(8)
+	+bg(bg)
+	+ink(primary)
+	cursor: pointer
+	text-align: left
+	+transition
+	&:hover
+		+bg(raised)
+	&:focus-visible
+		+ring
+	&[data-state='selected']
+		border-color: var(--theme-color)
+		background: color-mix(in srgb, var(--success) 6%, transparent)
+
+.k-selector-title
+	+type(md)
+	+weight(500)
+
+.k-selector-desc
+	+type(sm)
+	+ink(muted)
+
+.k-grid
+	display: grid
+	+gap(var(--k-grid-gap, var(--space-sm)))
+	grid-template-columns: 1fr
+	&[data-cols='2']
+		grid-template-columns: repeat(2, minmax(0, 1fr))
+	&[data-cols='3']
+		grid-template-columns: repeat(3, minmax(0, 1fr))
+	&[data-cols='4']
+		grid-template-columns: repeat(4, minmax(0, 1fr))
+	&[data-cols='5']
+		grid-template-columns: repeat(5, minmax(0, 1fr))
+	&[data-cols='6']
+		grid-template-columns: repeat(6, minmax(0, 1fr))
+	+at(md)
+		&[data-cols='3'], &[data-cols='4'], &[data-cols='5'], &[data-cols='6']
+			grid-template-columns: repeat(2, minmax(0, 1fr))
+	+at(sm)
+		&[data-cols='2'], &[data-cols='3'], &[data-cols='4'], &[data-cols='5'], &[data-cols='6']
+			grid-template-columns: 1fr
+
+.k-command
+	+box
+	width: min(560px, 94vw)
+	max-height: 70vh
+	overflow: hidden
+	+surface(surface, 0, 16, lg)
+
+.k-command-input-wrap
+	+row(start, center)
+	+gap(2xs)
+	+px(s)
+	+py(xs)
+	+border(bottom)
+
+.k-command-input
+	+grow
+	border: none
+	background: transparent
+	+type(lg)
+	+ink(primary)
+	outline: none
+	&::placeholder
+		+ink(muted)
+
+.k-command-list
+	+grow
+	overflow-y: auto
+	+pad(2xs)
+
+.k-command-item
+	+row(start, center)
+	+gap(xs)
+	+w(100%)
+	+px(xs)
+	+py(2xs)
+	+type(md)
+	text-align: left
+	border: none
+	+radius(6)
+	background: transparent
+	+ink(primary)
+	cursor: pointer
+	&[data-highlighted='true']
+		+bg(raised)
+	&:focus-visible
+		+ring
+
+.k-command-empty
+	+pad(m)
+	text-align: center
+	+ink(muted)
+	+type(sm)
+
+.k-lightbox
+	+relative
+	+center
+	display: flex
+	width: min(1080px, 94vw)
+	height: min(80vh, 94vh)
+	+pad(m)
+	background: transparent
+	border: none
+	box-shadow: none
+	.k-lightbox-img
+		max-width: 100%
+		max-height: 100%
+		object-fit: contain
+		+radius(12)
+		+shadow(lg)
+	.k-lightbox-close
+		+absolute(space(s) space(s) null null)
+		+ink(primary)
+		+surface(surface, 0, 6)
+		&:hover
+			+bg(raised)
+	.k-lightbox-prev, .k-lightbox-next
+		position: absolute
+		top: 50%
+		transform: translateY(-50%)
+		+ink(primary)
+		+surface(surface, 0, 6)
+		&:hover
+			+bg(raised)
+	.k-lightbox-prev
+		left: space(s)
+	.k-lightbox-next
+		right: space(s)
+
+.k-tree
+	+stack(3xs)
+	+type(md)
+
+.k-tree-item
+	+box
+
+.k-tree-row
+	+row(start, center)
+	+gap(3xs)
+	+px(2xs)
+	+py(3xs)
+	padding-inline-start: calc(var(--space-2xs) + var(--k-tree-depth, 0) * 14px)
+	border: none
+	+radius(4)
+	background: transparent
+	+ink(primary)
+	cursor: pointer
+	text-align: left
+	&:hover
+		+bg(raised)
+	&:focus-visible
+		+ring
+	&[aria-selected='true']
+		background: color-mix(in srgb, var(--success) 10%, transparent)
+
+.k-tree-chevron
+	+center
+	display: inline-flex
+	+square(18px)
+	+shrink(0)
+	+ink(muted)
+	+transition(transform, 150ms)
+	&[data-state='open']
+		transform: rotate(90deg)
+
+.k-tree-group
+	+stack(3xs)
+	margin-inline-start: 14px
+	padding-inline-start: 10px
+	+border(left)
+
+// ---------------------------------------------------------------------------
+// KIT batch 4 — navigation trio (topnav, sidenav, mobile drawer)
+// ---------------------------------------------------------------------------
+
+.k-sidenav
+	+stack(3xs)
+	+pad(2xs)
+	width: 240px
+	+surface(surface, 2xs, 12)
+
+.k-sidenav-item
+	+row(start, center)
+	+gap(2xs)
+	+px(xs)
+	+py(2xs)
+	+type(md)
+	border: none
+	+radius(6)
+	background: transparent
+	+ink(secondary)
+	cursor: pointer
+	text-decoration: none
+	&:hover
+		+bg(raised)
+		+ink(primary)
+	&:focus-visible
+		+ring
+	&[data-state='active']
+		background: color-mix(in srgb, var(--success) 10%, transparent)
+		color: var(--theme-color)
+		+weight(500)
+
+.k-sidenav-heading
+	+px(xs)
+	+py(3xs)
+	+type(xs)
+	+weight(600)
+	text-transform: uppercase
+	letter-spacing: 0.05em
+	+ink(muted)
+
+.k-topnav
+	+row(start, center)
+	+gap(3xs)
+	+px(s)
+	+py(2xs)
+	+surface(surface, 2xs, 12)
+
+.k-topnav-item
+	+row(start, center)
+	display: inline-flex
+	+gap(3xs)
+	+px(xs)
+	+py(2xs)
+	+type(md)
+	+weight(500)
+	border: none
+	+radius(6)
+	background: transparent
+	+ink(secondary)
+	cursor: pointer
+	text-decoration: none
+	&:hover
+		+bg(raised)
+		+ink(primary)
+	&:focus-visible
+		+ring
+	&[data-state='active']
+		color: var(--theme-color)
+	&[data-state='open']
+		+bg(raised)
+		+ink(primary)
+
+.k-mobile-nav
+	position: fixed
+	inset-block: 0
+	inset-inline-start: 0
+	width: min(320px, 85vw)
+	z-index: var(--z-modal)
+	+box
+	+surface(surface, 0, 0, lg)
+	border-right: 1px solid var(--border)
+	transform: translateX(-100%)
+	+transition(transform, 250ms)
+	&[data-state='open']
+		transform: translateX(0)
+
+.k-mobile-nav-header
+	+row(between, center)
+	+gap(xs)
+	+pad(s)
+	+border(bottom)
+
+.k-mobile-nav-body
+	+grow
+	overflow-y: auto
+	+pad(xs)
+
+.k-mobile-nav-item
+	+row(start, center)
+	+gap(2xs)
+	+px(xs)
+	+py(2xs)
+	+type(md)
+	border: none
+	+radius(6)
+	background: transparent
+	+ink(primary)
+	cursor: pointer
+	text-decoration: none
+	&:hover
+		+bg(raised)
+	&[data-state='active']
+		color: var(--theme-color)
+		+weight(500)
+
+.k-scrim
+	position: fixed
+	inset: 0
+	z-index: var(--z-raised)
+	background: rgba(0, 0, 0, 0.45)
+	opacity: 0
+	pointer-events: none
+	border: none
+	+pad(0)
+	cursor: pointer
+	+transition(opacity, 250ms)
+	&[data-state='open']
+		opacity: 1
+
+// ---------------------------------------------------------------------------
+// KIT batch 5 — segmented, toggle, cards, collapsible, thumbnail, shell, megacard
+// ---------------------------------------------------------------------------
+
+.k-segmented
+	display: inline-flex
+	+gap(3xs)
+	+pad(3xs)
+	+surface(raised, 3xs, 8)
+
+.k-segmented-item
+	+row(center, center)
+	display: inline-flex
+	+gap(3xs)
+	+px(xs)
+	+py(3xs)
+	+type(sm)
+	+weight(500)
+	border: none
+	+radius(6)
+	background: transparent
+	+ink(secondary)
+	cursor: pointer
+	+transition
+	&:hover
+		+ink(primary)
+	&:focus-visible
+		+ring
+	&[data-state='selected']
+		+bg(bg)
+		+ink(primary)
+		+shadow(sm)
+
+.k-toggle-button
+	+row(center, center)
+	display: inline-flex
+	+gap(3xs)
+	+px(xs)
+	+py(3xs)
+	+type(sm)
+	+weight(500)
+	+radius(6)
+	+border
+	+bg(bg)
+	+ink(secondary)
+	cursor: pointer
+	+transition
+	&:hover
+		+bg(raised)
+	&:focus-visible
+		+ring
+	&[data-state='on']
+		background: color-mix(in srgb, var(--success) 12%, transparent)
+		border-color: var(--theme-color)
+		color: var(--theme-color)
+
+.k-toggle-group
+	+cluster(3xs)
+	display: inline-flex
+
+.k-card-title
+	+type(lg)
+	+weight(600)
+	+ink(primary)
+
+.k-card-desc
+	+type(sm)
+	+ink(muted)
+
+.k-clickable-card
+	+surface(surface, s, 12)
+	+stack(2xs)
+	+ink(primary)
+	text-decoration: none
+	cursor: pointer
+	+transition
+	&:hover
+		border-color: var(--border-strong)
+		+bg(bg)
+		+shadow(md)
+	&:active
+		transform: translateY(1px)
+	&:focus-visible
+		+ring
+
+.k-selectable-card
+	+row(start, start)
+	+gap(xs)
+	+w(100%)
+	+surface(surface, s, 12)
+	text-align: left
+	cursor: pointer
+	+transition
+	&:hover
+		+bg(bg)
+	&:focus-visible
+		+ring
+	&[data-state='selected']
+		border-color: var(--theme-color)
+		background: color-mix(in srgb, var(--success) 6%, transparent)
+		box-shadow: 0 0 0 1px color-mix(in srgb, var(--success) 30%, transparent)
+
+.k-collapsible
+	+box
+
+.k-collapsible-trigger
+	+row(between, center)
+	+gap(2xs)
+	+w(100%)
+	+px(s)
+	+py(xs)
+	+type(md)
+	+weight(500)
+	text-align: left
+	+border
+	+radius(8)
+	+bg(surface)
+	+ink(primary)
+	cursor: pointer
+	&:hover
+		+bg(bg)
+	&:focus-visible
+		+ring
+	.k-collapsible-chevron
+		+transition(transform, 200ms)
+	&[data-state='open'] .k-collapsible-chevron
+		transform: rotate(180deg)
+
+.k-collapsible-content
+	+px(s)
+	+py(xs)
+	+border
+	border-top: none
+	border-radius: 0 0 radius(8) radius(8)
+	+bg(bg)
+	+type(md)
+	+ink(secondary)
+
+.k-thumbnail
+	display: inline-block
+	width: var(--k-thumb-w, 96px)
+	height: var(--k-thumb-h, 96px)
+	overflow: hidden
+	+radius(8)
+	+border
+	+bg(raised)
+	img
+		display: block
+		+full
+		object-fit: cover
+	&[data-shape='round']
+		+radius(full)
+
+.k-shell
+	+box
+	min-height: 100vh
+	+bg(bg)
+	+ink(primary)
+
+.k-shell-header
+	+row(between, center)
+	+gap(s)
+	height: var(--header-height)
+	+px(m)
+	+border(bottom)
+	+bg(surface)
+
+.k-shell-body
+	+row
+	+grow
+	+min0
+
+.k-shell-main
+	+grow
+	+min0
+	+pad(m)
+	overflow: auto
+
+.k-shell-footer
+	+row(between, center)
+	min-height: var(--footer-height)
+	+px(m)
+	+border(top)
+	+bg(surface)
+	+type(sm)
+	+ink(muted)
+
+.k-shell-side
+	flex: 0 0 240px
+	+min0
+	overflow-y: auto
+	+pad(xs)
+	+bg(surface)
+	+border(right)
+
+.k-megacard
+	+stack(2xs)
+	+pad(s)
+	+surface(surface, s, 12)
+	+ink(primary)
+	text-decoration: none
+	+transition
+	&:hover
+		border-color: var(--border-strong)
+		+shadow(md)
+
+.k-megacard-image
+	display: block
+	height: 120px
+	+radius(8)
+	overflow: hidden
+	+bg(raised)
+	img
+		+full
+		object-fit: cover
+
+.k-megacard-eyebrow
+	+type(xs)
+	+weight(600)
+	text-transform: uppercase
+	letter-spacing: 0.05em
+	color: var(--theme-color)
+
+.k-megacard-title
+	+type(lg)
+	+weight(600)
+
+.k-megacard-desc
+	+type(sm)
+	+ink(muted)
+
+.k-megacard-cta
+	+type(sm)
+	+weight(500)
+	color: var(--theme-color)
+
+.k-menu
+	+box
+	min-width: 180px
+	+pad(3xs)
+	+surface(raised, 3xs, 8, md)
+	z-index: var(--z-modal)
+
+.k-menu-item
+	+row(start, center)
+	+gap(2xs)
+	+w(100%)
+	+px(xs)
+	+py(3xs)
+	+type(md)
+	text-align: left
+	border: none
+	+radius(4)
+	background: transparent
+	+ink(primary)
+	cursor: pointer
+	&:hover, &[data-highlighted='true']
+		+bg(surface)
+	&:focus-visible
+		+ring
+	&[data-state='disabled']
+		opacity: 0.5
+		pointer-events: none
+	&[data-variant='danger']
+		color: var(--danger)
+		&:hover, &[data-highlighted='true']
+			background: color-mix(in srgb, var(--danger) 10%, transparent)
+
+.k-menu-sep
+	height: 1px
+	margin-block: space(3xs)
+	margin-inline: space(3xs)
+	background: var(--border)
+
+.k-menu-heading
+	+px(xs)
+	+py(3xs)
+	+type(xs)
+	+weight(600)
+	text-transform: uppercase
+	letter-spacing: 0.04em
+	+ink(muted)
+
+.k-resize
+	+row
+	align-items: stretch
+	+w(100%)
+	min-height: 120px
+	+surface(surface, 0, 12)
+	overflow: hidden
+
+.k-resize-pane
+	flex: 0 0 var(--k-resize-value, 30%)
+	+min0
+	overflow: auto
+	+pad(s)
+	&.grow
+		flex: 1 1 0%
+
+.k-resize-handle
+	flex: 0 0 8px
+	cursor: col-resize
+	background: var(--border)
+	+transition(background-color, 150ms)
+	+relative
+	border: none
+	+pad(0)
+	display: block
+	&::after
+		content: ''
+		+absolute(0 3px)
+		+radius(full)
+		background: var(--border-strong)
+	&:hover, &:focus-visible, .k-resize[data-resizing='true'] &
+		background: var(--theme-color)
+	&:focus-visible
+		+ring
+
+.k-megamenu
+	+absolute(calc(100% + 8px) null null 50%)
+	transform: translateX(-50%)
+	z-index: var(--z-modal)
+	width: min(720px, 92vw)
+	+pad(m)
+	+surface(raised, m, 12, lg)
+	&[data-align='end']
+		left: auto
+		right: 0
+		transform: none
+
+.k-megamenu-grid
+	display: grid
+	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr))
+	+gap(m)
+
+.k-megamenu-heading
+	+type(xs)
+	+weight(600)
+	text-transform: uppercase
+	letter-spacing: 0.05em
+	+ink(muted)
+
+.k-megamenu-link
+	+box
+	+gap(3xs)
+	+px(2xs)
+	+py(3xs)
+	+radius(4)
+	+type(md)
+	+ink(primary)
+	text-decoration: none
+	&:hover
+		+bg(surface)
+		color: var(--theme-color)
+
+.k-megamenu-link-desc
+	+type(xs)
+	+ink(muted)
+
+.k-megamenu-feature
+	grid-column: 1 / -1
+	margin-top: space(3xs)
+
+// ---------------------------------------------------------------------------
+// KIT batch 5c — tablist, outline, overlay, toast pair
+// ---------------------------------------------------------------------------
+
+.k-tablist
+	display: inline-flex
+	+gap(3xs)
+	+pad(3xs)
+	+surface(raised, 3xs, 8)
+	&[data-orientation='vertical']
+		+box
+		align-items: stretch
+
+.k-tab
+	+row(center, center)
+	display: inline-flex
+	+gap(3xs)
+	+px(xs)
+	+py(2xs)
+	+type(sm)
+	+weight(500)
+	border: none
+	+radius(6)
+	background: transparent
+	+ink(secondary)
+	cursor: pointer
+	&:hover
+		+ink(primary)
+	&:focus-visible
+		+ring
+	&[data-state='active']
+		+bg(bg)
+		+ink(primary)
+		+shadow(sm)
+
+.k-tab-panel
+	+pad(s)
+	+border
+	border-radius: 0 0 radius(8) radius(8)
+	+bg(surface)
+
+.k-outline
+	+stack(3xs)
+	+pad(2xs)
+	+border(left, 2px solid var(--border))
+	.k-outline-item
+		display: block
+		+px(xs)
+		+py(3xs)
+		+type(sm)
+		+ink(secondary)
+		text-decoration: none
+		+radius(4)
+		&:hover
+			color: var(--theme-color)
+			+bg(raised)
+		&[data-level='2']
+			padding-left: 22px
+		&[data-level='3']
+			padding-left: 34px
+
+.k-overlay-panel
+	+box
+	max-width: min(560px, 92vw)
+	max-height: 85vh
+	overflow: auto
+	+surface(surface, 0, 16, lg)
+
+.k-toast
+	+row(start, start)
+	+gap(2xs)
+	+pad(s)
+	+surface(raised, s, 10, md)
+	+type(md)
+	&[data-variant='success']
+		border-left: 3px solid var(--success)
+	&[data-variant='warning']
+		border-left: 3px solid var(--warning)
+	&[data-variant='danger']
+		border-left: 3px solid var(--danger)
+	&[data-variant='info']
+		border-left: 3px solid var(--info)
+
+.k-toast-icon
+	margin-top: 2px
+	+ink(muted)
+	+shrink(0)
+
+.k-toast-viewport
+	position: fixed
+	z-index: var(--z-toast)
+	+stack(2xs)
+	width: min(360px, 92vw)
+	&[data-position='bottom-right']
+		right: space(s)
+		bottom: space(s)
+	&[data-position='bottom-left']
+		left: space(s)
+		bottom: space(s)
+	&[data-position='top-right']
+		right: space(s)
+		top: space(s)
+	&[data-position='top-left']
+		left: space(s)
+		top: space(s)
+
+// ---------------------------------------------------------------------------
+// Ported: motion drawer (data-slot contract, token-true remap)
+// ---------------------------------------------------------------------------
+
+[data-slot='drawer-backdrop']
+	position: fixed
+	inset: 0
+	z-index: var(--z-modal)
+	width: 100%
+	height: 100%
+	padding: 0
+	border: 0
+	background: color-mix(in srgb, #000 40%, transparent)
+	backdrop-filter: blur(4px)
+	cursor: default
+
+[data-slot='drawer-panel']
+	position: fixed
+	inset-block: 0
+	z-index: var(--z-modal)
+	display: flex
+	flex-direction: column
+	width: 20rem
+	max-width: 85vw
+	background: var(--bg)
+	box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.6)
+	&[data-side='right']
+		right: 0
+		border-left: 1px solid var(--border)
+	&[data-side='left']
+		left: 0
+		border-right: 1px solid var(--border)

@@ -1,0 +1,1846 @@
+// ============================================================================
+// _kit.sass — the fractalsvelte component kit (Astryx-inspired, fractals-styler
+// scheme). CUBE CSS: blocks stay lean and token-driven, variants/sizes/states
+// are expressed as data-* attributes, never modifier classes.
+//
+// Class vocabulary: `.k-*` short, lowercase, flat. Consumes the project tokens
+// from _tokens.sass — no hardcoded palette values, no component <style> blocks.
+// Ported from the frcked project; mixins come from kit/_fractals.
+// ============================================================================
+@use 'fractals' as *
+
+// ---------------------------------------------------------------------------
+// ACTIONS
+// ---------------------------------------------------------------------------
+
+.k-button
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	gap: 8px
+	padding: 8px 16px
+	font-size: var(--text-md)
+	font-weight: 500
+	line-height: 1
+	border-radius: var(--radius-6)
+	border: 1px solid var(--border)
+	background: var(--bg-raised)
+	color: var(--text-primary)
+	cursor: pointer
+	text-decoration: none
+	user-select: none
+	white-space: nowrap
+	transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, filter 0.15s ease
+	&:hover
+		background: var(--bg-surface)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+	&:disabled, &[aria-disabled='true']
+		opacity: 0.5
+		cursor: not-allowed
+		pointer-events: none
+	&[data-variant='primary']
+		background: var(--theme-color)
+		color: var(--text-inverse)
+		border-color: var(--theme-color)
+		&:hover
+			filter: brightness(0.95)
+	&[data-variant='secondary']
+		background: var(--bg)
+		border-color: var(--border-strong)
+	&[data-variant='ghost']
+		background: transparent
+		border-color: transparent
+		color: var(--text-secondary)
+		&:hover
+			background: var(--state-hover-subtle)
+			color: var(--text-primary)
+	&[data-variant='destructive']
+		background: var(--feedback-error)
+		color: var(--text-inverse)
+		border-color: var(--feedback-error)
+		&:hover
+			filter: brightness(0.92)
+	&[data-size='sm']
+		padding: 4px 10px
+		font-size: var(--text-sm)
+	&[data-size='lg']
+		padding: 12px 22px
+		font-size: var(--text-lg)
+	&[data-state='loading']
+		cursor: progress
+	&.k-button-block
+		width: 100%
+
+.k-button-group
+	display: inline-flex
+	align-items: stretch
+	border: 1px solid var(--border)
+	border-radius: var(--radius-6)
+	background: var(--bg-raised)
+	overflow: hidden
+	.k-button
+		border: none
+		border-radius: 0
+		background: transparent
+		&:hover
+			background: var(--state-hover-subtle)
+		&[data-variant='primary']
+			background: var(--theme-color)
+			color: var(--text-inverse)
+	&[data-variant='segmented']
+		gap: 2px
+		padding: 2px
+		background: var(--bg-raised)
+		.k-button
+			border-radius: var(--radius-4)
+	&[data-orientation='vertical']
+		flex-direction: column
+		align-items: stretch
+
+.k-icon-button
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 36px
+	height: 36px
+	padding: 0
+	border-radius: var(--radius-6)
+	border: 1px solid transparent
+	background: transparent
+	color: var(--text-secondary)
+	cursor: pointer
+	transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease
+	&:hover
+		background: var(--state-hover-subtle)
+		color: var(--text-primary)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+	&[data-size='sm']
+		width: 28px
+		height: 28px
+	&[data-size='lg']
+		width: 44px
+		height: 44px
+	&[data-variant='outline']
+		border-color: var(--border)
+		background: var(--bg)
+	&[data-variant='solid']
+		background: var(--theme-color)
+		color: var(--text-inverse)
+		&:hover
+			background: var(--theme-color-alt)
+			color: var(--text-inverse)
+
+// Menu panel (popover) + items — shared by DropdownMenu, MoreMenu, TopNavMenu
+.k-menu
+	display: flex
+	flex-direction: column
+	min-width: 180px
+	padding: 6px
+	background: var(--bg-popover)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-8)
+	box-shadow: var(--shadow-popover)
+
+.k-menu-item
+	display: flex
+	align-items: center
+	gap: 10px
+	width: 100%
+	padding: 8px 12px
+	font-size: var(--text-md)
+	text-align: left
+	border: none
+	border-radius: var(--radius-4)
+	background: transparent
+	color: var(--text-primary)
+	cursor: pointer
+	&:hover, &[data-highlighted='true']
+		background: var(--state-hover-subtle)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: -2px
+	&[data-state='disabled']
+		opacity: 0.5
+		pointer-events: none
+	&[data-variant='danger']
+		color: var(--feedback-error)
+		&:hover, &[data-highlighted='true']
+			background: color-mix(in srgb, var(--feedback-error) 12%, transparent)
+
+.k-menu-sep
+	height: 1px
+	margin: 6px 4px
+	background: var(--border)
+
+.k-menu-heading
+	padding: 6px 12px 2px
+	font-size: var(--text-xs)
+	font-weight: 600
+	text-transform: uppercase
+	letter-spacing: 0.04em
+	color: var(--text-muted)
+
+// Segmented control
+.k-segmented
+	display: inline-flex
+	gap: 2px
+	padding: 2px
+	background: var(--bg-raised)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-8)
+
+.k-segmented-item
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	gap: 6px
+	padding: 6px 14px
+	font-size: var(--text-sm)
+	font-weight: 500
+	border: none
+	border-radius: var(--radius-6)
+	background: transparent
+	color: var(--text-secondary)
+	cursor: pointer
+	transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease
+	&:hover
+		color: var(--text-primary)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+	&[data-state='selected']
+		background: var(--bg)
+		color: var(--text-primary)
+		box-shadow: var(--shadow-sm)
+
+// Toggle button
+.k-toggle-button
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	gap: 6px
+	padding: 6px 14px
+	font-size: var(--text-sm)
+	font-weight: 500
+	border-radius: var(--radius-6)
+	border: 1px solid var(--border)
+	background: var(--bg)
+	color: var(--text-secondary)
+	cursor: pointer
+	transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease
+	&:hover
+		background: var(--state-hover-subtle)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+	&[data-state='on']
+		background: color-mix(in srgb, var(--theme-color) 12%, var(--bg))
+		border-color: color-mix(in srgb, var(--theme-color) 40%, var(--border))
+		color: var(--theme-color-alt)
+
+.k-toggle-group
+	display: inline-flex
+	gap: 4px
+	flex-wrap: wrap
+
+// Toolbar
+.k-toolbar
+	display: flex
+	align-items: center
+	gap: 4px
+	padding: 4px
+	background: var(--bg-raised)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-8)
+
+.k-toolbar-group
+	display: inline-flex
+	align-items: center
+	gap: 4px
+	padding-inline: 4px
+	border-right: 1px solid var(--border)
+	&:last-child
+		border-right: none
+
+// ---------------------------------------------------------------------------
+// CONTAINER
+// ---------------------------------------------------------------------------
+
+.k-card
+	display: flex
+	flex-direction: column
+	gap: 8px
+	background: var(--bg-surface)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-12)
+	padding: var(--space-sm)
+
+.k-card-title
+	font-size: var(--text-lg)
+	font-weight: 600
+
+.k-card-desc
+	font-size: var(--text-sm)
+	color: var(--text-muted)
+
+.k-clickable-card
+	display: flex
+	flex-direction: column
+	gap: 8px
+	padding: var(--space-sm)
+	background: var(--bg-surface)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-12)
+	color: inherit
+	text-decoration: none
+	cursor: pointer
+	transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease
+	&:hover
+		border-color: var(--border-strong)
+		background: var(--bg)
+		box-shadow: var(--shadow-md)
+	&:active
+		transform: translateY(1px)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+
+.k-selectable-card
+	display: flex
+	align-items: flex-start
+	gap: 12px
+	width: 100%
+	padding: var(--space-sm)
+	text-align: left
+	background: var(--bg-surface)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-12)
+	cursor: pointer
+	transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease
+	&:hover
+		background: var(--bg)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+	&[data-state='selected']
+		border-color: var(--theme-color)
+		background: color-mix(in srgb, var(--theme-color) 6%, var(--bg-surface))
+		box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-color) 30%, transparent)
+
+.k-collapsible
+	display: flex
+	flex-direction: column
+
+.k-collapsible-trigger
+	display: flex
+	align-items: center
+	justify-content: space-between
+	gap: 8px
+	width: 100%
+	padding: 12px 16px
+	font-size: var(--text-md)
+	font-weight: 500
+	text-align: left
+	border: 1px solid var(--border)
+	border-radius: var(--radius-8)
+	background: var(--bg-surface)
+	color: var(--text-primary)
+	cursor: pointer
+	&:hover
+		background: var(--bg)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+	.k-collapsible-chevron
+		transition: transform 0.2s ease
+	&[data-state='open'] .k-collapsible-chevron
+		transform: rotate(180deg)
+
+.k-collapsible-content
+	padding: 12px 16px
+	border: 1px solid var(--border)
+	border-top: none
+	border-radius: 0 0 var(--radius-8) var(--radius-8)
+	background: var(--bg)
+	font-size: var(--text-md)
+	color: var(--text-secondary)
+
+// Carousel
+.k-carousel
+	position: relative
+	display: flex
+	flex-direction: column
+	gap: 12px
+
+.k-carousel-viewport
+	overflow-x: auto
+	overscroll-behavior-inline: contain
+	scroll-snap-type: inline mandatory
+	scrollbar-width: none
+	&::-webkit-scrollbar
+		display: none
+
+.k-carousel-track
+	display: flex
+	gap: 16px
+
+.k-carousel-slide
+	flex: 0 0 auto
+	scroll-snap-align: start
+	width: var(--k-carousel-slide, 260px)
+
+.k-carousel-nav
+	display: flex
+	align-items: center
+	justify-content: space-between
+
+.k-carousel-dots
+	display: flex
+	gap: 6px
+
+.k-carousel-dot
+	width: 8px
+	height: 8px
+	padding: 0
+	border-radius: var(--radius-full)
+	border: none
+	background: var(--border-strong)
+	cursor: pointer
+	&[data-state='active']
+		background: var(--theme-color)
+		transform: scale(1.25)
+
+// ---------------------------------------------------------------------------
+// CONTENT
+// ---------------------------------------------------------------------------
+
+.k-blockquote
+	margin: 0
+	padding: var(--space-sm) var(--space-md)
+	border-left: 3px solid var(--theme-color)
+	border-radius: 0 var(--radius-8) var(--radius-8) 0
+	background: var(--bg-surface)
+	font-size: var(--text-lg)
+	font-style: italic
+	color: var(--text-primary)
+	.k-blockquote-cite
+		display: block
+		margin-top: 8px
+		font-size: var(--text-sm)
+		font-style: normal
+		color: var(--text-muted)
+
+.k-code
+	font-family: var(--font-mono)
+	font-size: 0.9em
+	padding: 2px 6px
+	border-radius: var(--radius-4)
+	background: var(--bg-raised)
+	border: 1px solid var(--border-subtle)
+	color: var(--syntax-code, var(--text-primary))
+
+.k-code-block
+	position: relative
+	overflow: hidden
+	border: 1px solid var(--border)
+	border-radius: var(--radius-8)
+	background: var(--bg-terminal)
+	color: var(--text-primary)
+
+.k-code-block-header
+	display: flex
+	align-items: center
+	justify-content: space-between
+	gap: 8px
+	padding: 8px 14px
+	border-bottom: 1px solid var(--border)
+	background: var(--bg-raised)
+	font-size: var(--text-xs)
+	font-weight: 600
+	text-transform: uppercase
+	letter-spacing: 0.04em
+	color: var(--text-muted)
+
+.k-code-block-pre
+	margin: 0
+	padding: 16px
+	overflow-x: auto
+	font-family: var(--font-mono)
+	font-size: var(--text-sm)
+	line-height: 1.6
+	code
+		font-family: inherit
+
+.k-icon
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	color: currentColor
+	flex-shrink: 0
+	&[data-size='xs']
+		width: 12px
+		height: 12px
+	&[data-size='sm']
+		width: 16px
+		height: 16px
+	&[data-size='md']
+		width: 20px
+		height: 20px
+	&[data-size='lg']
+		width: 24px
+		height: 24px
+	&[data-size='xl']
+		width: 32px
+		height: 32px
+
+.k-thumbnail
+	display: inline-block
+	width: var(--k-thumb-w, 96px)
+	height: var(--k-thumb-h, 96px)
+	overflow: hidden
+	border-radius: var(--radius-8)
+	border: 1px solid var(--border)
+	background: var(--bg-raised)
+	img
+		display: block
+		width: 100%
+		height: 100%
+		object-fit: cover
+	&[data-shape='round']
+		border-radius: var(--radius-full)
+
+// ---------------------------------------------------------------------------
+// FEEDBACK & STATUS
+// ---------------------------------------------------------------------------
+
+.k-badge
+	display: inline-flex
+	align-items: center
+	gap: 4px
+	padding: 2px 8px
+	font-size: var(--text-xs)
+	font-weight: 500
+	line-height: 1.4
+	border-radius: var(--radius-full)
+	background: var(--bg-raised)
+	border: 1px solid var(--border)
+	color: var(--text-secondary)
+	white-space: nowrap
+	width: max-content
+	&[data-variant='primary']
+		background: var(--theme-color)
+		border-color: var(--theme-color)
+		color: var(--text-inverse)
+	&[data-variant='success']
+		background: color-mix(in srgb, var(--feedback-success) 14%, var(--bg))
+		border-color: color-mix(in srgb, var(--feedback-success) 35%, var(--border))
+		color: var(--feedback-success)
+	&[data-variant='warning']
+		background: color-mix(in srgb, var(--feedback-warning) 14%, var(--bg))
+		border-color: color-mix(in srgb, var(--feedback-warning) 35%, var(--border))
+		color: var(--feedback-warning)
+	&[data-variant='danger']
+		background: color-mix(in srgb, var(--feedback-error) 12%, var(--bg))
+		border-color: color-mix(in srgb, var(--feedback-error) 35%, var(--border))
+		color: var(--feedback-error)
+	&[data-variant='info']
+		background: color-mix(in srgb, var(--feedback-info) 14%, var(--bg))
+		border-color: color-mix(in srgb, var(--feedback-info) 35%, var(--border))
+		color: var(--feedback-info)
+	&[data-variant='outline']
+		background: transparent
+	&[data-size='lg']
+		padding: 4px 12px
+		font-size: var(--text-sm)
+
+.k-banner
+	display: flex
+	align-items: flex-start
+	gap: 12px
+	padding: 12px 16px
+	border: 1px solid var(--border)
+	border-radius: var(--radius-8)
+	background: var(--bg-surface)
+	color: var(--text-primary)
+	font-size: var(--text-md)
+	&[data-variant='success']
+		border-color: color-mix(in srgb, var(--feedback-success) 40%, var(--border))
+		background: color-mix(in srgb, var(--feedback-success) 8%, var(--bg-surface))
+	&[data-variant='warning']
+		border-color: color-mix(in srgb, var(--feedback-warning) 40%, var(--border))
+		background: color-mix(in srgb, var(--feedback-warning) 8%, var(--bg-surface))
+	&[data-variant='danger']
+		border-color: color-mix(in srgb, var(--feedback-error) 40%, var(--border))
+		background: color-mix(in srgb, var(--feedback-error) 8%, var(--bg-surface))
+	&[data-variant='info']
+		border-color: color-mix(in srgb, var(--feedback-info) 40%, var(--border))
+		background: color-mix(in srgb, var(--feedback-info) 8%, var(--bg-surface))
+	.k-banner-icon
+		margin-top: 2px
+	&[data-layout='stacked']
+		flex-direction: column
+		align-items: stretch
+
+// Visually hidden but available to assistive tech
+.sr-only
+	position: absolute
+	width: 1px
+	height: 1px
+	padding: 0
+	margin: -1px
+	overflow: hidden
+	clip: rect(0, 0, 0, 0)
+	white-space: nowrap
+	border: 0
+
+// ---------------------------------------------------------------------------
+// DATA INPUT
+// ---------------------------------------------------------------------------
+
+.k-field
+	display: flex
+	flex-direction: column
+	gap: 6px
+
+.k-field-label
+	font-size: var(--text-sm)
+	font-weight: 500
+	color: var(--text-primary)
+
+.k-field-help
+	font-size: var(--text-xs)
+	color: var(--text-muted)
+
+.k-field-error
+	font-size: var(--text-xs)
+	color: var(--feedback-error)
+
+.k-input
+	display: block
+	width: 100%
+	padding: 8px 12px
+	font-size: var(--text-md)
+	line-height: 1.5
+	font-family: inherit
+	border: 1px solid var(--border)
+	border-radius: var(--radius-6)
+	background: var(--bg-input)
+	color: var(--text-primary)
+	&::placeholder
+		color: var(--text-muted)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 1px
+	&[data-state='invalid'], &[aria-invalid='true']
+		border-color: var(--feedback-error)
+	&[data-size='sm']
+		padding: 5px 10px
+		font-size: var(--text-sm)
+	&[data-size='lg']
+		padding: 11px 14px
+		font-size: var(--text-lg)
+
+.k-textarea
+	@extend .k-input
+	min-height: 96px
+	resize: vertical
+
+.k-input-group
+	display: flex
+	align-items: stretch
+	.k-input, .k-button
+		border-radius: 0
+		&:first-child
+			border-radius: var(--radius-6) 0 0 var(--radius-6)
+		&:last-child
+			border-radius: 0 var(--radius-6) var(--radius-6) 0
+		&:not(:first-child)
+			margin-left: -1px
+
+// Check / radio indicators
+.k-check
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 18px
+	height: 18px
+	flex-shrink: 0
+	border: 1.5px solid var(--border-strong)
+	border-radius: var(--radius-4)
+	background: var(--bg-input)
+	color: var(--text-inverse)
+	transition: background-color 0.15s ease, border-color 0.15s ease
+	&[data-state='checked'], &[data-state='indeterminate']
+		background: var(--theme-color)
+		border-color: var(--theme-color)
+	&[data-state='disabled']
+		opacity: 0.5
+
+.k-radio
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 18px
+	height: 18px
+	flex-shrink: 0
+	border: 1.5px solid var(--border-strong)
+	border-radius: var(--radius-full)
+	background: var(--bg-input)
+	transition: border-color 0.15s ease
+	&::after
+		content: ''
+		width: 8px
+		height: 8px
+		border-radius: var(--radius-full)
+		background: var(--theme-color)
+		transform: scale(0)
+		transition: transform 0.15s ease
+	&[data-state='checked']
+		border-color: var(--theme-color)
+		&::after
+			transform: scale(1)
+	&[data-state='disabled']
+		opacity: 0.5
+
+// Switch
+.k-switch
+	position: relative
+	display: inline-flex
+	align-items: center
+	width: 42px
+	height: 24px
+	flex-shrink: 0
+	border: none
+	border-radius: var(--radius-full)
+	background: var(--border-strong)
+	cursor: pointer
+	transition: background-color 0.2s ease
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+	&[data-state='checked']
+		background: var(--theme-color)
+	.k-switch-thumb
+		display: block
+		width: 18px
+		height: 18px
+		margin-inline: 3px
+		border-radius: var(--radius-full)
+		background: var(--bg)
+		box-shadow: var(--shadow-sm)
+		transition: transform 0.2s ease
+	&[data-state='checked'] .k-switch-thumb
+		transform: translateX(18px)
+	&[data-state='disabled']
+		opacity: 0.5
+		cursor: not-allowed
+
+// Slider — native range input, fully styled. The filled portion is driven by
+// --k-slider-pct (set from the component) via a track background gradient.
+.k-slider
+	appearance: none
+	-webkit-appearance: none
+	width: 100%
+	height: 24px
+	background: transparent
+	cursor: pointer
+	&:disabled
+		opacity: 0.5
+		cursor: not-allowed
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+	&::-webkit-slider-runnable-track
+		height: 6px
+		border-radius: var(--radius-full)
+		background: linear-gradient(to right, var(--theme-color) var(--k-slider-pct, 50%), var(--bg-raised) var(--k-slider-pct, 50%))
+		border: 1px solid var(--border)
+	&::-webkit-slider-thumb
+		-webkit-appearance: none
+		appearance: none
+		width: 18px
+		height: 18px
+		margin-top: -6px
+		border-radius: var(--radius-full)
+		background: var(--bg)
+		border: 2px solid var(--theme-color)
+		box-shadow: var(--shadow-sm)
+	&::-moz-range-track
+		height: 6px
+		border-radius: var(--radius-full)
+		background: var(--bg-raised)
+		border: 1px solid var(--border)
+	&::-moz-range-progress
+		height: 6px
+		border-radius: var(--radius-full)
+		background: var(--theme-color)
+	&::-moz-range-thumb
+		width: 18px
+		height: 18px
+		border-radius: var(--radius-full)
+		background: var(--bg)
+		border: 2px solid var(--theme-color)
+		box-shadow: var(--shadow-sm)
+
+// Selector list rows
+.k-selector
+	display: flex
+	align-items: center
+	gap: 12px
+	width: 100%
+	padding: 10px 14px
+	border: 1px solid var(--border)
+	border-radius: var(--radius-8)
+	background: var(--bg)
+	color: var(--text-primary)
+	cursor: pointer
+	text-align: left
+	transition: border-color 0.15s ease, background-color 0.15s ease
+	&:hover
+		background: var(--state-hover-subtle)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+	&[data-state='selected']
+		border-color: var(--theme-color)
+		background: color-mix(in srgb, var(--theme-color) 6%, var(--bg))
+
+.k-selector-title
+	font-size: var(--text-md)
+	font-weight: 500
+
+.k-selector-desc
+	font-size: var(--text-sm)
+	color: var(--text-muted)
+
+// File dropzone
+.k-file
+	position: relative
+	display: flex
+	flex-direction: column
+	align-items: center
+	justify-content: center
+	gap: 8px
+	padding: 24px
+	border: 1.5px dashed var(--border-strong)
+	border-radius: var(--radius-12)
+	background: var(--bg-surface)
+	color: var(--text-secondary)
+	text-align: center
+	cursor: pointer
+	transition: border-color 0.15s ease, background-color 0.15s ease
+	&:hover
+		border-color: var(--theme-color)
+	&[data-state='dragging']
+		border-color: var(--theme-color)
+		background: color-mix(in srgb, var(--theme-color) 8%, var(--bg-surface))
+
+// ---------------------------------------------------------------------------
+// LAYOUT
+// ---------------------------------------------------------------------------
+
+.k-stack
+	display: flex
+	flex-direction: column
+	justify-content: flex-start
+	gap: var(--k-stack-gap, var(--space-xs))
+
+.k-grid
+	display: grid
+	gap: var(--k-grid-gap, var(--space-sm))
+	grid-template-columns: 1fr
+	&[data-cols='2']
+		grid-template-columns: repeat(2, minmax(0, 1fr))
+	&[data-cols='3']
+		grid-template-columns: repeat(3, minmax(0, 1fr))
+	&[data-cols='4']
+		grid-template-columns: repeat(4, minmax(0, 1fr))
+	&[data-cols='5']
+		grid-template-columns: repeat(5, minmax(0, 1fr))
+	&[data-cols='6']
+		grid-template-columns: repeat(6, minmax(0, 1fr))
+	@media (max-width: 900px)
+		&[data-cols='3'], &[data-cols='4'], &[data-cols='5'], &[data-cols='6']
+			grid-template-columns: repeat(2, minmax(0, 1fr))
+	@media (max-width: 560px)
+		&[data-cols='2'], &[data-cols='3'], &[data-cols='4'], &[data-cols='5'], &[data-cols='6']
+			grid-template-columns: 1fr
+
+.k-section
+	display: flex
+	flex-direction: column
+	gap: var(--space-xs)
+	padding-block: var(--space-lg)
+
+.k-section-title
+	font-size: var(--text-2xl)
+	font-weight: 600
+
+.k-section-desc
+	font-size: var(--text-md)
+	color: var(--text-secondary)
+
+.k-aspect
+	position: relative
+	width: 100%
+	aspect-ratio: var(--k-aspect-ratio, 16 / 9)
+	overflow: hidden
+	border-radius: var(--radius-8)
+	background: var(--bg-raised)
+	border: 1px solid var(--border)
+	.k-aspect-inner
+		position: absolute
+		inset: 0
+		display: flex
+		align-items: center
+		justify-content: center
+		img, video
+			width: 100%
+			height: 100%
+			object-fit: cover
+
+.k-divider
+	border: none
+	background: var(--border)
+	&[data-orientation='horizontal']
+		height: 1px
+		width: 100%
+	&[data-orientation='vertical']
+		width: 1px
+		height: 100%
+		align-self: stretch
+	&[data-label]
+		display: flex
+		align-items: center
+		gap: 12px
+		height: auto
+		width: 100%
+		background: none
+		&::before, &::after
+			content: ''
+			flex: 1
+			height: 1px
+			background: var(--border)
+		.k-divider-label
+			font-size: var(--text-xs)
+			font-weight: 500
+			text-transform: uppercase
+			letter-spacing: 0.05em
+			color: var(--text-muted)
+			white-space: nowrap
+
+.k-resize
+	display: flex
+	align-items: stretch
+	width: 100%
+	min-height: 120px
+	border: 1px solid var(--border)
+	border-radius: var(--radius-12)
+	overflow: hidden
+	background: var(--bg-surface)
+
+.k-resize-pane
+	flex: 0 0 var(--k-resize-value, 30%)
+	min-width: 0
+	overflow: auto
+	padding: 16px
+	&.grow
+		flex: 1 1 0%
+
+.k-resize-handle
+	flex: 0 0 8px
+	cursor: col-resize
+	background: var(--border)
+	transition: background-color 0.15s ease
+	position: relative
+	border: none
+	padding: 0
+	display: block
+	&::after
+		content: ''
+		position: absolute
+		inset-block: 0
+		inset-inline: 3px
+		border-radius: var(--radius-full)
+		background: var(--border-strong)
+	&:hover, &:focus-visible, .k-resize[data-resizing='true'] &
+		background: var(--theme-color)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: -2px
+
+.k-shell
+	display: flex
+	flex-direction: column
+	min-height: 100vh
+	background: var(--bg)
+	color: var(--text-primary)
+
+.k-shell-header
+	display: flex
+	align-items: center
+	justify-content: space-between
+	gap: 16px
+	height: var(--header-height)
+	padding-inline: var(--shell-pad, 20px)
+	border-bottom: 1px solid var(--border)
+	background: var(--bg-surface)
+
+.k-shell-body
+	display: flex
+	flex: 1
+	min-height: 0
+
+.k-shell-main
+	flex: 1
+	min-width: 0
+	padding: var(--space-md)
+	overflow: auto
+
+.k-shell-footer
+	display: flex
+	align-items: center
+	justify-content: space-between
+	min-height: var(--footer-height)
+	padding-inline: var(--shell-pad, 20px)
+	border-top: 1px solid var(--border)
+	background: var(--bg-surface)
+	font-size: var(--text-sm)
+	color: var(--text-muted)
+
+.k-shell-side
+	flex: 0 0 240px
+	min-width: 0
+	overflow-y: auto
+	padding: 12px
+	background: var(--bg-surface)
+	border-right: 1px solid var(--border)
+
+.k-layout
+	display: flex
+	align-items: stretch
+	gap: 16px
+	width: 100%
+
+.k-layout-side
+	flex: 0 0 var(--k-layout-rail, 240px)
+	min-width: 0
+
+.k-layout-main
+	flex: 1
+	min-width: 0
+
+// ---------------------------------------------------------------------------
+// NAVIGATION
+// ---------------------------------------------------------------------------
+
+.k-breadcrumbs
+	display: flex
+	align-items: center
+	flex-wrap: wrap
+	gap: 4px
+	font-size: var(--text-sm)
+
+.k-breadcrumb-item
+	display: inline-flex
+	align-items: center
+	gap: 4px
+	a
+		color: var(--text-secondary)
+		text-decoration: none
+		&:hover
+			color: var(--theme-color)
+	&[data-current='true']
+		color: var(--text-primary)
+		font-weight: 500
+
+.k-breadcrumb-sep
+	color: var(--text-muted)
+
+.k-tablist
+	display: inline-flex
+	gap: 2px
+	padding: 2px
+	background: var(--bg-raised)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-8)
+	&[data-orientation='vertical']
+		flex-direction: column
+		align-items: stretch
+
+.k-tab
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	gap: 6px
+	padding: 7px 14px
+	font-size: var(--text-sm)
+	font-weight: 500
+	border: none
+	border-radius: var(--radius-6)
+	background: transparent
+	color: var(--text-secondary)
+	cursor: pointer
+	&:hover
+		color: var(--text-primary)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+	&[data-state='active']
+		background: var(--bg)
+		color: var(--text-primary)
+		box-shadow: var(--shadow-sm)
+
+.k-tab-panel
+	padding: 16px
+	border: 1px solid var(--border)
+	border-radius: 0 0 var(--radius-8) var(--radius-8)
+	background: var(--bg-surface)
+
+.k-sidenav
+	display: flex
+	flex-direction: column
+	gap: 2px
+	padding: 8px
+	width: 240px
+	background: var(--bg-surface)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-12)
+
+.k-sidenav-item
+	display: flex
+	align-items: center
+	gap: 10px
+	padding: 8px 12px
+	font-size: var(--text-md)
+	border: none
+	border-radius: var(--radius-6)
+	background: transparent
+	color: var(--text-secondary)
+	cursor: pointer
+	text-decoration: none
+	&:hover
+		background: var(--state-hover-subtle)
+		color: var(--text-primary)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+	&[data-state='active']
+		background: color-mix(in srgb, var(--theme-color) 10%, var(--bg))
+		color: var(--theme-color-alt)
+		font-weight: 500
+
+.k-sidenav-heading
+	padding: 10px 12px 4px
+	font-size: var(--text-xs)
+	font-weight: 600
+	text-transform: uppercase
+	letter-spacing: 0.05em
+	color: var(--text-muted)
+
+.k-topnav
+	display: flex
+	align-items: center
+	gap: 4px
+	padding: 8px 16px
+	background: var(--bg-surface)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-12)
+
+.k-topnav-item
+	display: inline-flex
+	align-items: center
+	gap: 6px
+	padding: 7px 12px
+	font-size: var(--text-md)
+	font-weight: 500
+	border: none
+	border-radius: var(--radius-6)
+	background: transparent
+	color: var(--text-secondary)
+	cursor: pointer
+	text-decoration: none
+	&:hover
+		background: var(--state-hover-subtle)
+		color: var(--text-primary)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+	&[data-state='active']
+		color: var(--theme-color-alt)
+	&[data-state='open']
+		background: var(--state-hover-subtle)
+		color: var(--text-primary)
+
+// Mega menu — wide dropdown panel under a top nav trigger
+.k-megamenu
+	position: absolute
+	top: calc(100% + 8px)
+	left: 50%
+	transform: translateX(-50%)
+	z-index: var(--z-modal)
+	width: min(720px, 92vw)
+	padding: 20px
+	background: var(--bg-popover)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-12)
+	box-shadow: var(--shadow-popover)
+	&[data-align='end']
+		left: auto
+		right: 0
+		transform: none
+
+.k-megamenu-grid
+	display: grid
+	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr))
+	gap: 24px
+
+.k-megamenu-heading
+	font-size: var(--text-xs)
+	font-weight: 600
+	text-transform: uppercase
+	letter-spacing: 0.05em
+	color: var(--text-muted)
+
+.k-megamenu-link
+	display: flex
+	flex-direction: column
+	gap: 1px
+	padding: 6px 8px
+	border-radius: var(--radius-4)
+	font-size: var(--text-md)
+	color: var(--text-primary)
+	text-decoration: none
+	&:hover
+		background: var(--state-hover-subtle)
+		color: var(--theme-color-alt)
+
+.k-megamenu-link-desc
+	font-size: var(--text-xs)
+	color: var(--text-muted)
+
+.k-megamenu-feature
+	grid-column: 1 / -1
+	margin-top: 4px
+
+// Featured card inside a mega menu
+.k-megacard
+	display: flex
+	flex-direction: column
+	gap: 10px
+	padding: 16px
+	background: var(--bg-surface)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-12)
+	color: inherit
+	text-decoration: none
+	transition: box-shadow 0.15s ease, border-color 0.15s ease
+	&:hover
+		border-color: var(--border-strong)
+		box-shadow: var(--shadow-md)
+
+.k-megacard-image
+	display: block
+	height: 120px
+	border-radius: var(--radius-8)
+	overflow: hidden
+	background: var(--bg-raised)
+	img
+		width: 100%
+		height: 100%
+		object-fit: cover
+
+.k-megacard-eyebrow
+	font-size: var(--text-xs)
+	font-weight: 600
+	text-transform: uppercase
+	letter-spacing: 0.05em
+	color: var(--theme-color)
+
+.k-megacard-title
+	font-size: var(--text-lg)
+	font-weight: 600
+
+.k-megacard-desc
+	font-size: var(--text-sm)
+	color: var(--text-muted)
+
+.k-megacard-cta
+	font-size: var(--text-sm)
+	font-weight: 500
+	color: var(--theme-color-alt)
+
+.k-outline
+	display: flex
+	flex-direction: column
+	gap: 2px
+	padding: 8px
+	border-left: 2px solid var(--border)
+	.k-outline-item
+		display: block
+		padding: 4px 10px
+		font-size: var(--text-sm)
+		color: var(--text-secondary)
+		text-decoration: none
+		border-radius: var(--radius-4)
+		&:hover
+			color: var(--theme-color)
+			background: var(--state-hover-subtle)
+		&[data-level='2']
+			padding-left: 22px
+		&[data-level='3']
+			padding-left: 34px
+
+.k-pagination
+	display: flex
+	align-items: center
+	gap: 4px
+
+.k-page
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	min-width: 36px
+	height: 36px
+	padding: 0 8px
+	font-size: var(--text-sm)
+	font-weight: 500
+	border: 1px solid var(--border)
+	border-radius: var(--radius-6)
+	background: var(--bg)
+	color: var(--text-secondary)
+	cursor: pointer
+	&:hover
+		background: var(--state-hover-subtle)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+	&[data-state='active']
+		background: var(--theme-color)
+		border-color: var(--theme-color)
+		color: var(--text-inverse)
+	&[data-state='disabled']
+		opacity: 0.4
+		pointer-events: none
+	&.k-page-ellipsis
+		border-color: transparent
+		background: transparent
+		cursor: default
+
+.k-mobile-nav
+	position: fixed
+	inset-block: 0
+	inset-inline-start: 0
+	width: min(320px, 85vw)
+	z-index: var(--z-modal)
+	display: flex
+	flex-direction: column
+	background: var(--bg-dialog)
+	border-right: 1px solid var(--border)
+	box-shadow: var(--shadow-lg)
+	transform: translateX(-100%)
+	transition: transform 0.25s ease
+	&[data-state='open']
+		transform: translateX(0)
+
+.k-mobile-nav-header
+	display: flex
+	align-items: center
+	justify-content: space-between
+	gap: 12px
+	padding: 16px
+	border-bottom: 1px solid var(--border)
+
+.k-mobile-nav-body
+	flex: 1
+	overflow-y: auto
+	padding: 12px
+
+.k-mobile-nav-item
+	display: flex
+	align-items: center
+	gap: 10px
+	padding: 10px 12px
+	font-size: var(--text-md)
+	border: none
+	border-radius: var(--radius-6)
+	background: transparent
+	color: var(--text-primary)
+	cursor: pointer
+	text-decoration: none
+	&:hover
+		background: var(--state-hover-subtle)
+	&[data-state='active']
+		color: var(--theme-color-alt)
+		font-weight: 500
+
+.k-scrim
+	position: fixed
+	inset: 0
+	z-index: var(--z-raised)
+	background: rgba(0, 0, 0, 0.4)
+	opacity: 0
+	pointer-events: none
+	border: none
+	padding: 0
+	cursor: pointer
+	transition: opacity 0.25s ease
+	&[data-state='open']
+		opacity: 1
+		pointer-events: auto
+
+// ---------------------------------------------------------------------------
+// OVERLAY
+// ---------------------------------------------------------------------------
+
+// Panels rendered by native <dialog> / popover get the popover surface skin.
+.k-overlay-backdrop
+	position: fixed
+	inset: 0
+	z-index: var(--z-modal)
+	background: rgba(0, 0, 0, 0.45)
+	display: flex
+	align-items: center
+	justify-content: center
+	padding: 24px
+
+.k-overlay-panel
+	display: flex
+	flex-direction: column
+	max-width: min(560px, 92vw)
+	max-height: 85vh
+	overflow: auto
+	background: var(--bg-dialog)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-16)
+	box-shadow: var(--shadow-lg)
+
+.k-dialog
+	display: flex
+	flex-direction: column
+	gap: 16px
+	width: min(480px, 92vw)
+	padding: 24px
+	background: var(--bg-dialog)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-16)
+	box-shadow: var(--shadow-lg)
+
+.k-dialog-header
+	display: flex
+	align-items: flex-start
+	justify-content: space-between
+	gap: 12px
+
+.k-dialog-title
+	font-size: var(--text-xl)
+	font-weight: 600
+
+.k-dialog-desc
+	font-size: var(--text-md)
+	color: var(--text-secondary)
+
+.k-dialog-footer
+	display: flex
+	align-items: center
+	justify-content: flex-end
+	gap: 8px
+
+// Native dialog / popover base resets (applied to the element itself)
+.k-dialog, .k-popover, .k-tooltip, .k-toast, .k-command, .k-lightbox, .k-menu
+	&::backdrop
+		background: rgba(0, 0, 0, 0.45)
+	&[open]
+		animation: k-pop-in 0.15s ease
+
+.k-popover
+	display: flex
+	flex-direction: column
+	gap: 8px
+	padding: 16px
+	background: var(--bg-popover)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-12)
+	box-shadow: var(--shadow-popover)
+	max-width: min(320px, 90vw)
+
+// Inline (non-top-layer) positioning for tooltip/popover panels. The panel is
+// absolutely positioned against its relative wrapper and toggled by data-open.
+.k-popover-wrap
+	position: relative
+	display: inline-flex
+
+.k-tooltip, .k-popover, .k-menu
+	position: absolute
+	z-index: var(--z-modal)
+	top: calc(100% + 8px)
+	left: 50%
+	transform: translateX(-50%)
+	&[data-placement='top']
+		top: auto
+		bottom: calc(100% + 8px)
+		transform: translateX(-50%)
+	&[data-placement='left']
+		top: 50%
+		left: auto
+		right: calc(100% + 8px)
+		transform: translateY(-50%)
+	&[data-placement='right']
+		top: 50%
+		left: calc(100% + 8px)
+		transform: translateY(-50%)
+	&[data-open='false']
+		display: none
+	&[data-align='end']
+		left: auto
+		right: 0
+		transform: none
+
+.k-tooltip
+	padding: 6px 10px
+	font-size: var(--text-xs)
+	line-height: 1.4
+	color: var(--text-inverse)
+	background: var(--text-primary)
+	border: none
+	border-radius: var(--radius-4)
+	box-shadow: var(--shadow-sm)
+	max-width: min(240px, 80vw)
+	pointer-events: none
+
+.k-toast
+	display: flex
+	align-items: flex-start
+	gap: 10px
+	padding: 12px 16px
+	background: var(--bg-popover)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-10)
+	box-shadow: var(--shadow-popover)
+	font-size: var(--text-md)
+	&[data-variant='success']
+		border-left: 3px solid var(--feedback-success)
+	&[data-variant='warning']
+		border-left: 3px solid var(--feedback-warning)
+	&[data-variant='danger']
+		border-left: 3px solid var(--feedback-error)
+	&[data-variant='info']
+		border-left: 3px solid var(--feedback-info)
+
+.k-toast-icon
+	margin-top: 2px
+	color: var(--text-muted)
+	flex-shrink: 0
+
+.k-toast-viewport
+	position: fixed
+	z-index: var(--z-toast)
+	display: flex
+	flex-direction: column
+	gap: 8px
+	width: min(360px, 92vw)
+	&[data-position='bottom-right']
+		right: 16px
+		bottom: 16px
+	&[data-position='bottom-left']
+		left: 16px
+		bottom: 16px
+	&[data-position='top-right']
+		right: 16px
+		top: 16px
+	&[data-position='top-left']
+		left: 16px
+		top: 16px
+
+.k-command
+	display: flex
+	flex-direction: column
+	width: min(560px, 94vw)
+	max-height: 70vh
+	overflow: hidden
+	background: var(--bg-dialog)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-16)
+	box-shadow: var(--shadow-lg)
+
+.k-command-input-wrap
+	display: flex
+	align-items: center
+	gap: 10px
+	padding: 12px 16px
+	border-bottom: 1px solid var(--border)
+
+.k-command-input
+	flex: 1
+	border: none
+	background: transparent
+	font-size: var(--text-lg)
+	color: var(--text-primary)
+	outline: none
+	&::placeholder
+		color: var(--text-muted)
+
+.k-command-list
+	flex: 1
+	overflow-y: auto
+	padding: 8px
+
+.k-command-item
+	display: flex
+	align-items: center
+	gap: 12px
+	width: 100%
+	padding: 10px 12px
+	font-size: var(--text-md)
+	text-align: left
+	border: none
+	border-radius: var(--radius-6)
+	background: transparent
+	color: var(--text-primary)
+	cursor: pointer
+	&[data-highlighted='true']
+		background: var(--state-hover-subtle)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: -2px
+
+.k-command-empty
+	padding: 24px
+	text-align: center
+	color: var(--text-muted)
+	font-size: var(--text-sm)
+
+.k-lightbox
+	position: relative
+	display: flex
+	align-items: center
+	justify-content: center
+	width: min(1080px, 94vw)
+	height: min(80vh, 94vh)
+	padding: 24px
+	background: transparent
+	border: none
+	box-shadow: none
+	.k-lightbox-img
+		max-width: 100%
+		max-height: 100%
+		object-fit: contain
+		border-radius: var(--radius-12)
+		box-shadow: var(--shadow-lg)
+	.k-lightbox-close
+		position: absolute
+		top: 16px
+		right: 16px
+		color: var(--text-primary)
+		background: var(--bg-dialog)
+		border: 1px solid var(--border)
+		&:hover
+			background: var(--state-hover-subtle)
+	.k-lightbox-prev, .k-lightbox-next
+		position: absolute
+		top: 50%
+		transform: translateY(-50%)
+		color: var(--text-primary)
+		background: var(--bg-dialog)
+		border: 1px solid var(--border)
+		&:hover
+			background: var(--state-hover-subtle)
+	.k-lightbox-prev
+		left: 16px
+	.k-lightbox-next
+		right: 16px
+
+// Tree list
+.k-tree
+	display: flex
+	flex-direction: column
+	gap: 2px
+	font-size: var(--text-md)
+
+.k-tree-item
+	display: flex
+	flex-direction: column
+
+.k-tree-row
+	display: flex
+	align-items: center
+	gap: 6px
+	padding: 6px 8px
+	padding-inline-start: calc(8px + var(--k-tree-depth, 0) * 14px)
+	border: none
+	border-radius: var(--radius-4)
+	background: transparent
+	color: var(--text-primary)
+	cursor: pointer
+	text-align: left
+	&:hover
+		background: var(--state-hover-subtle)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: -2px
+	&[aria-selected='true']
+		background: color-mix(in srgb, var(--theme-color) 10%, var(--bg))
+
+.k-tree-chevron
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 18px
+	height: 18px
+	flex-shrink: 0
+	color: var(--text-muted)
+	transition: transform 0.15s ease
+	&[data-state='open']
+		transform: rotate(90deg)
+
+.k-tree-group
+	display: flex
+	flex-direction: column
+	gap: 2px
+	margin-inline-start: 14px
+	padding-inline-start: 10px
+	border-left: 1px solid var(--border)
+
+// ---------------------------------------------------------------------------
+// KIT DOC SHELL (showcase route)
+// ---------------------------------------------------------------------------
+
+.kit-page
+	display: grid
+	grid-template-columns: 240px minmax(0, 1fr)
+	gap: 24px
+	max-width: var(--layout-max)
+	margin-inline: auto
+	padding: 24px
+	@media (max-width: 900px)
+		grid-template-columns: 1fr
+
+.kit-nav
+	position: sticky
+	top: calc(var(--header-height) + 16px)
+	align-self: start
+	display: flex
+	flex-direction: column
+	gap: 16px
+	max-height: calc(100vh - var(--header-height) - 32px)
+	overflow-y: auto
+	@media (max-width: 900px)
+		position: static
+		max-height: none
+
+.kit-nav-group
+	display: flex
+	flex-direction: column
+	gap: 2px
+
+.kit-nav-heading
+	padding: 8px 10px 4px
+	font-size: var(--text-xs)
+	font-weight: 600
+	text-transform: uppercase
+	letter-spacing: 0.06em
+	color: var(--text-muted)
+
+.kit-nav-link
+	display: block
+	padding: 5px 10px
+	font-size: var(--text-sm)
+	color: var(--text-secondary)
+	text-decoration: none
+	border-radius: var(--radius-4)
+	&:hover
+		color: var(--theme-color)
+		background: var(--state-hover-subtle)
+
+.kit-main
+	min-width: 0
+
+.kit-section
+	display: flex
+	flex-direction: column
+	gap: 16px
+	padding-block: 32px
+	border-bottom: 1px solid var(--border)
+	scroll-margin-top: calc(var(--header-height) + 16px)
+
+.kit-section-head
+	display: flex
+	flex-direction: column
+	gap: 4px
+
+.kit-section-title
+	font-size: var(--text-2xl)
+	font-weight: 600
+
+.kit-section-desc
+	font-size: var(--text-md)
+	color: var(--text-secondary)
+	max-width: 70ch
+
+.kit-demo
+	display: flex
+	flex-direction: column
+	gap: 12px
+	padding: 20px
+	background: var(--bg-surface)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-12)
+
+.kit-demo-label
+	font-size: var(--text-xs)
+	font-weight: 600
+	text-transform: uppercase
+	letter-spacing: 0.05em
+	color: var(--text-muted)
+
+.kit-demo-row
+	display: flex
+	align-items: center
+	flex-wrap: wrap
+	gap: 12px
+
+.kit-demo-col
+	display: flex
+	flex-direction: column
+	gap: 12px
+	align-items: flex-start
+
+.kit-hero
+	display: flex
+	flex-direction: column
+	gap: 12px
+	padding-block: 48px 32px
+
+.kit-hero-title
+	font-size: var(--text-4xl)
+	font-weight: 700
+	letter-spacing: -0.02em
+
+.kit-hero-desc
+	font-size: var(--text-lg)
+	color: var(--text-secondary)
+	max-width: 60ch
+
+.kit-hero-meta
+	display: flex
+	flex-wrap: wrap
+	gap: 8px
+
+@keyframes k-pop-in
+	from
+		opacity: 0
+		transform: translateY(6px) scale(0.98)
+	to
+		opacity: 1
+		transform: translateY(0) scale(1)
+
+.k-spin
+	animation: k-spin 0.8s linear infinite
+
+@keyframes k-spin
+	to
+		transform: rotate(360deg)

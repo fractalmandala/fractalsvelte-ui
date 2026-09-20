@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancel superseded runs on the same ref to save minutes.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify (check + contracts + visual)
+    runs-on: macos-14
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        # version comes from package.json "packageManager"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The visual harness drives chrome-headless-shell directly over CDP.
+      # Install the same Playwright-cached build used locally so the rendering
+      # environment (and therefore the baselines) matches.
+      - name: Install chrome-headless-shell
+        run: |
+          npx -y playwright@1.55.0 install chromium-headless-shell
+          SHELL_PATH="$HOME/Library/Caches/ms-playwright/$(ls "$HOME/Library/Caches/ms-playwright" | grep chromium_headless_shell | head -1)/chrome-headless-shell-mac-arm64/chrome-headless-shell"
+          echo "CHROME_SHELL=$SHELL_PATH" >> "$GITHUB_ENV"
+
+      - name: Build
+        run: pnpm build
+
+      - name: Start dev server
+        run: |
+          nohup pnpm dev --port 5199 --strictPort > /tmp/dev-server.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -sf -o /dev/null http://localhost:5199/ && break
+            sleep 1
+          done
+          curl -sf -o /dev/null http://localhost:5199/ || { echo "dev server failed to start"; tail -50 /tmp/dev-server.log; exit 1; }
+
+      - name: Full verify (typecheck, contracts, tokens, visual regression)
+        run: pnpm verify
+
+      - name: Upload visual diffs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diffs
+          path: scripts/visual/diffs
+          if-no-files-found: ignore
+          retention-days: 14

@@ -1,0 +1,2873 @@
+// ============================================================================
+// 10_component_library — the component classes referenced by the Svelte files
+// in src/lib/components. State uses semantic attributes (data-variant,
+// data-state, data-circle) so the contract stays flat and readable.
+// ============================================================================
+@use '01_config' as *
+@use '00_tokens' as *
+
+// --- Button extras (variants and sizes beyond the registry quartet) -----------
+.button
+	&.sm
+		height: var(--control-h-s)
+		padding-inline: calc(var(--space-xs) * var(--pad-scale, 1))
+		font-size: var(--text-xs)
+	&.lg
+		height: var(--control-h-l)
+		padding-inline: calc(var(--space-md) * var(--pad-scale, 1))
+		font-size: var(--text-md)
+	&.icon-sm,
+	&.icon,
+	&.icon-lg
+		padding: 0
+		aspect-ratio: 1
+	&.icon-sm
+		width: var(--control-h-s)
+	&.icon
+		width: var(--control-h-md)
+	&.icon-lg
+		width: var(--control-h-l)
+	&.secondary
+		background: var(--bg-raised)
+		color: var(--text-primary)
+		border-color: var(--border)
+		&:hover
+			background: var(--state-hover)
+	&.soft
+		background: color-mix(in srgb, var(--theme-color) 12%, transparent)
+		color: var(--theme-color-alt)
+		&:hover
+			background: color-mix(in srgb, var(--theme-color) 20%, transparent)
+	&.outline
+		background: var(--bg)
+		color: var(--text-primary)
+		border-color: var(--border)
+		&:hover
+			background: var(--state-hover-subtle)
+			border-color: var(--theme-color)
+	&.link
+		background: none
+		border-color: transparent
+		color: var(--theme-color)
+		padding-inline: calc(var(--space-3xs) * var(--pad-scale, 1))
+		&:hover
+			text-decoration: underline
+	&.destructive
+		background: var(--danger)
+		color: var(--text-inverse)
+		&:hover
+			background: var(--danger-hover)
+	&[data-shape='pill']
+		border-radius: var(--radius-full)
+	&[data-loading='true']
+		cursor: progress
+
+.button-spinner
+	width: 1em
+	height: 1em
+	flex-shrink: 0
+	border: 2px solid currentColor
+	border-right-color: transparent
+	border-radius: var(--radius-full)
+	animation: button-spin 0.7s linear infinite
+
+@keyframes button-spin
+	to
+		transform: rotate(360deg)
+
+// --- Badge variants -------------------------------------------------------------
+.badge
+	&[data-variant='accent']
+		background: color-mix(in srgb, var(--theme-color) 14%, transparent)
+		border-color: color-mix(in srgb, var(--theme-color) 35%, transparent)
+		color: var(--theme-color-alt)
+	&[data-variant='success']
+		background: color-mix(in srgb, var(--success) 14%, transparent)
+		border-color: color-mix(in srgb, var(--success) 35%, transparent)
+		color: color-mix(in srgb, var(--success-hover) 70%, var(--text-primary))
+	&[data-variant='warning']
+		background: color-mix(in srgb, var(--warning) 16%, transparent)
+		border-color: color-mix(in srgb, var(--warning) 40%, transparent)
+		color: color-mix(in srgb, var(--warning-hover) 60%, var(--text-primary))
+	&[data-variant='danger']
+		background: color-mix(in srgb, var(--danger) 12%, transparent)
+		border-color: color-mix(in srgb, var(--danger) 35%, transparent)
+		color: var(--danger-hover)
+
+// --- Alert -----------------------------------------------------------------------
+.alert
+	display: flex
+	align-items: flex-start
+	gap: calc(var(--space-2xs) * var(--gap-scale, 1))
+	padding: calc(var(--space-xs) * var(--pad-scale, 1))
+	border: 1px solid var(--border)
+	border-left-width: 3px
+	border-radius: var(--radius-md)
+	background: var(--bg-surface)
+	font-size: var(--text-sm)
+	strong
+		display: block
+		font-weight: 600
+	&-icon
+		display: inline-flex
+		align-items: center
+		justify-content: center
+		flex-shrink: 0
+		width: 20px
+		height: 20px
+		border-radius: var(--radius-full)
+		font-size: var(--text-xs)
+		font-weight: 700
+		color: var(--text-inverse)
+	&-content
+		margin-top: 2px
+		color: var(--text-secondary)
+	&[data-variant='info']
+		border-left-color: var(--info)
+		.alert-icon
+			background: var(--info)
+	&[data-variant='success']
+		border-left-color: var(--success)
+		.alert-icon
+			background: var(--success)
+	&[data-variant='warning']
+		border-left-color: var(--warning)
+		.alert-icon
+			background: var(--warning)
+	&[data-variant='danger']
+		border-left-color: var(--danger)
+		.alert-icon
+			background: var(--danger)
+
+// --- Progress ---------------------------------------------------------------------
+.progress
+	display: flex
+	flex-direction: column
+	gap: calc(var(--space-3xs) * var(--gap-scale, 1))
+	width: 100%
+	max-width: 420px
+	&-label
+		display: flex
+		align-items: center
+		justify-content: space-between
+		font-size: var(--text-xs)
+		font-weight: 500
+		color: var(--text-secondary)
+	&-track
+		height: 8px
+		width: 100%
+		background: var(--bg-raised)
+		border: 1px solid var(--border-subtle)
+		border-radius: var(--radius-full)
+		overflow: hidden
+	&-bar
+		height: 100%
+		background: var(--theme-color)
+		border-radius: var(--radius-full)
+		transition: width var(--motion-base) var(--ease-out)
+
+// --- Skeleton ----------------------------------------------------------------------
+.skeleton
+	display: block
+	width: 100%
+	height: 1rem
+	border-radius: var(--radius-sm)
+	background: linear-gradient(90deg, var(--bg-raised) 25%, var(--state-hover-subtle) 50%, var(--bg-raised) 75%)
+	background-size: 200% 100%
+	animation: skeleton-shimmer 1.6s ease-in-out infinite
+	&[data-circle]
+		border-radius: var(--radius-full)
+
+@keyframes skeleton-shimmer
+	from
+		background-position: 200% 0
+	to
+		background-position: -200% 0
+
+@media (prefers-reduced-motion: reduce)
+	.skeleton
+		animation: none
+
+// --- Toast ---------------------------------------------------------------------------
+.toast
+	display: flex
+	align-items: flex-start
+	justify-content: space-between
+	gap: calc(var(--space-xs) * var(--gap-scale, 1))
+	width: 100%
+	max-width: 420px
+	padding: calc(var(--space-xs) * var(--pad-scale, 1))
+	background: var(--bg-popover)
+	border: 1px solid var(--border)
+	border-left-width: 3px
+	border-radius: var(--radius-md)
+	box-shadow: var(--shadow-lg)
+	font-size: var(--text-sm)
+	strong
+		display: block
+		font-weight: 600
+	&-content
+		margin-top: 2px
+		color: var(--text-secondary)
+	&-close
+		flex-shrink: 0
+		width: 24px
+		height: 24px
+		display: inline-flex
+		align-items: center
+		justify-content: center
+		background: none
+		border: 0
+		border-radius: var(--radius-sm)
+		color: var(--text-muted)
+		cursor: pointer
+		font-size: var(--text-md)
+		line-height: 1
+		&:hover
+			background: var(--state-hover-subtle)
+			color: var(--text-primary)
+	&[data-variant='info']
+		border-left-color: var(--info)
+	&[data-variant='success']
+		border-left-color: var(--success)
+	&[data-variant='warning']
+		border-left-color: var(--warning)
+	&[data-variant='danger']
+		border-left-color: var(--danger)
+
+// --- Tooltip ---------------------------------------------------------------------------
+.tooltip
+	position: relative
+	display: inline-flex
+	&-bubble
+		position: absolute
+		bottom: calc(100% + 8px)
+		left: 50%
+		translate: -50% 0
+		z-index: var(--z-raised)
+		white-space: nowrap
+		padding: calc(var(--space-3xs) * var(--pad-scale, 1)) calc(var(--space-2xs) * var(--pad-scale, 1))
+		font-size: var(--text-xs)
+		color: var(--text-inverse)
+		background: var(--bg-terminal)
+		border-radius: var(--radius-sm)
+		box-shadow: var(--shadow-md)
+		opacity: 0
+		visibility: hidden
+		pointer-events: none
+		transition: opacity var(--motion-fast) ease, visibility var(--motion-fast) ease, translate var(--motion-fast) ease
+		&::after
+			content: ''
+			position: absolute
+			top: 100%
+			left: 50%
+			translate: -50% 0
+			border: 5px solid transparent
+			border-top-color: var(--bg-terminal)
+	&:hover,
+	&:focus-within
+		.tooltip-bubble
+			opacity: 1
+			visibility: visible
+			translate: -50% -2px
+	&[data-position='bottom']
+		.tooltip-bubble
+			bottom: auto
+			top: calc(100% + 8px)
+			translate: -50% 0
+			&::after
+				top: auto
+				bottom: 100%
+				border-top-color: transparent
+				border-bottom-color: var(--bg-terminal)
+		&:hover,
+		&:focus-within
+			.tooltip-bubble
+				translate: -50% 2px
+
+// --- Tabs -------------------------------------------------------------------------------
+.tabs
+	display: flex
+	flex-direction: column
+	gap: calc(var(--space-xs) * var(--gap-scale, 1))
+	width: 100%
+	max-width: 480px
+
+.tab-list
+	display: flex
+	flex-direction: row
+	gap: calc(var(--space-3xs) * var(--gap-scale, 1))
+	border-bottom: 1px solid var(--border)
+
+.tab-btn
+	padding: calc(var(--space-2xs) * var(--pad-scale, 1)) calc(var(--space-xs) * var(--pad-scale, 1))
+	font-size: var(--text-sm)
+	color: var(--text-secondary)
+	background: transparent
+	border: 0
+	border-bottom: 2px solid transparent
+	margin-bottom: -1px
+	cursor: pointer
+	transition: color var(--motion-fast) ease, border-color var(--motion-fast) ease
+	&:hover
+		color: var(--text-primary)
+	&.active,
+	&[data-state='active']
+		color: var(--theme-color)
+		border-bottom-color: var(--theme-color)
+		font-weight: 500
+
+.tab-panel
+	padding: calc(var(--space-2xs) * var(--pad-scale, 1)) 0
+	font-size: var(--text-sm)
+	color: var(--text-secondary)
+
+// --- Slider -------------------------------------------------------------------------------
+.slider
+	appearance: none
+	-webkit-appearance: none
+	width: 100%
+	height: 6px
+	margin: calc(var(--space-2xs) * var(--gap-scale, 1)) 0
+	background: linear-gradient(to right, var(--theme-color) var(--fs-slider-pct, 50%), var(--bg-raised) var(--fs-slider-pct, 50%))
+	border-radius: var(--radius-full)
+	outline: none
+	cursor: pointer
+	&::-webkit-slider-thumb
+		appearance: none
+		-webkit-appearance: none
+		width: 18px
+		height: 18px
+		border-radius: var(--radius-full)
+		background: var(--bg-popover)
+		border: 2px solid var(--theme-color)
+		box-shadow: var(--shadow-sm)
+		transition: transform var(--motion-fast) ease
+	&::-webkit-slider-thumb:hover
+		transform: scale(1.1)
+	&::-moz-range-thumb
+		width: 18px
+		height: 18px
+		border-radius: var(--radius-full)
+		background: var(--bg-popover)
+		border: 2px solid var(--theme-color)
+		box-shadow: var(--shadow-sm)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+	&:disabled
+		opacity: 0.5
+		cursor: not-allowed
+
+// --- Checkbox / radio -----------------------------------------------------------------------
+.check
+	display: inline-flex
+	align-items: center
+	gap: calc(var(--space-2xs) * var(--gap-scale, 1))
+	cursor: pointer
+	user-select: none
+	font-size: var(--text-sm)
+	input
+		position: absolute
+		width: 1px
+		height: 1px
+		opacity: 0
+	&-box
+		display: inline-flex
+		align-items: center
+		justify-content: center
+		flex-shrink: 0
+		width: 18px
+		height: 18px
+		border: 1px solid var(--border)
+		border-radius: var(--radius-2)
+		background: var(--bg-input)
+		color: transparent
+		font-size: 12px
+		font-weight: 700
+		line-height: 1
+		transition: background var(--motion-fast) ease, border-color var(--motion-fast) ease, color var(--motion-fast) ease
+	&:hover input:not(:disabled) + .check-box
+		border-color: var(--theme-color)
+	input:checked + .check-box
+		background: var(--theme-color)
+		border-color: var(--theme-color)
+		color: var(--text-inverse)
+	input:focus-visible + .check-box
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+	input:disabled + .check-box
+		opacity: 0.5
+	&[data-disabled]
+		opacity: 0.7
+		cursor: not-allowed
+
+// --- Switch (state via the hidden input) ------------------------------------------------------
+.switch
+	display: inline-flex
+	align-items: center
+	gap: calc(var(--space-2xs) * var(--gap-scale, 1))
+	cursor: pointer
+	user-select: none
+	font-size: var(--text-sm)
+	input
+		position: absolute
+		width: 1px
+		height: 1px
+		opacity: 0
+	input:checked + .switch-track
+		background: var(--theme-color)
+		border-color: var(--theme-color)
+		.switch-thumb
+			translate: 18px 0
+	input:focus-visible + .switch-track
+		outline: 2px solid var(--ring)
+		outline-offset: 2px
+	&[data-disabled]
+		opacity: 0.7
+		cursor: not-allowed
+
+// --- Separator ---------------------------------------------------------------------------------
+hr.divider
+	height: 1px
+	overflow: visible
+	border: 0
+	border-top: 1px solid var(--border)
+	// Inside flex rows (e.g. the separator sample) an <hr> has no intrinsic
+	// width, so it must be allowed to grow to fill the leftover space.
+	flex: 1 1 auto
+	min-inline-size: 8px
+	&[data-orientation='vertical']
+		width: 1px
+		height: auto
+		min-height: 28px
+		align-self: stretch
+		border-top: 0
+		border-left: 1px solid var(--border)
+		margin-block: 0
+		margin-inline: calc(var(--space-sm) * var(--gap-scale, 1))
+
+.separator
+	border: 0
+	background: var(--border)
+	align-self: stretch
+	&[data-orientation='horizontal'],
+	&:not([data-orientation])
+		width: 100%
+		height: 1px
+	&[data-orientation='vertical']
+		width: 1px
+		align-self: stretch
+		min-height: 24px
+
+hr.separator
+	// Native <hr> used as a horizontal divider.
+	height: 1px
+
+// --- Accordion chevron + content rhythm ---------------------------------------------------------
+.accordion
+	width: 100%
+	&-chevron
+		font-size: var(--text-md)
+		color: var(--text-muted)
+		transition: rotate var(--motion-base) var(--ease-out)
+	&[open] > .accordion-trigger .accordion-chevron
+		rotate: 180deg
+	&-content
+		font-size: var(--text-sm)
+		color: var(--text-secondary)
+		line-height: 1.6
+
+// --- Dialog internals ---------------------------------------------------------------------------
+.dialog
+	&-header
+		display: flex
+		align-items: flex-start
+		justify-content: space-between
+		gap: calc(var(--space-xs) * var(--gap-scale, 1))
+		padding: calc(var(--space-sm) * var(--pad-scale, 1)) calc(var(--space-sm) * var(--pad-scale, 1)) calc(var(--space-xs) * var(--pad-scale, 1))
+		h2
+			font-size: var(--text-lg)
+			font-weight: 600
+		p
+			margin-top: calc(var(--space-3xs) * var(--gap-scale, 1))
+			font-size: var(--text-sm)
+			color: var(--text-secondary)
+	&-close
+		width: 28px
+		height: 28px
+		display: inline-flex
+		align-items: center
+		justify-content: center
+		background: none
+		border: 0
+		border-radius: var(--radius-sm)
+		color: var(--text-muted)
+		font-size: var(--text-lg)
+		cursor: pointer
+		&:hover
+			background: var(--state-hover-subtle)
+			color: var(--text-primary)
+	&-body
+		padding: 0 calc(var(--space-sm) * var(--pad-scale, 1)) calc(var(--space-sm) * var(--pad-scale, 1))
+		font-size: var(--text-sm)
+		color: var(--text-secondary)
+		dialog &
+			padding-top: calc(var(--space-2xs) * var(--pad-scale, 1))
+
+dialog.dialog
+	// The component renders a native <dialog>; when open the browser gives it
+	// display and the shared .dialog transition states take over.
+	&:not([open])
+		display: none
+
+// --- Avatar sizes --------------------------------------------------------------------------------
+.avatar
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	font-weight: 600
+	color: var(--text-inverse)
+	background: var(--theme-color-alt)
+	&[data-size='sm']
+		width: 28px
+		height: 28px
+		font-size: var(--text-xs)
+	&[data-size='md']
+		width: 40px
+		height: 40px
+		font-size: var(--text-sm)
+	&[data-size='lg']
+		width: 56px
+		height: 56px
+		font-size: var(--text-lg)
+
+// --- Card paddings (the component consumes data-padding) ------------------------------------------
+.card[data-padding='none']
+	padding: 0
+.card[data-padding='sm']
+	padding: calc(var(--space-xs) * var(--pad-scale, 1))
+.card[data-padding='md']
+	padding: calc(var(--space-md) * var(--pad-scale, 1))
+.card[data-padding='lg']
+	padding: calc(var(--space-lg) * var(--pad-scale, 1))
+.card
+	flex-direction: column
+
+// --- Theme scoping wrapper ------------------------------------------------------------------------
+// The mixins below come from _00_tokens.sass and apply the full per-mode
+// token vocabulary, so <Theme theme="dark"> re-themes everything inside the
+// wrapper (surfaces, text, borders, shadows) instead of only toggling
+// color-scheme. The explicit [data-theme] selectors win over the OS-level
+// prefers-color-scheme fallback because they carry higher specificity.
+.ui-theme
+	display: block
+
+.ui-theme[data-theme='dark']
+	+dark-theme-tokens
+	background: var(--bg)
+	color: var(--text-primary)
+
+.ui-theme[data-theme='light']
+	+light-theme-tokens
+
+// --- Bits Effect (SvelteBits adapter surfaces) -----------------------------------------------------
+.bits-effect
+	display: flex
+	flex-direction: column
+	align-items: center
+	justify-content: center
+	gap: calc(var(--space-xs) * var(--gap-scale, 1))
+	width: 100%
+	min-height: 220px
+	padding: calc(var(--space-md) * var(--pad-scale, 1))
+	border: 1px solid var(--border)
+	border-radius: var(--radius-lg)
+	background: var(--bg-canvas)
+	color: var(--text-primary)
+	&--background
+		position: relative
+		overflow: hidden
+		color: var(--text-inverse)
+		span
+			position: relative
+			z-index: 1
+			font-size: var(--text-sm)
+			text-transform: capitalize
+			background: color-mix(in srgb, var(--bg-terminal) 55%, transparent)
+			padding: calc(var(--space-3xs) * var(--pad-scale, 1)) calc(var(--space-xs) * var(--pad-scale, 1))
+			border-radius: var(--radius-full)
+		> .canvas-motion
+			position: absolute
+			inset: 0
+	&--text
+		flex-direction: row
+		flex-wrap: wrap
+		font-size: var(--text-xl)
+		font-weight: 600
+		span[data-word]
+			display: inline-block
+	&--component
+		flex-direction: row
+		flex-wrap: wrap
+		strong
+			display: block
+	&__stage
+		display: flex
+		gap: calc(var(--space-sm) * var(--gap-scale, 1))
+	&__item
+		padding: calc(var(--space-xs) * var(--pad-scale, 1)) calc(var(--space-sm) * var(--pad-scale, 1))
+		border: 1px solid var(--border)
+		border-radius: var(--radius-md)
+		background: var(--bg-surface)
+		font-weight: 500
+	&__trigger
+		padding: calc(var(--space-2xs) * var(--pad-scale, 1)) calc(var(--space-sm) * var(--pad-scale, 1))
+		border: 1px solid var(--border)
+		border-radius: var(--radius-sm)
+		background: var(--bg-surface)
+		color: var(--text-primary)
+		font-size: var(--text-sm)
+		font-weight: 500
+		cursor: pointer
+		&:hover
+			border-color: var(--theme-color)
+			color: var(--theme-color)
+
+// --- Motion Core (typography / nav / stack / showcase patterns) --------------------------------------
+.motion-core
+	display: flex
+	align-items: center
+	justify-content: center
+	width: 100%
+	min-height: 160px
+	padding: calc(var(--space-md) * var(--pad-scale, 1))
+	&--text
+		min-height: 0
+		font-size: var(--text-2xl)
+		font-weight: 600
+		span
+			display: inline-block
+	&--dock
+		gap: calc(var(--space-xs) * var(--gap-scale, 1))
+		button
+			width: 44px
+			height: 44px
+			border: 1px solid var(--border)
+			border-radius: var(--radius-md)
+			background: var(--bg-surface)
+			color: var(--text-primary)
+			font-size: var(--text-lg)
+			cursor: pointer
+			&:hover
+				border-color: var(--theme-color)
+	&--video
+		flex-direction: column
+		gap: calc(var(--space-2xs) * var(--gap-scale, 1))
+		max-width: 420px
+	&__video-screen
+		display: grid
+		place-items: center
+		width: 100%
+		aspect-ratio: 16 / 9
+		background: var(--bg-terminal)
+		color: var(--text-inverse)
+		border-radius: var(--radius-md)
+		font-size: var(--text-2xl)
+	&__video-controls
+		display: flex
+		align-items: center
+		gap: calc(var(--space-2xs) * var(--gap-scale, 1))
+		width: 100%
+		button
+			padding: calc(var(--space-3xs) * var(--pad-scale, 1)) calc(var(--space-xs) * var(--pad-scale, 1))
+			border: 1px solid var(--border)
+			border-radius: var(--radius-sm)
+			background: var(--bg-surface)
+			cursor: pointer
+	&--nav
+		flex-direction: column
+		align-items: flex-start
+		gap: calc(var(--space-3xs) * var(--gap-scale, 1))
+		a
+			color: var(--theme-color)
+			text-decoration: none
+			font-weight: 500
+			&:hover
+				color: var(--theme-color-alt)
+	&--grid
+		display: grid
+		grid-template-columns: repeat(auto-fit, minmax(120px, 1fr))
+		gap: calc(var(--space-xs) * var(--gap-scale, 1))
+		div
+			display: grid
+			place-items: center
+			min-height: 80px
+			padding: calc(var(--space-xs) * var(--pad-scale, 1))
+			border: 1px solid var(--border)
+			border-radius: var(--radius-md)
+			background: var(--bg-surface)
+			cursor: grab
+	&--stack
+		display: grid
+		place-items: center
+		div
+			grid-area: 1 / 1
+			display: flex
+			flex-direction: column
+			gap: calc(var(--space-3xs) * var(--gap-scale, 1))
+			width: min(320px, 80%)
+			padding: calc(var(--space-sm) * var(--pad-scale, 1))
+			border: 1px solid var(--border)
+			border-radius: var(--radius-lg)
+			background: var(--bg-surface)
+			box-shadow: var(--shadow-md)
+			cursor: grab
+			translate: calc(var(--stack-index, 0) * 6px) calc(var(--stack-index, 0) * -6px)
+	&--showcase
+		flex-direction: column
+		gap: calc(var(--space-2xs) * var(--gap-scale, 1))
+		div
+			display: flex
+			flex-direction: column
+			gap: 2px
+			padding: calc(var(--space-2xs) * var(--pad-scale, 1)) calc(var(--space-sm) * var(--pad-scale, 1))
+			border: 1px solid var(--border)
+			border-radius: var(--radius-md)
+			background: var(--bg-surface)
+			strong
+				font-size: var(--text-sm)
+			span
+				font-size: var(--text-xs)
+				color: var(--text-muted)
+				text-transform: capitalize
+
+// --- Canvas motion host ------------------------------------------------------------------------------
+.canvas-motion
+	width: min(100%, 560px)
+	aspect-ratio: 16 / 9
+	border-radius: var(--radius-lg)
+	overflow: hidden
+	border: 1px solid var(--border)
+	background: var(--bg-terminal)
+
+// --- Playground (docs interactive preview chrome) -----------------------------------------------------
+.playground
+	display: flex
+	flex-direction: column
+	width: 100%
+
+.playground__stage-bar
+	display: flex
+	flex-wrap: wrap
+	align-items: center
+	gap: calc(var(--space-xs) * var(--gap-scale, 1))
+
+.playground__control-group
+	display: inline-flex
+	align-items: center
+	gap: calc(var(--space-3xs) * var(--gap-scale, 1))
+
+.playground__pill-btn
+	padding: 4px 12px
+	font-size: var(--text-xs)
+	font-weight: 500
+	color: var(--text-secondary)
+	background: var(--bg-surface)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-full)
+	cursor: pointer
+	transition: background var(--motion-fast) ease, color var(--motion-fast) ease, border-color var(--motion-fast) ease
+	&:hover
+		border-color: var(--theme-color)
+		color: var(--theme-color)
+	&.active
+		background: var(--theme-color)
+		border-color: var(--theme-color)
+		color: var(--text-inverse)
+
+.playground__stage-wrapper
+	width: 100%
+
+.playground__stage
+	display: grid
+	place-items: center
+	width: 100%
+	margin-inline: auto
+	min-height: 200px
+	padding: calc(var(--space-lg) * var(--pad-scale, 1))
+	border: 1px solid var(--border)
+	border-radius: var(--radius-lg)
+	background: var(--bg-surface)
+	&[data-bg='grid']
+		background-image: linear-gradient(var(--border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px)
+		background-size: 24px 24px
+	&[data-bg='checker']
+		background-image: repeating-conic-gradient(var(--bg-raised) 0% 25%, var(--bg-surface) 0% 50%)
+		background-size: 20px 20px
+
+.component-preview
+	width: 100%
+
+.playground__knobs
+	display: grid
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr))
+	gap: calc(var(--space-xs) * var(--gap-scale, 1))
+	padding: calc(var(--space-xs) * var(--pad-scale, 1))
+	border: 1px solid var(--border-subtle)
+	border-radius: var(--radius-md)
+	background: var(--bg-raised)
+
+.playground__knob-item
+	display: flex
+	flex-direction: column
+	gap: calc(var(--space-3xs) * var(--gap-scale, 1))
+	font-size: var(--text-xs)
+	font-weight: 500
+	color: var(--text-secondary)
+	input:not([type='checkbox']):not([type='range']),
+	select
+		height: var(--control-h-s)
+		padding-inline: calc(var(--space-2xs) * var(--pad-scale, 1))
+		font-size: var(--text-xs)
+		background: var(--bg-input)
+		color: var(--text-primary)
+		border: 1px solid var(--border)
+		border-radius: var(--radius-sm)
+	input[type='range']
+		accent-color: var(--theme-color)
+
+.playground__knob-toggle
+	display: inline-flex
+	align-items: center
+	gap: calc(var(--space-3xs) * var(--gap-scale, 1))
+	input[type='checkbox']
+		accent-color: var(--theme-color)
+		width: 14px
+		height: 14px
+
+// --- Code block (playground + DemoCard share the classes) ----------------------------------------------
+.playground__code-block,
+pre.playground__code-content
+	width: 100%
+
+.playground__code-block
+	display: flex
+	flex-direction: column
+	border: 1px solid var(--border)
+	border-radius: var(--radius-md)
+	overflow: hidden
+	background: var(--bg-terminal)
+
+.playground__code-header
+	display: flex
+	align-items: center
+	justify-content: space-between
+	padding: calc(var(--space-2xs) * var(--pad-scale, 1)) calc(var(--space-xs) * var(--pad-scale, 1))
+	background: color-mix(in srgb, var(--bg-terminal) 88%, var(--text-inverse) 6%)
+	color: var(--text-inverse)
+	font-size: var(--text-xs)
+	font-weight: 600
+	letter-spacing: 0.04em
+	text-transform: uppercase
+
+.playground__copy-btn
+	display: inline-flex
+	align-items: center
+	gap: calc(var(--space-3xs) * var(--gap-scale, 1))
+	padding: 3px 10px
+	font-size: var(--text-xs)
+	font-weight: 500
+	color: var(--text-inverse)
+	background: color-mix(in srgb, var(--text-inverse) 12%, transparent)
+	border: 1px solid color-mix(in srgb, var(--text-inverse) 25%, transparent)
+	border-radius: var(--radius-sm)
+	cursor: pointer
+	transition: background var(--motion-fast) ease, color var(--motion-fast) ease
+	&:hover
+		background: color-mix(in srgb, var(--text-inverse) 20%, transparent)
+	&.copied
+		background: var(--success)
+		border-color: var(--success)
+		color: var(--bg-terminal)
+
+pre.playground__code-content
+	margin: 0
+	padding: calc(var(--space-xs) * var(--pad-scale, 1))
+	overflow-x: auto
+	background: var(--bg-terminal)
+	code
+		font-family: var(--font-mono)
+		font-size: var(--text-xs)
+		line-height: 1.6
+		color: #d7e2ee
+
+// Demo cards wrap a preview and its code in one bordered surface.
+.demo-card
+	display: flex
+	flex-direction: column
+	gap: calc(var(--space-xs) * var(--gap-scale, 1))
+	padding: calc(var(--space-sm) * var(--pad-scale, 1))
+	border: 1px solid var(--border)
+	border-radius: var(--radius-lg)
+	background: var(--bg-surface)
+
+.demo-card__preview
+	display: grid
+	place-items: center
+	min-height: 120px
+	padding: calc(var(--space-sm) * var(--pad-scale, 1))
+	border: 1px dashed var(--border-subtle)
+	border-radius: var(--radius-md)
+
+// --- Docs demo samples ---------------------------------------------------------------------------------
+.skeleton-stack
+	display: flex
+	flex-direction: column
+	gap: calc(var(--space-2xs) * var(--gap-scale, 1))
+
+// Catalogue-extension preview stages
+// (small layout contexts the demos need; components themselves stay unopinionated)
+.preview-copy
+	max-width: 44ch
+	line-height: 1.55
+
+.thumb-btn
+	padding: 0
+	border: 0
+	background: none
+	cursor: pointer
+	img
+		width: 56px
+		height: 56px
+		object-fit: cover
+		border-radius: var(--radius-3)
+		display: block
+
+.toast-viewport-stage
+	// The viewport itself is fixed; give the stage a visible footprint.
+	width: 100%
+	min-height: 140px
+	display: grid
+	place-items: center
+
+.side-nav-stage,
+.top-nav-stage,
+.tree-stage
+	width: 100%
+	max-width: 480px
+
+.sidebar-stage
+	width: 100%
+	max-width: 480px
+	min-height: 240px
+
+.shared-bg-stage
+	display: flex
+	flex-direction: column
+	gap: space(2xs)
+	width: 100%
+	max-width: 320px
+
+.separator-sample
+	font-size: var(--text-sm)
+	color: var(--text-secondary)
+
+.motion-reveal-sample
+	display: flex
+	flex-direction: column
+	gap: calc(var(--space-3xs) * var(--gap-scale, 1))
+	padding: calc(var(--space-sm) * var(--pad-scale, 1))
+	border: 1px solid var(--border)
+	border-radius: var(--radius-md)
+	background: var(--bg-surface)
+
+.presence-sample
+	width: 100%
+
+.theme-sample
+	text-align: left
+
+.text-loop-sample
+	font-size: var(--text-lg)
+
+.counter-sample
+	font-variant-numeric: tabular-nums
+
+// --- Motion: Marquee ---------------------------------------------------------------------------
+// The component emits plain `.marquee` / `.marquee-track` classes with a
+// `--marquee-duration` custom property, so mirror the k-kit marquee recipe
+// against those hooks and honour the reduced-motion contract.
+@keyframes marquee-scroll
+	from
+		transform: translateX(0)
+	to
+		transform: translateX(-50%)
+
+.marquee
+	overflow: hidden
+	display: flex
+	user-select: none
+	position: relative
+	width: 100%
+	mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)
+	&[data-direction='right'] .marquee-track
+		animation-direction: reverse
+
+.marquee-track
+	display: flex
+	flex-shrink: 0
+	align-items: center
+	gap: calc(var(--space-lg) * var(--gap-scale, 1))
+	min-width: 100%
+	width: max-content
+	animation: marquee-scroll var(--marquee-duration, 22s) linear infinite
+
+.marquee:hover .marquee-track
+	animation-play-state: paused
+
+@media (prefers-reduced-motion: reduce)
+	.marquee-track
+		animation: none
+
+// --- Motion: Stepper ---------------------------------------------------------------------------
+// Accessible progress sequence: numbered pills joined by connectors, with
+// complete / current / upcoming states driven by `data-state`.
+.stepper
+	display: flex
+	flex-direction: column
+	gap: calc(var(--space-2xs) * var(--gap-scale, 1))\t
+	list-style: none
+	margin: 0
+	padding: 0
+	counter-reset: stepper
+
+.stepper li
+	display: flex
+	list-style: none
+
+.stepper button
+	display: flex
+	align-items: center
+	gap: calc(var(--space-2xs) * var(--gap-scale, 1))
+	padding: calc(var(--space-2xs) * var(--pad-scale, 1)) calc(var(--space-xs) * var(--pad-scale, 1))
+	border: 1px solid transparent
+	border-radius: var(--radius-md)
+	background: transparent
+	color: var(--text-secondary)
+	font: inherit
+	font-size: var(--text-sm)
+	text-align: left
+	cursor: pointer
+	&:disabled
+		cursor: default
+	&:not(:disabled):hover
+		border-color: var(--border)
+		background: var(--bg-raised)
+	&:focus-visible
+		outline: 2px solid var(--theme-color)
+		outline-offset: 2px
+
+.stepper-number
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	inline-size: 1.75rem
+	block-size: 1.75rem
+	flex-shrink: 0
+	border-radius: 999px
+	border: 1px solid var(--border)
+	background: var(--bg-raised)
+	color: var(--text-secondary)
+	font-size: var(--text-xs)
+	font-weight: 600
+
+.stepper li[data-state='complete'] .stepper-number
+	background: var(--theme-color)
+	border-color: var(--theme-color)
+	color: var(--text-inverse)
+
+.stepper li[data-state='current'] .stepper-number
+	border-color: var(--theme-color)
+	color: var(--theme-color)
+
+.stepper li[data-state='current'] button
+	color: var(--text-primary)
+	font-weight: 600
+
+.stepper li[data-state='complete'] button
+	color: var(--text-primary)
+
+.stepper small
+	display: block
+	font-size: var(--text-xs)
+	font-weight: 400
+	color: var(--text-muted)
+
+.stepper li[data-state='current'] .stepper button, .stepper li[data-state='current'] button
+	position: relative
+
+// --- Motion: Reveal / MotionList / Presence / Magnetic hooks -----------------------------------
+.reveal
+	will-change: transform, opacity
+
+.motion-list
+	display: flex
+	flex-direction: column
+	gap: calc(var(--space-2xs) * var(--gap-scale, 1))
+	list-style: none
+	margin: 0
+	padding: 0
+
+.motion-list-item
+	will-change: transform, opacity
+
+.presence
+	display: grid
+
+.magnetic
+	display: inline-block
+
+.text-loop
+	display: inline-flex
+	overflow: hidden
+	vertical-align: bottom
+	min-width: 5ch
+	justify-content: left
+	font-weight: 600
+
+// --- Canvas: Card3D ----------------------------------------------------------------------------
+.card-3d
+	position: relative
+	display: grid
+	place-items: center
+	perspective: var(--card-3d-perspective, 900px)
+	inline-size: min(100%, 420px)
+	touch-action: none
+
+.card-3d-inner
+	position: relative
+	inline-size: 100%
+	border-radius: var(--radius-lg)
+	border: 1px solid var(--border)
+	background: var(--bg-raised)
+	padding: calc(var(--space-lg) * var(--pad-scale, 1))
+	transform-style: preserve-3d
+	transition: box-shadow var(--motion-base) var(--ease-out)
+
+.card-3d-content
+	display: flex
+	flex-direction: column
+	gap: calc(var(--space-2xs) * var(--gap-scale, 1))
+	transform: translateZ(24px)
+
+.card-3d-title
+	font-size: var(--text-lg)
+	font-weight: 600
+
+.card-3d-description
+	font-size: var(--text-sm)
+	color: var(--text-secondary)
+
+.card-3d-glare
+	position: absolute
+	inset: 0
+	pointer-events: none
+	padding: 0
+	border-radius: inherit
+	mix-blend-mode: soft-light
+	opacity: 0
+	transition: opacity var(--motion-base) var(--ease-out)
+
+.card-3d:hover .card-3d-glare
+	opacity: 1
+
+// --- Canvas: CardStack -------------------------------------------------------------------------
+.card-stack
+	position: relative
+	display: grid
+	grid-template-rows: 1fr auto
+	place-items: center
+	inline-size: min(100%, 340px)
+	block-size: 500px
+	perspective: 1200px
+
+.card-stack-stage
+	position: relative
+	inline-size: 100%
+	block-size: 100%
+
+.card-stack-card
+	position: absolute
+	inset: 0
+	display: grid
+	place-items: center
+	overflow: hidden
+	border-radius: var(--radius-lg)
+	border: 1px solid var(--border)
+	background: var(--bg-raised)
+	box-shadow: var(--shadow-card, 0 8px 24px rgb(0 0 0 / 12%))
+	cursor: grab
+	touch-action: none
+	user-select: none
+	transition: transform var(--motion-base) var(--ease-spring, var(--ease-out)), opacity var(--motion-base) var(--ease-out)
+
+.card-stack-card:active
+	cursor: grabbing
+
+.card-stack-content
+	display: flex
+	flex-direction: column
+	align-items: center
+	justify-content: center
+	gap: calc(var(--space-3xs) * var(--gap-scale, 1))
+	text-align: center
+	padding: calc(var(--space-lg) * var(--pad-scale, 1))
+	max-inline-size: 34ch
+
+.card-stack-title
+	font-size: var(--text-lg)
+	font-weight: 600
+
+.card-stack-desc
+	font-size: var(--text-sm)
+	color: var(--text-secondary)
+
+.card-stack-hint
+	display: block
+	min-height: 1.2em
+	font-size: var(--text-2xs)
+	color: var(--text-muted)
+
+// Non-top cards keep their layout box but hide content so nothing bleeds
+// through the translucent stack beneath the active card.
+.card-stack-card:not(.is-top) .card-stack-content
+	opacity: 0
+
+.card-stack-controls
+	display: flex
+	justify-content: center
+	gap: calc(var(--space-2xs) * var(--gap-scale, 1))
+	margin-top: calc(var(--space-m) * var(--pad-scale, 1))
+
+.card-stack-btn
+	padding: calc(var(--space-2xs) * var(--pad-scale, 1)) calc(var(--space-m) * var(--pad-scale, 1))
+	border: 1px solid var(--border)
+	border-radius: 999px
+	background: var(--bg-raised)
+	color: var(--text-primary)
+	font: inherit
+	font-size: var(--text-sm)
+	cursor: pointer
+	transition: background var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out)
+	&:hover:not(:disabled)
+		border-color: var(--theme-color)
+		background: var(--bg-popover)
+	&:focus-visible
+		outline: 2px solid var(--theme-color)
+		outline-offset: 2px
+	&:disabled
+		opacity: 0.55
+		cursor: not-allowed
+
+// --- Canvas: MacOS Dock ------------------------------------------------------------------------
+.macos-dock
+	display: flex
+	align-items: flex-end
+	gap: calc(var(--space-2xs) * var(--gap-scale, 1))
+	padding: calc(var(--space-2xs) * var(--pad-scale, 1)) calc(var(--space-xs) * var(--pad-scale, 1))
+	border-radius: var(--radius-lg)
+	border: 1px solid var(--border)
+	background: color-mix(in srgb, var(--bg-raised) 72%, transparent)
+	backdrop-filter: blur(14px)
+
+.macos-dock-item
+	position: relative
+	display: grid
+	place-items: center
+	inline-size: var(--dock-icon-size, 44px)
+	block-size: var(--dock-icon-size, 44px)
+	border-radius: var(--radius-md)
+	transform-origin: bottom center
+	transition: transform var(--motion-fast) var(--ease-out)
+
+.macos-dock-icon
+	inline-size: 70%
+	block-size: 70%
+	display: block
+
+.macos-dock-tooltip
+	position: absolute
+	bottom: calc(100% + var(--space-3xs))
+	left: 50%
+	translate: -50% 0
+	padding: 2px 8px
+	border-radius: var(--radius-sm)
+	border: 1px solid var(--border)
+	background: var(--bg-surface)
+	color: var(--text-primary)
+	font-size: var(--text-2xs)
+	white-space: nowrap
+	opacity: 0
+	pointer-events: none
+	transition: opacity var(--motion-fast) var(--ease-out)
+
+.macos-dock-item:hover .macos-dock-tooltip
+	opacity: 1
+
+.macos-dock-item:hover
+	transform: translateY(-6px) scale(1.18)
+
+// --- Canvas: TextScramble ----------------------------------------------------------------------
+.text-scramble
+	display: inline-block
+	font-variant-numeric: tabular-nums
+	white-space: pre
+
+// --- AnimatedCard ------------------------------------------------------------------------------
+.animated-card
+	transition: transform var(--motion-base) var(--ease-spring, var(--ease-out)), box-shadow var(--motion-base) var(--ease-out)
+	&:hover
+		transform: translateY(-4px)
+		box-shadow: var(--shadow-card, 0 8px 24px rgb(0 0 0 / 12%))
+	font-size: var(--text-xl)
+
+.preview-copy
+	color: var(--text-secondary)
+	font-size: var(--text-sm)
+
+// Centering sugar used by canvas demos.
+.center
+	justify-content: center
+	align-items: center
+
+// ============================================================================
+// Compound motion families — MorphingTabs, BouncyAccordion, AnimatedSidebar,
+// MorphPopover, MorphSelect, CenterMorphModal, ToastStack, SharedLayoutBg.
+// These components expose data-slot hooks and rely on this layer for their
+// visual treatment (tokens only, no literals).
+// ============================================================================
+
+// --- MorphingTabs ------------------------------------------------------------
+// Drag-reorderable tab strip with a liquid surface panel.
+// Root acts as the dark/tinted container; surface SVG and panel share var(--bg-surface).
+[data-slot='morphing-tabs-root']
+	position: relative
+	isolation: isolate
+	min-width: 0
+	overflow: hidden
+	border-radius: var(--radius-lg)
+	border: 1px solid var(--border)
+	background: var(--bg-raised)
+	color: var(--text-primary)
+	width: 100%
+
+[data-slot='morphing-tabs-rail-wrap']
+	position: relative
+	height: 80px
+
+[data-slot='morphing-tabs-surface']
+	position: absolute
+	top: 0
+	right: 0
+	left: 0
+	width: 100%
+	height: 108px
+	pointer-events: none
+	color: var(--bg-surface)
+	&[data-dragging='true']
+		z-index: 20
+	&:not([data-dragging='true'])
+		z-index: 0
+
+[data-slot='morphing-tabs-rail']
+	position: relative
+	z-index: 30
+	display: flex
+	align-items: flex-start
+	height: 80px
+	gap: 12px
+
+[data-slot='morphing-tabs-tab-wrap']
+	position: absolute
+	top: 0
+	left: 0
+	display: flex
+	align-items: stretch
+	user-select: none
+	touch-action: pan-y
+	cursor: grab
+	&[data-disabled='true']
+		cursor: not-allowed
+	&[data-dragging='true']
+		cursor: grabbing
+
+[data-slot='morphing-tabs-tab-box']
+	position: relative
+	display: flex
+	align-items: stretch
+	width: 176px
+	height: 56px
+	margin-top: 24px
+
+[data-slot='morphing-tabs-hover']
+	position: absolute
+	inset: 0 0 8px 0
+	border-radius: 20px
+	background: var(--state-hover-subtle)
+	opacity: 0
+	transition: opacity var(--motion-fast) var(--ease-out)
+	&:hover
+		opacity: 1
+	&[data-dragging='true']
+		background: var(--state-hover)
+
+[data-slot='morphing-tabs-tab']
+	position: relative
+	z-index: 10
+	display: flex
+	align-items: center
+	gap: space(2xs)
+	width: 100%
+	height: 100%
+	min-width: 0
+	overflow: hidden
+	padding: 0 space(sm) 8px
+	border: 0
+	border-radius: 24px 24px 0 0
+	background: transparent
+	color: var(--text-secondary)
+	font-size: var(--text-md)
+	font-weight: 500
+	text-align: left
+	cursor: pointer
+	transition: color var(--motion-fast) var(--ease-out)
+	&:hover
+		color: var(--text-primary)
+	&[data-active='true']
+		padding-bottom: 0
+		color: var(--text-primary)
+	&[data-disabled='true']
+		opacity: 0.5
+		cursor: not-allowed
+
+[data-slot='morphing-tabs-focus-ring']
+	position: absolute
+	top: 4px
+	right: 4px
+	left: 4px
+	opacity: 0
+	pointer-events: none
+	transition: opacity var(--motion-fast) var(--ease-out)
+	&[data-active='true']
+		bottom: 0
+		border-radius: 20px 20px 0 0
+		border-top: 2px solid var(--ring)
+		border-right: 2px solid var(--ring)
+		border-left: 2px solid var(--ring)
+	&:not([data-active='true'])
+		bottom: 8px
+		border-radius: 16px
+		border: 2px solid var(--ring)
+	[data-slot='morphing-tabs-tab']:focus-visible &
+		opacity: 1
+
+[data-slot='morphing-tabs-icon']
+	display: grid
+	width: 28px
+	height: 28px
+	flex-shrink: 0
+	place-items: center
+	color: var(--text-muted)
+
+[data-slot='morphing-tabs-label']
+	min-width: 0
+	overflow: hidden
+	text-overflow: ellipsis
+	white-space: nowrap
+	font-size: var(--text-md)
+	font-weight: 500
+
+[data-slot='morphing-tabs-close']
+	position: absolute
+	top: 50%
+	right: 8px
+	z-index: 20
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 20px
+	height: 20px
+	border: 0
+	border-radius: var(--radius-full)
+	transform: translateY(-50%)
+	background: transparent
+	color: var(--text-muted)
+	cursor: pointer
+	transition: color var(--motion-fast) var(--ease-out), background-color var(--motion-fast) var(--ease-out)
+	&:hover
+		background: var(--state-hover)
+		color: var(--text-primary)
+	&[data-inactive='true']
+		top: calc(50% - 4px)
+		color: var(--text-muted)
+
+[data-slot='morphing-tabs-panel']
+	position: relative
+	z-index: 20
+	margin: 0 16px 16px
+	min-height: 10rem
+	overflow: hidden
+	border-radius: 28px
+	background: var(--bg-surface)
+	color: var(--text-primary)
+
+[data-slot='morphing-tabs-panel-content']
+	min-height: 10rem
+	padding: var(--space-md)
+	color: var(--text-primary)
+
+// --- BouncyAccordion -----------------------------------------------------------
+[data-slot='bouncy-accordion']
+	display: flex
+	flex-direction: column
+	gap: space(2xs)
+	width: 100%
+
+[data-slot='bouncy-accordion-item']
+	overflow: hidden
+	background: var(--bg-surface)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-6)
+
+[data-slot='bouncy-accordion-trigger']
+	display: flex
+	align-items: center
+	gap: space(xs)
+	width: 100%
+	padding: space(xs) space(sm)
+	border: 0
+	background: transparent
+	color: var(--text-primary)
+	font-size: var(--text-md)
+	font-weight: 500
+	text-align: left
+	cursor: pointer
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: -2px
+
+[data-slot='bouncy-accordion-icon']
+	display: inline-flex
+	color: var(--text-muted)
+
+[data-slot='bouncy-accordion-title']
+	flex: 1 1 auto
+
+[data-slot='bouncy-accordion-chevron']
+	display: inline-flex
+	color: var(--text-muted)
+	[data-state='open'] &
+		transform: rotate(180deg)
+
+[data-slot='bouncy-accordion-content']
+	padding: 0 space(sm) space(xs)
+
+[data-slot='bouncy-accordion-description']
+	color: var(--text-secondary)
+	font-size: var(--text-sm)
+	line-height: 1.55
+
+// --- AnimatedSidebar -----------------------------------------------------------
+[data-slot='sidebar-wrapper']
+	display: flex
+	min-height: 240px
+	width: 100%
+
+[data-slot='sidebar']
+	flex: 0 0 auto
+	overflow: hidden
+	background: var(--bg-panel)
+	border-right: 1px solid var(--border)
+	border-radius: var(--radius-8)
+
+[data-slot='sidebar-panel']
+	display: flex
+	flex-direction: column
+	gap: space(sm)
+	width: 224px
+	padding: space(sm)
+
+[data-slot='sidebar-header']
+	display: flex
+	align-items: center
+	padding: space(2xs) space(3xs)
+	color: var(--text-primary)
+
+[data-slot='sidebar-content']
+	flex: 1 1 auto
+	display: flex
+	flex-direction: column
+	gap: space(sm)
+	overflow-y: auto
+
+[data-slot='sidebar-footer']
+	padding: space(2xs) space(3xs)
+	border-top: 1px solid var(--border-subtle)
+
+[data-slot='sidebar-group']
+	display: flex
+	flex-direction: column
+	gap: space(3xs)
+
+[data-slot='sidebar-group-label']
+	padding: space(3xs) space(2xs)
+	font-size: var(--text-xs)
+	font-weight: 600
+	text-transform: uppercase
+	letter-spacing: 0.04em
+	color: var(--text-muted)
+
+[data-slot='sidebar-group-content']
+	display: flex
+	flex-direction: column
+	gap: 2px
+
+[data-slot='sidebar-menu']
+	display: flex
+	flex-direction: column
+	gap: 2px
+
+[data-slot='sidebar-menu-item']
+	display: flex
+
+[data-slot='sidebar-menu-button']
+	display: flex
+	align-items: center
+	gap: space(2xs)
+	width: 100%
+	padding: space(2xs) space(2xs)
+	border: 0
+	border-radius: var(--radius-4)
+	background: transparent
+	color: var(--text-secondary)
+	font-size: var(--text-sm)
+	text-align: left
+	text-decoration: none
+	cursor: pointer
+	&:hover
+		background: var(--state-hover-subtle)
+		color: var(--text-primary)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: -2px
+	&[data-active='true']
+		background: var(--state-selected)
+		color: var(--text-primary)
+		font-weight: 500
+
+[data-slot='sidebar-menu-button-icon']
+	display: inline-flex
+	color: var(--text-muted)
+	[data-slot='sidebar-menu-button'][data-active='true'] &
+		color: var(--text-primary)
+
+[data-slot='sidebar-rail']
+	position: absolute
+	inset: 0
+	width: 8px
+	cursor: ew-resize
+
+[data-slot='sidebar-trigger'],
+[data-slot='sidebar-close']
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: var(--control-h-sm)
+	height: var(--control-h-sm)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-4)
+	background: var(--bg-raised)
+	color: var(--text-secondary)
+	cursor: pointer
+	&:hover
+		background: var(--state-hover-subtle)
+
+// --- MorphPopover ----------------------------------------------------------------
+[data-slot='popover-morph']
+	position: relative
+	display: inline-flex
+
+[data-slot='popover-morph-trigger']
+	display: inline-flex
+	cursor: pointer
+
+[data-slot='popover-morph-panel']
+	position: absolute
+	z-index: var(--z-modal)
+	top: calc(100% + 8px)
+	left: 0
+	min-width: 220px
+	padding: space(sm)
+	background: var(--bg-popover)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-8)
+	box-shadow: var(--shadow-popover)
+	&[data-side='top']
+		top: auto
+		bottom: calc(100% + 8px)
+	&[data-side='left']
+		top: 0
+		left: auto
+		right: calc(100% + 8px)
+	&[data-side='right']
+		top: 0
+		left: calc(100% + 8px)
+
+// --- MorphSelect -------------------------------------------------------------------
+[data-slot='select-morph']
+	position: relative
+	display: inline-flex
+	flex-direction: column
+	width: 100%
+
+[data-slot='select-morph-sizer'],
+[data-slot='select-morph-registrar']
+	visibility: hidden
+	height: 0
+	overflow: hidden
+	position: absolute
+	pointer-events: none
+
+[data-slot='select-morph-trigger']
+	position: relative
+	display: flex
+	align-items: center
+	justify-content: space-between
+	gap: space(2xs)
+	min-height: var(--control-h-md)
+	padding: 0 space(sm)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-4)
+	background: var(--bg-input)
+	color: var(--text-primary)
+	font-size: var(--text-md)
+	cursor: pointer
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 1px
+	&[data-disabled='true']
+		opacity: 0.5
+		pointer-events: none
+
+[data-slot='select-morph-trigger-label'],
+[data-slot='select-morph-value']
+	overflow: hidden
+	text-overflow: ellipsis
+	white-space: nowrap
+
+[data-slot='select-morph-trigger-chevron']
+	display: inline-flex
+	color: var(--text-muted)
+
+[data-slot='select-morph-panel']
+	position: absolute
+	z-index: var(--z-modal)
+	top: calc(100% + 6px)
+	left: 0
+	right: 0
+	padding: 4px
+	background: var(--bg-popover)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-6)
+	box-shadow: var(--shadow-popover)
+
+[data-slot='select-morph-header']
+	display: flex
+	align-items: center
+	justify-content: space-between
+	gap: space(2xs)
+	padding: space(2xs) space(2xs)
+	border-bottom: 1px solid var(--border-subtle)
+	font-size: var(--text-sm)
+	font-weight: 500
+	color: var(--text-primary)
+
+[data-slot='select-morph-header-chevron']
+	display: inline-flex
+	color: var(--text-muted)
+
+[data-slot='select-morph-list']
+	display: flex
+	flex-direction: column
+	max-height: 240px
+	overflow-y: auto
+
+[data-slot='select-morph-item']
+	display: flex
+
+[data-slot='select-morph-item-button']
+	display: flex
+	align-items: center
+	gap: space(2xs)
+	width: 100%
+	padding: space(2xs) space(2xs)
+	border: 0
+	border-radius: var(--radius-4)
+	background: transparent
+	color: var(--text-secondary)
+	font-size: var(--text-md)
+	text-align: left
+	cursor: pointer
+	&:hover
+		background: var(--state-hover-subtle)
+		color: var(--text-primary)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: -2px
+	&[data-selected='true']
+		background: var(--state-selected)
+		color: var(--text-primary)
+		font-weight: 500
+
+[data-slot='select-morph-divider']
+	height: 1px
+	margin: 4px 4px
+	background: var(--border-subtle)
+
+// --- CenterMorphModal -----------------------------------------------------------------
+[data-slot='center-morph-modal-trigger']
+	display: inline-flex
+	cursor: pointer
+
+[data-slot='center-morph-modal-portal']
+	position: fixed
+	inset: 0
+	z-index: var(--z-modal)
+	display: grid
+	place-items: center
+	padding: space(lg)
+
+[data-slot='center-morph-modal-backdrop']
+	position: absolute
+	inset: 0
+	background: rgba(0, 0, 0, 0.45)
+
+[data-slot='center-morph-modal-panel']
+	position: relative
+	width: min(420px, 92vw)
+	max-height: min(560px, 86vh)
+	overflow-y: auto
+	background: var(--bg-dialog)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-12)
+	box-shadow: var(--shadow-lg)
+
+[data-slot='center-morph-modal-close']
+	position: absolute
+	top: space(xs)
+	right: space(xs)
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: var(--control-h-sm)
+	height: var(--control-h-sm)
+	border: 0
+	border-radius: var(--radius-full)
+	background: var(--state-hover-subtle)
+	color: var(--text-secondary)
+	cursor: pointer
+	&:hover
+		background: var(--state-hover)
+		color: var(--text-primary)
+
+// --- ToastStack -------------------------------------------------------------------------
+[data-slot='toast-stack']
+	display: flex
+	flex-direction: column
+	list-style: none
+	margin: 0
+	padding: 0
+	gap: space(2xs)
+	width: min(360px, 92vw)
+	&[data-position='bottom-right']
+		align-items: flex-end
+	&[data-position='bottom-left']
+		align-items: flex-start
+	&[data-position='top-right']
+		align-items: flex-end
+	&[data-position='top-left']
+		align-items: flex-start
+	&[data-position^='top']
+		flex-direction: column-reverse
+
+[data-slot='toast-item']
+	width: 100%
+
+[data-slot='toast-item-surface']
+	display: flex
+	flex-direction: column
+	gap: space(3xs)
+	padding: space(xs) space(sm)
+	background: var(--bg-popover)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-6)
+	box-shadow: var(--shadow-popover)
+
+[data-slot='toast-item-row']
+	display: flex
+	align-items: flex-start
+	gap: space(2xs)
+
+[data-slot='toast-item-icon']
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 22px
+	height: 22px
+	border-radius: var(--radius-full)
+	&[data-status='success']
+		color: var(--feedback-success)
+	&[data-status='error']
+		color: var(--feedback-error)
+	&[data-status='info']
+		color: var(--feedback-info)
+	&[data-status='warning']
+		color: var(--feedback-warning)
+	&[data-status='loading']
+		color: var(--text-muted)
+
+[data-slot='toast-content']
+	flex: 1 1 auto
+	display: flex
+	flex-direction: column
+	gap: 2px
+	min-width: 0
+
+[data-slot='toast-title']
+	color: var(--text-primary)
+	font-size: var(--text-sm)
+	font-weight: 600
+
+[data-slot='toast-description']
+	color: var(--text-secondary)
+	font-size: var(--text-sm)
+	line-height: 1.45
+
+[data-slot='toast-action'],
+[data-slot='toast-close']
+	align-self: flex-start
+	border: 0
+	background: transparent
+	color: var(--text-secondary)
+	font-size: var(--text-sm)
+	cursor: pointer
+	&:hover
+		color: var(--text-primary)
+
+[data-slot='toast-close']
+	align-self: center
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 22px
+	height: 22px
+	border-radius: var(--radius-full)
+	&:hover
+		background: var(--state-hover-subtle)
+
+// --- SharedLayoutBg ------------------------------------------------------------------------
+[data-slot='shared-layout-bg']
+	position: relative
+	list-style: none
+	margin: 0
+	padding: space(3xs)
+
+[data-slot='shared-layout-bg-pill-wrap']
+	position: absolute
+	inset: 0
+	pointer-events: none
+
+[data-slot='shared-layout-bg-pill']
+	position: absolute
+	background: var(--state-selected)
+	border: 1px solid var(--border-strong)
+	border-radius: var(--radius-6)
+
+[data-slot='shared-layout-bg-item-content']
+	position: relative
+	z-index: 1
+	padding: space(2xs) space(sm)
+	color: var(--text-secondary)
+	font-size: var(--text-md)
+	cursor: default
+
+// ToastStack spinner (reuses the kit's spin keyframe).
+.mg-toast-spin
+	display: inline-flex
+	animation: k-spin 0.9s linear infinite
+
+// --- Calendar ----------------------------------------------------------------------
+[data-slot='calendar']
+	display: inline-flex
+	flex-direction: column
+	gap: space(xs)
+	padding: space(sm)
+	background: var(--bg-surface)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-lg)
+	width: fit-content
+	user-select: none
+
+[data-slot='calendar-header']
+	display: flex
+	align-items: center
+	justify-content: space-between
+	gap: space(xs)
+
+[data-slot='calendar-month']
+	font-size: var(--text-sm)
+	font-weight: 600
+	color: var(--text-primary)
+	text-align: center
+	flex: 1
+
+[data-slot='calendar-nav']
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 28px
+	height: 28px
+	border: 1px solid var(--border)
+	border-radius: var(--radius-sm)
+	background: var(--bg-raised)
+	color: var(--text-secondary)
+	cursor: pointer
+	transition: all var(--motion-fast) ease
+	&:hover
+		background: var(--state-hover)
+		color: var(--text-primary)
+		border-color: var(--border-strong)
+
+[data-slot='calendar-grid']
+	display: flex
+	flex-direction: column
+	gap: 2px
+	&:focus-visible
+		outline: none
+
+[data-slot='calendar-weekdays']
+	display: grid
+	grid-template-columns: repeat(7, 32px)
+	gap: 2px
+	margin-bottom: 4px
+
+[data-slot='calendar-weekday']
+	display: flex
+	align-items: center
+	justify-content: center
+	height: 28px
+	font-size: var(--text-xs)
+	font-weight: 500
+	color: var(--text-muted)
+
+[data-slot='calendar-week']
+	display: grid
+	grid-template-columns: repeat(7, 32px)
+	gap: 2px
+
+[data-slot='calendar-cell']
+	display: flex
+	align-items: center
+	justify-content: center
+
+[data-slot='calendar-day']
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 32px
+	height: 32px
+	border-radius: var(--radius-sm)
+	font-size: var(--text-xs)
+	font-weight: 500
+	border: 0
+	background: transparent
+	color: var(--text-primary)
+	cursor: pointer
+	transition: all var(--motion-fast) ease
+	&:hover:not([aria-disabled='true'])
+		background: var(--state-hover)
+		color: var(--text-primary)
+	&[data-outside='true']
+		color: var(--text-muted)
+		opacity: 0.35
+		cursor: default
+		pointer-events: none
+	&[data-today='true']
+		border: 1px solid var(--theme-color)
+		font-weight: 600
+	&[data-selected='true']
+		background: var(--theme-color)
+		color: var(--text-inverse)
+		font-weight: 600
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: -1px
+	&[aria-disabled='true']
+		opacity: 0.4
+		cursor: not-allowed
+
+// --- DatePicker --------------------------------------------------------------------
+[data-slot='datepicker']
+	position: relative
+	display: inline-flex
+	align-items: center
+	width: 100%
+	max-width: 280px
+	&[data-disabled='true']
+		opacity: 0.5
+		pointer-events: none
+
+[data-slot='datepicker-input']
+	display: block
+	width: 100%
+	height: var(--control-h-md)
+	padding-left: space(sm)
+	padding-right: 32px
+	font-size: var(--text-sm)
+	background: var(--bg-input)
+	color: var(--text-primary)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-sm)
+	cursor: pointer
+	transition: border-color var(--motion-fast) ease
+	&:focus-visible
+		outline: none
+		border-color: var(--theme-color)
+		box-shadow: 0 0 0 2px var(--ring)
+	&::placeholder
+		color: var(--text-muted)
+
+[data-slot='datepicker'][data-clearable='true'] [data-slot='datepicker-input']
+	padding-right: 56px
+
+[data-slot='datepicker-clear']
+	position: absolute
+	right: 30px
+	top: 50%
+	transform: translateY(-50%)
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 20px
+	height: 20px
+	border: 0
+	border-radius: var(--radius-full)
+	background: transparent
+	color: var(--text-muted)
+	cursor: pointer
+	transition: all var(--motion-fast) ease
+	&:hover
+		background: var(--state-hover)
+		color: var(--text-primary)
+
+[data-slot='datepicker-toggle']
+	position: absolute
+	right: 6px
+	top: 50%
+	transform: translateY(-50%)
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 24px
+	height: 24px
+	border: 0
+	border-radius: var(--radius-sm)
+	background: transparent
+	color: var(--text-muted)
+	cursor: pointer
+	transition: all var(--motion-fast) ease
+	&:hover
+		color: var(--text-primary)
+
+[data-slot='datepicker-panel']
+	position: absolute
+	z-index: var(--z-modal)
+	top: calc(100% + 4px)
+	left: 0
+	border-radius: var(--radius-lg)
+	box-shadow: var(--shadow-popover)
+	> [data-slot='calendar']
+		border: 1px solid var(--border)
+		box-shadow: none
+
+// --- ColorPicker -------------------------------------------------------------------
+[data-slot='colorpicker']
+	display: flex
+	flex-direction: column
+	gap: space(xs)
+	width: 230px
+	padding: space(sm)
+	background: var(--bg-surface)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-lg)
+	box-shadow: var(--shadow-sm)
+	&[data-disabled='true']
+		opacity: 0.5
+		pointer-events: none
+
+[data-slot='colorpicker-area']
+	position: relative
+	width: 100%
+	height: 140px
+	border-radius: var(--radius-md)
+	overflow: hidden
+	cursor: crosshair
+	touch-action: none
+
+[data-slot='colorpicker-area-thumb']
+	position: absolute
+	width: 14px
+	height: 14px
+	border-radius: var(--radius-full)
+	border: 2px solid #fff
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.7), inset 0 0 1px rgba(0, 0, 0, 0.5)
+	transform: translate(-50%, -50%)
+	pointer-events: none
+
+[data-slot='colorpicker-hue']
+	position: relative
+	width: 100%
+	height: 12px
+	border-radius: var(--radius-full)
+
+[data-slot='colorpicker-hue-track']
+	position: absolute
+	inset: 0
+	border-radius: var(--radius-full)
+	background: linear-gradient(to right, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%)
+
+[data-slot='colorpicker-hue-thumb']
+	position: absolute
+	top: 50%
+	width: 14px
+	height: 14px
+	border-radius: var(--radius-full)
+	border: 2px solid #fff
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.7)
+	transform: translate(-50%, -50%)
+	pointer-events: none
+
+[data-slot='colorpicker-hue-input']
+	position: absolute
+	inset: 0
+	width: 100%
+	height: 100%
+	opacity: 0
+	cursor: pointer
+	margin: 0
+
+[data-slot='colorpicker-row']
+	display: flex
+	align-items: center
+	gap: space(xs)
+
+[data-slot='colorpicker-preview']
+	flex-shrink: 0
+	width: 28px
+	height: 28px
+	border-radius: var(--radius-sm)
+	border: 1px solid var(--border)
+
+[data-slot='colorpicker-hex']
+	flex: 1
+	height: 28px
+	padding: 0 space(xs)
+	font-family: var(--font-mono)
+	font-size: var(--text-xs)
+	background: var(--bg-input)
+	color: var(--text-primary)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-sm)
+	&:focus-visible
+		outline: none
+		border-color: var(--theme-color)
+		box-shadow: 0 0 0 2px var(--ring)
+
+[data-slot='colorpicker-swatches']
+	display: flex
+	flex-wrap: wrap
+	gap: 6px
+	margin-top: 2px
+
+[data-slot='colorpicker-swatch']
+	width: 20px
+	height: 20px
+	border-radius: var(--radius-sm)
+	border: 1px solid var(--border)
+	cursor: pointer
+	padding: 0
+	transition: transform var(--motion-fast) ease
+	&:hover
+		transform: scale(1.15)
+	&[data-active='true']
+		outline: 2px solid var(--theme-color)
+		outline-offset: 1px
+
+// --- Combobox ----------------------------------------------------------------------
+[data-slot='combobox']
+	position: relative
+	display: inline-flex
+	align-items: center
+	width: 100%
+	&[data-disabled='true']
+		opacity: 0.5
+		pointer-events: none
+
+[data-slot='combobox-input']
+	display: block
+	width: 100%
+	height: var(--control-h-md)
+	padding-left: space(sm)
+	padding-right: 32px
+	font-size: var(--text-sm)
+	background: var(--bg-input)
+	color: var(--text-primary)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-sm)
+	transition: border-color var(--motion-fast) ease
+	&:focus-visible
+		outline: none
+		border-color: var(--theme-color)
+		box-shadow: 0 0 0 2px var(--ring)
+	&::placeholder
+		color: var(--text-muted)
+
+[data-slot='combobox'][data-clearable='true'] [data-slot='combobox-input']
+	padding-right: 56px
+
+[data-slot='combobox-clear']
+	position: absolute
+	right: 30px
+	top: 50%
+	transform: translateY(-50%)
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 20px
+	height: 20px
+	border: 0
+	border-radius: var(--radius-full)
+	background: transparent
+	color: var(--text-muted)
+	cursor: pointer
+	transition: all var(--motion-fast) ease
+	&:hover
+		background: var(--state-hover)
+		color: var(--text-primary)
+
+[data-slot='combobox-toggle']
+	position: absolute
+	right: 6px
+	top: 50%
+	transform: translateY(-50%)
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 24px
+	height: 24px
+	border: 0
+	border-radius: var(--radius-sm)
+	background: transparent
+	color: var(--text-muted)
+	cursor: pointer
+	transition: transform var(--motion-fast) ease, color var(--motion-fast) ease
+	&:hover
+		color: var(--text-primary)
+
+[data-slot='combobox'][data-open='true'] [data-slot='combobox-toggle']
+	transform: translateY(-50%) rotate(180deg)
+
+[data-slot='combobox-list']
+	position: absolute
+	z-index: var(--z-modal)
+	top: calc(100% + 4px)
+	left: 0
+	right: 0
+	max-height: 240px
+	overflow-y: auto
+	padding: 4px
+	background: var(--bg-popover)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-md)
+	box-shadow: var(--shadow-popover)
+	display: flex
+	flex-direction: column
+	gap: 1px
+
+[data-slot='combobox-option']
+	display: flex
+	align-items: center
+	justify-content: space-between
+	gap: space(xs)
+	width: 100%
+	padding: space(2xs) space(xs)
+	border: 0
+	border-radius: var(--radius-sm)
+	background: transparent
+	color: var(--text-primary)
+	font-size: var(--text-sm)
+	text-align: left
+	cursor: pointer
+	transition: background var(--motion-fast) ease
+	&[data-highlighted='true'],
+	&:hover:not(:disabled)
+		background: var(--state-hover)
+	&[data-selected='true']
+		background: var(--state-selected)
+		font-weight: 500
+	&:disabled
+		opacity: 0.4
+		cursor: not-allowed
+
+[data-slot='combobox-option-label']
+	flex: 1
+	overflow: hidden
+	text-overflow: ellipsis
+	white-space: nowrap
+
+[data-slot='combobox-option-hint']
+	font-size: var(--text-xs)
+	color: var(--text-muted)
+
+[data-slot='combobox-check']
+	display: inline-flex
+	color: var(--theme-color)
+	flex-shrink: 0
+
+[data-slot='combobox-empty']
+	padding: space(sm)
+	font-size: var(--text-sm)
+	color: var(--text-muted)
+	text-align: center
+
+// --- TimePicker --------------------------------------------------------------------
+[data-slot='timepicker']
+	position: relative
+	display: inline-flex
+	align-items: center
+	width: 100%
+	max-width: 240px
+	&[data-disabled='true']
+		opacity: 0.5
+		pointer-events: none
+
+[data-slot='timepicker-input']
+	display: block
+	width: 100%
+	height: var(--control-h-md)
+	padding-left: space(sm)
+	padding-right: 32px
+	font-size: var(--text-sm)
+	background: var(--bg-input)
+	color: var(--text-primary)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-sm)
+	cursor: pointer
+	transition: border-color var(--motion-fast) ease
+	&:focus-visible
+		outline: none
+		border-color: var(--theme-color)
+		box-shadow: 0 0 0 2px var(--ring)
+	&::placeholder
+		color: var(--text-muted)
+
+[data-slot='timepicker'][data-clearable='true'] [data-slot='timepicker-input']
+	padding-right: 56px
+
+[data-slot='timepicker-clear']
+	position: absolute
+	right: 30px
+	top: 50%
+	transform: translateY(-50%)
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 20px
+	height: 20px
+	border: 0
+	border-radius: var(--radius-full)
+	background: transparent
+	color: var(--text-muted)
+	cursor: pointer
+	transition: all var(--motion-fast) ease
+	&:hover
+		background: var(--state-hover)
+		color: var(--text-primary)
+
+[data-slot='timepicker-toggle']
+	position: absolute
+	right: 6px
+	top: 50%
+	transform: translateY(-50%)
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 24px
+	height: 24px
+	border: 0
+	border-radius: var(--radius-sm)
+	background: transparent
+	color: var(--text-muted)
+	cursor: pointer
+	transition: color var(--motion-fast) ease
+	&:hover
+		color: var(--text-primary)
+
+[data-slot='timepicker-list']
+	position: absolute
+	z-index: var(--z-modal)
+	top: calc(100% + 4px)
+	left: 0
+	right: 0
+	max-height: 220px
+	overflow-y: auto
+	padding: 4px
+	background: var(--bg-popover)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-md)
+	box-shadow: var(--shadow-popover)
+	display: flex
+	flex-direction: column
+	gap: 1px
+
+[data-slot='timepicker-option']
+	display: flex
+	align-items: center
+	justify-content: space-between
+	gap: space(xs)
+	width: 100%
+	padding: space(2xs) space(xs)
+	border: 0
+	border-radius: var(--radius-sm)
+	background: transparent
+	color: var(--text-primary)
+	font-size: var(--text-sm)
+	text-align: left
+	cursor: pointer
+	transition: background var(--motion-fast) ease
+	&[data-highlighted='true'],
+	&:hover
+		background: var(--state-hover)
+	&[data-selected='true']
+		background: var(--state-selected)
+		font-weight: 500
+
+[data-slot='timepicker-check']
+	display: inline-flex
+	color: var(--theme-color)
+	flex-shrink: 0
+
+[data-slot='timepicker-empty']
+	padding: space(sm)
+	font-size: var(--text-sm)
+	color: var(--text-muted)
+	text-align: center
+
+// --- Countdown ---------------------------------------------------------------------
+[data-slot='countdown']
+	display: inline-flex
+	align-items: center
+	gap: space(xs)
+
+[data-slot='countdown-unit']
+	display: flex
+	flex-direction: column
+	align-items: center
+	justify-content: center
+	min-width: 52px
+	padding: space(2xs) space(xs)
+	background: var(--bg-surface)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-md)
+	box-shadow: var(--shadow-sm)
+
+[data-slot='countdown-value']
+	position: relative
+	display: flex
+	align-items: center
+	justify-content: center
+	height: 32px
+	overflow: hidden
+	font-family: var(--font-mono)
+	font-size: var(--text-xl)
+	font-weight: 700
+	font-variant-numeric: tabular-nums
+	color: var(--text-primary)
+	line-height: 1
+
+[data-slot='countdown-label']
+	font-size: 10px
+	font-weight: 600
+	text-transform: uppercase
+	letter-spacing: 0.06em
+	color: var(--text-muted)
+	margin-top: 2px
+
+// --- Rating ------------------------------------------------------------------------
+[data-slot='rating']
+	display: inline-flex
+	align-items: center
+	gap: 2px
+	padding: 2px
+	&:focus-visible
+		outline: none
+	&[data-readonly='true'] [data-slot='rating-star']
+		cursor: default
+		pointer-events: none
+
+[data-slot='rating-star']
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 28px
+	height: 28px
+	border: 0
+	background: transparent
+	padding: 0
+	color: var(--border-strong)
+	cursor: pointer
+	border-radius: var(--radius-sm)
+	transition: color var(--motion-fast) ease
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: 1px
+	&[data-active='true']
+		color: #f59e0b
+	&:hover:not(:disabled)
+		color: #fbbf24
+	&:disabled
+		cursor: not-allowed
+		opacity: 0.5
+
+// --- Empty -------------------------------------------------------------------------
+[data-slot='empty-root']
+	display: flex
+	flex-direction: column
+	align-items: center
+	justify-content: center
+	text-align: center
+	padding: space(lg) space(md)
+	width: 100%
+	max-width: 400px
+	margin: 0 auto
+
+[data-slot='empty-icon']
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 48px
+	height: 48px
+	border-radius: var(--radius-full)
+	background: var(--bg-raised)
+	border: 1px solid var(--border)
+	color: var(--text-secondary)
+	margin-bottom: space(xs)
+
+[data-slot='empty-title']
+	margin: 0
+	font-size: var(--text-md)
+	font-weight: 600
+	color: var(--text-primary)
+	line-height: 1.3
+
+[data-slot='empty-description']
+	margin: 4px 0 0 0
+	font-size: var(--text-sm)
+	color: var(--text-secondary)
+	line-height: 1.45
+	max-width: 320px
+
+[data-slot='empty-actions']
+	display: flex
+	align-items: center
+	gap: space(xs)
+	margin-top: space(sm)
+
+// --- Menubar -----------------------------------------------------------------------
+[data-slot='menubar']
+	display: inline-flex
+	align-items: center
+	gap: 2px
+	padding: 4px
+	background: var(--bg-surface)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-md)
+	box-shadow: var(--shadow-sm)
+
+[data-slot='menubar-menu']
+	position: relative
+	display: inline-flex
+
+[data-slot='menubar-trigger']
+	padding: space(2xs) space(xs)
+	font-size: var(--text-sm)
+	font-weight: 500
+	color: var(--text-secondary)
+	background: transparent
+	border: 0
+	border-radius: var(--radius-sm)
+	cursor: pointer
+	transition: all var(--motion-fast) ease
+	&:hover,
+	&[data-open='true']
+		background: var(--state-hover)
+		color: var(--text-primary)
+	&:focus-visible
+		outline: 2px solid var(--ring)
+		outline-offset: -1px
+
+[data-slot='menubar-list']
+	position: absolute
+	z-index: var(--z-modal)
+	top: calc(100% + 4px)
+	left: 0
+	min-width: 180px
+	padding: 4px
+	background: var(--bg-popover)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-md)
+	box-shadow: var(--shadow-popover)
+	display: flex
+	flex-direction: column
+	gap: 1px
+
+[data-slot='menubar-item']
+	display: flex
+	align-items: center
+	gap: space(xs)
+	width: 100%
+	padding: space(2xs) space(xs)
+	border: 0
+	border-radius: var(--radius-sm)
+	background: transparent
+	color: var(--text-primary)
+	font-size: var(--text-sm)
+	text-align: left
+	cursor: pointer
+	transition: background var(--motion-fast) ease
+	&:hover:not(:disabled)
+		background: var(--state-hover)
+	&:focus-visible
+		outline: none
+		background: var(--state-hover)
+	&[data-variant='danger']
+		color: var(--feedback-error)
+		&:hover:not(:disabled)
+			background: color-mix(in srgb, var(--feedback-error) 12%, transparent)
+	&:disabled
+		opacity: 0.4
+		cursor: not-allowed
+
+[data-slot='menubar-item-check']
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 16px
+	height: 16px
+	color: var(--theme-color)
+	flex-shrink: 0
+
+[data-slot='menubar-item-label']
+	flex: 1
+
+[data-slot='menubar-shortcut']
+	font-size: var(--text-xs)
+	font-family: var(--font-mono)
+	color: var(--text-muted)
+	letter-spacing: 0.05em
+
+[data-slot='menubar-separator']
+	height: 1px
+	background: var(--border-subtle)
+	margin: 4px 0
+
+// --- CookieConsent -----------------------------------------------------------------
+[data-slot='consent-root']
+	position: relative
+	display: flex
+	align-items: flex-start
+	gap: space(sm)
+	width: min(440px, 94vw)
+	padding: space(md)
+	background: var(--bg-popover)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-lg)
+	box-shadow: var(--shadow-lg)
+
+[data-slot='consent-icon']
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: 36px
+	height: 36px
+	border-radius: var(--radius-full)
+	background: color-mix(in srgb, var(--theme-color) 14%, transparent)
+	color: var(--theme-color)
+	font-size: var(--text-lg)
+	flex-shrink: 0
+
+[data-slot='consent-body']
+	flex: 1
+	display: flex
+	flex-direction: column
+	gap: space(3xs)
+	min-width: 0
+
+[data-slot='consent-title']
+	margin: 0
+	font-size: var(--text-md)
+	font-weight: 600
+	color: var(--text-primary)
+	line-height: 1.3
+
+[data-slot='consent-description']
+	margin: 0
+	font-size: var(--text-sm)
+	color: var(--text-secondary)
+	line-height: 1.45
+
+[data-slot='consent-actions']
+	display: flex
+	align-items: center
+	justify-content: flex-end
+	gap: space(xs)
+	margin-top: space(xs)
+
+[data-slot='consent-reject']
+	padding: space(2xs) space(sm)
+	font-size: var(--text-xs)
+	font-weight: 500
+	color: var(--text-secondary)
+	background: var(--bg-surface)
+	border: 1px solid var(--border)
+	border-radius: var(--radius-sm)
+	cursor: pointer
+	transition: all var(--motion-fast) ease
+	&:hover
+		background: var(--state-hover)
+		color: var(--text-primary)
+
+[data-slot='consent-accept']
+	padding: space(2xs) space(sm)
+	font-size: var(--text-xs)
+	font-weight: 500
+	color: var(--text-inverse)
+	background: var(--theme-color)
+	border: 1px solid var(--theme-color)
+	border-radius: var(--radius-sm)
+	cursor: pointer
+	transition: all var(--motion-fast) ease
+	&:hover
+		background: var(--theme-color-alt)
+
