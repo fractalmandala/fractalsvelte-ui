@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { components, categories } from '#lib/docs/catalogue.js';
+	import { components, categories } from '#lib/docs/catalogue.ts';
 </script>
 
 <svelte:head><title>Fractalsvelte UI — Svelte components</title></svelte:head>

@@ -1,7 +1,7 @@
 {
   "defaults": {
-    "--font-sans": "\"Google Sans Flex\", sans-serif",
-    "--font-mono": "\"JetBrains Mono\", monospace",
+    "--font-sans": "system-ui, sans-serif",
+    "--font-mono": "ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace",
     "--text-xs": "0.67rem",
     "--text-sm": "0.75rem",
     "--text-md": "0.875rem",
@@ -78,7 +78,7 @@
     "--breakpoint": "768px",
     "--white-fixed": "#FFFFFF",
     "--black-fixed": "#171717",
-    "--bg": "#ffffff",
+    "--bg": "#FAFAFA",
     "--bg-surface": "#FAFAFA",
     "--bg-panel": "#FBFBF9",
     "--bg-sunken": "#F7F6F0",
@@ -90,8 +90,8 @@
     "--text-secondary": "#777777",
     "--text-muted": "#aeaeae",
     "--text-inverse": "#ffffff",
-    "--state-surface": "#F2EFE9",
-    "--state-hover": "#F4F2EC",
+    "--state-surface": "var(--bg)",
+    "--state-hover": "#eae9e8",
     "--state-selected": "#F4F2EC",
     "--border": "#d8d8d8",
     "--border-subtle": "#eceaea",
@@ -112,8 +112,8 @@
     "--shadow-bs": "0 12px 32px rgba(15, 23, 42, 0.12)"
   },
   "dark": {
-    "--font-sans": "\"Google Sans Flex\", sans-serif",
-    "--font-mono": "\"JetBrains Mono\", monospace",
+    "--font-sans": "system-ui, sans-serif",
+    "--font-mono": "ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace",
     "--text-xs": "0.67rem",
     "--text-sm": "0.75rem",
     "--text-md": "0.875rem",

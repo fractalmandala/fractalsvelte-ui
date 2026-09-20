@@ -21,7 +21,7 @@ export default defineConfig({
 	},
 	plugins: [
 		sveltekit({
-			extensions: ['.svelte', '.svx'],
+			extensions: ['.svelte', '.svx', '.md'],
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
 				runes: ({ filename }) =>
@@ -29,7 +29,7 @@ export default defineConfig({
 			},
 			adapter: adapter(),
 			preprocess: [
-				mdsvex({ extensions: ['.svx'] }),
+				mdsvex({ extensions: ['.svx', '.md'] }),
 				vitePreprocess()
 			]
 		})

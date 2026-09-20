@@ -18,6 +18,7 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--full') args.full = true;
+    else if (a === '--top') args.top = true;
     else if (a === '--width') args.width = Number(argv[++i]);
     else if (a === '--height') args.height = Number(argv[++i]);
     else if (a === '--wait') args.wait = Number(argv[++i]);
@@ -26,7 +27,7 @@ function parseArgs(argv) {
   return args;
 }
 
-const { _, full, width = 1440, height = 1000, wait = 1600 } = parseArgs(process.argv.slice(2));
+const { _, full, top, width = 1440, height = 1000, wait = 1600 } = parseArgs(process.argv.slice(2));
 const target = _[0] ?? 'button';
 const out = _[1] ?? `/tmp/shots/cdp-${target}.png`;
 mkdirSync(out.slice(0, out.lastIndexOf('/')) || '.', { recursive: true });
@@ -105,8 +106,12 @@ await new Promise((r) => setTimeout(r, wait));
 // Scroll the stage into view and nudge scroll so IntersectionObservers fire.
 await send('Runtime.evaluate', {
   expression: `(() => {
-    const stage = document.querySelector('.playground__stage') || document.querySelector('main');
-    if (stage) stage.scrollIntoView({ block: 'center' });
+    if (${Boolean(top)}) {
+      window.scrollTo(0, 0);
+    } else {
+      const stage = document.querySelector('.playground__stage') || document.querySelector('.playground-stage') || document.querySelector('main');
+      if (stage) stage.scrollIntoView({ block: 'center' });
+    }
     window.dispatchEvent(new Event('scroll'));
     return document.readyState;
   })()`,

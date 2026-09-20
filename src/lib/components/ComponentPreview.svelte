@@ -137,6 +137,7 @@
 	import { luBell, luPlus, luBold, luItalic, luLink, luImage, luLayoutGrid, luFile } from 'fractalicons/lucide';
 	import MotionCore from './MotionCore.svelte';
 	import { svelteBitsCategoryBySlug, svelteBitsSlugs } from '#lib/docs/catalogue.ts';
+	import { highlight } from '#lib/docs/highlight.ts';
 
 	let { slug }: { slug: string } = $props();
 
@@ -548,13 +549,25 @@
 			}, 2000);
 		}
 	}
+
+	let highlightedCode = $state<string>('');
+
+	$effect(() => {
+		let active = true;
+		highlight(generatedCode, 'svelte').then((res) => {
+			if (active) highlightedCode = res;
+		});
+		return () => {
+			active = false;
+		};
+	});
 </script>
 
 <div class="box gap-md">
 	<!-- Stage Control Bar -->
 	<div class="row wrap gap-bs">
 		<div class="row wrap gap-sm ycenter">
-			<span class="text-xs weight-600 muted mr-xs">Viewport:</span>
+			<span class="text-xs weight-600 text-muted mr-xs">Viewport:</span>
 			<button
 				type="button"
 				class="small"
@@ -588,7 +601,7 @@
 		</div>
 
 		<div class="row wrap gap-sm ycenter">
-			<span class="text-xs weight-600 muted mr-xs">Canvas:</span>
+			<span class="text-xs weight-600 text-muted mr-xs">Canvas:</span>
 			<button
 				type="button"
 				class="small"
@@ -632,13 +645,12 @@
 	</div>
 
 	<!-- Stage Canvas -->
-	<div class="playground__stage-wrapper">
 		<div
-			class="playground__stage"
+			class="playground-stage"
 			data-bg={bgMode}
 			style="max-width: {viewportWidth};"
 		>
-			<div class="component-preview" style="width: 100%; display: grid; place-items: center;">
+			<div style="width: 100%; display: grid; place-items: center;">
 				{#if slug === 'button'}
 					{#if btnSize.startsWith('icon')}
 						<Button variant={btnVariant} size={btnSize} shape={btnShape} disabled={btnDisabled} loading={btnLoading} aria-label={btnLabel}>
@@ -770,7 +782,7 @@
 				{:else if slug === 'theme-setter' || slug === 'theme-picker'}
 					<ThemeSetter bind:open={themeSetterOpen}>
 						<div class="card pad-m stack gap-s" style="width: 100%; max-width: 480px;">
-							<p class="text-sm muted">Explore the modern <strong>fractalthemer</strong> theme and background engine:</p>
+							<p class="text-sm text-muted">Explore the modern <strong>fractalthemer</strong> theme and background engine:</p>
 							<Button onclick={() => (themeSetterOpen = true)}>Open appearance</Button>
 						</div>
 					</ThemeSetter>
@@ -800,7 +812,7 @@
 						<div class="stack gap-xs">
 							<Badge variant="accent">3D Perspective</Badge>
 							<strong class="text-lg">Interactive Tilt Surface</strong>
-							<p class="text-sm muted">Move pointer across this card to experience real-time 3D parallax tilt and specular glare.</p>
+							<p class="text-sm text-muted">Move pointer across this card to experience real-time 3D parallax tilt and specular glare.</p>
 						</div>
 					</Card3D>
 				{:else if slug === 'macos-dock'}
@@ -815,7 +827,7 @@
 					<ContextMenu>
 						<ContextMenuTrigger>
 							<div class="card pad-m row center" style="min-width: 280px; min-height: 120px; border-style: dashed;">
-								<span class="muted">Right-click this card</span>
+								<span class="text-muted">Right-click this card</span>
 							</div>
 						</ContextMenuTrigger>
 						<ContextMenuContent>
@@ -1198,13 +1210,12 @@
 				{/if}
 			</div>
 		</div>
-	</div>
 
 	<!-- Interactive Prop Knobs Panel -->
 	{#if ['button', 'badge', 'alert', 'avatar', 'card', 'accordion', 'input', 'textarea', 'checkbox', 'switch', 'select', 'dialog', 'tooltip', 'progress', 'skeleton', 'toast', 'separator', 'slider', 'animated-button', 'animated-card', 'reveal', 'magnetic', 'text-loop', 'marquee', 'stepper', 'counter', 'card-3d', 'macos-dock', 'card-stack', 'text-scramble', 'app-shell', 'aspect-ratio', 'banner', 'breadcrumbs', 'button-group', 'form-layout', 'kbd', 'table', 'thumbnail', 'check-indicator', 'color-picker', 'combobox', 'time-picker', 'file-input', 'icon-button', 'rating', 'countdown', 'drawer', 'overlay', 'outline', 'pagination', 'popover', 'toast-viewport', 'side-nav', 'top-nav', 'tree-list', 'bouncy-accordion', 'animated-sidebar'].includes(slug)}
-		<div class="playground__knobs">
+		<div class="playground-knobs">
 			{#if slug === 'button'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="btn-variant">Variant</label>
 					<select id="btn-variant" bind:value={btnVariant}>
 						<option value="primary">primary</option>
@@ -1216,7 +1227,7 @@
 						<option value="destructive">destructive</option>
 					</select>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="btn-size">Size</label>
 					<select id="btn-size" bind:value={btnSize}>
 						<option value="sm">sm (compact)</option>
@@ -1227,30 +1238,32 @@
 						<option value="icon-lg">icon-lg</option>
 					</select>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="btn-shape">Shape</label>
 					<select id="btn-shape" bind:value={btnShape}>
 						<option value="default">default</option>
 						<option value="pill">pill</option>
 					</select>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="btn-label">Label</label>
 					<input id="btn-label" type="text" bind:value={btnLabel} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="btn-disabled">State</label>
-					<div class="playground__knob-toggle">
+					<div class="row gap-md">
+					<div class="knob-toggle">
 						<input id="btn-disabled" type="checkbox" bind:checked={btnDisabled} />
 						<span>Disabled</span>
 					</div>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="btn-loading" type="checkbox" bind:checked={btnLoading} />
 						<span>Loading</span>
 					</div>
+					</div>
 				</div>
 			{:else if slug === 'badge'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="badge-variant">Variant</label>
 					<select id="badge-variant" bind:value={badgeVariant}>
 						<option value="neutral">neutral</option>
@@ -1260,12 +1273,12 @@
 						<option value="danger">danger</option>
 					</select>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="badge-text">Text</label>
 					<input id="badge-text" type="text" bind:value={badgeText} />
 				</div>
 			{:else if slug === 'alert'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="alert-variant">Variant</label>
 					<select id="alert-variant" bind:value={alertVariant}>
 						<option value="info">info</option>
@@ -1274,16 +1287,16 @@
 						<option value="danger">danger</option>
 					</select>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="alert-title">Title</label>
 					<input id="alert-title" type="text" bind:value={alertTitle} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="alert-content">Content</label>
 					<input id="alert-content" type="text" bind:value={alertContent} />
 				</div>
 			{:else if slug === 'avatar'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="avatar-size">Size</label>
 					<select id="avatar-size" bind:value={avatarSize}>
 						<option value="sm">sm</option>
@@ -1291,16 +1304,16 @@
 						<option value="lg">lg</option>
 					</select>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="avatar-name">Name (Initials derivation)</label>
 					<input id="avatar-name" type="text" bind:value={avatarName} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="avatar-src">Image URL (optional)</label>
 					<input id="avatar-src" type="text" placeholder="https://..." bind:value={avatarSrc} />
 				</div>
 			{:else if slug === 'card'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="card-padding">Padding</label>
 					<select id="card-padding" bind:value={cardPadding}>
 						<option value="none">none</option>
@@ -1310,19 +1323,19 @@
 					</select>
 				</div>
 			{:else if slug === 'accordion'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="accordion-title">Title</label>
 					<input id="accordion-title" type="text" bind:value={accordionTitle} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="accordion-open">State</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="accordion-open" type="checkbox" bind:checked={accordionOpen} />
 						<span>Open (Expanded)</span>
 					</div>
 				</div>
 			{:else if slug === 'input'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="input-type">Type</label>
 					<select id="input-type" bind:value={inputType}>
 						<option value="text">text</option>
@@ -1332,73 +1345,73 @@
 						<option value="number">number</option>
 					</select>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="input-placeholder">Placeholder</label>
 					<input id="input-placeholder" type="text" bind:value={inputPlaceholder} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="input-disabled">State</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="input-disabled" type="checkbox" bind:checked={inputDisabled} />
 						<span>Disabled</span>
 					</div>
 				</div>
 			{:else if slug === 'textarea'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="textarea-rows">Rows</label>
 					<input id="textarea-rows" type="number" min="2" max="10" bind:value={textareaRows} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="textarea-placeholder">Placeholder</label>
 					<input id="textarea-placeholder" type="text" bind:value={textareaPlaceholder} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="textarea-disabled">State</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="textarea-disabled" type="checkbox" bind:checked={textareaDisabled} />
 						<span>Disabled</span>
 					</div>
 				</div>
 			{:else if slug === 'checkbox'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="cb-label">Label</label>
 					<input id="cb-label" type="text" bind:value={checkboxLabel} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="cb-checked">Checked</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="cb-checked" type="checkbox" bind:checked={checkboxChecked} />
 						<span>Checked</span>
 					</div>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="cb-disabled">Disabled</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="cb-disabled" type="checkbox" bind:checked={checkboxDisabled} />
 						<span>Disabled</span>
 					</div>
 				</div>
 			{:else if slug === 'switch'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="sw-label">Label</label>
 					<input id="sw-label" type="text" bind:value={switchLabel} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="sw-checked">Checked</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="sw-checked" type="checkbox" bind:checked={switchChecked} />
 						<span>Checked</span>
 					</div>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="sw-disabled">Disabled</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="sw-disabled" type="checkbox" bind:checked={switchDisabled} />
 						<span>Disabled</span>
 					</div>
 				</div>
 			{:else if slug === 'select'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="sel-val">Selected Value</label>
 					<select id="sel-val" bind:value={selectValue}>
 						<option value="starter">Starter</option>
@@ -1406,28 +1419,28 @@
 						<option value="enterprise">Enterprise</option>
 					</select>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="sel-disabled">State</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="sel-disabled" type="checkbox" bind:checked={selectDisabled} />
 						<span>Disabled</span>
 					</div>
 				</div>
 			{:else if slug === 'dialog'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="dlg-title">Title</label>
 					<input id="dlg-title" type="text" bind:value={dialogTitle} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="dlg-desc">Description</label>
 					<input id="dlg-desc" type="text" bind:value={dialogDescription} />
 				</div>
 			{:else if slug === 'tooltip'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="tip-content">Content</label>
 					<input id="tip-content" type="text" bind:value={tooltipContent} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="tip-pos">Position</label>
 					<select id="tip-pos" bind:value={tooltipPosition}>
 						<option value="top">top</option>
@@ -1435,32 +1448,32 @@
 					</select>
 				</div>
 			{:else if slug === 'progress'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="prog-val">Value ({progressValue}%)</label>
 					<input id="prog-val" type="range" min="0" max="100" bind:value={progressValue} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="prog-label">Label</label>
 					<input id="prog-label" type="text" bind:value={progressLabel} />
 				</div>
 			{:else if slug === 'skeleton'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="skel-width">Width</label>
 					<input id="skel-width" type="text" bind:value={skeletonWidth} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="skel-height">Height</label>
 					<input id="skel-height" type="text" bind:value={skeletonHeight} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="skel-circle">Shape</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="skel-circle" type="checkbox" bind:checked={skeletonCircle} />
 						<span>Circle</span>
 					</div>
 				</div>
 			{:else if slug === 'toast'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="toast-variant">Variant</label>
 					<select id="toast-variant" bind:value={toastVariant}>
 						<option value="info">info</option>
@@ -1469,12 +1482,12 @@
 						<option value="danger">danger</option>
 					</select>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="toast-title">Title</label>
 					<input id="toast-title" type="text" bind:value={toastTitle} />
 				</div>
 			{:else if slug === 'separator'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="sep-orient">Orientation</label>
 					<select id="sep-orient" bind:value={separatorOrientation}>
 						<option value="horizontal">horizontal</option>
@@ -1482,19 +1495,19 @@
 					</select>
 				</div>
 			{:else if slug === 'slider'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="slider-val">Value ({sliderValue})</label>
 					<input id="slider-val" type="range" min="0" max="100" bind:value={sliderValue} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="slider-disabled">State</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="slider-disabled" type="checkbox" bind:checked={sliderDisabled} />
 						<span>Disabled</span>
 					</div>
 				</div>
 			{:else if slug === 'animated-button'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="animbtn-variant">Variant</label>
 					<select id="animbtn-variant" bind:value={animBtnVariant}>
 						<option value="primary">primary</option>
@@ -1503,7 +1516,7 @@
 						<option value="danger">danger</option>
 					</select>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="animbtn-size">Size</label>
 					<select id="animbtn-size" bind:value={animBtnSize}>
 						<option value="sm">sm</option>
@@ -1511,22 +1524,22 @@
 						<option value="lg">lg</option>
 					</select>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="animbtn-anim">Animation</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="animbtn-anim" type="checkbox" bind:checked={animBtnAnimated} />
 						<span>Animated</span>
 					</div>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="animbtn-disabled">State</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="animbtn-disabled" type="checkbox" bind:checked={animBtnDisabled} />
 						<span>Disabled</span>
 					</div>
 				</div>
 			{:else if slug === 'animated-card'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="animcard-padding">Padding</label>
 					<select id="animcard-padding" bind:value={animCardPadding}>
 						<option value="none">none</option>
@@ -1535,46 +1548,46 @@
 						<option value="lg">lg</option>
 					</select>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="animcard-int">Interactive</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="animcard-int" type="checkbox" bind:checked={animCardInteractive} />
 						<span>Interactive</span>
 					</div>
 				</div>
 			{:else if slug === 'magnetic'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="mag-strength">Strength ({magneticStrength})</label>
 					<input id="mag-strength" type="range" min="0.05" max="0.5" step="0.01" bind:value={magneticStrength} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="mag-offset">Max Offset ({magneticMaxOffset}px)</label>
 					<input id="mag-offset" type="range" min="4" max="30" step="1" bind:value={magneticMaxOffset} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="mag-disabled">State</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="mag-disabled" type="checkbox" bind:checked={magneticDisabled} />
 						<span>Disabled</span>
 					</div>
 				</div>
 			{:else if slug === 'stepper'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="step-curr">Active Step ({stepperCurrent})</label>
 					<input id="step-curr" type="range" min="0" max="2" step="1" bind:value={stepperCurrent} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="step-int">Interactive</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="step-int" type="checkbox" bind:checked={stepperInteractive} />
 						<span>Interactive (Clickable)</span>
 					</div>
 				</div>				{:else if slug === 'marquee'}
-					<div class="playground__knob-item">
+					<div class="knob-item">
 						<label for="marq-speed">Speed ({marqueeSpeed}s)</label>
 						<input id="marq-speed" type="range" min="6" max="40" step="1" bind:value={marqueeSpeed} />
 					</div>
-					<div class="playground__knob-item">
+					<div class="knob-item">
 						<label for="marq-dir">Direction</label>
 						<select id="marq-dir" bind:value={marqueeDirection}>
 							<option value="left">left</option>
@@ -1582,55 +1595,55 @@
 						</select>
 					</div>
 				{:else if slug === 'text-loop'}
-					<div class="playground__knob-item">
+					<div class="knob-item">
 						<label for="tl-interval">Interval ({textLoopInterval}ms)</label>
 						<input id="tl-interval" type="range" min="600" max="5000" step="100" bind:value={textLoopInterval} />
 					</div>
 				{:else if slug === 'counter'}
-					<div class="playground__knob-item">
+					<div class="knob-item">
 						<label for="count-val">Target Number</label>
 					<input id="count-val" type="number" step="500" bind:value={counterValue} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="count-dur">Duration ({counterDuration}ms)</label>
 					<input id="count-dur" type="range" min="200" max="2000" step="50" bind:value={counterDuration} />
 				</div>
 			{:else if slug === 'card-3d'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="c3d-tilt">Max Tilt ({card3dMaxTilt}°)</label>
 					<input id="c3d-tilt" type="range" min="5" max="40" step="1" bind:value={card3dMaxTilt} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="c3d-persp">Perspective ({card3dPerspective}px)</label>
 					<input id="c3d-persp" type="range" min="400" max="2000" step="50" bind:value={card3dPerspective} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="c3d-glare">Specular Glare</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="c3d-glare" type="checkbox" bind:checked={card3dGlare} />
 						<span>Enabled</span>
 					</div>
 				</div>
 			{:else if slug === 'macos-dock'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="dock-mag">Magnification ({macosDockMagnification}x)</label>
 					<input id="dock-mag" type="range" min="1.2" max="2.4" step="0.1" bind:value={macosDockMagnification} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="dock-dist">Influence Distance ({macosDockDistance}px)</label>
 					<input id="dock-dist" type="range" min="60" max="200" step="10" bind:value={macosDockDistance} />
 				</div>
 			{:else if slug === 'card-stack'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="cstack-vis">Visible Cards ({cardStackMaxVisible})</label>
 					<input id="cstack-vis" type="range" min="2" max="5" step="1" bind:value={cardStackMaxVisible} />
 				</div>
 			{:else if slug === 'text-scramble'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="tsc-text">Text</label>
 					<input id="tsc-text" type="text" bind:value={textScrambleText} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="tsc-trig">Trigger Mode</label>
 					<select id="tsc-trig" bind:value={textScrambleTrigger}>
 						<option value="hover">hover</option>
@@ -1638,22 +1651,22 @@
 						<option value="mount">mount</option>
 					</select>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="tsc-spd">Speed ({textScrambleSpeed}ms)</label>
 					<input id="tsc-spd" type="range" min="10" max="100" step="5" bind:value={textScrambleSpeed} />
 				</div>
 			{:else if slug === 'app-shell'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="shell-sidebar">Regions</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="shell-sidebar" type="checkbox" bind:checked={shellSidebar} /><span>Sidebar</span>
 					</div>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="shell-footer" type="checkbox" bind:checked={shellFooter} /><span>Footer</span>
 					</div>
 				</div>
 			{:else if slug === 'aspect-ratio'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="aspect-val">Ratio</label>
 					<select id="aspect-val" bind:value={aspectRatio}>
 						<option value="16/9">16/9</option>
@@ -1663,7 +1676,7 @@
 					</select>
 				</div>
 			{:else if slug === 'banner'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="banner-variant">Variant</label>
 					<select id="banner-variant" bind:value={bannerVariant}>
 						<option value="default">default</option>
@@ -1673,14 +1686,14 @@
 						<option value="danger">danger</option>
 					</select>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="banner-dismiss">Dismiss</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="banner-dismiss" type="checkbox" bind:checked={bannerDismissible} /><span>Dismissible</span>
 					</div>
 				</div>
 			{:else if slug === 'breadcrumbs'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="crumbs-depth">Depth</label>
 					<select id="crumbs-depth" bind:value={crumbsDepth}>
 						<option value={2}>2 levels</option>
@@ -1688,7 +1701,7 @@
 					</select>
 				</div>
 			{:else if slug === 'button-group'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="group-orient">Orientation</label>
 					<select id="group-orient" bind:value={groupOrientation}>
 						<option value="horizontal">horizontal</option>
@@ -1696,7 +1709,7 @@
 					</select>
 				</div>
 			{:else if slug === 'form-layout'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="form-cols">Columns</label>
 					<select id="form-cols" bind:value={formCols}>
 						<option value={1}>1</option>
@@ -1705,17 +1718,17 @@
 					</select>
 				</div>
 			{:else if slug === 'kbd'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="kbd-keys">Keys (space-separated)</label>
 					<input id="kbd-keys" type="text" bind:value={kbdKeys} />
 				</div>
 			{:else if slug === 'table'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="table-rows">Rows</label>
 					<input id="table-rows" type="range" min="2" max="5" step="1" bind:value={tableRows} />
 				</div>
 			{:else if slug === 'thumbnail'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="thumb-shape">Shape</label>
 					<select id="thumb-shape" bind:value={thumbShape}>
 						<option value="square">square</option>
@@ -1723,7 +1736,7 @@
 					</select>
 				</div>
 			{:else if slug === 'check-indicator'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="check-state">State</label>
 					<select id="check-state" bind:value={checkState}>
 						<option value="checked">checked</option>
@@ -1732,21 +1745,21 @@
 					</select>
 				</div>
 			{:else if slug === 'color-picker'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="picker-swatches">Swatches</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="picker-swatches" type="checkbox" bind:checked={pickerSwatches} /><span>Show</span>
 					</div>
 				</div>
 			{:else if slug === 'combobox'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="combo-search">Search</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="combo-search" type="checkbox" bind:checked={comboSearchable} /><span>Searchable</span>
 					</div>
 				</div>
 			{:else if slug === 'time-picker'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="picker-step">Minute step</label>
 					<select id="picker-step" bind:value={pickerStep}>
 						<option value={5}>5</option>
@@ -1755,30 +1768,30 @@
 						<option value={60}>60</option>
 					</select>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="picker-hour12">Format</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="picker-hour12" type="checkbox" bind:checked={pickerHour12} /><span>12-hour</span>
 					</div>
 				</div>
 			{:else if slug === 'file-input'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="file-multiple">Files</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="file-multiple" type="checkbox" bind:checked={fileMultiple} /><span>Multiple</span>
 					</div>
 				</div>
 			{:else if slug === 'icon-button'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="iconbtn-label">Label</label>
 					<input id="iconbtn-label" type="text" bind:value={iconBtnLabel} />
 				</div>
 			{:else if slug === 'rating'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="rating-val">Value</label>
 					<input id="rating-val" type="range" min="0" max="10" step="1" bind:value={ratingValue} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="rating-max">Max</label>
 					<select id="rating-max" bind:value={ratingMax}>
 						<option value={5}>5</option>
@@ -1786,18 +1799,18 @@
 					</select>
 				</div>
 			{:else if slug === 'countdown'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="cd-seconds">Seconds</label>
 					<input id="cd-seconds" type="range" min="10" max="300" step="5" bind:value={countdownSeconds} />
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="cd-days">Units</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="cd-days" type="checkbox" bind:checked={countdownShowDays} /><span>Show days</span>
 					</div>
 				</div>
 			{:else if slug === 'drawer'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="drawer-side">Side</label>
 					<select id="drawer-side" bind:value={drawerSide}>
 						<option value="right">right</option>
@@ -1805,26 +1818,26 @@
 					</select>
 				</div>
 			{:else if slug === 'overlay'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="overlay-modal">Mode</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="overlay-modal" type="checkbox" bind:checked={overlayModal} /><span>Modal</span>
 					</div>
 				</div>
 			{:else if slug === 'outline'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="outline-levels">Levels</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="outline-levels" type="checkbox" bind:checked={outlineLevels} /><span>Include sub-levels</span>
 					</div>
 				</div>
 			{:else if slug === 'pagination'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="pagination-total">Total pages</label>
 					<input id="pagination-total" type="range" min="3" max="15" step="1" bind:value={paginationTotal} />
 				</div>
 			{:else if slug === 'popover'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="popover-placement">Placement</label>
 					<select id="popover-placement" bind:value={popoverPlacement}>
 						<option value="top">top</option>
@@ -1834,19 +1847,19 @@
 					</select>
 				</div>
 			{:else if slug === 'toast-viewport'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="toast-pos">Position</label>
 					<select id="toast-pos" bind:value={toastPos}>
 						<option value="bottom-right">bottom-right</option>
 						<option value="top-right">top-right</option>
 					</select>
 				</div>
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="toast-count">Toasts</label>
 					<input id="toast-count" type="range" min="1" max="4" step="1" bind:value={toastCount} />
 				</div>
 			{:else if slug === 'side-nav' || slug === 'top-nav'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="nav-active">Active item</label>
 					<select id="nav-active" bind:value={navActive}>
 						<option value="dashboard">dashboard</option>
@@ -1856,23 +1869,23 @@
 					</select>
 				</div>
 			{:else if slug === 'tree-list'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="tree-open">Expansion</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="tree-open" type="checkbox" bind:checked={treeOpen} /><span>Expand folders</span>
 					</div>
 				</div>
 			{:else if slug === 'bouncy-accordion'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="bouncy-collapsible">Behavior</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="bouncy-collapsible" type="checkbox" bind:checked={bouncyCollapsible} /><span>Allow collapse</span>
 					</div>
 				</div>
 			{:else if slug === 'animated-sidebar'}
-				<div class="playground__knob-item">
+				<div class="knob-item">
 					<label for="sidebar-open">Panel</label>
-					<div class="playground__knob-toggle">
+					<div class="knob-toggle">
 						<input id="sidebar-open" type="checkbox" bind:checked={sidebarOpen} /><span>Expanded</span>
 					</div>
 				</div>
@@ -1897,7 +1910,13 @@
 				{/if}
 			</button>
 		</div>
-		<pre class="playground__code-content"><code>{generatedCode}</code></pre>
+		<div class="playground__code-content">
+			{#if highlightedCode}
+				{@html highlightedCode}
+			{:else}
+				<pre><code>{generatedCode}</code></pre>
+			{/if}
+		</div>
 	</div>
 </div>
 

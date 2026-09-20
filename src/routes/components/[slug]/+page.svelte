@@ -14,7 +14,7 @@
 	<meta name="description" content={data.component.description} />
 </svelte:head>
 
-<article class="content-section narrow-full box gap-lg">
+<article class="content-section narrow-full box gap-2xl">
 	<header class="box gap-2xs mb-lg">
 		<h1 class="text-4xl weight-600">{data.component.name}</h1>
 		<p class="text-muted">{data.component.description}</p>
@@ -26,7 +26,7 @@
 	</section>
 
 	{#if data.component.slug === 'button'}
-		<section class="box gap-sm" aria-labelledby="demos-heading">
+		<section class="box gap-md" aria-labelledby="demos-heading">
 			<h2 id="demos-heading" class="text-xl weight-600">Demos</h2>
 			<p class="text-muted">Nine focused recipes covering the Button's full surface. Copy any card's code as a starting point.</p>
 			<ButtonDemos />

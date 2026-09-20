@@ -8,8 +8,8 @@ The token schema is the public cross-project styling API. Values in `token-sourc
 
 | Token | Default | Dark override |
 | --- | --- | --- |
-| `--font-sans` | `"Google Sans Flex", sans-serif` | inherits default |
-| `--font-mono` | `"JetBrains Mono", monospace` | inherits default |
+| `--font-sans` | `system-ui, sans-serif` | inherits default |
+| `--font-mono` | `ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace` | inherits default |
 | `--text-xs` | `0.67rem` | inherits default |
 | `--text-sm` | `0.75rem` | inherits default |
 | `--text-md` | `0.875rem` | inherits default |
@@ -129,7 +129,7 @@ The token schema is the public cross-project styling API. Values in `token-sourc
 | `--height-md` | `24px` | inherits default |
 | `--white-fixed` | `#ffffff` | inherits default |
 | `--black-fixed` | `#171717` | inherits default |
-| `--bg` | `#ffffff` | `#101010` |
+| `--bg` | `#fafafa` | `#101010` |
 | `--bg-surface` | `#fafafa` | `#202021` |
 | `--bg-panel` | `#fbfbf9` | `#1f1f20` |
 | `--bg-sunken` | `#f7f6f0` | `#1f1f20` |
@@ -141,8 +141,8 @@ The token schema is the public cross-project styling API. Values in `token-sourc
 | `--text-secondary` | `#777777` | `#c7c7c7` |
 | `--text-muted` | `#aeaeae` | `#7c7c7c` |
 | `--text-inverse` | `#ffffff` | `#7c7c7c` |
-| `--state-surface` | `#f2efe9` | `#7c7c7c` |
-| `--state-hover` | `#f4f2ec` | `#4a4a4b` |
+| `--state-surface` | `var(--bg)` | `#7c7c7c` |
+| `--state-hover` | `#eae9e8` | `#4a4a4b` |
 | `--state-selected` | `#f4f2ec` | `#666668` |
 | `--border` | `#d8d8d8` | `#2f2f2f` |
 | `--border-subtle` | `#eceaea` | `#1e1e1f` |

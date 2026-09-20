@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { highlight } from '#lib/docs/highlight.ts';
 
 	type Props = {
 		title: string;
@@ -12,6 +13,17 @@
 
 	let copied = $state(false);
 	let resetTimer: ReturnType<typeof setTimeout> | undefined;
+	let highlightedHtml = $state<string>('');
+
+	$effect(() => {
+		let active = true;
+		highlight(code, 'svelte').then((res) => {
+			if (active) highlightedHtml = res;
+		});
+		return () => {
+			active = false;
+		};
+	});
 
 	async function copyCode() {
 		try {
@@ -30,7 +42,7 @@
 		<div class="demo-card__info">
 			<strong class="demo-card__title">{title}</strong>
 			{#if description}
-				<p class="muted text-sm">{description}</p>
+				<p class="text-muted text-sm">{description}</p>
 			{/if}
 		</div>
 		<button type="button" class="playground__copy-btn" class:copied onclick={copyCode}>
@@ -40,5 +52,12 @@
 	<div class="demo-card__preview">
 		{@render children?.()}
 	</div>
-	<pre class="playground__code-content"><code>{code}</code></pre>
+	<div class="playground__code-content">
+		{#if highlightedHtml}
+			{@html highlightedHtml}
+		{:else}
+			<pre><code>{code}</code></pre>
+		{/if}
+	</div>
 </figure>
+

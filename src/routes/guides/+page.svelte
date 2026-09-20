@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { guides } from '#lib/docs/guides.js';
+	import { guides } from '#lib/docs/guides.ts';
 </script>
 
 <svelte:head>

@@ -1,11 +1,11 @@
 <script lang="ts">
 	import '#lib/styles/index.sass';
-	import { components, categories } from '#lib/docs/catalogue.js';
-	import { guides } from '#lib/docs/guides.js';
+	import { components, categories } from '#lib/docs/catalogue.ts';
+	import { guides } from '#lib/docs/guides.ts';
 	import { page } from '$app/state';
 	import { MotionConfig } from '@humanspeak/svelte-motion';
-	import Menu from '$lib/icons/menu.svelte';
-	import Chevdown from '$lib/icons/chevdown.svelte';
+	import Menu from '#lib/icons/menu.svelte';
+	import Chevdown from '#lib/icons/chevdown.svelte';
 
 	let openSidebarSection = $state<string | null>(null);
 	let mobileNavOpen = $state(false);
