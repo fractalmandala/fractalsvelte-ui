@@ -2,6 +2,7 @@
 	"name": "@fractaldesign/fractalsvelte-ui",
 	"version": "0.7.0",
 	"description": "Massive, modern, token-driven Svelte 5 runes component library for SvelteKit. Zero Tailwind. Scoped, beautiful, performant.",
+	"homepage": "https://fractalsvelte.dev/fractalsvelte-ui",
 	"type": "module",
 	"license": "MIT",
 	"author": "Fractalmandala",
@@ -9,7 +10,6 @@
 		"type": "git",
 		"url": "git+https://github.com/fractalmandala/fractalsvelte-ui.git"
 	},
-	"homepage": "https://github.com/fractalmandala/fractalsvelte-ui#readme",
 	"bugs": {
 		"url": "https://github.com/fractalmandala/fractalsvelte-ui/issues"
 	},
