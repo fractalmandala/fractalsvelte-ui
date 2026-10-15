@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -rnE 'from '\\\\''\\(\\\\$app|\\\\$lib|#lib|\\\\$env\\)' src/lib)",
+      "Bash(grep -rnE '\\(\\\\$app|\\\\$lib|#lib\\)/' dist)"
+    ]
+  }
+}
