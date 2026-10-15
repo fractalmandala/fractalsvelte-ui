@@ -5,6 +5,14 @@
 	"type": "module",
 	"license": "MIT",
 	"author": "Fractalmandala",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/fractalmandala/fractalsvelte-ui.git"
+	},
+	"homepage": "https://github.com/fractalmandala/fractalsvelte-ui#readme",
+	"bugs": {
+		"url": "https://github.com/fractalmandala/fractalsvelte-ui/issues"
+	},
 	"keywords": [
 		"svelte",
 		"svelte5",
