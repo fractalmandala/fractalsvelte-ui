@@ -22,9 +22,15 @@ import ts from 'typescript';
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const p = (...s) => path.join(ROOT, ...s);
 
-const COMPONENTS_DIR = p('src/lib/components');
+// `--styler` documents the fractalstyler edition instead: the components exported
+// from src/lib/styler/index.ts, imported from the /styler entry, described by
+// src/lib/documentation/styler-descriptions.ts.
+const STYLER = process.argv.includes('--styler');
+const COMPONENTS_DIR = p(STYLER ? 'src/lib/styler' : 'src/lib/components');
 const DESCRIPTIONS_DIR = p('src/lib/documentation/descriptions');
-const OUTPUT_FILE = p('src/lib/documentation/manifest.json');
+const STYLER_DESCRIPTIONS = p('src/lib/documentation/styler-descriptions.ts');
+const OUTPUT_FILE = p(STYLER ? 'src/lib/documentation/manifest.styler.json' : 'src/lib/documentation/manifest.json');
+const IMPORT_FROM = STYLER ? '@fractaldesign/fractalsvelte-ui/styler' : '@fractaldesign/fractalsvelte-ui';
 
 /** Recursively get all .svelte component files. */
 async function getComponentFiles(dir) {
@@ -44,9 +50,13 @@ async function getComponentFiles(dir) {
 /** Merge every authored descriptions/*.ts module into one map. */
 async function loadDescriptions() {
 	const map = {};
-	if (!existsSync(DESCRIPTIONS_DIR)) return map;
-	for (const f of (await readdir(DESCRIPTIONS_DIR)).filter((f) => f.endsWith('.ts'))) {
-		const src = await readFile(path.join(DESCRIPTIONS_DIR, f), 'utf8');
+	const files = STYLER
+		? [STYLER_DESCRIPTIONS]
+		: existsSync(DESCRIPTIONS_DIR)
+			? (await readdir(DESCRIPTIONS_DIR)).filter((f) => f.endsWith('.ts')).map((f) => path.join(DESCRIPTIONS_DIR, f))
+			: [];
+	for (const file of files) {
+		const src = await readFile(file, 'utf8');
 		const js = ts.transpileModule(src, {
 			compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ESNext }
 		}).outputText;
@@ -73,7 +83,7 @@ function parseExtends(heritage) {
 
 /** Extract script content from Svelte file. */
 function extractScript(src) {
-	const match = src.match(/<script(?:\s+lang="ts")?>([\s\S]*?)<\/script>/);
+	const match = src.match(/<script(?:\s+lang="ts")?(?:\s+generics="[^"]*")?>([\s\S]*?)<\/script>/);
 	return match ? match[1] : '';
 }
 
@@ -167,9 +177,18 @@ function buildUsage(name, props, snippets) {
 	return `<${name}${attrStr} />`;
 }
 
+/** Names exported as components from the entry point; internal helpers are left out. */
+async function exportedNames() {
+	const index = await readFile(p(STYLER ? 'src/lib/styler/index.ts' : 'src/lib/index.ts'), 'utf8');
+	return new Set([...index.matchAll(/default as (\w+) \}/g)].map((m) => m[1]));
+}
+
 async function main() {
 	console.log('Extracting documentation manifest from component ASTs...');
-	const files = await getComponentFiles(COMPONENTS_DIR);
+	const exported = await exportedNames();
+	const files = (await getComponentFiles(COMPONENTS_DIR)).filter((f) =>
+		exported.has(path.basename(f, '.svelte'))
+	);
 	const descriptions = await loadDescriptions();
 
 	const components = [];
@@ -210,7 +229,7 @@ async function main() {
 			category,
 			file: path.relative(ROOT, file),
 			description: descriptions[name] ?? null,
-			importSnippet: `import { ${name} } from '@fractaldesign/fractalsvelte-ui';`,
+			importSnippet: `import { ${name} } from '${IMPORT_FROM}';`,
 			usageSnippet: buildUsage(name, props, snippets),
 			extends: ast.extends,
 			props,

@@ -1,8 +1,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import '$lib/styles/tokens.css';
+	import '$lib/styles/index.sass'
 	import ThemeToggle from '$lib/components/doc/ThemeToggle.svelte';
-	import manifest from '$lib/documentation/manifest.json';
+	import manifest from '$lib/documentation/manifest.styler.json';
 
 	interface Props {
 		children?: Snippet;
@@ -100,7 +101,7 @@
 							<ul class="f-group-list">
 								{#each list as c}
 									<li>
-										<a href="/components/{c.name}" class="f-nav-item">
+										<a href="/styler/{c.name}" class="f-nav-item">
 											{c.name}
 										</a>
 									</li>

@@ -76,39 +76,39 @@
 		color-scheme: light;
 
 		/* Backgrounds */
-		--f-bg: #f8f9fa;
-		--f-surface: #ffffff;
+		--f-bg: #FFFFFF;
+		--f-surface: #FEFDFC;
 		--f-panel: #ffffff;
-		--f-sunken: #f1f3f5;
+		--f-sunken: #FEFDFC;
 		--f-raised: #ffffff;
 		--f-overlay: rgba(15, 23, 42, 0.45);
 		--f-input: #ffffff;
-		--f-hover: #f1f3f5;
+		--f-hover: #ffffff;
 		--f-active: #e9ecef;
 
 		/* Text */
 		--f-text: #18181b;
-		--f-text-muted: #64748b;
-		--f-text-subtle: #94a3b8;
+		--f-text-muted: #7d7f81;
+		--f-text-subtle: #b5b5b6;
 		--f-text-inverse: #ffffff;
 
 		/* Borders */
-		--f-border: #e2e8f0;
-		--f-border-subtle: #f1f5f9;
-		--f-border-strong: #cbd5e1;
+		--f-border: #e7e8e9;
+		--f-border-subtle: #f0f0f0;
+		--f-border-strong: #dddddd;
 		--f-ring: rgba(16, 185, 129, 0.35);
 
 		/* Primary / Brand (Emerald/Jade theme inspired by Fractal) */
 		--f-primary: #10b981;
 		--f-primary-hover: #059669;
 		--f-primary-active: #047857;
-		--f-primary-subtle: rgba(16, 185, 129, 0.12);
+		--f-primary-subtle: #4becb6;
 		--f-primary-text: #ffffff;
 
 		/* Accent (Vibrant Amber/Orange) */
-		--f-accent: #f59e0b;
-		--f-accent-hover: #d97706;
-		--f-accent-subtle: rgba(245, 158, 11, 0.12);
+		--f-accent: #FF3E00;
+		--f-accent-hover: #10b981;
+		--f-accent-subtle: #DC2626;
 
 		/* Status Colors */
 		--f-success: #10b981;
@@ -201,10 +201,10 @@
 
 	/* Pro UI Theme (Linear/Raycast inspired, dark metallic, razor-sharp indigo) */
 	[data-theme-style='pro'] {
-		--f-primary: #6366f1;
-		--f-primary-hover: #818cf8;
-		--f-primary-active: #4f46e5;
-		--f-primary-subtle: rgba(99, 102, 241, 0.15);
+		--f-primary: #10b981;
+		--f-primary-hover: #059669;
+		--f-primary-active: #047857;
+		--f-primary-subtle: #4becb6;
 		--f-primary-text: #ffffff;
 		--f-ring: rgba(99, 102, 241, 0.5);
 		--f-radius-xs: 2px;
@@ -229,10 +229,10 @@
 
 	/* BeUI Theme (beui.dev inspired, vibrant rounded violet & warm modern curves) */
 	[data-theme-style='beui'] {
-		--f-primary: #8b5cf6;
-		--f-primary-hover: #a78bfa;
-		--f-primary-active: #7c3aed;
-		--f-primary-subtle: rgba(139, 92, 246, 0.18);
+		--f-primary: #10b981;
+		--f-primary-hover: #059669;
+		--f-primary-active: #047857;
+		--f-primary-subtle: #4becb6;
 		--f-primary-text: #ffffff;
 		--f-accent: #ec4899;
 		--f-ring: rgba(139, 92, 246, 0.5);
@@ -258,10 +258,10 @@
 
 	/* Halaska Theme (ui.halaska.com inspired, luxury editorial, warm amber & bronze) */
 	[data-theme-style='halaska'] {
-		--f-primary: #d97706;
-		--f-primary-hover: #f59e0b;
-		--f-primary-active: #b45309;
-		--f-primary-subtle: rgba(217, 119, 6, 0.15);
+		--f-primary: #10b981;
+		--f-primary-hover: #059669;
+		--f-primary-active: #047857;
+		--f-primary-subtle: #4becb6;
 		--f-primary-text: #ffffff;
 		--f-ring: rgba(217, 119, 6, 0.45);
 		--f-radius-xs: 2px;
@@ -288,11 +288,11 @@
 
 	/* Cyber Theme (Cyberpunk glowing cyan, dark space obsidian) */
 	[data-theme-style='cyber'] {
-		--f-primary: #06b6d4;
-		--f-primary-hover: #22d3ee;
-		--f-primary-active: #0891b2;
-		--f-primary-subtle: rgba(6, 182, 212, 0.16);
-		--f-primary-text: #021a22;
+		--f-primary: #10b981;
+		--f-primary-hover: #059669;
+		--f-primary-active: #047857;
+		--f-primary-subtle: #4becb6;
+		--f-primary-text: #FFFFFF;
 		--f-accent: #f43f5e;
 		--f-ring: rgba(6, 182, 212, 0.55);
 		--f-radius-xs: 2px;

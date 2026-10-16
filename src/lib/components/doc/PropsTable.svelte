@@ -35,7 +35,7 @@
 					{#each items as item}
 						<tr>
 							<td class="f-prop-name">
-								<code>{item.name}</code>
+								{item.name}
 								{#if !item.optional}
 									<span class="f-badge f-required" title="Required">required</span>
 								{/if}
@@ -44,11 +44,11 @@
 								{/if}
 							</td>
 							<td class="f-prop-type">
-								<code>{item.type}</code>
+								{item.type}
 							</td>
 							<td class="f-prop-default">
 								{#if item.default}
-									<code>{item.default}</code>
+									{item.default}
 								{:else}
 									<span class="f-none">—</span>
 								{/if}
@@ -121,28 +121,6 @@
 			font-weight: 600;
 			color: var(--f-primary);
 			white-space: nowrap;
-		}
-
-		.f-prop-name code {
-			font-family: var(--f-font-mono);
-			font-size: 0.85em;
-			background: var(--f-hover);
-			padding: 0.15rem 0.35rem;
-			border-radius: var(--f-radius-xs);
-			color: var(--f-text);
-		}
-
-		.f-prop-type code {
-			font-family: var(--f-font-mono);
-			font-size: 0.82em;
-			color: var(--f-text-muted);
-			word-break: break-all;
-		}
-
-		.f-prop-default code {
-			font-family: var(--f-font-mono);
-			font-size: 0.82em;
-			color: var(--f-primary);
 		}
 
 		.f-none {

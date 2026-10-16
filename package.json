@@ -33,6 +33,7 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"docs:extract": "node scripts/extract-docs.mjs",
+		"docs:extract:styler": "node scripts/extract-docs.mjs --styler",
 		"docs:check": "node scripts/docs-check.mjs",
 		"styler:check": "node scripts/styler-check.mjs"
 	},

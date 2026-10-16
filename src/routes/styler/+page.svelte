@@ -541,7 +541,7 @@
 				<span class="card-title">Revealed!</span><span class="text-body-sm text-secondary">Shutters are SVG rects.</span>
 			</SplitReveal>
 			<StaggerList items={staggerItems} stagger={150}>
-				{#snippet itemSnippet({ item, index })}<div class="row ycenter gap-sm pad-sm border-subtle radius-sm text-sm"><span class="mono text-muted">{index + 1}</span>{item.label}</div>{/snippet}
+				{#snippet itemSnippet({ item, index })}<div class="row ycenter gap-sm pad-sm border-subtle radius-sm text-sm"><span class="text-muted">{index + 1}</span>{item.label}</div>{/snippet}
 			</StaggerList>
 		</section>
 
