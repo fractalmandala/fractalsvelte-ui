@@ -1,45 +1,43 @@
-// Single source of truth for Fractal UI runtime unions and derived TypeScript types.
-// Follows the as const array + derived union pattern for zero-drift runtime introspection.
+// Single source of truth for Fractalstyler and Fractalsvelte UI props and variants
 
-/**
- * Formats a values array as a documentation union string — `'a' | 'b'`.
- */
+
 export const union = (values: readonly string[]): string =>
 	values.map((v) => `'${v}'`).join(' | ');
 
-// Visual emphasis variants
+// Used inline as `data-variant=`. The set is the one `_10_propped.sass` paints —
+// a variant with no rule is a dead option in every picker.
 export const VARIANTS = [
 	'primary',
 	'secondary',
-	'soft',
+	'themed',
 	'outline',
 	'ghost',
-	'destructive',
-	'surface'
+	'link',
+	'icon',
 ] as const;
 export type Variant = (typeof VARIANTS)[number];
 
-// Component sizing scale
-export const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+// inline as `data-size=`
+export const SIZES = ['sm', 'md', 'bs', 'lg', 'xl'] as const;
 export type Size = (typeof SIZES)[number];
 
-// Corner curvature shapes
-export const SHAPES = ['square', 'rounded', 'pill'] as const;
+// inline as `data-shape=`
+export const SHAPES = ['square', 'min', 'modern', 'curved', 'round'] as const;
 export type Shape = (typeof SHAPES)[number];
 
-// Semantic feedback intents
+// data-intent
 export const INTENTS = ['info', 'success', 'warning', 'danger'] as const;
 export type Intent = (typeof INTENTS)[number];
 
-// Button HTML types
-export const BTN_TYPES = ['button', 'submit', 'reset'] as const;
-export type BtnType = (typeof BTN_TYPES)[number];
+// data-action
+export const ACTIONS = ['button', 'submit', 'reset'] as const;
+export type Action = (typeof ACTIONS)[number];
 
-// Orientations
+// data-orientation
 export const ORIENTATIONS = ['horizontal', 'vertical'] as const;
 export type Orientation = (typeof ORIENTATIONS)[number];
 
-// Popover / Tooltip placements
+// data-placements
 export const PLACEMENTS = [
 	'top',
 	'top-start',
@@ -72,70 +70,149 @@ export type Space = (typeof SPACES)[number];
 export const SPEEDS = ['fast', 'normal', 'slow'] as const;
 export type Speed = (typeof SPEEDS)[number];
 
+// Shadow presets
+export const SHADOWS = [ 'sm', 'bs', 'lg', 'xl', '2xl' ];
+export type Shadow = (typeof SHADOWS)[number];
+
+// padding
+export const PADS = ["sm", 'md', 'bs', 'lg', 'xl'] as const;
+export type Pad = (typeof PADS)[number];
+
+// The `data-*` aliases the public API has always shipped under.
+export type DataVariant = Variant;
+export type DataSize = Size;
+export type DataShape = Shape;
+export type DataPad = Pad;
+
+// The axes are class-qualified: an element opts into an axis by carrying the
+// matching class from `_10_propped.sass`, and the preset runtime then writes
+// the `data-*` value onto it. The element itself is not the qualifier.
+export const VARIANT_TARGETS = '.el-variants';
+export const SHAPE_TARGETS = '.el-shape';
+export const SIZE_TARGETS = '.el-size';
+export const PAD_TARGETS = '.el-pad';
+
+export const presetApplication = [
+	VARIANT_TARGETS,
+	SHAPE_TARGETS,
+	SIZE_TARGETS,
+	PAD_TARGETS
+] as const;
+
 // Full theme tokens contract
 export interface DesignTokens {
 	// Backgrounds
-	'--f-bg': string;
-	'--f-surface': string;
-	'--f-panel': string;
-	'--f-sunken': string;
-	'--f-raised': string;
-	'--f-overlay': string;
-	'--f-input': string;
-	'--f-hover': string;
-	'--f-active': string;
+	'--bg': string;
+	'--bg-surface': string;
+	'--bg-panel': string;
+	'--bg-sunken': string;
+	'--bg-raised': string;
+	'--bg-extra': string;
+	'--bg-input': string;
+	'--bg-button': string;
+	'--state-surface': string;
+	'--state-hover': string;
+	'--state-selected': string;
 
 	// Typography
-	'--f-text': string;
-	'--f-text-muted': string;
-	'--f-text-subtle': string;
-	'--f-text-inverse': string;
+	'--text-primary': string;
+	'--text-secondary': string;
+	'--text-muted': string;
+	'--text-inverse': string;
 
 	// Borders & Rings
-	'--f-border': string;
-	'--f-border-subtle': string;
-	'--f-border-strong': string;
-	'--f-ring': string;
+	'--border': string;
+	'--border-subtle': string;
+	'--border-strong': string;
+	'--ring': string;
 
 	// Brand / Primary
-	'--f-primary': string;
-	'--f-primary-hover': string;
-	'--f-primary-active': string;
-	'--f-primary-subtle': string;
-	'--f-primary-text': string;
-
-	// Accent
-	'--f-accent': string;
-	'--f-accent-hover': string;
-	'--f-accent-subtle': string;
+	'--theme-color': string;
+	'--theme-color-alt': string;
+	'--theme-color-sub': string;
 
 	// Semantic Intents
-	'--f-success': string;
-	'--f-success-bg': string;
-	'--f-success-text': string;
-	'--f-warning': string;
-	'--f-warning-bg': string;
-	'--f-warning-text': string;
-	'--f-danger': string;
-	'--f-danger-bg': string;
-	'--f-danger-text': string;
-	'--f-info': string;
-	'--f-info-bg': string;
-	'--f-info-text': string;
+	'--success': string;
+	'--success-bg': string;
+	'--success-text': string;
+	'--warning': string;
+	'--warning-bg': string;
+	'--warning-text': string;
+	'--danger': string;
+	'--danger-bg': string;
+	'--danger-text': string;
+	'--info': string;
+	'--info-bg': string;
+	'--info-text': string;
 
 	// Corner Radii
-	'--f-radius-xs': string;
-	'--f-radius-sm': string;
-	'--f-radius-md': string;
-	'--f-radius-lg': string;
-	'--f-radius-xl': string;
-	'--f-radius-full': string;
+	'--radius-xs': string;
+	'--radius-sm': string;
+	'--radius-md': string;
+	'--radius-bs': string;
+	'--radius-lg': string;
+	'--radius-full': string;
 
 	// Shadows
-	'--f-shadow-xs': string;
-	'--f-shadow-sm': string;
-	'--f-shadow-md': string;
-	'--f-shadow-lg': string;
-	'--f-shadow-xl': string;
-	'--f-shadow-glow': string;
+	'--shadow-xs': string;
+	'--shadow-sm': string;
+	'--shadow-md': string;
+	'--shadow-bs': string;
+	'--shadow-lg': string;
+	'--shadow-xl': string;
+	'--shadow-2xl': string;
+	'--shadow-3xl': string;
+
+	// Heights
+	'--height-xs': string;
+	'--height-sm': string;
+	'--height-md': string;
+	'--height-bs': string;
+	'--height-lg': string;
+	'--height-xl': string;
+
+	// Duration
+	'--duration-sm': string;
+	'--duration-md': string;
+	'--duration-bs': string;
+	'--duration-lg': string;
+
+	// Easing
+	'--transin1': string;
+	'--transin2': string;
+	'--transin3': string;
+	'--transout1': string;
+	'--transout2': string;
+	'--transout3': string;
+
+	// Dimensions
+	'--header-height': string;
+	'--footer-height': string;
+	'--sidebar-width-left': string;
+	'--sidebar-width-right': string;
+	'--prose-clamp': string;
+
+	'--text-xs': string;
+	'--text-sm': string;
+	'--text-md': string;
+	'--text-bs': string;
+	'--text-lg': string;
+	'--text-xl': string;
+	'--text-2xl': string;
+	'--text-3xl': string;
+	'--text-4xl': string;
+	'--text-5xl': string;
+
+	'--unit-space': string;
+	'--space-xs': string;
+	'--space-sm': string;
+	'--space-md': string;
+	'--space-bs': string;
+	'--space-lg': string;
+	'--space-xl': string;
+	'--space-2xl': string;
+	'--space-3xl': string;
 }
+
+/** The token contract under the name the package has always exported. */
+export type FractalTokens = DesignTokens;

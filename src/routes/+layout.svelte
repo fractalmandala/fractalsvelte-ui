@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import type { Snippet } from 'svelte';
 	import '$lib/styles/tokens.css';
 	import '$lib/styles/index.sass'
@@ -12,6 +13,13 @@
 	let { children }: Props = $props();
 
 	let searchQuery = $state('');
+
+	const isRawCanvas = $derived(
+		page.url.pathname.startsWith('/canvas') ||
+		page.url.pathname.startsWith('/raw') ||
+		page.url.searchParams.has('raw') ||
+		page.url.searchParams.has('canvas')
+	);
 
 	const categories = [
 		{ id: 'actions', name: 'Actions & Buttons', icon: '⚡' },
@@ -42,6 +50,9 @@
 	});
 </script>
 
+{#if isRawCanvas}
+	{@render children?.()}
+{:else}
 <div class="f-app-layout">
 	<!-- Global Top Navigation Header -->
 	<header class="f-app-header">
@@ -119,6 +130,7 @@
 		</main>
 	</div>
 </div>
+{/if}
 
 <style>
 	:global(body) {

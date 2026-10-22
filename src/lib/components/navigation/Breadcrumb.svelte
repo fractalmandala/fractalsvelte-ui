@@ -221,7 +221,7 @@
 			display: flex;
 			align-items: center;
 			flex-wrap: wrap;
-			gap: var(--f-space-2xs);
+			gap: var(--f-space-xs);
 			margin: 0;
 			padding: 0;
 			list-style: none;
@@ -243,7 +243,6 @@
 		.f-breadcrumb-link {
 			color: var(--f-text-muted);
 			text-decoration: none;
-			font-weight: 500;
 			transition: color var(--f-duration-fast) var(--f-ease);
 		}
 

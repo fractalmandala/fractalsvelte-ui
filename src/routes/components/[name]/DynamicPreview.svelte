@@ -812,8 +812,28 @@
 
 	<!-- =================== OVERLAYS =================== -->
 	{:else if name === 'Dialog'}
-		<div>
-			<Lib.Button variant="primary" onclick={() => dialogOpen = true}>Trigger Modal Dialog</Lib.Button>
+		<div class="f-preview-column" style="width: 100%; max-width: 520px; gap: 1.5rem; align-items: center;">
+			<div class="f-demo-row">
+				<Lib.Button variant="primary" onclick={() => dialogOpen = true}>Open Modal Overlay</Lib.Button>
+			</div>
+
+			<div class="f-variants-title">Dialog Design Surface</div>
+			<div class="f-dialog-panel" data-size="md" style="animation: none; max-width: 100%; box-shadow: var(--f-shadow-lg);">
+				<div class="f-dialog-header">
+					<h3 class="f-dialog-title">Modal Dialog</h3>
+					<p class="f-dialog-desc">Accessible dialog surface with reactive state and focus trap.</p>
+				</div>
+				<div class="f-dialog-body">
+					<p style="color: var(--f-text); font-size: 0.9rem; margin: 0; line-height: 1.5;">
+						This surface is directly inspectable in the canvas. You can test live themes, borders, shadows, and spacing.
+					</p>
+				</div>
+				<div class="f-dialog-footer">
+					<Lib.Button variant="secondary" size="sm">Cancel</Lib.Button>
+					<Lib.Button variant="primary" size="sm">Save Changes</Lib.Button>
+				</div>
+			</div>
+
 			<Lib.Dialog bind:open={dialogOpen} title="Svelte 5 Dialog" description="Accessible modal window with backdrop click and escape key support.">
 				<p style="color: var(--f-text); font-size: 0.9rem;">This dialog was opened via reactive $bindable(open) rune state.</p>
 				<div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
@@ -823,8 +843,23 @@
 		</div>
 
 	{:else if name === 'AlertDialog'}
-		<div>
-			<Lib.Button variant="destructive" onclick={() => alertDialogOpen = true}>Delete Repository</Lib.Button>
+		<div class="f-preview-column" style="width: 100%; max-width: 480px; gap: 1.5rem; align-items: center;">
+			<div class="f-demo-row">
+				<Lib.Button variant="destructive" onclick={() => alertDialogOpen = true}>Trigger Alert Modal</Lib.Button>
+			</div>
+
+			<div class="f-variants-title">Alert Dialog Surface</div>
+			<div class="f-dialog-panel" data-size="sm" style="animation: none; max-width: 100%; border-color: rgba(239, 68, 68, 0.3); box-shadow: var(--f-shadow-lg);">
+				<div class="f-dialog-header">
+					<h3 class="f-dialog-title" style="color: var(--f-danger, #ef4444);">Confirm Deletion</h3>
+					<p class="f-dialog-desc">Are you absolutely sure? This action cannot be reversed.</p>
+				</div>
+				<div class="f-dialog-footer">
+					<Lib.Button variant="secondary" size="sm">Cancel</Lib.Button>
+					<Lib.Button variant="destructive" size="sm">Yes, delete it</Lib.Button>
+				</div>
+			</div>
+
 			<Lib.AlertDialog
 				bind:open={alertDialogOpen}
 				title="Confirm Deletion"
@@ -895,16 +930,23 @@
 		</div>
 
 	{:else if name === 'Toast' || name === 'ToastStack'}
-		<div class="f-preview-column">
+		<div class="f-preview-column" style="gap: 1.5rem; align-items: center; width: 100%; max-width: 440px;">
+			<div class="f-variants-title">Interactive Spawn Triggers</div>
 			<div class="f-demo-row">
 				<Lib.Button size="sm" variant="primary" onclick={() => triggerToast('info')}>Toast Info</Lib.Button>
 				<Lib.Button size="sm" variant="secondary" onclick={() => triggerToast('success')}>Toast Success</Lib.Button>
 				<Lib.Button size="sm" variant="soft" onclick={() => triggerToast('warning')}>Toast Warning</Lib.Button>
 				<Lib.Button size="sm" variant="destructive" onclick={() => triggerToast('danger')}>Toast Danger</Lib.Button>
 			</div>
-			<div style="font-size: 0.85rem; color: var(--f-text-muted); text-align: center;">
-				Click buttons to spawn stacked toast alerts with auto-dismiss timers and progress bars.
+
+			<div class="f-variants-title">Semantic Toast Showcase</div>
+			<div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%;">
+				<Lib.Toast intent="info" title="System Update" message="Syncing AST metadata across 106 components." duration={0} />
+				<Lib.Toast intent="success" title="Changes Deployed" message="All verification checks passed with zero drift." duration={0} />
+				<Lib.Toast intent="warning" title="Quota Warning" message="API usage has reached 85% of monthly allowance." duration={0} />
+				<Lib.Toast intent="danger" title="Deployment Failed" message="Connection timed out while querying database." duration={0} />
 			</div>
+
 			<Lib.ToastStack bind:toasts={activeToasts} position="bottom-right" />
 		</div>
 

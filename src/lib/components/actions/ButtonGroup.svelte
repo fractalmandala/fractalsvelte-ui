@@ -76,7 +76,7 @@
 
 		/* Unattached variant (gap) */
 		.f-btn-group[data-attached='false'] {
-			gap: var(--f-space-xs);
+			gap: var(--space-xs);
 		}
 	}
 </style>
