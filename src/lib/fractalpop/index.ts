@@ -24,4 +24,3 @@ export { parse, generate } from './core.js';
 export { lang, getLanguageConfig } from './lang-registry.js';
 export { themeStyle, sveltekit, sveltekitLight, sveltekitDark, type Theme } from './theme.js';
 export type { DisplayOptions } from './shared.js';
-export { default as Code } from './Code.svelte';

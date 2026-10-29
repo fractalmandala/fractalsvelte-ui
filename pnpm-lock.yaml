@@ -14,6 +14,9 @@ importers:
       '@fractaldesign/icons':
         specifier: ^0.1.0
         version: 0.1.0(svelte@5.57.2)
+      '@fractaldesign/pop-svelte':
+        specifier: ^0.3.1
+        version: 0.3.1
       '@sveltejs/adapter-auto':
         specifier: ^8.0.0
         version: 8.0.0(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.2)(vite@8.3.4(@types/node@24.19.2)(sass@1.105.1)))(svelte@5.57.2)(typescript@6.0.3)(vite@8.3.4(@types/node@24.19.2)(sass@1.105.1)))
@@ -72,6 +75,17 @@ packages:
     engines: {node: '>=18'}
     peerDependencies:
       svelte: ^5.0.0
+
+  '@fractaldesign/pop-svelte@0.3.1':
+    resolution: {integrity: sha512-7UXd3RXcw65TUUFth0QD5em1w69ElaIcTKFRn3BBLaLs/ZxyILVfBM8HIhhrwEe2+CC+rS5kWoonAA+T3EIPgQ==}
+
+  '@fractaldesign/pop@0.2.1':
+    resolution: {integrity: sha512-EgsAmLVBorqTA5f6KUZHojFO2POrUwu6iX5ofXA6XwTGyPCeM320x6/BDhE3BSn15ldyz3vtgptlFl4ROX2GZA==}
+    peerDependencies:
+      gpu-lexer: '>=0.0.2'
+    peerDependenciesMeta:
+      gpu-lexer:
+        optional: true
 
   '@hono/node-server@2.1.5':
     resolution: {integrity: sha512-MgP/I06GdvsilDspMk/qmRzpk8LOUStP6jFAbSRi40W09DhoyUn+Mj7eyKICPqeYKybOjVFLVIAQzvu1bfIa7Q==}
@@ -359,6 +373,9 @@ packages:
 
   '@types/unist@2.0.11':
     resolution: {integrity: sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==}
+
+  '@types/unist@3.0.3':
+    resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
 
   accepts@2.0.0:
     resolution: {integrity: sha512-5cvg6CtKwfgdmVqY1WIiXKc3Q1bkRqGLi+2W/6ao+6Y7gu/RCwRuAhGEzh5B4KlszSuTLgZYuqFqo5bImjNKng==}
@@ -1006,6 +1023,9 @@ packages:
   unist-util-is@4.1.0:
     resolution: {integrity: sha512-ZOQSsnce92GrxSqlnEEseX0gi7GH9zTJZ0p9dtu87WRb/37mMPO2Ilx1s/t9vBHrFhbgweUwb+t7cIn5dxPhZg==}
 
+  unist-util-map@4.0.0:
+    resolution: {integrity: sha512-HJs1tpkSmRJUzj6fskQrS5oYhBYlmtcvy4SepdDEEsL04FjBrgF0Mgggvxc1/qGBGgW7hRh9+UBK1aqTEnBpIA==}
+
   unist-util-stringify-position@2.0.3:
     resolution: {integrity: sha512-3faScn5I+hy9VleOq/qNbAd6pAx7iH5jYBMS9I1HgQVijz/4mv5Bvw5iw1sC/90CODiKo81G/ps8AJrISn687g==}
 
@@ -1112,6 +1132,15 @@ snapshots:
   '@fractaldesign/icons@0.1.0(svelte@5.57.2)':
     dependencies:
       svelte: 5.57.2
+
+  '@fractaldesign/pop-svelte@0.3.1':
+    dependencies:
+      '@fractaldesign/pop': 0.2.1
+      unist-util-map: 4.0.0
+    transitivePeerDependencies:
+      - gpu-lexer
+
+  '@fractaldesign/pop@0.2.1': {}
 
   '@hono/node-server@2.1.5(hono@4.13.13)':
     dependencies:
@@ -1333,6 +1362,8 @@ snapshots:
       undici-types: 7.24.6
 
   '@types/unist@2.0.11': {}
+
+  '@types/unist@3.0.3': {}
 
   accepts@2.0.0:
     dependencies:
@@ -1972,6 +2003,10 @@ snapshots:
   undici-types@7.24.6: {}
 
   unist-util-is@4.1.0: {}
+
+  unist-util-map@4.0.0:
+    dependencies:
+      '@types/unist': 3.0.3
 
   unist-util-stringify-position@2.0.3:
     dependencies:

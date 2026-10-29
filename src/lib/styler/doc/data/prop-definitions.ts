@@ -15,7 +15,7 @@ export const propDefinitions: Record<string, PropDefinition> = {
 			'display/Tag': 'Fill colour: a surface (`bg-panel`, `state-hover`…), theme colour or message colour. With `textOnly`, colours the text instead.'
 		}
 	},
-	size: { draft: true, text: 'Height step. Applied as a plain class, e.g. `h-sm` … `h-xl`.' },
+	size: { draft: true, text: 'Height step. Applied as a plain class, e.g. `h-xs` … `h-xl`.' },
 	shape: { draft: true, text: 'Corner treatment. Applied as a plain class, e.g. `square`, `min`, `round`.' },
 	shadow: {
 		draft: true,

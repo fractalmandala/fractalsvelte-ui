@@ -20,6 +20,12 @@ export default defineConfig({
 			preprocess: [vitePreprocess(), mdsvex({ extensions: ['.md'] })]
 		})
 	],
+	ssr: {
+		noExternal: ['@fractaldesign/pop-svelte']
+	},
+	optimizeDeps: {
+		exclude: ['@fractaldesign/pop-svelte']
+	},
 	server: {
 		fs: {
 			allow: ['..']

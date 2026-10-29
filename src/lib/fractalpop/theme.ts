@@ -88,7 +88,7 @@ export function themeCss(selector: string, theme: Theme): string {
 
 /** SvelteKit theme (Light) */
 export const sveltekitLight: ThemePalette = {
-  background: 'var(--bg)',
+  background: 'var(--bg-panel)',
   foreground: '#24292f',
   class: '#d93700',
   identifier: '#24292f',

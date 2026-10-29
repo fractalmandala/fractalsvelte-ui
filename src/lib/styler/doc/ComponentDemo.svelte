@@ -2,7 +2,7 @@
 	// Page template section 1: the demo file src/lib/demos/<path>.svelte, rendered
 	// in the demo box, with its own source shown below as the usage snippet.
 	import type { Component } from 'svelte';
-	import Code from '../../fractalpop/Code.svelte';
+	import CodeSnippet from '../typography/CodeSnippet.svelte';
 
 	interface Props {
 		/** Path under lib/styler without extension, e.g. "actions/Button". */
@@ -20,10 +20,10 @@
 </script>
 
 {#if Demo}
-	<div class="demo-box pad-2xl box xcenter ycenter radius-md bg-surface" style:position="relative" style:z-index="2">
+	<div class="demo-box pad-2xl box xcenter ycenter" style:position="relative" style:z-index="2">
 		<Demo />
 	</div>
-	<Code code={source} lang="svelte" />
+	{#if source}<CodeSnippet code={source} language="svelte" />{/if}
 {:else}
 	<p class="text-muted">No demo yet</p>
 {/if}

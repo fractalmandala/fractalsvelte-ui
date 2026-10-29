@@ -14,12 +14,12 @@
 	--text-secondary: #808182
 	--text-muted: #aaacaf
 	--text-inverse: #FFFFFF
-	--state-surface: #F4F4F6
-	--state-hover: #424243
+	--state-surface: #73d689ae
+	--state-hover: #7ee295ae
 	--state-selected: #7c7c7a
 	--border: #E5E7EB
 	--border-subtle: #F0F1F3
-	--border-strong: #D1D5DB
+	--border-strong: #bebebe
 	--theme-color: #22c55e
 	--theme-color-alt: #00df89
 	--theme-color-sub: #10b981
@@ -217,10 +217,9 @@ button
 			background-color: var(--state-selected)
 			border: 1px solid var(--state-selected)
 	&.secondary
-		background-color: var(--bg-panel)
-		border: 1px solid var(--border-strong)
+		background-color: var(--state-surface)
 		&:hover
-			border: 1px solid var(--border)
+			background-color: var(--state-hover)
 		&.selected
 			background-color: var(--state-selected)
 			border: 1px solid var(--border)
@@ -495,6 +494,9 @@ button
 		border-radius: 9999px
 
 .el-size
+	&.h-xs
+		height: var(--height-xs)
+		font-size: var(--text-xs)
 	&.h-sm
 		height: var(--height-sm)
 		font-size: var(--text-xs)
@@ -503,14 +505,14 @@ button
 		font-size: var(--text-sm)
 	&.h-bs
 		height: var(--height-bs)
-		font-size: var(--text-md)
+		font-size: var(--text-sm)
 	&.h-lg
 		height: var(--height-lg)
 		font-size: var(--text-md)
 		padding-inline: var(--space-bs)
 	&.h-xl
 		height: var(--height-xl)
-		font-size: var(--text-bs)
+		font-size: var(--text-md)
 		padding-inline: var(--space-lg)
 
 .tint

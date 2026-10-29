@@ -140,6 +140,7 @@ export type { AccordionItemData } from './typography/Accordion.svelte';
 export { default as Blockquote } from './typography/Blockquote.svelte';
 export { default as Code } from './typography/Code.svelte';
 export { default as CodeBlock } from './typography/CodeBlock.svelte';
+export { default as CodeSnippet } from './typography/CodeSnippet.svelte';
 export { default as Collapsible } from './typography/Collapsible.svelte';
 export { default as Heading } from './typography/Heading.svelte';
 export type { HeadingLevel, HeadingTag, HeadingSize, HeadingTracking } from './typography/Heading.svelte';

@@ -92,6 +92,7 @@
 	"devDependencies": {
 		"@fractaldesign/fractalstyler": "file:/Users/amrit/fractaldesign/packages/fractalstyler",
 		"@fractaldesign/icons": "^0.1.0",
+		"@fractaldesign/pop-svelte": "^0.3.1",
 		"@sveltejs/adapter-auto": "^8.0.0",
 		"@sveltejs/kit": "^3.0.0",
 		"@sveltejs/package": "^2.5.8",

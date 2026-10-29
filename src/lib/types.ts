@@ -20,7 +20,7 @@ export const Variants = [
 ] as const;
 export type Variant = (typeof Variants)[number];
 
-export const Sizes = ['h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl'] as const;
+export const Sizes = ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl'] as const;
 export type Size = (typeof Sizes)[number];
 
 export const Shapes = ['square', 'min', 'modern', 'curved', 'round'] as const;
