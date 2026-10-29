@@ -1,17 +1,18 @@
+<!-- @component A radar-style sweeping scan animation. -->
+
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsTone } from '../types';
-	import { TONE_TEXT } from '../classes';
+	import type { MessageText } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		mode?: 'radar' | 'linear';
 		label?: string;
 		active?: boolean;
-		tone?: FsTone;
+		tone?: MessageText;
 		class?: string;
 	}
 
-	let { mode = 'radar', label = 'LIDAR SCAN', active = true, tone = 'success', class: className = '', ...restProps }: Props = $props();
+	let { mode = 'radar', label = 'LIDAR SCAN', active = true, tone = 'text-success', class: className = '', ...restProps }: Props = $props();
 
 	const uid = $props.id();
 	const BLIPS = [
@@ -24,7 +25,7 @@
 
 <!-- Entirely SVG: rings and crosshair are geometry, the beam is an
      animateTransform rotation, blips fade on staggered SMIL timelines. -->
-<div class="box xcenter gap-sm pad-md bg-sunken border radius-md {TONE_TEXT[tone]} {className}" role="img" aria-label={label} {...restProps}>
+<div class="box xcenter gap-sm pad-md bg-sunken border radius-md {tone ?? 'text-theme'} {className}" role="img" aria-label={label} {...restProps}>
 	{#if mode === 'radar'}
 		<svg viewBox="0 0 100 100" width="12em" height="12em" aria-hidden="true">
 			<defs>

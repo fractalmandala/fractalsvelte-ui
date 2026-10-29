@@ -1,9 +1,12 @@
+<!-- @component A pannable, zoomable grid canvas for node diagrams. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luPlus, luMinus, luRotateCcw } from 'fractalicons/lucide';
-	import type { FsRatio } from '../classes';
+	import { Icon } from '@fractaldesign/icons';
+	import { luPlus, luMinus, luRotateCcw } from '@fractaldesign/icons/lucide';
+	import IconButton from '../actions/IconButton.svelte';
+	type Ratio = '16/9' | '9/16' | '4/3' | '3/4' | '3/2' | '2/3' | '1/1';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		gridType?: 'dots' | 'lines' | 'crosses';
@@ -16,7 +19,7 @@
 		maxZoom?: number;
 		interactive?: boolean;
 		/** Box shape (width / height) */
-		ratio?: FsRatio;
+		ratio?: Ratio;
 		/** Size of the content plane, in canvas px */
 		planeWidth?: number;
 		planeHeight?: number;
@@ -132,16 +135,16 @@
 		{#if controls}
 			{@render controls()}
 		{:else}
-			<button type="button" data-variant="iconbox" data-size="icon-bs" class="px-xs" aria-label="Zoom out" onclick={() => zoomBy(-0.15)}>
+			<IconButton icon="ghost" size="h-sm" label="Zoom out" onclick={() => zoomBy(-0.15)}>
 				<Icon icon={luMinus} />
-			</button>
-			<span class="text-sm mono text-secondary">{Math.round(zoom * 100)}%</span>
-			<button type="button" data-variant="iconbox" data-size="icon-bs" class="px-xs" aria-label="Zoom in" onclick={() => zoomBy(0.15)}>
+			</IconButton>
+			<span class="text-sm tabular-nums text-secondary">{String(Math.round(zoom * 100)).padStart(3, '\u2007')}%</span>
+			<IconButton icon="ghost" size="h-sm" label="Zoom in" onclick={() => zoomBy(0.15)}>
 				<Icon icon={luPlus} />
-			</button>
-			<button type="button" data-variant="iconbox" data-size="icon-bs" class="px-xs" aria-label="Reset view" onclick={reset}>
+			</IconButton>
+			<IconButton icon="ghost" size="h-sm" label="Reset view" onclick={reset}>
 				<Icon icon={luRotateCcw} />
-			</button>
+			</IconButton>
 		{/if}
 	</div>
 </div>

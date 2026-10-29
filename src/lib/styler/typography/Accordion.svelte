@@ -1,3 +1,5 @@
+<!-- @component A list of collapsible sections, one or several open at once. -->
+
 <script lang="ts" module>
 	export interface AccordionItemData {
 		id: string;
@@ -10,9 +12,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luChevronDown, luChevronUp } from 'fractalicons/lucide';
-	import type { FsVariant } from '../types';
+	import { Icon } from '@fractaldesign/icons';
+	import { luChevronDown, luChevronUp } from '@fractaldesign/icons/lucide';
+	import type { Variant, Size, Surface, Border, Shape, Shadow } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		items?: AccordionItemData[];
@@ -20,8 +22,14 @@
 		multiple?: boolean;
 		/** Open item id, or ids when multiple */
 		value?: string | string[];
-		variant?: FsVariant;
-		shape?: 'modern' | 'curved';
+		/** Trigger paint */
+		variant?: Variant;
+		/** Trigger height */
+		size?: Size;
+		surface?: Surface;
+		border?: Border;
+		shape?: Shape;
+		shadow?: Shadow;
 		class?: string;
 		children?: Snippet;
 		itemSnippet?: Snippet<[{ item: AccordionItemData; isOpen: boolean; toggle: () => void }]>;
@@ -31,8 +39,12 @@
 		items = [],
 		multiple = false,
 		value = $bindable(),
-		variant = 'primary',
+		variant = 'ghost',
+		size = 'h-md',
+		surface = 'bg-panel',
+		border = 'border',
 		shape = 'curved',
+		shadow = 'shad-none',
 		class: className = '',
 		children,
 		itemSnippet,
@@ -49,11 +61,10 @@
 	}
 </script>
 
-<!-- fractalstyler's .fsx-accordion group: items collapse on a 0fr → 1fr grid row. -->
-<div class="fsx-accordion {className}" {...restProps}>
+<div class="accordion wfull {className}" {...restProps}>
 	{#each items as item (item.id)}
 		{@const open = openIds.includes(item.id)}
-		<div class="fsx-accordion-item {open ? 'open' : ''}" data-variant={variant} data-shape={shape}>
+		<div class="accordion-item el-shape {surface} {border} {shape} {shadow} {open ? 'open' : ''}">
 			{#if itemSnippet}
 				{@render itemSnippet({ item, isOpen: open, toggle: () => !item.disabled && toggle(item.id) })}
 			{:else}
@@ -61,7 +72,7 @@
 					<button
 						type="button"
 						id="{uid}-{item.id}-trigger"
-						class="fsx-accordion-trigger gap-sm text-sm weight-500 {item.disabled ? 'text-muted' : ''}"
+						class="accordion-trigger wfull gap-sm px-sm weight-500 el-variant el-size el-shape {variant} {size} {shape} {item.disabled ? 'text-muted' : ''}"
 						aria-expanded={open}
 						aria-controls="{uid}-{item.id}"
 						disabled={item.disabled}
@@ -75,10 +86,10 @@
 					id="{uid}-{item.id}"
 					role="region"
 					aria-labelledby="{uid}-{item.id}-trigger"
-					class="fsx-accordion-content"
+					class="accordion-content"
 					inert={!open}
 				>
-					<div class="fsx-accordion-panel text-body-sm text-secondary">{item.content ?? ''}</div>
+					<div class="accordion-panel text-body-sm text-secondary">{item.content ?? ''}</div>
 				</div>
 			{/if}
 		</div>

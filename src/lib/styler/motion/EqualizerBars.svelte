@@ -1,18 +1,19 @@
+<!-- @component Animated audio equalizer bars. -->
+
 <script lang="ts">
 	import type { SVGAttributes } from 'svelte/elements';
-	import type { FsTone } from '../types';
-	import { TEXT_SIZE, TONE_TEXT, type FsTextSize } from '../classes';
+	import type { MessageText, TextSize } from '../types';
 
 	interface Props extends SVGAttributes<SVGSVGElement> {
 		bars?: number;
 		playing?: boolean;
 		/** Bars are 1em tall at this text size */
-		size?: FsTextSize;
-		tone?: FsTone;
+		size?: TextSize;
+		tone?: MessageText;
 		class?: string;
 	}
 
-	let { bars = 5, playing = true, size = 'xl', tone = 'theme', class: className = '', ...restProps }: Props = $props();
+	let { bars = 5, playing = true, size = 'text-xl', tone, class: className = '', ...restProps }: Props = $props();
 
 	const count = $derived(Math.min(16, Math.max(3, bars)));
 	// Staggered heights and periods so the bars never move in lockstep.
@@ -27,7 +28,7 @@
 	height="1em"
 	role="img"
 	aria-label={playing ? 'Audio playing' : 'Audio paused'}
-	class="shrink-0 {TEXT_SIZE[size]} {TONE_TEXT[tone]} {className}"
+	class="shrink-0 {size} {tone ?? 'text-theme'} {className}"
 	{...restProps}
 >
 	{#each Array.from({ length: count }) as _, i (i)}

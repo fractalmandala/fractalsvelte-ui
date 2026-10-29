@@ -1,7 +1,9 @@
+<!-- @component A card with optional pointer spotlight and hover lift. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsTone } from '../types';
+	import type { MessageText } from '../types';
 	import PointerGlow from './PointerGlow.svelte';
 
 	export type AnimatedCardVariant = 'surface' | 'sunken' | 'raised' | 'outline';
@@ -12,7 +14,7 @@
 		spotlight?: boolean;
 		/** Lift (deeper shadow) while hovered */
 		lift?: boolean;
-		tone?: FsTone;
+		tone?: MessageText;
 		class?: string;
 		children?: Snippet;
 		header?: Snippet;
@@ -23,7 +25,7 @@
 		variant = 'surface',
 		spotlight = true,
 		lift = true,
-		tone = 'theme',
+		tone,
 		class: className = '',
 		children,
 		header,

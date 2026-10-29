@@ -1,7 +1,10 @@
+<!-- @component A drag-and-drop file picker with size and count limits and a file list. -->
+
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luUpload, luFile, luX } from 'fractalicons/lucide';
+	import { Icon } from '@fractaldesign/icons';
+	import { luUpload, luFile } from '@fractaldesign/icons/lucide';
+	import CloseButton from '../actions/CloseButton.svelte';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		files?: File[];
@@ -107,9 +110,8 @@
 		}}
 	/>
 	<div
-		class="card box xcenter gap-sm py-xl px-lg {dragging ? 'text-theme' : 'text-muted'}"
-		data-variant={dragging ? 'link' : 'secondary'}
-		data-shape="curved"
+		class="box xcenter gap-sm py-xl px-lg el-shape curved bg-panel {dragging ? 'border-strong text-theme' : 'border text-muted'} {error || displayError ? 'is-invalid' : ''}"
+		style:border-style="dashed"
 		tabindex={disabled ? -1 : 0}
 		role="button"
 		aria-disabled={disabled || undefined}
@@ -146,21 +148,17 @@
 					<div class="row ycenter gap-xs min0">
 						<Icon icon={luFile} class="text-muted shrink-0" />
 						<span class="text-sm truncate" title={file.name}>{file.name}</span>
-						<span class="text-sm text-muted shrink-0">({formatBytes(file.size)})</span>
+						<span class="text-sm tabular-nums text-muted shrink-0">({formatBytes(file.size)})</span>
 					</div>
-					<button
-						type="button"
-						data-variant="iconbox"
-						class="px-xs text-muted"
-						aria-label="Remove file {file.name}"
+					<CloseButton
+						label="Remove file {file.name}"
+						size="h-sm"
 						{disabled}
 						onclick={() => {
 							files = files.filter((_, i) => i !== index);
 							localError = null;
 						}}
-					>
-						<Icon icon={luX} />
-					</button>
+					/>
 				</div>
 			{/each}
 		</div>

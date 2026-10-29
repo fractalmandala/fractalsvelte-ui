@@ -1,0 +1,831 @@
+{
+	"_generated": "by scripts/component-docs.mjs — do not edit by hand",
+	"components": [
+		{
+			"name": "Button",
+			"title": "Button",
+			"path": "actions/Button",
+			"category": "Actions",
+			"description": "A button, or a link styled as one when given `href`."
+		},
+		{
+			"name": "ButtonGroup",
+			"title": "Button Group",
+			"path": "actions/ButtonGroup",
+			"category": "Actions",
+			"description": "Simple flex col and row element to contain buttons."
+		},
+		{
+			"name": "CloseButton",
+			"title": "Close Button",
+			"path": "actions/CloseButton",
+			"category": "Actions",
+			"description": "An icon button with an Close Icon, for closing panels, dialogs and dismissible items."
+		},
+		{
+			"name": "CopyButton",
+			"title": "Copy Button",
+			"path": "actions/CopyButton",
+			"category": "Actions",
+			"description": "A button with Copy Icon, copies `text` to the clipboard and briefly shows a copied state."
+		},
+		{
+			"name": "HoldToConfirm",
+			"title": "Hold To Confirm",
+			"path": "actions/HoldToConfirm",
+			"category": "Actions",
+			"description": "A button that fires `onconfirm` only after being held for `holdTime` ms."
+		},
+		{
+			"name": "IconButton",
+			"title": "Icon Button",
+			"path": "actions/IconButton",
+			"category": "Actions",
+			"description": "A square button holding only an icon, named for screen readers by `label`."
+		},
+		{
+			"name": "SlideUnlock",
+			"title": "Slide Unlock",
+			"path": "actions/SlideUnlock",
+			"category": "Actions",
+			"description": "A slide-to-unlock track that fires `onunlock` when the handle is dragged to the end."
+		},
+		{
+			"name": "SplitButton",
+			"title": "Split Button",
+			"path": "actions/SplitButton",
+			"category": "Actions",
+			"description": "A main action button joined to an arrow button that opens a dropdown."
+		},
+		{
+			"name": "Checkbox",
+			"title": "Checkbox",
+			"path": "forms/Checkbox",
+			"category": "Forms",
+			"description": "A checkbox with label, description and error text, supporting an indeterminate state."
+		},
+		{
+			"name": "ColorPicker",
+			"title": "Color Picker",
+			"path": "forms/ColorPicker",
+			"category": "Forms",
+			"description": "A colour input with optional hex field and preset swatches."
+		},
+		{
+			"name": "FileInput",
+			"title": "File Input",
+			"path": "forms/FileInput",
+			"category": "Forms",
+			"description": "A drag-and-drop file picker with size and count limits and a file list."
+		},
+		{
+			"name": "FormField",
+			"title": "Form Field",
+			"path": "forms/FormField",
+			"category": "Forms",
+			"description": "A wrapper that gives any form control a label, helper text, error and counter, and hands its variant, surface, size, shape and shadow to the Input or Select inside."
+		},
+		{
+			"name": "Input",
+			"title": "Input",
+			"path": "forms/Input",
+			"category": "Forms",
+			"description": "A text input with label, helper or error text, leading and trailing slots, and a clear button."
+		},
+		{
+			"name": "NumberInput",
+			"title": "Number Input",
+			"path": "forms/NumberInput",
+			"category": "Forms",
+			"description": "A numeric input with min, max, step and optional − / + stepper buttons."
+		},
+		{
+			"name": "PinInput",
+			"title": "Pin Input",
+			"path": "forms/PinInput",
+			"category": "Forms",
+			"description": "A row of single-character boxes for entering a PIN or one-time code."
+		},
+		{
+			"name": "Radio",
+			"title": "Radio",
+			"path": "forms/Radio",
+			"category": "Forms",
+			"description": "A single radio button with label and description."
+		},
+		{
+			"name": "RadioGroup",
+			"title": "Radio Group",
+			"path": "forms/RadioGroup",
+			"category": "Forms",
+			"description": "A labelled group of radio buttons built from an `options` list."
+		},
+		{
+			"name": "RangeSlider",
+			"title": "Range Slider",
+			"path": "forms/RangeSlider",
+			"category": "Forms",
+			"description": "A two-thumb slider for choosing a min and max value."
+		},
+		{
+			"name": "RotaryDial",
+			"title": "Rotary Dial",
+			"path": "forms/RotaryDial",
+			"category": "Forms",
+			"description": "A knob-style dial that sets a value by dragging or arrow keys."
+		},
+		{
+			"name": "SearchInput",
+			"title": "Search Input",
+			"path": "forms/SearchInput",
+			"category": "Forms",
+			"description": "A search field with clear button, loading spinner and optional ⌘K shortcut."
+		},
+		{
+			"name": "Select",
+			"title": "Select",
+			"path": "forms/Select",
+			"category": "Forms",
+			"description": "A select menu, native or as a filterable listbox, with option groups."
+		},
+		{
+			"name": "Slider",
+			"title": "Slider",
+			"path": "forms/Slider",
+			"category": "Forms",
+			"description": "A single-thumb slider for choosing a value in a range."
+		},
+		{
+			"name": "Switch",
+			"title": "Switch",
+			"path": "forms/Switch",
+			"category": "Forms",
+			"description": "An on/off toggle switch with label and description."
+		},
+		{
+			"name": "TagInput",
+			"title": "Tag Input",
+			"path": "forms/TagInput",
+			"category": "Forms",
+			"description": "A text field that turns entries into removable tags."
+		},
+		{
+			"name": "TextArea",
+			"title": "Text Area",
+			"path": "forms/TextArea",
+			"category": "Forms",
+			"description": "A multi-line text input with optional auto-resize and character count."
+		},
+		{
+			"name": "Alert",
+			"title": "Alert",
+			"path": "display/Alert",
+			"category": "Display",
+			"description": "An inline message box: tinted by `message`, or plain with coloured text and icon via `messageText`."
+		},
+		{
+			"name": "AspectRatio",
+			"title": "Aspect Ratio",
+			"path": "display/AspectRatio",
+			"category": "Display",
+			"description": "A box that holds a fixed aspect ratio, with media children filling it."
+		},
+		{
+			"name": "Avatar",
+			"title": "Avatar",
+			"path": "display/Avatar",
+			"category": "Display",
+			"description": "A user image, or initials fallback, with optional status dot."
+		},
+		{
+			"name": "AvatarGroup",
+			"title": "Avatar Group",
+			"path": "display/AvatarGroup",
+			"category": "Display",
+			"description": "A row or column of avatars, overlapping or spaced apart, with a \"+N\" chip for hidden members."
+		},
+		{
+			"name": "Badge",
+			"title": "Badge",
+			"path": "display/Badge",
+			"category": "Display",
+			"description": "A small label for status or counts, with optional leading dot."
+		},
+		{
+			"name": "Banner",
+			"title": "Banner",
+			"path": "display/Banner",
+			"category": "Display",
+			"description": "A full-width notice strip: tinted by `message`, or plain with coloured text and icon via `messageText`."
+		},
+		{
+			"name": "Counter",
+			"title": "Counter",
+			"path": "display/Counter",
+			"category": "Display",
+			"description": "A number that counts up to `value`, with prefix, suffix and decimals."
+		},
+		{
+			"name": "DotMatrix",
+			"title": "Dot Matrix",
+			"path": "display/DotMatrix",
+			"category": "Display",
+			"description": "Text drawn as an LED-style dot-matrix display."
+		},
+		{
+			"name": "Kbd",
+			"title": "Kbd",
+			"path": "display/Kbd",
+			"category": "Display",
+			"description": "A keyboard key, as an icon button or a static keycap for showing shortcuts."
+		},
+		{
+			"name": "Meter",
+			"title": "Meter",
+			"path": "display/Meter",
+			"category": "Display",
+			"description": "A gauge bar for a value in a known range, coloured by low, high and optimum zones."
+		},
+		{
+			"name": "Progress",
+			"title": "Progress",
+			"path": "display/Progress",
+			"category": "Display",
+			"description": "A progress bar, determinate or indeterminate, with optional value label."
+		},
+		{
+			"name": "Spinner",
+			"title": "Spinner",
+			"path": "display/Spinner",
+			"category": "Display",
+			"description": "A spinning loading indicator sized to the surrounding text."
+		},
+		{
+			"name": "Tag",
+			"title": "Tag",
+			"path": "display/Tag",
+			"category": "Display",
+			"description": "A label chip, optionally removable, filled with or coloured by a surface, theme or message colour."
+		},
+		{
+			"name": "BentoCell",
+			"title": "Bento Cell",
+			"path": "layout/BentoCell",
+			"category": "Layout",
+			"description": "A cell for BentoGrid that can span several columns, with title, header and footer."
+		},
+		{
+			"name": "BentoGrid",
+			"title": "Bento Grid",
+			"path": "layout/BentoGrid",
+			"category": "Layout",
+			"description": "A responsive grid for laying out BentoCell tiles."
+		},
+		{
+			"name": "Card",
+			"title": "Card",
+			"path": "layout/Card",
+			"category": "Layout",
+			"description": "A content card with optional media, title, description, header and footer."
+		},
+		{
+			"name": "ClickableCard",
+			"title": "Clickable Card",
+			"path": "layout/ClickableCard",
+			"category": "Layout",
+			"description": "A card that acts as a button, or a link when given `href`."
+		},
+		{
+			"name": "Container",
+			"title": "Container",
+			"path": "layout/Container",
+			"category": "Layout",
+			"description": "A centred wrapper that caps content at a maximum width."
+		},
+		{
+			"name": "DataTable",
+			"title": "Data Table",
+			"path": "layout/DataTable",
+			"category": "Layout",
+			"description": "A table built from columns and rows, with sortable columns."
+		},
+		{
+			"name": "Divider",
+			"title": "Divider",
+			"path": "layout/Divider",
+			"category": "Layout",
+			"description": "A horizontal or vertical rule, with optional label."
+		},
+		{
+			"name": "Flex",
+			"title": "Flex",
+			"path": "layout/Flex",
+			"category": "Layout",
+			"description": "A flex container with direction, wrap, gap and alignment props."
+		},
+		{
+			"name": "Grid",
+			"title": "Grid",
+			"path": "layout/Grid",
+			"category": "Layout",
+			"description": "A grid container with responsive column counts, gap and alignment."
+		},
+		{
+			"name": "Section",
+			"title": "Section",
+			"path": "layout/Section",
+			"category": "Layout",
+			"description": "A page section with eyebrow, title, subtitle and optional container."
+		},
+		{
+			"name": "SelectableCard",
+			"title": "Selectable Card",
+			"path": "layout/SelectableCard",
+			"category": "Layout",
+			"description": "A card that works as a checkbox or radio option."
+		},
+		{
+			"name": "SplitPane",
+			"title": "Split Pane",
+			"path": "layout/SplitPane",
+			"category": "Layout",
+			"description": "Two panes side by side or stacked, where either can be collapsed."
+		},
+		{
+			"name": "Stack",
+			"title": "Stack",
+			"path": "layout/Stack",
+			"category": "Layout",
+			"description": "A vertical stack of children with even spacing."
+		},
+		{
+			"name": "AppShell",
+			"title": "App Shell",
+			"path": "navigation/AppShell",
+			"category": "Navigation & shells",
+			"description": "A page layout with header, sidebar, aside, main area and footer."
+		},
+		{
+			"name": "BottomNav",
+			"title": "Bottom Nav",
+			"path": "navigation/BottomNav",
+			"category": "Navigation & shells",
+			"description": "A bottom tab bar for mobile navigation."
+		},
+		{
+			"name": "Breadcrumb",
+			"title": "Breadcrumb",
+			"path": "navigation/Breadcrumb",
+			"category": "Navigation & shells",
+			"description": "A trail of links to the current page, collapsing the middle when long."
+		},
+		{
+			"name": "Dock",
+			"title": "Dock",
+			"path": "navigation/Dock",
+			"category": "Navigation & shells",
+			"description": "A macOS-style dock of icons that magnify near the pointer."
+		},
+		{
+			"name": "Header",
+			"title": "Header",
+			"path": "navigation/Header",
+			"category": "Navigation & shells",
+			"description": "A top bar with brand, centre and actions slots, optionally sticky."
+		},
+		{
+			"name": "MobileNav",
+			"title": "Mobile Nav",
+			"path": "navigation/MobileNav",
+			"category": "Navigation & shells",
+			"description": "A slide-in navigation panel for small screens."
+		},
+		{
+			"name": "MorphingTabs",
+			"title": "Morphing Tabs",
+			"path": "navigation/MorphingTabs",
+			"category": "Navigation & shells",
+			"description": "Tabs with an animated indicator that slides to the active tab."
+		},
+		{
+			"name": "Pagination",
+			"title": "Pagination",
+			"path": "navigation/Pagination",
+			"category": "Navigation & shells",
+			"description": "Page number buttons with previous and next controls."
+		},
+		{
+			"name": "SegmentedControl",
+			"title": "Segmented Control",
+			"path": "navigation/SegmentedControl",
+			"category": "Navigation & shells",
+			"description": "A row of joined buttons for picking one of a few options."
+		},
+		{
+			"name": "SideNav",
+			"title": "Side Nav",
+			"path": "navigation/SideNav",
+			"category": "Navigation & shells",
+			"description": "A vertical navigation list with groups, badges and an icon-only mode."
+		},
+		{
+			"name": "Stepper",
+			"title": "Stepper",
+			"path": "navigation/Stepper",
+			"category": "Navigation & shells",
+			"description": "A step-by-step progress indicator for multi-step flows."
+		},
+		{
+			"name": "Tabs",
+			"title": "Tabs",
+			"path": "navigation/Tabs",
+			"category": "Navigation & shells",
+			"description": "A tab bar that switches between panels of content."
+		},
+		{
+			"name": "TopNav",
+			"title": "Top Nav",
+			"path": "navigation/TopNav",
+			"category": "Navigation & shells",
+			"description": "A horizontal navigation bar of links."
+		},
+		{
+			"name": "TreeList",
+			"title": "Tree List",
+			"path": "navigation/TreeList",
+			"category": "Navigation & shells",
+			"description": "A nested, expandable tree of items."
+		},
+		{
+			"name": "AlertDialog",
+			"title": "Alert Dialog",
+			"path": "overlays/AlertDialog",
+			"category": "Overlays",
+			"description": "A modal that asks the user to confirm or cancel an action."
+		},
+		{
+			"name": "Anchor",
+			"title": "Anchor",
+			"path": "overlays/Anchor",
+			"category": "Overlays",
+			"description": "Positions a floating panel next to its trigger; used by Popover, Tooltip and menus."
+		},
+		{
+			"name": "CenterMorphModal",
+			"title": "Center Morph Modal",
+			"path": "overlays/CenterMorphModal",
+			"category": "Overlays",
+			"description": "A trigger button that opens a centred dialog."
+		},
+		{
+			"name": "CommandPalette",
+			"title": "Command Palette",
+			"path": "overlays/CommandPalette",
+			"category": "Overlays",
+			"description": "A searchable command menu opened with ⌘ / Ctrl and a key."
+		},
+		{
+			"name": "ContextMenu",
+			"title": "Context Menu",
+			"path": "overlays/ContextMenu",
+			"category": "Overlays",
+			"description": "A menu that opens on right-click inside a region."
+		},
+		{
+			"name": "Dialog",
+			"title": "Dialog",
+			"path": "overlays/Dialog",
+			"category": "Overlays",
+			"description": "A modal dialog with title, description, body and footer."
+		},
+		{
+			"name": "Drawer",
+			"title": "Drawer",
+			"path": "overlays/Drawer",
+			"category": "Overlays",
+			"description": "A panel that slides in from a screen edge."
+		},
+		{
+			"name": "DropdownMenu",
+			"title": "Dropdown Menu",
+			"path": "overlays/DropdownMenu",
+			"category": "Overlays",
+			"description": "A menu of actions that opens from a trigger."
+		},
+		{
+			"name": "Modal",
+			"title": "Modal",
+			"path": "overlays/Modal",
+			"category": "Overlays",
+			"description": "The native `<dialog>` shell shared by Dialog, AlertDialog, Drawer, MobileNav and CommandPalette."
+		},
+		{
+			"name": "Popover",
+			"title": "Popover",
+			"path": "overlays/Popover",
+			"category": "Overlays",
+			"description": "A floating panel that opens from a trigger."
+		},
+		{
+			"name": "Toast",
+			"title": "Toast",
+			"path": "overlays/Toast",
+			"category": "Overlays",
+			"description": "A single notification with title, description, tone, action and auto-dismiss."
+		},
+		{
+			"name": "ToastStack",
+			"title": "Toast Stack",
+			"path": "overlays/ToastStack",
+			"category": "Overlays",
+			"description": "A stack of toasts placed in a screen corner or inline."
+		},
+		{
+			"name": "Tooltip",
+			"title": "Tooltip",
+			"path": "overlays/Tooltip",
+			"category": "Overlays",
+			"description": "A small text hint shown on hover or focus."
+		},
+		{
+			"name": "Accordion",
+			"title": "Accordion",
+			"path": "typography/Accordion",
+			"category": "Typography",
+			"description": "A list of collapsible sections, one or several open at once."
+		},
+		{
+			"name": "Blockquote",
+			"title": "Blockquote",
+			"path": "typography/Blockquote",
+			"category": "Typography",
+			"description": "A quotation with author and citation."
+		},
+		{
+			"name": "Code",
+			"title": "Code",
+			"path": "typography/Code",
+			"category": "Typography",
+			"description": "Inline code text."
+		},
+		{
+			"name": "CodeBlock",
+			"title": "Code Block",
+			"path": "typography/CodeBlock",
+			"category": "Typography",
+			"description": "A block of code with filename, line numbers and a copy button."
+		},
+		{
+			"name": "Collapsible",
+			"title": "Collapsible",
+			"path": "typography/Collapsible",
+			"category": "Typography",
+			"description": "A single section that expands and collapses under a header."
+		},
+		{
+			"name": "Heading",
+			"title": "Heading",
+			"path": "typography/Heading",
+			"category": "Typography",
+			"description": "A heading with level, size, tracking and weight props."
+		},
+		{
+			"name": "Text",
+			"title": "Text",
+			"path": "typography/Text",
+			"category": "Typography",
+			"description": "Body text with size, colour, weight and alignment props."
+		},
+		{
+			"name": "AnimatedButton",
+			"title": "Animated Button",
+			"path": "motion/AnimatedButton",
+			"category": "Motion",
+			"description": "A button with optional shine sweep and click ripple."
+		},
+		{
+			"name": "AnimatedCard",
+			"title": "Animated Card",
+			"path": "motion/AnimatedCard",
+			"category": "Motion",
+			"description": "A card with optional pointer spotlight and hover lift."
+		},
+		{
+			"name": "BorderBeam",
+			"title": "Border Beam",
+			"path": "motion/BorderBeam",
+			"category": "Motion",
+			"description": "A light beam that travels around the border of its parent."
+		},
+		{
+			"name": "CanvasMotion",
+			"title": "Canvas Motion",
+			"path": "motion/CanvasMotion",
+			"category": "Motion",
+			"description": "An animated canvas of drifting particles joined by lines."
+		},
+		{
+			"name": "Card3D",
+			"title": "Card 3D",
+			"path": "motion/Card3D",
+			"category": "Motion",
+			"description": "A card that tilts in 3D toward the pointer, with optional glare."
+		},
+		{
+			"name": "CardStack",
+			"title": "Card Stack",
+			"path": "motion/CardStack",
+			"category": "Motion",
+			"description": "A stack of cards that can be swiped through."
+		},
+		{
+			"name": "ClickSpark",
+			"title": "Click Spark",
+			"path": "motion/ClickSpark",
+			"category": "Motion",
+			"description": "Wraps content and throws sparks from each click."
+		},
+		{
+			"name": "ConfettiBurst",
+			"title": "Confetti Burst",
+			"path": "motion/ConfettiBurst",
+			"category": "Motion",
+			"description": "A canvas that fires a burst of confetti."
+		},
+		{
+			"name": "EqualizerBars",
+			"title": "Equalizer Bars",
+			"path": "motion/EqualizerBars",
+			"category": "Motion",
+			"description": "Animated audio equalizer bars."
+		},
+		{
+			"name": "FloatingBadge",
+			"title": "Floating Badge",
+			"path": "motion/FloatingBadge",
+			"category": "Motion",
+			"description": "A badge that floats gently, with optional pulsing dot."
+		},
+		{
+			"name": "GlowCard",
+			"title": "Glow Card",
+			"path": "motion/GlowCard",
+			"category": "Motion",
+			"description": "A card with a glow that follows the pointer."
+		},
+		{
+			"name": "LidarSweep",
+			"title": "Lidar Sweep",
+			"path": "motion/LidarSweep",
+			"category": "Motion",
+			"description": "A radar-style sweeping scan animation."
+		},
+		{
+			"name": "MagnetLines",
+			"title": "Magnet Lines",
+			"path": "motion/MagnetLines",
+			"category": "Motion",
+			"description": "A grid of lines that turn to point at the pointer."
+		},
+		{
+			"name": "MagneticButton",
+			"title": "Magnetic Button",
+			"path": "motion/MagneticButton",
+			"category": "Motion",
+			"description": "A button that is pulled toward the nearby pointer."
+		},
+		{
+			"name": "Marquee",
+			"title": "Marquee",
+			"path": "motion/Marquee",
+			"category": "Motion",
+			"description": "Content that scrolls continuously in a loop."
+		},
+		{
+			"name": "RippleEffect",
+			"title": "Ripple Effect",
+			"path": "motion/RippleEffect",
+			"category": "Motion",
+			"description": "Wraps content and shows a ripple from each click."
+		},
+		{
+			"name": "ShimmerEffect",
+			"title": "Shimmer Effect",
+			"path": "motion/ShimmerEffect",
+			"category": "Motion",
+			"description": "Wraps content with a sweeping shimmer highlight."
+		},
+		{
+			"name": "SplitReveal",
+			"title": "Split Reveal",
+			"path": "motion/SplitReveal",
+			"category": "Motion",
+			"description": "Shutters that part to reveal hidden content."
+		},
+		{
+			"name": "SpotlightCard",
+			"title": "Spotlight Card",
+			"path": "motion/SpotlightCard",
+			"category": "Motion",
+			"description": "A card lit by a spotlight that follows the pointer."
+		},
+		{
+			"name": "StaggerList",
+			"title": "Stagger List",
+			"path": "motion/StaggerList",
+			"category": "Motion",
+			"description": "A list whose items animate in one after another."
+		},
+		{
+			"name": "TextScramble",
+			"title": "Text Scramble",
+			"path": "motion/TextScramble",
+			"category": "Motion",
+			"description": "Text that scrambles through random characters before settling."
+		},
+		{
+			"name": "BeforeAfter",
+			"title": "Before After",
+			"path": "blocks/BeforeAfter",
+			"category": "Blocks",
+			"description": "A slider that wipes between a before and an after image."
+		},
+		{
+			"name": "ChatBubble",
+			"title": "Chat Bubble",
+			"path": "blocks/ChatBubble",
+			"category": "Blocks",
+			"description": "A chat message bubble with avatar, timestamp and status."
+		},
+		{
+			"name": "FeatureGrid",
+			"title": "Feature Grid",
+			"path": "blocks/FeatureGrid",
+			"category": "Blocks",
+			"description": "A grid of features, each with icon, title and description."
+		},
+		{
+			"name": "FlowCanvas",
+			"title": "Flow Canvas",
+			"path": "blocks/FlowCanvas",
+			"category": "Blocks",
+			"description": "A pannable, zoomable grid canvas for node diagrams."
+		},
+		{
+			"name": "HeroBlock",
+			"title": "Hero Block",
+			"path": "blocks/HeroBlock",
+			"category": "Blocks",
+			"description": "A page hero with badge, title, description, actions and visual."
+		},
+		{
+			"name": "PricingCard",
+			"title": "Pricing Card",
+			"path": "blocks/PricingCard",
+			"category": "Blocks",
+			"description": "A pricing plan card with price, features and a call to action."
+		},
+		{
+			"name": "TerminalBlock",
+			"title": "Terminal Block",
+			"path": "blocks/TerminalBlock",
+			"category": "Blocks",
+			"description": "A terminal window showing a command and its output, optionally animated."
+		},
+		{
+			"name": "Timeline",
+			"title": "Timeline",
+			"path": "blocks/Timeline",
+			"category": "Blocks",
+			"description": "A vertical list of dated events."
+		},
+		{
+			"name": "WorkflowNode",
+			"title": "Workflow Node",
+			"path": "blocks/WorkflowNode",
+			"category": "Blocks",
+			"description": "A node card for workflow diagrams, with ports and status."
+		},
+		{
+			"name": "ComponentPreview",
+			"title": "Component Preview",
+			"path": "doc/ComponentPreview",
+			"category": "Documentation",
+			"description": "A docs block showing a live component demo with its code."
+		},
+		{
+			"name": "PropsTable",
+			"title": "Props Table",
+			"path": "doc/PropsTable",
+			"category": "Documentation",
+			"description": "A docs table listing a component's props, types and defaults."
+		},
+		{
+			"name": "ThemeToggle",
+			"title": "Theme Toggle",
+			"path": "doc/ThemeToggle",
+			"category": "Documentation",
+			"description": "A button that switches between light and dark mode."
+		}
+	]
+}

@@ -1,13 +1,14 @@
+<!-- @component A spinning loading indicator sized to the surrounding text. -->
+
 <script lang="ts">
 	import type { SVGAttributes } from 'svelte/elements';
-	import type { FsTone } from '../types';
-	import { TEXT_SIZE, TONE_TEXT, cx, type FsTextSize } from '../classes';
+	import type { MessageText, TextSize } from '../types';
 
 	interface Props extends SVGAttributes<SVGSVGElement> {
 		/** Rides the type scale: the spinner is 1em of this text size. Omit to follow the parent. */
-		size?: FsTextSize;
+		size?: TextSize;
 		/** Ink of the arc. Omit to follow the parent's colour. */
-		tone?: FsTone;
+		tone?: MessageText;
 		/** Seconds per revolution. */
 		duration?: number;
 		label?: string;
@@ -33,7 +34,7 @@
 	fill="none"
 	role="status"
 	aria-label={label}
-	class={cx(size && TEXT_SIZE[size], tone && TONE_TEXT[tone], 'shrink-0', className)}
+	class={[size, tone, 'shrink-0', className]}
 	{...restProps}
 >
 	<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3" opacity="0.2" />

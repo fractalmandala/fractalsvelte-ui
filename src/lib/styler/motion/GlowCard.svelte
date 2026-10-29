@@ -1,20 +1,21 @@
+<!-- @component A card with a glow that follows the pointer. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsTone, FsSurface } from '../types';
-	import { SURFACE } from '../classes';
+	import type { MessageText, Surface } from '../types';
 	import PointerGlow from './PointerGlow.svelte';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		tone?: FsTone;
+		tone?: MessageText;
 		/** Glow radius in px */
 		glowSize?: number;
-		surface?: FsSurface;
+		surface?: Surface;
 		class?: string;
 		children?: Snippet;
 	}
 
-	let { tone = 'theme', glowSize = 300, surface = 'panel', class: className = '', children, ...restProps }: Props = $props();
+	let { tone, glowSize = 300, surface = 'bg-panel', class: className = '', children, ...restProps }: Props = $props();
 
 	let x = $state(0);
 	let y = $state(0);
@@ -33,7 +34,7 @@
 <div
 	bind:clientWidth={w}
 	bind:clientHeight={h}
-	class="relative box border radius-md {SURFACE[surface]} {className}"
+	class="relative box border radius-md {surface} {className}"
 	onpointerenter={() => (hovered = true)}
 	onpointerleave={() => (hovered = false)}
 	{onpointermove}

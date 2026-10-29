@@ -24,22 +24,21 @@
 <script lang="ts">
 	// One fresh <svg> per ripple: an inline SVG starts its own SMIL timeline
 	// when inserted, so begin="0s" plays each wave from the click.
-	import type { FsTone } from '../types';
-	import { TONE_TEXT } from '../classes';
+	import type { MessageText } from '../types';
 
 	interface Props {
 		ripples: Ripple[];
 		/** ms */
 		duration?: number;
-		tone?: FsTone | 'white';
+		tone?: MessageText | 'text-white';
 		opacity?: number;
 	}
 
-	let { ripples, duration = 600, tone = 'white', opacity = 0.35 }: Props = $props();
+	let { ripples, duration = 600, tone = 'text-white', opacity = 0.35 }: Props = $props();
 </script>
 
 {#each ripples as r (r.id)}
-	<svg class="absolute full {tone === 'white' ? 'text-white' : TONE_TEXT[tone]}" pointer-events="none" aria-hidden="true">
+	<svg class="absolute full {tone ?? 'text-theme'}" pointer-events="none" aria-hidden="true">
 		<circle cx={r.x} cy={r.y} r="0" fill="currentColor" opacity={opacity}>
 			<animate attributeName="r" from="0" to={r.r} dur="{duration}ms" fill="freeze" />
 			<animate attributeName="opacity" from={opacity} to="0" dur="{duration}ms" fill="freeze" />

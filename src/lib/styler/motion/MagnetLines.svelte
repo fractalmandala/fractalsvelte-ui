@@ -1,12 +1,13 @@
+<!-- @component A grid of lines that turn to point at the pointer. -->
+
 <script lang="ts">
 	import type { SVGAttributes } from 'svelte/elements';
-	import type { FsTone } from '../types';
-	import { TONE_TEXT } from '../classes';
+	import type { MessageText } from '../types';
 
 	interface Props extends SVGAttributes<SVGSVGElement> {
 		rows?: number;
 		columns?: number;
-		tone?: FsTone;
+		tone?: MessageText;
 		/** Stroke width in grid units (each cell is 10) */
 		lineWidth?: number;
 		/** Line length in grid units */
@@ -17,7 +18,7 @@
 	let {
 		rows = 7,
 		columns = 7,
-		tone = 'theme',
+		tone,
 		lineWidth = 1,
 		lineLength = 6,
 		class: className = '',
@@ -44,7 +45,7 @@
 <svg
 	bind:this={svgEl}
 	viewBox="0 0 {columns * 10} {rows * 10}"
-	class="wfull {TONE_TEXT[tone]} {className}"
+	class="wfull {tone ?? 'text-theme'} {className}"
 	role="img"
 	aria-label="Magnetic field visualization"
 	{onpointermove}

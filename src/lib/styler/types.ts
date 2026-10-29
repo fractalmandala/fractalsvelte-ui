@@ -2,61 +2,74 @@
 // fractalstyler stylesheet answers on data-variant / data-size / data-shape /
 // data-pad — nothing outside them resolves, so nothing outside them is typed.
 
-export { union } from '../types';
-export type { Intent, Orientation, BtnType } from '../types';
+export const union = (values: readonly string[]): string =>
+	values.map((v) => `'${v}'`).join(' | ');
 
-// button, a.btn
-export const FS_VARIANTS = [
+export const CoreProps = [
+	'variant', 'shape', 'size', 'shadow', 'icon'
+] as const;
+export type CoreProp = (typeof CoreProps)[number]
+
+export const Variants = [
 	'primary',
 	'secondary',
-	'soft',
+	'themed',
 	'outline',
 	'ghost',
-	'link',
-	'destructive'
+	'link'
 ] as const;
-export type FsVariant = (typeof FS_VARIANTS)[number];
+export type Variant = (typeof Variants)[number];
 
-// .input, .select
-export const FS_FIELD_VARIANTS = ['primary', 'secondary', 'soft', 'outline', 'ghost'] as const;
-export type FsFieldVariant = (typeof FS_FIELD_VARIANTS)[number];
+export const Sizes = ['h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl'] as const;
+export type Size = (typeof Sizes)[number];
 
-// .card
-export const FS_CARD_VARIANTS = ['primary', 'secondary', 'soft', 'outline', 'ghost', 'link'] as const;
-export type FsCardVariant = (typeof FS_CARD_VARIANTS)[number];
+export const Shapes = ['square', 'min', 'modern', 'curved', 'round'] as const;
+export type Shape = (typeof Shapes)[number];
 
-// button, a.btn, .input, .select (heights 20 / 24 / 28 / 32px)
-export const FS_SIZES = ['sm', 'md', 'bs', 'lg'] as const;
-export type FsSize = (typeof FS_SIZES)[number];
+export const Shadows = ['shad-none', 'shad-sm', 'shad-bs', 'shad-lg', 'shad-xl', 'shad-2xl', 'shad-hover-sm', 'shad-hover-bs', 'shad-hover-lg', 'shad-hover-xl', 'shad-hover-2xl'] as const;
+export type Shadow = (typeof Shadows)[number];
 
-// button, a.btn, .input, .select
-export const FS_SHAPES = ['square', 'modern', 'curved', 'round'] as const;
-export type FsShape = (typeof FS_SHAPES)[number];
+export const Pads = ['pad-sm', 'pad-md', 'pad-bs', 'pad-lg', 'pad-xl'] as const;
+export type Pad = (typeof Pads)[number];
 
-// .card has no square shape
-export const FS_CARD_SHAPES = ['modern', 'curved', 'round'] as const;
-export type FsCardShape = (typeof FS_CARD_SHAPES)[number];
+export const Spaces = ['xs', 'sm', 'md', 'bs', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'] as const;
+export type Space = (typeof Spaces)[number];
 
-// .card[data-pad]
-export const FS_PADS = ['sm', 'md', 'bs', 'lg', 'xl'] as const;
-export type FsPad = (typeof FS_PADS)[number];
+export const Surfaces = ['bg-main', 'bg-surface', 'bg-panel', 'bg-sunken', 'bg-raised', 'bg-extra', 'state-surface', 'state-hover', 'state-selected','bg-button', 'bg-input'] as const;
+export type Surface = (typeof Surfaces)[number];
 
-// The eight steps every space family (.gap-*, .pad-*, .mar-* ...) is generated on
-export const FS_SPACES = ['xs', 'sm', 'md', 'bs', 'lg', 'xl', '2xl', '3xl'] as const;
-export type FsSpace = (typeof FS_SPACES)[number];
+export const ThemeColors = ['theme-color', 'theme-color-alt', 'theme-color-sub'] as const;
+export type ThemeColor = (typeof ThemeColors)[number];
 
-// .radius-*
-export const FS_RADII = ['xs', 'sm', 'md', 'bs', 'lg', 'full'] as const;
-export type FsRadius = (typeof FS_RADII)[number];
+export const Borders = ['border', 'border-subtle', 'border-strong', 'border-none'] as const;
+export type Border = (typeof Borders)[number];
 
-// .shadow-*
-export const FS_SHADOWS = ['xs', 'sm', 'md', 'bs', 'lg', 'xl', '2xl', '3xl'] as const;
-export type FsShadow = (typeof FS_SHADOWS)[number];
+export const Messages = ['info', 'success', 'warning', 'danger'] as const;
+export type Message = (typeof Messages)[number];
 
-// Surface fills (.bg-*)
-export const FS_SURFACES = ['main', 'surface', 'panel', 'sunken', 'raised', 'extra'] as const;
-export type FsSurface = (typeof FS_SURFACES)[number];
+export const Icons = [
+	'primary',
+	'secondary',
+	'themed',
+	'outline',
+	'ghost',
+	'link'
+] as const;
+export type Icon = (typeof Icons)[number];
+export const MessageTexts = ['text-info', 'text-success', 'text-warning', 'text-danger'] as const;
+export type MessageText = (typeof MessageTexts)[number];
 
-// Status / tone used by feedback components
-export const FS_TONES = ['neutral', 'theme', 'info', 'success', 'warning', 'danger'] as const;
-export type FsTone = (typeof FS_TONES)[number];
+export const TextSizes = ['text-xs', 'text-sm', 'text-md', 'text-bs', 'text-lg', 'text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-5xl'] as const;
+export type TextSize = (typeof TextSizes)[number];
+
+export const Weights = ['weight-300', 'weight-400', 'weight-500', 'weight-600', 'weight-700', 'weight-800'] as const;
+export type Weight = (typeof Weights)[number];
+
+export const Frames = ['frame-16-9', 'frame-9-16', 'frame-4-3', 'frame-3-4', 'frame-3-2', 'frame-2-3', 'frame-1-1'] as const;
+export type Frame = (typeof Frames)[number];
+
+export const ORIENTATIONS = ['horizontal', 'vertical'] as const;
+export type Orientation = (typeof ORIENTATIONS)[number];
+
+export const INTENTS = ['info', 'success', 'warning', 'danger'] as const;
+export type Intent = (typeof INTENTS)[number];

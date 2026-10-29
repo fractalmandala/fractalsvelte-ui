@@ -1,18 +1,20 @@
+<!-- @component A card lit by a spotlight that follows the pointer. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsTone } from '../types';
+	import type { MessageText } from '../types';
 	import PointerGlow from './PointerGlow.svelte';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		tone?: FsTone;
+		tone?: MessageText;
 		/** Spotlight radius in px */
 		radius?: number;
 		class?: string;
 		children?: Snippet;
 	}
 
-	let { tone = 'theme', radius = 300, class: className = '', children, ...restProps }: Props = $props();
+	let { tone, radius = 300, class: className = '', children, ...restProps }: Props = $props();
 
 	let x = $state(0);
 	let y = $state(0);

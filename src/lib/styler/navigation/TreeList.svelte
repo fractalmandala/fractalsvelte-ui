@@ -1,3 +1,5 @@
+<!-- @component A nested, expandable tree of items. -->
+
 <script lang="ts" module>
 	import type { Snippet } from 'svelte';
 
@@ -14,8 +16,8 @@
 
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luChevronRight, luChevronDown } from 'fractalicons/lucide';
+	import { Icon } from '@fractaldesign/icons';
+	import { luChevronRight, luChevronDown } from '@fractaldesign/icons/lucide';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		items?: TreeItem[];

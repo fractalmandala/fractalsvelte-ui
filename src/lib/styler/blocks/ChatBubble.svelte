@@ -1,9 +1,12 @@
+<!-- @component A chat message bubble with avatar, timestamp and status. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luCheck, luCheckCheck, luClock } from 'fractalicons/lucide';
+	import { Icon } from '@fractaldesign/icons';
+	import { luCheck, luCheckCheck, luClock } from '@fractaldesign/icons/lucide';
 	import Avatar from '../display/Avatar.svelte';
+	import type { Size } from '../types';
 
 	export type ChatRole = 'user' | 'assistant' | 'system';
 	export type ChatStatus = 'sending' | 'sent' | 'delivered' | 'read';
@@ -15,6 +18,7 @@
 		status?: ChatStatus;
 		avatar?: string;
 		avatarFallback?: string;
+		avatarSize?: Size;
 		class?: string;
 		avatarSnippet?: Snippet;
 		children?: Snippet;
@@ -28,6 +32,7 @@
 		status,
 		avatar,
 		avatarFallback,
+		avatarSize = 'h-lg',
 		class: className = '',
 		avatarSnippet,
 		children,
@@ -48,7 +53,7 @@
 	     avatar after the bubble. -->
 	<div class="row ytop gap-sm {isUser ? 'xright' : 'xleft'} {className}" {...restProps}>
 		{#if !isUser}
-			{#if avatarSnippet}{@render avatarSnippet()}{:else}<Avatar src={avatar} initials={initials} size="lg" />{/if}
+			{#if avatarSnippet}{@render avatarSnippet()}{:else}<Avatar src={avatar} initials={initials} size={avatarSize} />{/if}
 		{/if}
 		<div class="box gap-xs min0 {isUser ? 'xright' : 'xleft'}">
 			<div
@@ -75,7 +80,7 @@
 			{#if actions}<div class="row ycenter gap-xs">{@render actions()}</div>{/if}
 		</div>
 		{#if isUser}
-			{#if avatarSnippet}{@render avatarSnippet()}{:else}<Avatar src={avatar} initials={initials} size="lg" />{/if}
+			{#if avatarSnippet}{@render avatarSnippet()}{:else}<Avatar src={avatar} initials={initials} size={avatarSize} />{/if}
 		{/if}
 	</div>
 {/if}

@@ -1,3 +1,5 @@
+<!-- @component Tabs with an animated indicator that slides to the active tab. -->
+
 <script lang="ts" module>
 	export interface MorphingTabItem {
 		id: string;

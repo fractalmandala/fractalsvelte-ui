@@ -1,11 +1,13 @@
+<!-- @component A stack of toasts placed in a screen corner or inline. -->
+
 <script lang="ts" module>
-	import type { Intent } from '../types';
+	import type { MessageText } from '../types';
 
 	export interface ToastItem {
 		id: string;
 		title?: string;
-		message?: string;
-		intent?: Intent;
+		description?: string;
+		messageText?: MessageText;
 		duration?: number;
 	}
 </script>
@@ -55,7 +57,7 @@
 {#snippet stack()}
 	<div class="box gap-xs">
 		{#each toasts as t (t.id)}
-			<Toast id={t.id} title={t.title} message={t.message} intent={t.intent} duration={t.duration} onclose={() => remove(t.id)} />
+			<Toast id={t.id} title={t.title} description={t.description} messageText={t.messageText} duration={t.duration} onclose={() => remove(t.id)} />
 		{/each}
 		{@render children?.()}
 	</div>
@@ -64,9 +66,9 @@
 {#if position === 'inline'}
 	<div class={className} aria-live="polite">{@render stack()}</div>
 {:else}
-	<!-- .card[data-variant="ghost"] clears the popover's default canvas fill and
-	     border; display classes stay on the inner stack so it can still hide. -->
-	<div bind:this={stackEl} popover="manual" aria-live="polite" class="card ml-md mt-md pad-xs text-primary {className}" data-variant="ghost">
+	<!-- Inline styles clear the popover's default canvas fill and border; display
+	     classes stay on the inner stack so it can still hide. -->
+	<div bind:this={stackEl} popover="manual" aria-live="polite" class="ml-md mt-md pad-xs text-primary border-none {className}" style:background="transparent">
 		{@render stack()}
 	</div>
 {/if}

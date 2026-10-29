@@ -1,6 +1,8 @@
+<!-- @component A row of single-character boxes for entering a PIN or one-time code. -->
+
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsSize } from '../types';
+	import type { Size } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		value?: string;
@@ -11,7 +13,7 @@
 		helperText?: string;
 		error?: boolean | string;
 		disabled?: boolean;
-		size?: FsSize;
+		size?: Size;
 		autofocus?: boolean;
 		class?: string;
 	}
@@ -25,7 +27,7 @@
 		helperText,
 		error,
 		disabled = false,
-		size = 'lg',
+		size = 'h-lg',
 		autofocus = false,
 		class: className = '',
 		...restProps
@@ -36,14 +38,7 @@
 	const errorMessage = $derived(typeof error === 'string' ? error : undefined);
 	const digits = $derived(Array.from({ length }, (_, i) => value[i] ?? ''));
 
-	// Cells are square by .frame-1-1 against a control height. A bare <input> is
-	// used, not .input, because .input's inline padding would eat the cell.
-	const CELL_CLASSES: Record<FsSize, string> = {
-		sm: 'h-sm text-sm',
-		md: 'h-md text-sm',
-		bs: 'h-bs text-bs',
-		lg: 'h-lg text-bs'
-	};
+	// Cells take the shared control height (el-size) and stay square via frame-1-1.
 
 	$effect(() => {
 		if (autofocus) inputEls[0]?.focus();
@@ -116,9 +111,8 @@
 				{disabled}
 				aria-label="Digit {index + 1} of {length}"
 				aria-invalid={error ? true : undefined}
-				class="frame-1-1 ta-c mono weight-600 radius-sm bg-sunken {error
-					? 'border-strong text-danger'
-					: 'border-strong text-primary'} {CELL_CLASSES[size]}"
+				class="frame-1-1 ta-c tabular-nums weight-600 radius-sm bg-input border-strong el-size {size} {error ? 'is-invalid text-danger' : 'text-primary'}"
+				style:padding="0"
 				oninput={(e) => onInput(index, e)}
 				onkeydown={(e) => onKeydown(index, e)}
 				onfocus={(e) => (e.currentTarget as HTMLInputElement).select()}

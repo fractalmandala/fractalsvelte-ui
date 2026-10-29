@@ -1,218 +1,75 @@
-// Single source of truth for Fractalstyler and Fractalsvelte UI props and variants
-
+// Axis unions for the fractalstyler edition. These are the values the compiled
+// fractalstyler stylesheet answers on data-variant / data-size / data-shape /
+// data-pad — nothing outside them resolves, so nothing outside them is typed.
 
 export const union = (values: readonly string[]): string =>
 	values.map((v) => `'${v}'`).join(' | ');
 
-// Used inline as `data-variant=`. The set is the one `_10_propped.sass` paints —
-// a variant with no rule is a dead option in every picker.
-export const VARIANTS = [
+export const CoreProps = [
+	'variant', 'shape', 'size', 'shadow', 'icon'
+] as const;
+export type CoreProp = (typeof CoreProps)[number]
+
+export const Variants = [
 	'primary',
 	'secondary',
 	'themed',
 	'outline',
 	'ghost',
-	'link',
-	'icon',
+	'link'
 ] as const;
-export type Variant = (typeof VARIANTS)[number];
+export type Variant = (typeof Variants)[number];
 
-// inline as `data-size=`
-export const SIZES = ['sm', 'md', 'bs', 'lg', 'xl'] as const;
-export type Size = (typeof SIZES)[number];
+export const Sizes = ['h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl'] as const;
+export type Size = (typeof Sizes)[number];
 
-// inline as `data-shape=`
-export const SHAPES = ['square', 'min', 'modern', 'curved', 'round'] as const;
-export type Shape = (typeof SHAPES)[number];
+export const Shapes = ['square', 'min', 'modern', 'curved', 'round'] as const;
+export type Shape = (typeof Shapes)[number];
 
-// data-intent
-export const INTENTS = ['info', 'success', 'warning', 'danger'] as const;
-export type Intent = (typeof INTENTS)[number];
+export const Shadows = ['shad-none', 'shad-sm', 'shad-bs', 'shad-lg', 'shad-xl', 'shad-2xl', 'shad-hover-sm', 'shad-hover-bs', 'shad-hover-lg', 'shad-hover-xl', 'shad-hover-2xl'] as const;
+export type Shadow = (typeof Shadows)[number];
 
-// data-action
-export const ACTIONS = ['button', 'submit', 'reset'] as const;
-export type Action = (typeof ACTIONS)[number];
+export const Pads = ['pad-sm', 'pad-md', 'pad-bs', 'pad-lg', 'pad-xl'] as const;
+export type Pad = (typeof Pads)[number];
 
-// data-orientation
+export const Spaces = ['xs', 'sm', 'md', 'bs', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'] as const;
+export type Space = (typeof Spaces)[number];
+
+export const Surfaces = ['bg-main', 'bg-surface', 'bg-panel', 'bg-sunken', 'bg-raised', 'bg-extra', 'state-surface', 'state-hover', 'state-selected','bg-button', 'bg-input'] as const;
+export type Surface = (typeof Surfaces)[number];
+
+export const ThemeColors = ['theme-color', 'theme-color-alt', 'theme-color-sub'] as const;
+export type ThemeColor = (typeof ThemeColors)[number];
+
+export const Borders = ['border', 'border-subtle', 'border-strong', 'border-none'] as const;
+export type Border = (typeof Borders)[number];
+
+export const Messages = ['info', 'success', 'warning', 'danger'] as const;
+export type Message = (typeof Messages)[number];
+
+export const Icons = [
+	'primary',
+	'secondary',
+	'themed',
+	'outline',
+	'ghost',
+	'link'
+] as const;
+export type Icon = (typeof Icons)[number];
+export const MessageTexts = ['text-info', 'text-success', 'text-warning', 'text-danger'] as const;
+export type MessageText = (typeof MessageTexts)[number];
+
+export const TextSizes = ['text-xs', 'text-sm', 'text-md', 'text-bs', 'text-lg', 'text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-5xl'] as const;
+export type TextSize = (typeof TextSizes)[number];
+
+export const Weights = ['weight-300', 'weight-400', 'weight-500', 'weight-600', 'weight-700', 'weight-800'] as const;
+export type Weight = (typeof Weights)[number];
+
+export const Frames = ['frame-16-9', 'frame-9-16', 'frame-4-3', 'frame-3-4', 'frame-3-2', 'frame-2-3', 'frame-1-1'] as const;
+export type Frame = (typeof Frames)[number];
+
 export const ORIENTATIONS = ['horizontal', 'vertical'] as const;
 export type Orientation = (typeof ORIENTATIONS)[number];
 
-// data-placements
-export const PLACEMENTS = [
-	'top',
-	'top-start',
-	'top-end',
-	'bottom',
-	'bottom-start',
-	'bottom-end',
-	'left',
-	'left-start',
-	'left-end',
-	'right',
-	'right-start',
-	'right-end'
-] as const;
-export type Placement = (typeof PLACEMENTS)[number];
-
-// Alignment options
-export const ALIGNS = ['start', 'center', 'end', 'stretch', 'baseline'] as const;
-export type Align = (typeof ALIGNS)[number];
-
-// Justify options
-export const JUSTIFIES = ['start', 'center', 'end', 'between', 'around', 'evenly'] as const;
-export type Justify = (typeof JUSTIFIES)[number];
-
-// Spacing token scale
-export const SPACES = ['none', '3xs', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const;
-export type Space = (typeof SPACES)[number];
-
-// Animation speed presets
-export const SPEEDS = ['fast', 'normal', 'slow'] as const;
-export type Speed = (typeof SPEEDS)[number];
-
-// Shadow presets
-export const SHADOWS = [ 'sm', 'bs', 'lg', 'xl', '2xl' ];
-export type Shadow = (typeof SHADOWS)[number];
-
-// padding
-export const PADS = ["sm", 'md', 'bs', 'lg', 'xl'] as const;
-export type Pad = (typeof PADS)[number];
-
-// The `data-*` aliases the public API has always shipped under.
-export type DataVariant = Variant;
-export type DataSize = Size;
-export type DataShape = Shape;
-export type DataPad = Pad;
-
-// The axes are class-qualified: an element opts into an axis by carrying the
-// matching class from `_10_propped.sass`, and the preset runtime then writes
-// the `data-*` value onto it. The element itself is not the qualifier.
-export const VARIANT_TARGETS = '.el-variants';
-export const SHAPE_TARGETS = '.el-shape';
-export const SIZE_TARGETS = '.el-size';
-export const PAD_TARGETS = '.el-pad';
-
-export const presetApplication = [
-	VARIANT_TARGETS,
-	SHAPE_TARGETS,
-	SIZE_TARGETS,
-	PAD_TARGETS
-] as const;
-
-// Full theme tokens contract
-export interface DesignTokens {
-	// Backgrounds
-	'--bg': string;
-	'--bg-surface': string;
-	'--bg-panel': string;
-	'--bg-sunken': string;
-	'--bg-raised': string;
-	'--bg-extra': string;
-	'--bg-input': string;
-	'--bg-button': string;
-	'--state-surface': string;
-	'--state-hover': string;
-	'--state-selected': string;
-
-	// Typography
-	'--text-primary': string;
-	'--text-secondary': string;
-	'--text-muted': string;
-	'--text-inverse': string;
-
-	// Borders & Rings
-	'--border': string;
-	'--border-subtle': string;
-	'--border-strong': string;
-	'--ring': string;
-
-	// Brand / Primary
-	'--theme-color': string;
-	'--theme-color-alt': string;
-	'--theme-color-sub': string;
-
-	// Semantic Intents
-	'--success': string;
-	'--success-bg': string;
-	'--success-text': string;
-	'--warning': string;
-	'--warning-bg': string;
-	'--warning-text': string;
-	'--danger': string;
-	'--danger-bg': string;
-	'--danger-text': string;
-	'--info': string;
-	'--info-bg': string;
-	'--info-text': string;
-
-	// Corner Radii
-	'--radius-xs': string;
-	'--radius-sm': string;
-	'--radius-md': string;
-	'--radius-bs': string;
-	'--radius-lg': string;
-	'--radius-full': string;
-
-	// Shadows
-	'--shadow-xs': string;
-	'--shadow-sm': string;
-	'--shadow-md': string;
-	'--shadow-bs': string;
-	'--shadow-lg': string;
-	'--shadow-xl': string;
-	'--shadow-2xl': string;
-	'--shadow-3xl': string;
-
-	// Heights
-	'--height-xs': string;
-	'--height-sm': string;
-	'--height-md': string;
-	'--height-bs': string;
-	'--height-lg': string;
-	'--height-xl': string;
-
-	// Duration
-	'--duration-sm': string;
-	'--duration-md': string;
-	'--duration-bs': string;
-	'--duration-lg': string;
-
-	// Easing
-	'--transin1': string;
-	'--transin2': string;
-	'--transin3': string;
-	'--transout1': string;
-	'--transout2': string;
-	'--transout3': string;
-
-	// Dimensions
-	'--header-height': string;
-	'--footer-height': string;
-	'--sidebar-width-left': string;
-	'--sidebar-width-right': string;
-	'--prose-clamp': string;
-
-	'--text-xs': string;
-	'--text-sm': string;
-	'--text-md': string;
-	'--text-bs': string;
-	'--text-lg': string;
-	'--text-xl': string;
-	'--text-2xl': string;
-	'--text-3xl': string;
-	'--text-4xl': string;
-	'--text-5xl': string;
-
-	'--unit-space': string;
-	'--space-xs': string;
-	'--space-sm': string;
-	'--space-md': string;
-	'--space-bs': string;
-	'--space-lg': string;
-	'--space-xl': string;
-	'--space-2xl': string;
-	'--space-3xl': string;
-}
-
-/** The token contract under the name the package has always exported. */
-export type FractalTokens = DesignTokens;
+export const INTENTS = ['info', 'success', 'warning', 'danger'] as const;
+export type Intent = (typeof INTENTS)[number];

@@ -1,37 +1,52 @@
+<!-- @component An inline message box: tinted by `message`, or plain with coloured text and icon via `messageText`. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luInfo, luCircleCheck, luTriangleAlert, luCircleX, luX } from 'fractalicons/lucide';
-	import type { Intent } from '../types';
-	import { TONE_TEXT } from '../classes';
+	import { Icon, type IconData } from '@fractaldesign/icons';
+	import { luInfo, luCircleCheck, luTriangleAlert, luCircleX, luX } from '@fractaldesign/icons/lucide';
+	import type { Message, MessageText, Shape, Pad } from '../types';
+	import Card from '../layout/Card.svelte';
+	import IconButton from '../actions/IconButton.svelte';
 
-	interface Props extends HTMLAttributes<HTMLDivElement> {
-		intent?: Intent;
+	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
+		/** Tinted box in this tone (background, border, icon and title) */
+		message?: Message;
+		/** Plain box with only the icon and title in this tone; overrides message */
+		messageText?: MessageText;
 		title?: string;
 		description?: string;
 		dismissible?: boolean;
 		onclose?: () => void;
+		/** An icon from @fractaldesign/icons; defaults to one per tone */
+		icon?: IconData;
+		/** Card corners; cards take no pill shape. */
+		shape?: Exclude<Shape, 'round'>;
+		padding?: Pad;
 		class?: string;
-		icon?: Snippet;
 		actions?: Snippet;
 		children?: Snippet;
 	}
 
 	let {
-		intent = 'info',
+		message = 'info',
+		messageText,
 		title,
 		description,
 		dismissible = false,
 		onclose,
-		class: className = '',
 		icon,
+		shape = 'modern',
+		padding = 'pad-md',
+		class: className = '',
 		actions,
 		children,
 		...restProps
 	}: Props = $props();
 
-	const ICONS = { info: luInfo, success: luCircleCheck, warning: luTriangleAlert, danger: luCircleX };
+	const ICONS: Record<Message, IconData> = { info: luInfo, success: luCircleCheck, warning: luTriangleAlert, danger: luCircleX };
+	const tone = $derived<Message>(messageText ? (messageText.replace('text-', '') as Message) : message);
+	const toneText = $derived(messageText ?? `text-${message}`);
 	let closed = $state(false);
 
 	function dismiss() {
@@ -41,39 +56,28 @@
 </script>
 
 {#if !closed}
-	<div
-		role={intent === 'danger' || intent === 'warning' ? 'alert' : 'status'}
-		class="card row ytop gap-sm {className}"
-		data-variant="primary"
-		data-shape="curved"
-		data-pad="md"
+	<Card
+		role={tone === 'danger' || tone === 'warning' ? 'alert' : 'status'}
+		{shape}
+		{padding}
+		class="tint {messageText ? '' : message} {className}"
 		{...restProps}
 	>
-		<span class="row ycenter shrink-0 text-lg {TONE_TEXT[intent]}" aria-hidden="true">
-			{#if icon}
-				{@render icon()}
-			{:else}
-				<Icon icon={ICONS[intent]} />
+		<div class="row ytop gap-sm">
+			<span class="row ycenter shrink-0 text-lg {toneText}" aria-hidden="true">
+				<Icon icon={icon ?? ICONS[tone]} />
+			</span>
+			<div class="box gap-xs grow min0 xleft ta-l">
+				{#if title}<h5 class="page-heading-bs lh11 {toneText}">{title}</h5>{/if}
+				{#if description}<p class="text-body-sm lh11 text-secondary">{description}</p>{/if}
+				{#if children}<div class="text-body-sm text-secondary">{@render children()}</div>{/if}
+				{#if actions}<div class="row ycenter gap-xs wrap pt-xs">{@render actions()}</div>{/if}
+			</div>
+			{#if dismissible}
+				<IconButton icon="ghost" size="h-sm" label="Dismiss alert" class="text-muted" onclick={dismiss}>
+					<Icon icon={luX} />
+				</IconButton>
 			{/if}
-		</span>
-		<div class="box gap-xs grow min0">
-			{#if title}<h5 class="page-heading-bs {TONE_TEXT[intent]}">{title}</h5>{/if}
-			{#if description}<p class="text-body-sm text-secondary">{description}</p>{/if}
-			{#if children}<div class="text-body-sm text-secondary">{@render children()}</div>{/if}
-			{#if actions}<div class="row ycenter gap-xs wrap pt-xs">{@render actions()}</div>{/if}
 		</div>
-		{#if dismissible}
-			<button
-				type="button"
-				data-variant="iconbox"
-				data-size="icon-md"
-				class="px-xs text-muted shrink-0"
-				aria-label="Dismiss alert"
-				title="Dismiss"
-				onclick={dismiss}
-			>
-				<Icon icon={luX} />
-			</button>
-		{/if}
-	</div>
+	</Card>
 {/if}

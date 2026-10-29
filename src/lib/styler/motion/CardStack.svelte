@@ -1,3 +1,5 @@
+<!-- @component A stack of cards that can be swiped through. -->
+
 <script lang="ts" module>
 	export interface CardStackItemData {
 		id: string;
@@ -11,8 +13,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luChevronLeft, luChevronRight } from 'fractalicons/lucide';
+	import { Icon } from '@fractaldesign/icons';
+	import { luChevronLeft, luChevronRight } from '@fractaldesign/icons/lucide';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		items: CardStackItemData[];

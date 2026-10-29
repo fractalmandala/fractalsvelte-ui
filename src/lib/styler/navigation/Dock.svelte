@@ -1,3 +1,5 @@
+<!-- @component A macOS-style dock of icons that magnify near the pointer. -->
+
 <script lang="ts" module>
 	import type { Snippet } from 'svelte';
 
@@ -11,14 +13,14 @@
 
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsSize } from '../types';
+	import type { Size } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		items: DockItemData[];
 		/** Pointer distance (px) over which neighbours magnify */
 		distance?: number;
 		class?: string;
-		itemSnippet?: Snippet<[{ item: DockItemData; size: FsSize; isHovered: boolean }]>;
+		itemSnippet?: Snippet<[{ item: DockItemData; size: Size; isHovered: boolean }]>;
 	}
 
 	let { items = [], distance = 120, class: className = '', itemSnippet, ...restProps }: Props = $props();
@@ -30,14 +32,14 @@
 	// Magnification steps along fractalstyler's control-height ladder instead of
 	// a continuous scale: md at rest, bs nearby, lg under the pointer. The swap
 	// is a data-size change; the button squares itself with .frame-1-1.
-	function sizeFor(id: string): FsSize {
+	function sizeFor(id: string): Size {
 		const el = els[id];
-		if (mouseX === null || !el) return 'md';
+		if (mouseX === null || !el) return 'h-md';
 		const r = el.getBoundingClientRect();
 		const d = Math.abs(mouseX - (r.left + r.width / 2));
-		if (d < distance * 0.3) return 'lg';
-		if (d < distance) return 'bs';
-		return 'md';
+		if (d < distance * 0.3) return 'h-lg';
+		if (d < distance) return 'h-bs';
+		return 'h-md';
 	}
 </script>
 
@@ -58,10 +60,7 @@
 		<button
 			bind:this={els[item.id]}
 			type="button"
-			class="frame-1-1 px-xs"
-			data-variant={isHovered ? 'secondary' : 'ghost'}
-			data-size={size}
-			data-shape="curved"
+			class="frame-1-1 px-xs el-variant el-size el-shape curved {isHovered ? 'secondary' : 'ghost'} {size}"
 			aria-label={item.label}
 			title={item.label}
 			onpointerenter={() => (hoveredId = item.id)}

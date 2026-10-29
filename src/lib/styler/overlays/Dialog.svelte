@@ -1,12 +1,14 @@
+<!-- @component A modal dialog with title, description, body and footer. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { Icon } from 'fractalicons';
-	import { luX } from 'fractalicons/lucide';
+	import CloseButton from '../actions/CloseButton.svelte';
+	import type { Surface, Border, Shadow, Shape } from '../types';
 	import Modal from './Modal.svelte';
 
 	/**
-	 * prose — panel capped at the 65ch reading measure
-	 * full  — panel as wide as the viewport allows
+	 * prose — 36em reading width
+	 * full  — up to 64em, as wide as the viewport allows
 	 */
 	export type DialogSize = 'prose' | 'full';
 
@@ -18,6 +20,10 @@
 		closeOnBackdrop?: boolean;
 		closeOnEscape?: boolean;
 		showCloseButton?: boolean;
+		surface?: Surface;
+		border?: Border;
+		shadow?: Shadow;
+		shape?: Shape;
 		class?: string;
 		onclose?: () => void;
 		trigger?: Snippet<[{ open: () => void }]>;
@@ -34,6 +40,10 @@
 		closeOnBackdrop = true,
 		closeOnEscape = true,
 		showCloseButton = true,
+		surface = 'bg-surface',
+		border = 'border',
+		shadow = 'shad-2xl',
+		shape = 'curved',
 		class: className = '',
 		onclose,
 		trigger,
@@ -42,6 +52,7 @@
 		children
 	}: Props = $props();
 
+	const WIDTHS: Record<DialogSize, string> = { prose: '36em', full: 'min(64em, 100%)' };
 	const uid = $props.id();
 	const hasHeader = $derived(Boolean(header || title || description));
 </script>
@@ -53,9 +64,14 @@
 	{closeOnBackdrop}
 	{closeOnEscape}
 	{onclose}
+	{surface}
+	{border}
+	{shadow}
+	{shape}
 	aria-labelledby={title ? `${uid}-title` : undefined}
 	aria-describedby={description ? `${uid}-desc` : undefined}
-	panelClass="{size === 'full' ? 'wfull' : 'prose'} {className}"
+	width={WIDTHS[size]}
+	panelClass={className}
 >
 	{#if hasHeader || showCloseButton}
 		<header class="row ytop xbetween gap-md px-md pt-md pb-sm">
@@ -68,9 +84,7 @@
 				{/if}
 			</div>
 			{#if showCloseButton}
-				<button type="button" data-variant="iconbox" data-size="icon-bs" class="px-xs text-muted shrink-0" aria-label="Close dialog" onclick={() => (open = false)}>
-					<Icon icon={luX} />
-				</button>
+				<CloseButton label="Close dialog" size="h-sm" class="shrink-0" onclick={() => (open = false)} />
 			{/if}
 		</header>
 	{/if}

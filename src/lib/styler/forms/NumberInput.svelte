@@ -1,9 +1,13 @@
+<!-- @component A numeric input with min, max, step and optional − / + stepper buttons. -->
+
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luMinus, luPlus } from 'fractalicons/lucide';
-	import type { FsFieldVariant, FsSize, FsShape } from '../types';
-	import { FIELD_PAINT, FIELD_HEIGHT, SHAPE_RADIUS } from '../classes';
+	import { Icon } from '@fractaldesign/icons';
+	import { luMinus, luPlus } from '@fractaldesign/icons/lucide';
+	import IconButton from '../actions/IconButton.svelte';
+	import type { Surface, Size, Shape, Shadow } from '../types';
+	import { getFieldLook } from './field-context';
 
 	interface Props extends Omit<HTMLInputAttributes, 'size'> {
 		value?: number;
@@ -17,12 +21,17 @@
 		readonly?: boolean;
 		/** Show the − / + stepper buttons */
 		controls?: boolean;
-		variant?: FsFieldVariant;
-		size?: FsSize;
-		shape?: FsShape;
+		surface?: Surface;
+		size?: Size;
+		shape?: Shape;
+		shadow?: Shadow;
 		id?: string;
 		class?: string;
+		leading?: Snippet;
+		trailing?: Snippet;
 	}
+
+	const field = getFieldLook();
 
 	let {
 		value = $bindable(0),
@@ -35,17 +44,21 @@
 		disabled = false,
 		readonly = false,
 		controls = true,
-		variant = 'primary',
-		size = 'lg',
-		shape = 'modern',
+		surface = field.surface ?? 'bg-input',
+		size = field.size ?? 'h-lg',
+		shape = field.shape ?? 'modern',
+		shadow = field.shadow ?? 'shad-none',
 		id,
 		class: className = '',
+		leading,
+		trailing,
 		...restProps
 	}: Props = $props();
 
 	const uid = $props.id();
 	const inputId = $derived(id || uid);
 	const errorMessage = $derived(typeof error === 'string' ? error : undefined);
+	const invalid = $derived(Boolean(error) || Boolean(field.invalid));
 	let timer: ReturnType<typeof setInterval> | null = null;
 
 	const canDec = $derived(!disabled && !readonly && (min === undefined || (value ?? 0) > min));
@@ -82,21 +95,23 @@
 
 <div class="box gap-xs {className}">
 	{#if label}<label for={inputId} class="text-xs weight-500 text-secondary">{label}</label>{/if}
-	<div class="row ycenter gap-xs px-xs {FIELD_PAINT[variant]} {FIELD_HEIGHT[size]} {SHAPE_RADIUS[shape]}">
+	<div class="row ycenter gap-xs px-xs border el-size el-shape {surface} {size} {shape} {shadow} {invalid ? 'is-invalid' : ''}">
+		{#if leading}
+			<span class="row ycenter shrink-0 pl-xs text-muted" aria-hidden="true">{@render leading()}</span>
+		{/if}
 		{#if controls}
-			<button
-				type="button"
-				data-variant="iconbox"
-				class="px-xs"
+			<IconButton
+				icon="ghost"
+				size="h-sm"
+				label="Decrease value"
 				disabled={!canDec}
 				tabindex={-1}
-				aria-label="Decrease value"
 				onpointerdown={() => startStepping(-step)}
 				onpointerup={stopStepping}
 				onpointerleave={stopStepping}
 			>
 				<Icon icon={luMinus} />
-			</button>
+			</IconButton>
 		{/if}
 		<input
 			id={inputId}
@@ -107,8 +122,8 @@
 			{step}
 			{disabled}
 			{readonly}
-			class="input grow min0 hfull ta-c mono"
-			data-variant="ghost"
+			class="input grow min0 hfull ta-c tabular-nums border-none"
+			style:background="transparent"
 			{onchange}
 			onkeydown={(e) => {
 				if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
@@ -116,24 +131,26 @@
 					stepBy(e.key === 'ArrowUp' ? step : -step);
 				}
 			}}
-			aria-invalid={error ? true : undefined}
+			aria-invalid={invalid || undefined}
 			aria-describedby={errorMessage ? `${inputId}-error` : helperText ? `${inputId}-helper` : undefined}
 			{...restProps}
 		/>
 		{#if controls}
-			<button
-				type="button"
-				data-variant="iconbox"
-				class="px-xs"
+			<IconButton
+				icon="ghost"
+				size="h-sm"
+				label="Increase value"
 				disabled={!canInc}
 				tabindex={-1}
-				aria-label="Increase value"
 				onpointerdown={() => startStepping(step)}
 				onpointerup={stopStepping}
 				onpointerleave={stopStepping}
 			>
 				<Icon icon={luPlus} />
-			</button>
+			</IconButton>
+		{/if}
+		{#if trailing}
+			<span class="row ycenter shrink-0 pr-xs text-muted" aria-hidden="true">{@render trailing()}</span>
 		{/if}
 	</div>
 	{#if errorMessage}

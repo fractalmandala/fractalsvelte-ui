@@ -1,6 +1,8 @@
+<!-- @component A single-thumb slider for choosing a value in a range. -->
+
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsTone } from '../types';
+	import type { MessageText, Size } from '../types';
 	import SliderTrack from './SliderTrack.svelte';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -12,7 +14,10 @@
 		description?: string;
 		showValue?: boolean;
 		formatValue?: (val: number) => string;
-		tone?: FsTone;
+		tone?: MessageText;
+		/** Thumb diameter / track thickness */
+		size?: Size;
+		direction?: 'horizontal' | 'vertical';
 		disabled?: boolean;
 		id?: string;
 		class?: string;
@@ -27,7 +32,9 @@
 		description,
 		showValue = false,
 		formatValue = (v: number) => String(v),
-		tone = 'theme',
+		tone,
+		size = 'h-sm',
+		direction = 'horizontal',
 		disabled = false,
 		id,
 		class: className = '',
@@ -51,11 +58,14 @@
 		return Number(Math.max(min, Math.min(max, raw)).toFixed(decimals));
 	}
 
-	function fromPointer(clientX: number) {
+	function fromPointer(e: PointerEvent) {
 		if (!trackEl || disabled) return;
 		const rect = trackEl.getBoundingClientRect();
-		const r = rect.height / 2;
-		const ratio = Math.max(0, Math.min(1, (clientX - rect.left - r) / Math.max(1, rect.width - r * 2)));
+		const vert = direction === 'vertical';
+		const r = (vert ? rect.width : rect.height) / 2;
+		const len = vert ? rect.height : rect.width;
+		const pos = vert ? rect.bottom - e.clientY : e.clientX - rect.left;
+		const ratio = Math.max(0, Math.min(1, (pos - r) / Math.max(1, len - r * 2)));
 		value = roundToStep(min + ratio * (max - min));
 	}
 
@@ -63,7 +73,7 @@
 		if (disabled) return;
 		dragging = true;
 		(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-		fromPointer(e.clientX);
+		fromPointer(e);
 	}
 
 	function onkeydown(e: KeyboardEvent) {
@@ -84,11 +94,11 @@
 	}
 </script>
 
-<div class="box gap-xs {className}" {...restProps}>
+<div class="box gap-xs {direction === 'vertical' ? 'xcenter' : ''} {className}" style:min-width={direction === 'vertical' ? undefined : '14em'} {...restProps}>
 	{#if label || showValue}
 		<div class="row ycenter xbetween gap-sm">
 			{#if label}<span class="text-sm weight-500 text-secondary">{label}</span>{/if}
-			{#if showValue}<span class="chip mono bg-sunken text-secondary">{formatValue(value)}</span>{/if}
+			{#if showValue}<span class="chip tabular-nums bg-sunken text-secondary">{formatValue(value)}</span>{/if}
 		</div>
 	{/if}
 	{#if description}<span class="text-body-sm text-muted">{description}</span>{/if}
@@ -97,7 +107,10 @@
 		bind:clientWidth={width}
 		bind:clientHeight={height}
 		id={sliderId}
-		class="relative wfull h-sm"
+		class="relative {direction === 'vertical' ? '' : 'wfull'}"
+		style:height={direction === 'vertical' ? '10em' : `var(--height-${size.slice(2)})`}
+		style:width={direction === 'vertical' ? `var(--height-${size.slice(2)})` : undefined}
+		aria-orientation={direction}
 		role="slider"
 		tabindex={disabled ? -1 : 0}
 		aria-valuemin={min}
@@ -107,13 +120,13 @@
 		aria-label={label}
 		aria-disabled={disabled || undefined}
 		{onpointerdown}
-		onpointermove={(e) => dragging && fromPointer(e.clientX)}
+		onpointermove={(e) => dragging && fromPointer(e)}
 		onpointerup={() => (dragging = false)}
 		onpointercancel={() => (dragging = false)}
 		{onkeydown}
 		onfocus={() => (focused = true)}
 		onblur={() => (focused = false)}
 	>
-		<SliderTrack {width} {height} values={[fraction]} {tone} focused={focused ? 0 : null} {disabled} />
+		<SliderTrack {width} {height} values={[fraction]} {tone} {direction} focused={focused ? 0 : null} {disabled} />
 	</div>
 </div>

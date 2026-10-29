@@ -1,3 +1,5 @@
+<!-- @component A single radio button with label and description. -->
+
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
@@ -6,6 +8,7 @@
 		name?: () => string | undefined;
 		value?: () => string | number | undefined;
 		disabled?: () => boolean | undefined;
+		invalid?: () => boolean;
 		select?: (val: string | number) => void;
 	}
 
@@ -54,7 +57,8 @@
 	}
 </script>
 
-<label class="checkbox-wrapper {description ? 'row ytop' : ''} {className}" for={radioId}>
+<label class="row {description ? 'ytop' : 'ycenter'} gap-sm text-sm {className}" for={radioId}>
+	<span class="checkbox-box radio">
 	<input
 		id={radioId}
 		type="radio"
@@ -64,11 +68,13 @@
 		disabled={effectiveDisabled}
 		onchange={handleChange}
 		aria-describedby={description ? `${radioId}-desc` : undefined}
+		class={groupCtx?.invalid?.() ? "is-invalid" : undefined}
 		{...restProps}
 	/>
+	</span>
 	{#if label || description}
 		<div class="box gap-xs">
-			{#if label}<span class={effectiveDisabled ? 'text-muted' : ''}>{label}</span>{/if}
+			{#if label}<span class="weight-500 {effectiveDisabled ? 'text-muted' : ''}">{label}</span>{/if}
 			{#if description}<div id="{radioId}-desc" class="text-body-sm text-muted">{description}</div>{/if}
 		</div>
 	{/if}

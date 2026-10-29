@@ -1,9 +1,9 @@
+<!-- @component A card that acts as a button, or a link when given `href`. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes, HTMLButtonAttributes, HTMLAnchorAttributes } from 'svelte/elements';
-	import type { FsCardShape, FsPad } from '../types';
-	import { SHADOW } from '../classes';
-	import type { CardElevation } from './Card.svelte';
+	import type { Size, Surface, Border, Shape, Pad, Shadow } from '../types';
 
 	interface Props extends HTMLButtonAttributes {
 		/** Renders an anchor instead of a button */
@@ -11,9 +11,13 @@
 		target?: string;
 		rel?: string;
 		disabled?: boolean;
-		elevation?: CardElevation;
-		padding?: FsPad;
-		shape?: FsCardShape;
+		size?: Size;
+		surface?: Surface;
+		border?: Border;
+		shadow?: Shadow;
+		padding?: Pad;
+		/** Card corners; cards take no pill shape. */
+		shape?: Exclude<Shape, 'round'>;
 		title?: string;
 		description?: string;
 		class?: string;
@@ -30,8 +34,11 @@
 		target,
 		rel,
 		disabled = false,
-		elevation = 'none',
-		padding = 'lg',
+		size = 'h-md',
+		surface = 'bg-panel',
+		border = 'border',
+		shadow = 'shad-none',
+		padding = 'pad-lg',
 		shape = 'curved',
 		title,
 		description,
@@ -46,10 +53,9 @@
 	}: Props = $props();
 
 	const hasHeader = $derived(Boolean(header || title || description || headerExtra));
-	// .card[data-variant="link"] is the interactive card: its border picks up the
-	// theme colour on hover. .link-parent turns the title theme-coloured too.
+	// .card-clickable strengthens the border on hover; .link-parent turns the title theme-coloured.
 	const shell = $derived(
-		`card link-parent box xleft ytop gap-md ta-l wfull ${elevation === 'none' ? '' : SHADOW[elevation]} ${className}`
+		`card card-sized card-clickable link-parent box xleft ytop gap-md ta-l wfull el-shape ${size} ${shape} ${padding} ${surface} ${border} ${shadow} ${disabled ? 'disabled' : ''} ${className}`
 	);
 </script>
 
@@ -68,7 +74,7 @@
 			</div>
 		{/if}
 	{/if}
-	{#if children}<div class="box gap-sm text-body-sm wfull">{@render children()}</div>{/if}
+	{#if children}<div class="box gap-sm wfull">{@render children()}</div>{/if}
 	{#if footer}<footer class="row ycenter gap-sm pt-sm bt-sub wfull">{@render footer()}</footer>{/if}
 {/snippet}
 
@@ -78,24 +84,16 @@
 		{target}
 		rel={target === '_blank' ? (rel ?? 'noopener noreferrer') : rel}
 		class={shell}
-		data-variant="link"
-		data-pad={padding}
-		data-shape={shape}
 		aria-disabled={disabled || undefined}
 		{...restProps as HTMLAnchorAttributes}
 	>
 		{@render body()}
 	</a>
 {:else}
-	<!-- Not a <button>: data-variant on a button also matches fractalstyler's
-	     button[data-variant] paint, which would recolour the whole card. -->
 	<div
 		role="button"
 		tabindex={disabled ? -1 : 0}
 		class={shell}
-		data-variant="link"
-		data-pad={padding}
-		data-shape={shape}
 		aria-disabled={disabled || undefined}
 		onclick={(e) => !disabled && onclick?.(e)}
 		onkeydown={(e) => {

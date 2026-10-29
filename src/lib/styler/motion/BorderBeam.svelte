@@ -1,14 +1,15 @@
+<!-- @component A light beam that travels around the border of its parent. -->
+
 <script lang="ts">
 	import type { SVGAttributes } from 'svelte/elements';
-	import type { FsTone } from '../types';
-	import { TONE_TEXT } from '../classes';
+	import type { MessageText } from '../types';
 
 	interface Props extends SVGAttributes<SVGSVGElement> {
 		/** Beam length as a share of the perimeter (0–1) */
 		size?: number;
 		/** Seconds per lap */
 		duration?: number;
-		tone?: FsTone;
+		tone?: MessageText;
 		borderWidth?: number;
 		/** Corner radius in px, to match the host's rounding */
 		radius?: number;
@@ -18,7 +19,7 @@
 	let {
 		size = 0.2,
 		duration = 6,
-		tone = 'theme',
+		tone,
 		borderWidth = 1.5,
 		radius = 8,
 		class: className = '',
@@ -43,7 +44,7 @@
 
 <!-- Overlay for a padding-free .relative host: a dash of the border's own
      outline travels round it (stroke-dashoffset, animated by SMIL). -->
-<svg bind:this={svgEl} class="absolute full {TONE_TEXT[tone]} {className}" pointer-events="none" aria-hidden="true" {...restProps}>
+<svg bind:this={svgEl} class="absolute full {tone ?? 'text-theme'} {className}" pointer-events="none" aria-hidden="true" {...restProps}>
 	{#if w > 0 && h > 0}
 		<rect
 			x={borderWidth / 2}

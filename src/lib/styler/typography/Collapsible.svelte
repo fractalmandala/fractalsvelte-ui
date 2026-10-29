@@ -1,17 +1,24 @@
+<!-- @component A single section that expands and collapses under a header. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luChevronDown, luChevronUp } from 'fractalicons/lucide';
-	import type { FsVariant } from '../types';
+	import { Icon } from '@fractaldesign/icons';
+	import { luChevronDown, luChevronUp } from '@fractaldesign/icons/lucide';
+	import type { Variant, Size, Surface, Border, Shape, Shadow } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		open?: boolean;
 		disabled?: boolean;
 		title?: string;
-		/** .fsx-accordion-item paint */
-		variant?: FsVariant;
-		shape?: 'modern' | 'curved';
+		/** Trigger paint */
+		variant?: Variant;
+		/** Trigger height */
+		size?: Size;
+		surface?: Surface;
+		border?: Border;
+		shape?: Shape;
+		shadow?: Shadow;
 		class?: string;
 		header?: Snippet<[{ isOpen: boolean; toggle: () => void }]>;
 		children?: Snippet;
@@ -21,8 +28,12 @@
 		open = $bindable(false),
 		disabled = false,
 		title = '',
-		variant = 'primary',
+		variant = 'ghost',
+		size = 'h-md',
+		surface = 'bg-panel',
+		border = 'border',
 		shape = 'curved',
+		shadow = 'shad-none',
 		class: className = '',
 		header,
 		children,
@@ -33,16 +44,16 @@
 	const toggle = () => !disabled && (open = !open);
 </script>
 
-<!-- fractalstyler's accordion item: .open swaps the content grid row from 0fr
+<!-- The accordion item: .open swaps the content grid row from 0fr
      to 1fr, which is the collapse animation. inert keeps the hidden body out
      of the tab order. -->
-<div class="fsx-accordion-item {open ? 'open' : ''} {className}" data-variant={variant} data-shape={shape} {...restProps}>
+<div class="accordion-item wfull el-shape {surface} {border} {shape} {shadow} {open ? 'open' : ''} {className}" {...restProps}>
 	{#if header}
 		{@render header({ isOpen: open, toggle })}
 	{:else}
 		<button
 			type="button"
-			class="fsx-accordion-trigger gap-sm text-sm weight-500 {disabled ? 'text-muted' : ''}"
+			class="accordion-trigger wfull gap-sm px-sm weight-500 el-variant el-size el-shape {variant} {size} {shape} {disabled ? 'text-muted' : ''}"
 			aria-expanded={open}
 			aria-controls="{uid}-content"
 			{disabled}
@@ -52,8 +63,8 @@
 			<Icon icon={open ? luChevronUp : luChevronDown} class="text-muted shrink-0" />
 		</button>
 	{/if}
-	<div id="{uid}-content" class="fsx-accordion-content" inert={!open}>
-		<div class="fsx-accordion-panel text-body-sm text-secondary">
+	<div id="{uid}-content" class="accordion-content" inert={!open}>
+		<div class="accordion-panel text-body-sm text-secondary">
 			{@render children?.()}
 		</div>
 	</div>

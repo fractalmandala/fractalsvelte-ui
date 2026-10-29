@@ -1,13 +1,16 @@
+<!-- @component A responsive grid for laying out BentoCell tiles. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsSpace } from '../types';
-	import { GAP, GRID_COLS, type FsColumns } from '../classes';
+	import type { Space } from '../types';
+
+	type Columns = 1 | 2 | 3 | 4 | 5 | 6;
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		/** fractalstyler's responsive grid steps (1–6). Cells span with colSpan. */
-		columns?: FsColumns;
-		gap?: FsSpace;
+		columns?: Columns;
+		gap?: Space;
 		class?: string;
 		children?: Snippet;
 	}
@@ -15,6 +18,6 @@
 	let { columns = 3, gap = 'md', class: className = '', children, ...restProps }: Props = $props();
 </script>
 
-<div class="{GRID_COLS[columns]} ystretch {GAP[gap]} {className}" {...restProps}>
+<div class="grid-{columns} ystretch gap-{gap} {className}" {...restProps}>
 	{@render children?.()}
 </div>

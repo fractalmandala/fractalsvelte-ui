@@ -1,3 +1,5 @@
+<!-- @component A select menu, native or as a filterable listbox, with option groups. -->
+
 <script lang="ts" module>
 	export interface SelectOption {
 		value: string | number;
@@ -9,10 +11,11 @@
 
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luX, luCheck, luSearch, luChevronDown } from 'fractalicons/lucide';
-	import type { FsFieldVariant, FsSize, FsShape } from '../types';
-	import { FIELD_PAINT, FIELD_HEIGHT, SHAPE_RADIUS } from '../classes';
+	import { Icon } from '@fractaldesign/icons';
+	import { luCheck, luSearch, luChevronDown } from '@fractaldesign/icons/lucide';
+	import type { Variant, Surface, Size, Shape, Shadow } from '../types';
+	import { getFieldLook } from './field-context';
+	import CloseButton from '../actions/CloseButton.svelte';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		value?: string | number;
@@ -27,12 +30,17 @@
 		searchable?: boolean;
 		searchPlaceholder?: string;
 		clearable?: boolean;
-		variant?: FsFieldVariant;
-		size?: FsSize;
-		shape?: FsShape;
+		variant?: Variant;
+		/** Fill; overrides the variant's background. */
+		surface?: Surface;
+		size?: Size;
+		shape?: Shape;
+		shadow?: Shadow;
 		id?: string;
 		class?: string;
 	}
+
+	const field = getFieldLook();
 
 	let {
 		value = $bindable(undefined),
@@ -46,9 +54,11 @@
 		searchable = false,
 		searchPlaceholder = 'Search options…',
 		clearable = false,
-		variant = 'primary',
-		size = 'lg',
-		shape = 'modern',
+		variant = field.variant ?? 'outline',
+		surface = field.surface,
+		size = field.size ?? 'h-lg',
+		shape = field.shape ?? 'modern',
+		shadow = field.shadow ?? 'shad-none',
 		id,
 		class: className = '',
 		...restProps
@@ -57,6 +67,8 @@
 	const uid = $props.id();
 	const selectId = $derived(id || uid);
 	const errorMessage = $derived(typeof error === 'string' ? error : undefined);
+	const invalid = $derived(Boolean(error) || Boolean(field.invalid));
+	const fill = $derived([surface && `el-surface ${surface}`, invalid && 'is-invalid'].filter(Boolean).join(' '));
 	const canClear = $derived(clearable && value !== undefined && !disabled);
 	const selected = $derived(options.find((o) => o.value === value));
 
@@ -148,14 +160,12 @@
 
 	{#if !searchable}
 		<div class="row ycenter gap-xs">
+			<div class="select-wrap relative row ycenter grow min0">
 			<select
 				id={selectId}
-				class="select grow min0"
-				data-variant={variant}
-				data-size={size}
-				data-shape={shape}
+				class="select grow min0 el-variant el-size el-shape {variant} {size} {shape} {shadow} {fill}"
 				{disabled}
-				aria-invalid={error ? true : undefined}
+				aria-invalid={invalid || undefined}
 				aria-describedby={description ? `${selectId}-desc` : undefined}
 				onchange={onNativeChange}
 			>
@@ -174,28 +184,32 @@
 					{/if}
 				{/each}
 			</select>
+			<!-- our own chevron (not fractalstyler's fixed-grey arrow) so it follows the fill's ink -->
+			<Icon
+				icon={luChevronDown}
+				class="select-chevron shrink-0 {surface ? 'ink-auto' : 'text-muted'}"
+				style={surface ? `--ink-bg: var(--${surface === 'bg-main' ? 'bg' : surface})` : undefined}
+			/>
+			</div>
 			{#if canClear}
-				<button type="button" data-variant="iconbox" class="px-xs text-muted" aria-label="Clear selection" onclick={() => (value = undefined)}>
-					<Icon icon={luX} />
-				</button>
+				<CloseButton label="Clear selection" size="h-sm" onclick={() => (value = undefined)} />
 			{/if}
 		</div>
 	{:else}
 		<!-- The panel is .absolute with no offsets, so it sits at its static
 		     position: directly under the trigger, full width via .wfull. -->
 		<div class="relative">
-			<div class="row ycenter gap-xs pr-xs {FIELD_PAINT[variant]} {FIELD_HEIGHT[size]} {SHAPE_RADIUS[shape]}">
+			<div class="row ycenter gap-xs pr-xs el-variant el-size el-shape {variant} {size} {shape} {shadow} {fill}">
 				<button
 					bind:this={triggerEl}
 					id={selectId}
 					type="button"
 					role="combobox"
-					class="row xbetween grow min0 hfull {SHAPE_RADIUS[shape]}"
-					data-variant="ghost"
+					class="row xbetween grow min0 hfull px-sm el-shape {shape}"
 					aria-haspopup="listbox"
 					aria-expanded={open}
 					aria-controls="{selectId}-listbox"
-					aria-invalid={error ? true : undefined}
+					aria-invalid={invalid || undefined}
 					{disabled}
 					onclick={() => (open ? closeMenu() : openMenu())}
 					onkeydown={(e) => {
@@ -209,9 +223,7 @@
 					<Icon icon={luChevronDown} class="text-muted shrink-0" />
 				</button>
 				{#if canClear}
-					<button type="button" data-variant="iconbox" class="px-xs text-muted" aria-label="Clear selection" onclick={() => (value = undefined)}>
-						<Icon icon={luX} />
-					</button>
+					<CloseButton label="Clear selection" size="h-sm" onclick={() => (value = undefined)} />
 				{/if}
 			</div>
 			{#if open}
@@ -223,9 +235,8 @@
 							bind:this={searchEl}
 							bind:value={query}
 							type="text"
-							class="input grow min0"
-							data-variant="ghost"
-							data-size="lg"
+							class="input grow min0 h-lg border-none"
+							style:background="transparent"
 							placeholder={searchPlaceholder}
 							aria-label={searchPlaceholder}
 							aria-controls="{selectId}-listbox"

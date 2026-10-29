@@ -1,8 +1,10 @@
+<!-- @component A page section with eyebrow, title, subtitle and optional container. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsSpace } from '../types';
-	import { PY, MEASURE, type FsMeasure } from '../classes';
+	import type { Space, Surface } from '../types';
+	import { MEASURE, type ContainerSize } from './Container.svelte';
 
 	export type SectionAlign = 'left' | 'center';
 
@@ -13,10 +15,11 @@
 		eyebrow?: string;
 		/** Constrain the inner content to a page measure */
 		contained?: boolean;
-		containerSize?: FsMeasure;
+		containerSize?: ContainerSize;
 		/** Vertical padding step */
-		spacing?: FsSpace;
+		spacing?: Space;
 		align?: SectionAlign;
+		surface?: Surface;
 		class?: string;
 		action?: Snippet;
 		header?: Snippet;
@@ -31,6 +34,7 @@
 		containerSize = 'wide',
 		spacing = 'xl',
 		align = 'left',
+		surface,
 		class: className = '',
 		action,
 		header,
@@ -42,7 +46,7 @@
 	const centered = $derived(align === 'center');
 </script>
 
-<section class="{PY[spacing]} {className}" {...restProps}>
+<section class="py-{spacing} {surface ?? ''} {className}" {...restProps}>
 	<div class="box gap-lg {contained ? MEASURE[containerSize] : ''}">
 		{#if hasHeader}
 			{#if header}

@@ -1,3 +1,5 @@
+<!-- @component A top bar with brand, centre and actions slots, optionally sticky. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';

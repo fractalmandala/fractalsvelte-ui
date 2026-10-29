@@ -1,6 +1,8 @@
+<!-- @component A two-thumb slider for choosing a min and max value. -->
+
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsTone } from '../types';
+	import type { MessageText, Size } from '../types';
 	import SliderTrack from './SliderTrack.svelte';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -14,7 +16,10 @@
 		description?: string;
 		showValues?: boolean;
 		formatValue?: (val: number) => string;
-		tone?: FsTone;
+		tone?: MessageText;
+		/** Thumb diameter / track thickness */
+		size?: Size;
+		direction?: 'horizontal' | 'vertical';
 		disabled?: boolean;
 		class?: string;
 	}
@@ -30,7 +35,9 @@
 		description,
 		showValues = false,
 		formatValue = (v: number) => String(v),
-		tone = 'theme',
+		tone,
+		size = 'h-sm',
+		direction = 'horizontal',
 		disabled = false,
 		class: className = '',
 		...restProps
@@ -59,16 +66,19 @@
 		else maxVal = Math.max(v, minVal + minDistance);
 	}
 
-	function valueAt(clientX: number) {
+	function valueAt(e: PointerEvent) {
 		const rect = trackEl!.getBoundingClientRect();
-		const r = rect.height / 2;
-		const ratio = Math.max(0, Math.min(1, (clientX - rect.left - r) / Math.max(1, rect.width - r * 2)));
+		const vert = direction === 'vertical';
+		const r = (vert ? rect.width : rect.height) / 2;
+		const len = vert ? rect.height : rect.width;
+		const pos = vert ? rect.bottom - e.clientY : e.clientX - rect.left;
+		const ratio = Math.max(0, Math.min(1, (pos - r) / Math.max(1, len - r * 2)));
 		return min + ratio * (max - min);
 	}
 
 	function onpointerdown(e: PointerEvent) {
 		if (disabled || !trackEl) return;
-		const raw = valueAt(e.clientX);
+		const raw = valueAt(e);
 		active = Math.abs(raw - minVal) <= Math.abs(raw - maxVal) ? 0 : 1;
 		(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
 		setThumb(active, raw);
@@ -77,7 +87,7 @@
 
 	function onpointermove(e: PointerEvent) {
 		if (active === null || !trackEl) return;
-		setThumb(active, valueAt(e.clientX));
+		setThumb(active, valueAt(e));
 	}
 
 	function keyFor(which: 0 | 1, e: KeyboardEvent) {
@@ -99,12 +109,12 @@
 	}
 </script>
 
-<div class="box gap-xs {className}" {...restProps}>
+<div class="box gap-xs {direction === 'vertical' ? 'xcenter' : ''} {className}" style:min-width={direction === 'vertical' ? undefined : '14em'} {...restProps}>
 	{#if label || showValues}
 		<div class="row ycenter xbetween gap-sm">
 			{#if label}<span id="{uid}-label" class="text-sm weight-500 text-secondary">{label}</span>{/if}
 			{#if showValues}
-				<span class="chip mono bg-sunken text-secondary">{formatValue(minVal)} – {formatValue(maxVal)}</span>
+				<span class="chip tabular-nums bg-sunken text-secondary">{formatValue(minVal)} – {formatValue(maxVal)}</span>
 			{/if}
 		</div>
 	{/if}
@@ -113,7 +123,9 @@
 		bind:this={trackEl}
 		bind:clientWidth={width}
 		bind:clientHeight={height}
-		class="relative wfull h-sm"
+		class="relative {direction === 'vertical' ? '' : 'wfull'}"
+		style:height={direction === 'vertical' ? '10em' : `var(--height-${size.slice(2)})`}
+		style:width={direction === 'vertical' ? `var(--height-${size.slice(2)})` : undefined}
 		role="group"
 		aria-labelledby={label ? `${uid}-label` : undefined}
 		{onpointerdown}
@@ -121,7 +133,7 @@
 		onpointerup={() => (active = null)}
 		onpointercancel={() => (active = null)}
 	>
-		<SliderTrack {width} {height} values={[toFraction(minVal), toFraction(maxVal)]} {tone} {focused} {disabled} />
+		<SliderTrack {width} {height} values={[toFraction(minVal), toFraction(maxVal)]} {tone} {direction} {focused} {disabled} />
 		<!-- Two zero-size focus targets carry the slider semantics for each thumb. -->
 		{#each THUMBS as which (which)}
 			<span

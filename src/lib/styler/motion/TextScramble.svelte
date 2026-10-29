@@ -1,3 +1,5 @@
+<!-- @component Text that scrambles through random characters before settling. -->
+
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';

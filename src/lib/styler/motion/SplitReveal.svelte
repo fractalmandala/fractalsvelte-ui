@@ -1,3 +1,5 @@
+<!-- @component Shutters that part to reveal hidden content. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';

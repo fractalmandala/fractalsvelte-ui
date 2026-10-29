@@ -1,3 +1,5 @@
+<!-- @component Positions a floating panel next to its trigger; used by Popover, Tooltip and menus. -->
+
 <script lang="ts" module>
 	export type Placement =
 		| 'top'

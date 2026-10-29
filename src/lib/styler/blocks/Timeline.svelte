@@ -1,3 +1,5 @@
+<!-- @component A vertical list of dated events. -->
+
 <script lang="ts" module>
 	import type { Intent } from '../types';
 
@@ -14,7 +16,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { TONE_TEXT } from '../classes';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		items?: TimelineItem[];
@@ -41,7 +42,7 @@
 	<!-- The rail is an empty .grow span with a left border; the dot is SVG, with
 	     a SMIL ping for the active entry. -->
 	<div class="box xcenter shrink-0">
-		<svg viewBox="0 0 20 20" width="1.25em" height="1.25em" class={item.intent ? TONE_TEXT[item.intent] : 'text-theme'} aria-hidden="true">
+		<svg viewBox="0 0 20 20" width="1.25em" height="1.25em" class={item.intent ? `text-${item.intent}` : 'text-theme'} aria-hidden="true">
 			{#if item.active}
 				<circle cx="10" cy="10" r="5" fill="currentColor" opacity="0.4">
 					<animate attributeName="r" values="5;10" dur="1.6s" repeatCount="indefinite" />

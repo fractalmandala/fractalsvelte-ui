@@ -1,20 +1,38 @@
+<!-- @component An icon button with an Close Icon, for closing panels, dialogs and dismissible items. -->
+
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luX } from 'fractalicons/lucide';
-	import type { FsSize } from '../types';
+	import { Icon as Iconbox } from '@fractaldesign/icons';
+	import { luX } from '@fractaldesign/icons/lucide';
+	import type { Size, Shape, Icon } from '../types';
 	import IconButton from './IconButton.svelte';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'type'> {
+		/** Accessible name; also shown as the native tooltip. */
 		label?: string;
-		size?: FsSize;
+		icon?: Icon;
+		size?: Size;
+		shape?: Shape;
+		loading?: boolean;
+		disabled?: boolean | null;
 		class?: string;
-		onclick?: (event: MouseEvent) => void;
+		href?: string;
+		/** Ignored: the glyph is always an X. */
+		children?: Snippet;
 	}
 
-	let { label = 'Close', size = 'md', class: className = '', onclick, ...restProps }: Props = $props();
+	let {
+		label = 'Close',
+		icon = 'ghost',
+		size = 'h-md',
+		shape = 'min',
+		class: className = '',
+		children: _children,
+		...restProps
+	}: Props = $props();
 </script>
 
-<IconButton {label} variant="ghost" {size} shape="modern" class="text-muted {className}" {onclick} {...restProps}>
-	<Icon icon={luX} />
+<IconButton {label} {icon} {size} {shape} class={className} {...restProps}>
+	<Iconbox icon={luX} />
 </IconButton>

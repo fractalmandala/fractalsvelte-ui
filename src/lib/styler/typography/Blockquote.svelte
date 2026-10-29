@@ -1,12 +1,22 @@
+<!-- @component A quotation with author and citation. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
+	import { Icon, type IconData } from '@fractaldesign/icons';
+	import { luQuote } from '@fractaldesign/icons/lucide';
+	import type { Border, ThemeColor } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLQuoteElement> {
 		quote?: string;
 		author?: string;
 		citation?: string;
-		icon?: boolean;
+		/** An icon from @fractaldesign/icons, or false for none */
+		icon?: IconData | false;
+		/** Colour of the icon */
+		accent?: ThemeColor;
+		/** Left rule colour */
+		border?: Border;
 		class?: string;
 		children?: Snippet;
 		authorSnippet?: Snippet;
@@ -16,7 +26,9 @@
 		quote,
 		author,
 		citation,
-		icon = true,
+		icon = luQuote,
+		accent = 'theme-color',
+		border = 'border-strong',
 		class: className = '',
 		children,
 		authorSnippet,
@@ -24,13 +36,9 @@
 	}: Props = $props();
 </script>
 
-<blockquote class="row ytop gap-md pl-md py-xs bl-str {className}" {...restProps}>
+<blockquote class="row ytop gap-md pl-md py-xs {className}" style:border-left="2px solid var(--{border})" {...restProps}>
 	{#if icon}
-		<svg viewBox="0 0 24 24" width="1.5em" height="1.5em" fill="currentColor" class="text-theme shrink-0" aria-hidden="true">
-			<path
-				d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
-			/>
-		</svg>
+		<span class="row shrink-0 text-xl" style:color="var(--{accent})" aria-hidden="true"><Icon {icon} /></span>
 	{/if}
 	<div class="box gap-sm min0">
 		{#if quote}<p class="text-body-lg text-primary">{quote}</p>{/if}

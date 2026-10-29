@@ -1,10 +1,13 @@
+<!-- @component Simple flex col and row element to contain buttons. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { Orientation } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		orientation?: Orientation;
+		/** Lay the buttons out in a row or a column. */
+		direction?: Orientation;
 		/** Attached buttons share borders (.button-group); detached ones sit apart on a gap. */
 		attached?: boolean;
 		class?: string;
@@ -12,14 +15,14 @@
 	}
 
 	let {
-		orientation = 'horizontal',
+		direction = 'horizontal',
 		attached = true,
 		class: className = '',
 		children,
 		...restProps
 	}: Props = $props();
 
-	const vertical = $derived(orientation === 'vertical');
+	const vertical = $derived(direction === 'vertical');
 </script>
 
 {#if attached}

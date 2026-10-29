@@ -1,7 +1,9 @@
+<!-- @component A text field that turns entries into removable tags. -->
+
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsFieldVariant, FsSize, FsShape } from '../types';
-	import { FIELD_PAINT, FIELD_TEXT, SHAPE_RADIUS } from '../classes';
+	import type { Surface, Size, Shape, Shadow } from '../types';
+	import { getFieldLook } from './field-context';
 	import Tag from '../display/Tag.svelte';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onchange'> {
@@ -9,22 +11,27 @@
 		placeholder?: string;
 		maxTags?: number;
 		label?: string;
-		variant?: FsFieldVariant;
-		size?: FsSize;
-		shape?: FsShape;
+		surface?: Surface;
+		size?: Size;
+		shape?: Shape;
+		shadow?: Shadow;
 		disabled?: boolean;
 		class?: string;
 		onchange?: (tags: string[]) => void;
 	}
+
+	const field = getFieldLook();
+	const invalid = Boolean(field.invalid);
 
 	let {
 		tags = $bindable([]),
 		placeholder = 'Add tag and press Enter…',
 		maxTags,
 		label,
-		variant = 'primary',
-		size = 'md',
-		shape = 'modern',
+		surface = field.surface ?? 'bg-input',
+		size = field.size ?? 'h-lg',
+		shape = field.shape ?? 'modern',
+		shadow = field.shadow ?? 'shad-none',
 		disabled = false,
 		class: className = '',
 		onchange,
@@ -58,24 +65,24 @@
 	}
 </script>
 
-<div class="box gap-xs {className}" {...restProps}>
+<div class="box gap-xs {className}" style:min-width="16em" {...restProps}>
 	{#if label}<label class="text-xs weight-500 text-secondary" for={uid}>{label}</label>{/if}
-	<div class="row ycenter wrap gap-xs pad-xs {FIELD_PAINT[variant]} {FIELD_TEXT[size]} {SHAPE_RADIUS[shape]}">
+	<div class="row ycenter wrap gap-xs px-xs border el-shape {surface} {shape} {shadow} {invalid ? 'is-invalid' : ''}" style:min-height="var(--height-{size.slice(2)})">
 		{#each tags as tag, index (tag)}
-			<Tag variant="secondary" removable={!disabled} removeLabel="Remove tag {tag}" onremove={() => removeTag(index)}>{tag}</Tag>
+			<Tag removable={!disabled} removeLabel="Remove tag {tag}" onremove={() => removeTag(index)}>{tag}</Tag>
 		{/each}
 		<input
 			id={uid}
 			type="text"
-			class="input grow min0"
-			data-variant="ghost"
-			data-size="md"
+			class="input grow min0 border-none text-sm"
+			style:background="transparent"
 			bind:value={inputValue}
 			{onkeydown}
 			onblur={() => addTag(inputValue)}
 			placeholder={tags.length === 0 ? placeholder : ''}
+			aria-invalid={invalid || undefined}
 			{disabled}
 		/>
 	</div>
-	{#if maxTags}<span class="text-sm text-muted">{tags.length} / {maxTags}</span>{/if}
+	{#if maxTags}<span class="text-sm text-muted tabular-nums">{String(tags.length).padStart(String(maxTags).length, '\u2007')} / {maxTags}</span>{/if}
 </div>

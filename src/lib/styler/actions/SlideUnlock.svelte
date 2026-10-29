@@ -1,31 +1,36 @@
+<!-- @component A slide-to-unlock track that fires `onunlock` when the handle is dragged to the end. -->
+
 <script lang="ts">
-	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsTone } from '../types';
-	import { TONE_TEXT } from '../classes';
+	import type { MessageText, Size, Shape, Shadow } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		unlocked?: boolean;
 		label?: string;
 		successLabel?: string;
-		tone?: FsTone;
+		size?: Size;
+		shape?: Shape;
+		shadow?: Shadow;
+		/** Colour of the fill and handle; defaults to the current text colour. */
+		messageText?: MessageText;
 		disabled?: boolean;
 		class?: string;
 		onunlock?: () => void;
 		onreset?: () => void;
-		children?: Snippet;
 	}
 
 	let {
 		unlocked = $bindable(false),
 		label = 'Slide to confirm',
 		successLabel = 'Confirmed',
-		tone = 'theme',
+		size = 'h-lg',
+		shape = 'round',
+		shadow = 'shad-none',
+		messageText,
 		disabled = false,
 		class: className = '',
 		onunlock,
 		onreset,
-		children,
 		...restProps
 	}: Props = $props();
 
@@ -40,6 +45,10 @@
 	const knob = $derived(Math.max(0, height - pad * 2));
 	const maxDrag = $derived(Math.max(0, width - knob - pad * 2));
 	const x = $derived(unlocked ? maxDrag : offset);
+	// Track radius per shape (as in .el-shape), less the inset, so the thumb nests concentrically.
+	const RADIUS: Record<Shape, number> = { square: 0, min: 4, modern: 8, curved: 16, round: 9999 };
+	// Small radii keep their full value, or min would read as square.
+	const rx = $derived(Math.min(knob / 2, RADIUS[shape] <= pad * 2 ? RADIUS[shape] : RADIUS[shape] - pad));
 
 	function unlock() {
 		offset = maxDrag;
@@ -88,7 +97,8 @@
 <div
 	bind:clientWidth={width}
 	bind:clientHeight={height}
-	class="relative row xcenter ycenter h-lg radius-full bg-sunken border {TONE_TEXT[tone]} {className}"
+	class="slide-unlock relative row xcenter ycenter ta-c el-size el-shape {size} {shape} {shadow} bg-sunken border {messageText} {className}"
+	style:padding-inline="{height}px {pad}px"
 	role="slider"
 	tabindex={disabled ? -1 : 0}
 	aria-label={label}
@@ -106,18 +116,18 @@
 >
 	{#if width > 0 && height > 0}
 		<!-- Absolute with no offsets sits at its static position: the full box. -->
-		<svg class="absolute full" viewBox="0 0 {width} {height}" aria-hidden="true">
+		<svg class="absolute full" style="left: 0" viewBox="0 0 {width} {height}" aria-hidden="true">
 			<rect
 				x={pad}
 				y={pad}
 				width={x + knob}
 				height={knob}
-				rx={knob / 2}
+				{rx}
 				fill="currentColor"
 				opacity="0.25"
 			/>
 			<g transform="translate({pad + x} {pad})">
-				<circle cx={knob / 2} cy={knob / 2} r={knob / 2} fill="currentColor" />
+				<rect width={knob} height={knob} {rx} fill="currentColor" />
 				<g
 					transform="translate({knob / 2 - 6} {knob / 2 - 6}) scale(0.5)"
 					class="text-white"
@@ -136,8 +146,7 @@
 			</g>
 		</svg>
 	{/if}
-	<span class="relative text-sm weight-500 {unlocked ? 'text-primary' : 'text-muted'}">
+	<span class="ta-c text-sm weight-500 {unlocked ? 'text-primary' : 'text-muted'}">
 		{unlocked ? successLabel : label}
 	</span>
-	{@render children?.()}
 </div>

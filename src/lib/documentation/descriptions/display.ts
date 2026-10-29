@@ -10,10 +10,7 @@ export default {
 	Meter: 'A scalar gauge representing a numerical value within known boundaries, such as disk space or battery level. Automatically categorizes values into optimum, sub-optimum, and critical zones based on low and high thresholds.',
 	Spinner: 'A circular vector loading indicator for asynchronous operations and busy states. Features smooth rotation keyframes with configurable diameter, stroke thickness, and rotational velocity.',
 	Skeleton: 'An animated placeholder mimicking content geometry while data loads. Supports text lines, rectangular, rounded, and circular geometries with smooth shimmer or pulsing transitions.',
-	EmptyState: 'A placeholder container displayed when lists, tables, or views have no data to render. Pairs a centered illustration with descriptive text and primary action slots.',
-	StatCard: 'A dashboard metric card presenting a key performance indicator. Features a prominent numeric value, title, directional trend delta badge, and slots for sparklines or footnotes.',
 	AspectRatio: 'A responsive container that locks embedded media to a fixed aspect ratio like 16:9, 4:3, or 1:1. Ensures consistent proportional scaling across screen dimensions without layout shifts.',
-	Sparkline: 'A lightweight inline SVG micro-chart displaying trend trajectories with optional gradient fill and smoothed curve strokes.',
 	DotMatrix: 'A retro LED dot-matrix display rendering alphanumeric text on a 5x7 phosphor grid with authentic glow, pitch spacing, and custom colorways.',
 	SizeReadout: 'A design-tool inspired live dimension tag and overlay chip showing width × height measurements, item counts, and status LED.',
 	Counter: 'An animated rolling number odometer counter with vertical digit reels that slide smoothly into position upon numeric state changes.'

@@ -1,6 +1,8 @@
+<!-- @component A canvas that fires a burst of confetti. -->
+
 <script lang="ts">
+	import type { Frame } from '../types';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { FRAME, type FsRatio } from '../classes';
 	import { tokens, PALETTE_TOKENS } from './ink';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -9,7 +11,7 @@
 		duration?: number;
 		/** Colour tokens to draw with; defaults to the theme and status palette */
 		colorTokens?: string[];
-		ratio?: FsRatio;
+		ratio?: Frame;
 		class?: string;
 	}
 
@@ -17,7 +19,7 @@
 		particleCount = 50,
 		duration = 2000,
 		colorTokens = PALETTE_TOKENS,
-		ratio = '16/9',
+		ratio = 'frame-16-9',
 		class: className = '',
 		...restProps
 	}: Props = $props();
@@ -73,6 +75,6 @@
 	}
 </script>
 
-<div class="wfull {FRAME[ratio]} {className}" {...restProps}>
+<div class="wfull {ratio} {className}" {...restProps}>
 	<canvas bind:this={canvasEl} class="full" aria-hidden="true"></canvas>
 </div>

@@ -26,7 +26,7 @@ const p = (...s) => path.join(ROOT, ...s);
 // from src/lib/styler/index.ts, imported from the /styler entry, described by
 // src/lib/documentation/styler-descriptions.ts.
 const STYLER = process.argv.includes('--styler');
-const COMPONENTS_DIR = p(STYLER ? 'src/lib/styler' : 'src/lib/components');
+const COMPONENTS_DIR = p('src/lib/styler');
 const DESCRIPTIONS_DIR = p('src/lib/documentation/descriptions');
 const STYLER_DESCRIPTIONS = p('src/lib/documentation/styler-descriptions.ts');
 const OUTPUT_FILE = p(STYLER ? 'src/lib/documentation/manifest.styler.json' : 'src/lib/documentation/manifest.json');

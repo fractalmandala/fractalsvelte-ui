@@ -1,3 +1,5 @@
+<!-- @component A terminal window showing a command and its output, optionally animated. -->
+
 <script lang="ts" module>
 	export interface TerminalLineItem {
 		command?: string;
@@ -10,8 +12,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luCopy, luCheck } from 'fractalicons/lucide';
+	import { Icon } from '@fractaldesign/icons';
+	import IconButton from '../actions/IconButton.svelte';
+	import { luCopy, luCheck } from '@fractaldesign/icons/lucide';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		title?: string;
@@ -92,9 +95,9 @@
 			<span class="text-sm mono text-muted truncate">{title}</span>
 		</div>
 		{#if allowCopy}
-			<button type="button" data-variant="ghost" data-size="md" class="gap-xs px-sm" aria-label="Copy terminal contents" aria-live="polite" onclick={copy}>
-				{#if copied}<Icon icon={luCheck} class="text-success" /> Copied{:else}<Icon icon={luCopy} /> Copy{/if}
-			</button>
+			<IconButton icon="ghost" size="h-sm" label={copied ? 'Copied' : 'Copy terminal contents'} aria-live="polite" onclick={copy}>
+				{#if copied}<Icon icon={luCheck} class="text-success" />{:else}<Icon icon={luCopy} />{/if}
+			</IconButton>
 		{/if}
 	</header>
 	<div class="box gap-xs pad-md mono text-sm lh16 scroll-x">

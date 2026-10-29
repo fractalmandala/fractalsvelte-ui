@@ -1,9 +1,11 @@
+<!-- @component Two panes side by side or stacked, where either can be collapsed. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luGripVertical } from 'fractalicons/lucide';
-	import type { Orientation } from '../types';
+	import { Icon } from '@fractaldesign/icons';
+	import { luGripVertical } from '@fractaldesign/icons/lucide';
+	import type { Surface, Border, Shape, Shadow } from '../types';
 
 	/**
 	 * Which pane is collapsed. fractalstyler has no width utilities beyond
@@ -13,7 +15,11 @@
 	export type SplitCollapse = 'a' | 'b' | null;
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		orientation?: Orientation;
+		direction?: 'horizontal' | 'vertical';
+		surface?: Surface;
+		border?: Border;
+		shape?: Shape;
+		shadow?: Shadow;
 		collapsed?: SplitCollapse;
 		/** Drag distance in px that snaps a pane closed */
 		snapDistance?: number;
@@ -23,7 +29,11 @@
 	}
 
 	let {
-		orientation = 'horizontal',
+		direction = 'horizontal',
+		surface = 'bg-panel',
+		border = 'border',
+		shape = 'curved',
+		shadow = 'shad-none',
 		collapsed = $bindable(null),
 		snapDistance = 48,
 		class: className = '',
@@ -32,7 +42,7 @@
 		...restProps
 	}: Props = $props();
 
-	const horizontal = $derived(orientation === 'horizontal');
+	const horizontal = $derived(direction === 'horizontal');
 	let start: number | null = null;
 
 	function shift(dir: -1 | 1) {
@@ -71,7 +81,7 @@
 	}
 </script>
 
-<div class="{horizontal ? 'row' : 'box'} wfull hfull min0 border radius-md {className}" {...restProps}>
+<div class="{horizontal ? 'row' : 'box'} wfull hfull min0 el-shape {surface} {border} {shape} {shadow} {className}" style:overflow="hidden" {...restProps}>
 	<div class="grow min0 scroll-y" hidden={collapsed === 'a'}>
 		{@render paneA?.()}
 	</div>

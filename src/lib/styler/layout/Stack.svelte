@@ -1,33 +1,31 @@
+<!-- @component A vertical stack of children with even spacing. -->
+
+<script lang="ts" module>
+	export type StackDirection = 'column' | 'row';
+	export type Justify = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
+	export type Align = 'start' | 'center' | 'end' | 'stretch';
+	// x/y are physical axes in fractalstyler: the same intent maps differently on .row and .box.
+	export const ROW_JUSTIFY: Record<Justify, string> = { start: 'xleft', center: 'xcenter', end: 'xright', between: 'xbetween', around: 'xaround', evenly: 'xevenly' };
+	export const ROW_ALIGN: Record<Align, string> = { start: 'ytop', center: 'ycenter', end: 'ybot', stretch: '' };
+	export const BOX_JUSTIFY: Record<Justify, string> = { start: 'ytop', center: 'ycenter', end: 'ybot', between: 'ybetween', around: 'yaround', evenly: 'yevenly' };
+	export const BOX_ALIGN: Record<Align, string> = { start: 'xleft', center: 'xcenter', end: 'xright', stretch: '' };
+</script>
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsSpace } from '../types';
-	import {
-		GAP,
-		ROW_JUSTIFY,
-		ROW_ALIGN,
-		BOX_JUSTIFY,
-		BOX_ALIGN,
-		cx,
-		type FsJustify,
-		type FsAlign
-	} from '../classes';
-
-	/** fractalstyler has no reverse flows; only the two foundations. */
-	export type StackDirection = 'column' | 'row';
+	import type { Space } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		direction?: StackDirection;
-		gap?: FsSpace;
-		align?: FsAlign;
-		justify?: FsJustify;
+		gap?: Space;
+		align?: Align;
+		justify?: Justify;
 		wrap?: boolean;
 		class?: string;
 		children?: Snippet;
 	}
 
 	let {
-		direction = 'column',
 		gap = 'md',
 		align = 'stretch',
 		justify = 'start',
@@ -36,19 +34,17 @@
 		children,
 		...restProps
 	}: Props = $props();
-
-	const isRow = $derived(direction === 'row');
 </script>
 
 <div
-	class={cx(
-		isRow ? 'row' : 'box',
-		isRow ? ROW_JUSTIFY[justify] : BOX_JUSTIFY[justify],
-		isRow ? ROW_ALIGN[align] : BOX_ALIGN[align],
-		GAP[gap],
+	class={[
+		'box',
+		BOX_JUSTIFY[justify],
+		BOX_ALIGN[align],
+		`gap-${gap}`,
 		wrap && 'wrap',
 		className
-	)}
+	]}
 	{...restProps}
 >
 	{@render children?.()}

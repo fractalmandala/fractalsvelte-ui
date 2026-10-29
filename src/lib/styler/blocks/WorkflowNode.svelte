@@ -1,3 +1,5 @@
+<!-- @component A node card for workflow diagrams, with ports and status. -->
+
 <script lang="ts" module>
 	export interface PortPin {
 		id: string;
@@ -10,8 +12,11 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
+	import { Icon, type IconData } from '@fractaldesign/icons';
+	import type { Size, Shape, Surface, Border, Shadow, Pad } from '../types';
+	import Card from '../layout/Card.svelte';
 
-	interface Props extends HTMLAttributes<HTMLDivElement> {
+	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
 		title: string;
 		subtitle?: string;
 		status?: WorkflowStatus;
@@ -20,8 +25,16 @@
 		disabled?: boolean;
 		inputs?: PortPin[];
 		outputs?: PortPin[];
+		/** An icon from @fractaldesign/icons, e.g. luMail */
+		icon?: IconData;
+		size?: Size;
+		/** Card corners; cards take no pill shape. */
+		shape?: Exclude<Shape, 'round'>;
+		surface?: Surface;
+		border?: Border;
+		shadow?: Shadow;
+		padding?: Pad;
 		class?: string;
-		icon?: Snippet;
 		children?: Snippet;
 	}
 
@@ -34,8 +47,14 @@
 		disabled = false,
 		inputs = [],
 		outputs = [],
-		class: className = '',
 		icon,
+		size = 'h-md',
+		shape = 'modern',
+		surface = 'bg-panel',
+		border = 'border',
+		shadow = 'shad-sm',
+		padding = 'pad-md',
+		class: className = '',
 		children,
 		...restProps
 	}: Props = $props();
@@ -63,35 +82,40 @@
 	</svg>
 {/snippet}
 
-<div
-	class="card box gap-sm shadow-md {disabled ? 'text-muted' : ''} {className}"
-	data-variant={selected ? 'link' : 'primary'}
-	data-shape="curved"
-	data-pad="md"
+<Card
+	{size}
+	{shape}
+	{surface}
+	border={selected ? 'border-strong' : border}
+	{shadow}
+	{padding}
+	class="{disabled ? 'text-muted' : ''} {className}"
 	data-flow-node
 	aria-disabled={disabled || undefined}
 	aria-current={selected || undefined}
 	{...restProps}
 >
-	<header class="row ytop xbetween gap-md">
-		<div class="row ycenter gap-sm min0">
-			{#if icon}<span class="row ycenter xcenter shrink-0 pad-xs bg-sunken radius-sm text-theme">{@render icon()}</span>{/if}
-			<div class="box min0">
-				<h4 class="text-sm weight-600 truncate">{title}</h4>
-				{#if subtitle}<span class="text-body-sm text-muted truncate">{subtitle}</span>{/if}
+	{#snippet header()}
+		<div class="row ycenter xbetween gap-md">
+			<div class="row ycenter gap-sm min0">
+				{#if icon}<span class="row ycenter xcenter shrink-0 pad-sm bg-sunken radius-sm text-theme"><Icon {icon} /></span>{/if}
+				<div class="box min0">
+					<h4 class="text-sm weight-600 truncate">{title}</h4>
+					{#if subtitle}<span class="text-xs text-muted truncate">{subtitle}</span>{/if}
+				</div>
 			</div>
+			<span class="row ycenter gap-xs shrink-0 text-xs {STATUS_CLASSES[status]}">
+				<svg viewBox="0 0 8 8" width="0.6em" height="0.6em" aria-hidden="true">
+					<circle cx="4" cy="4" r="4" fill="currentColor">
+						{#if status === 'running'}<animate attributeName="opacity" values="1;0.3;1" dur="1.2s" repeatCount="indefinite" />{/if}
+					</circle>
+				</svg>
+				{statusLabel || LABELS[status]}
+			</span>
 		</div>
-		<span class="chip row ycenter gap-xs bg-sunken shrink-0 {STATUS_CLASSES[status]}">
-			<svg viewBox="0 0 8 8" width="0.6em" height="0.6em" aria-hidden="true">
-				<circle cx="4" cy="4" r="4" fill="currentColor">
-					{#if status === 'running'}<animate attributeName="opacity" values="1;0.3;1" dur="1.2s" repeatCount="indefinite" />{/if}
-				</circle>
-			</svg>
-			{statusLabel || LABELS[status]}
-		</span>
-	</header>
+	{/snippet}
 	{#if inputs.length > 0 || outputs.length > 0}
-		<div class="row xbetween gap-md pt-sm bt-sub">
+		<div class="row xbetween gap-md">
 			<div role="list" class="box gap-xs">
 				{#each inputs as p (p.id)}
 					<div role="listitem" class="row ycenter gap-xs text-sm text-secondary" data-port-id={p.id}>{@render pin(p)}{p.label}</div>
@@ -104,5 +128,5 @@
 			</div>
 		</div>
 	{/if}
-	{#if children}<div class="box gap-xs text-body-sm text-secondary">{@render children()}</div>{/if}
-</div>
+	{@render children?.()}
+</Card>

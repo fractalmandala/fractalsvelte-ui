@@ -1,15 +1,17 @@
+<!-- @component A button with optional shine sweep and click ripple. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import type { FsVariant, FsSize, FsShape, BtnType } from '../types';
+	import type { Variant, Size, Shape } from '../types';
 	import Spinner from '../display/Spinner.svelte';
 	import Ripples, { makeRipple, type Ripple } from './Ripples.svelte';
 
 	interface Props extends HTMLButtonAttributes {
-		variant?: FsVariant;
-		size?: FsSize;
-		shape?: FsShape;
-		type?: BtnType;
+		variant?: Variant;
+		size?: Size;
+		shape?: Shape;
+		type?: HTMLButtonAttributes['type'];
 		disabled?: boolean;
 		loading?: boolean;
 		/** Periodic sheen across the face */
@@ -24,7 +26,7 @@
 
 	let {
 		variant = 'primary',
-		size = 'lg',
+		size = 'h-lg',
 		shape = 'modern',
 		type = 'button',
 		disabled = false,
@@ -59,10 +61,7 @@
      keeps it painted above them. -->
 <button
 	{type}
-	class="relative gap-xs {className}"
-	data-variant={variant}
-	data-size={size}
-	data-shape={shape}
+	class="relative gap-xs {className} el-variant el-size el-shape {variant} {size} {shape}"
 	disabled={disabled || loading}
 	aria-busy={loading || undefined}
 	onclick={handleClick}

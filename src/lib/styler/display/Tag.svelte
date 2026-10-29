@@ -1,39 +1,46 @@
+<!-- @component A label chip, optionally removable, filled with or coloured by a surface, theme or message colour. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luX } from 'fractalicons/lucide';
+	import { Icon as Iconbox, type IconData } from '@fractaldesign/icons';
+	import type { Size, Shape, Surface, ThemeColor, Message } from '../types';
+	import CloseButton from '../actions/CloseButton.svelte';
 
-	export type TagVariant = 'primary' | 'secondary' | 'soft' | 'outline' | 'surface';
+	export type TagColor = Surface | ThemeColor | Message;
 
 	interface Props extends HTMLAttributes<HTMLSpanElement> {
-		variant?: TagVariant;
+		/** Fill colour, or the text colour when `textOnly` is set. */
+		variant?: TagColor;
+		/** Colours the text and icon instead of the background. */
+		textOnly?: boolean;
+		size?: Size;
+		shape?: Shape;
 		removable?: boolean;
 		removeLabel?: string;
 		onremove?: (event: MouseEvent) => void;
+		icon?: IconData;
 		class?: string;
-		icon?: Snippet;
 		children?: Snippet;
 	}
 
 	let {
-		variant = 'soft',
+		variant = 'theme-color',
+		textOnly = false,
+		size = 'h-sm',
+		shape = 'min',
 		removable = false,
 		removeLabel = 'Remove tag',
 		onremove,
-		class: className = '',
 		icon,
+		class: className = '',
 		children,
 		...restProps
 	}: Props = $props();
 
-	const PAINT_CLASSES: Record<TagVariant, string> = {
-		primary: 'bg-extra text-theme border-subtle',
-		secondary: 'bg-sunken text-primary border',
-		soft: 'bg-extra text-secondary',
-		outline: 'border-strong text-primary',
-		surface: 'bg-surface text-primary border-subtle'
-	};
+	// Surface and state fills can be light or dark depending on the token and mode, so their ink is
+	// picked from the fill's lightness; theme and message fills take white.
+	const ink = $derived(variant.startsWith('bg-') || variant.startsWith('state-') ? 'ink-auto' : 'text-white');
 
 	function handleRemove(event: MouseEvent) {
 		event.stopPropagation();
@@ -41,22 +48,14 @@
 	}
 </script>
 
-<span class="chip row ycenter gap-xs shrink-0 {PAINT_CLASSES[variant]} {className}" {...restProps}>
-	{#if icon}
-		<span class="row ycenter shrink-0" aria-hidden="true">{@render icon()}</span>
-	{/if}
+<span
+	class="tag row ycenter gap-xs shrink-0 el-size el-shape {size} {shape} {textOnly ? 'text-only' : ink} {className}"
+	style:--tag-color="var(--{variant})"
+	{...restProps}
+>
+	{#if icon}<Iconbox {icon} />{/if}
 	{@render children?.()}
 	{#if removable}
-		<button
-			type="button"
-			data-variant="iconbox"
-			data-size="sm"
-			aria-label={removeLabel}
-			title={removeLabel}
-			class="px-xs text-muted"
-			onclick={handleRemove}
-		>
-			<Icon icon={luX} />
-		</button>
+		<CloseButton label={removeLabel} size="h-sm" class="tag-remove" onclick={handleRemove} />
 	{/if}
 </span>

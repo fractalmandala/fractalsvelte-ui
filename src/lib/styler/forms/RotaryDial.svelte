@@ -1,16 +1,17 @@
+<!-- @component A knob-style dial that sets a value by dragging or arrow keys. -->
+
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsTone } from '../types';
-	import { TEXT_SIZE, TONE_TEXT, type FsTextSize } from '../classes';
+	import type { MessageText, Size } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		value?: number;
 		min?: number;
 		max?: number;
 		step?: number;
-		/** The dial is 4em across, so it scales with this text size. */
-		size?: FsTextSize;
-		tone?: FsTone;
+		/** The dial is twice the control height across. */
+		size?: Size;
+		tone?: MessageText;
 		label?: string;
 		unit?: string;
 		showTicks?: boolean;
@@ -24,8 +25,8 @@
 		min = 0,
 		max = 100,
 		step = 1,
-		size = 'bs',
-		tone = 'theme',
+		size = 'h-lg',
+		tone,
 		label,
 		unit = '',
 		showTicks = true,
@@ -84,7 +85,7 @@
 	}
 </script>
 
-<div class="box xcenter gap-xs {TEXT_SIZE[size]} {className}" {...restProps}>
+<div class="box xcenter gap-xs {className}" {...restProps}>
 	{#if label}<span class="text-sm weight-500 text-secondary">{label}</span>{/if}
 	<div
 		bind:this={dialEl}
@@ -96,7 +97,7 @@
 		aria-valuenow={value}
 		aria-valuetext="{value}{unit}"
 		aria-disabled={disabled || undefined}
-		class="radius-full {disabled ? 'text-muted' : TONE_TEXT[tone]}"
+		class="radius-full {disabled ? 'text-muted' : (tone ?? 'text-theme')}"
 		onpointerdown={(e) => {
 			if (disabled) return;
 			dragging = true;
@@ -108,7 +109,7 @@
 		onpointercancel={() => (dragging = false)}
 		{onkeydown}
 	>
-		<svg viewBox="0 0 100 100" width="4em" height="4em" aria-hidden="true">
+		<svg viewBox="0 0 100 100" width="calc(var(--height-{size.slice(2)}) * 2)" height="calc(var(--height-{size.slice(2)}) * 2)" aria-hidden="true">
 			{#if showTicks}
 				{#each TICKS as t (t)}
 					<line
@@ -133,5 +134,5 @@
 			<circle cx="50" cy="50" r="6" class="text-secondary" fill="currentColor" />
 		</svg>
 	</div>
-	{#if showReadout}<span class="chip mono bg-sunken text-secondary">{value}{unit}</span>{/if}
+	{#if showReadout}<span class="chip tabular-nums bg-sunken text-secondary">{value}{unit}</span>{/if}
 </div>

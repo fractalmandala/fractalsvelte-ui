@@ -1,5 +1,9 @@
+<!-- @component A checkbox with label, description and error text, supporting an indeterminate state. -->
+
 <script lang="ts">
 	import type { HTMLInputAttributes } from 'svelte/elements';
+	import { Icon as Iconbox } from '@fractaldesign/icons';
+	import { luCheck, luMinus } from '@fractaldesign/icons/lucide';
 
 	interface Props extends Omit<HTMLInputAttributes, 'size'> {
 		checked?: boolean;
@@ -32,10 +36,9 @@
 	const checkboxId = $derived(id || uid);
 </script>
 
-<!-- fractalstyler's checkbox is the native control inside .checkbox-wrapper;
-     its span children pick up the wrapper's sm/500 label type. -->
 <div class="box gap-xs {className}">
-	<label class="checkbox-wrapper {description ? 'row ytop' : ''}" for={checkboxId}>
+	<label class="row {description ? 'ytop' : 'ycenter'} gap-sm text-sm" for={checkboxId}>
+		<span class="checkbox-box">
 		<input
 			id={checkboxId}
 			type="checkbox"
@@ -48,9 +51,11 @@
 			aria-describedby={description ? `${checkboxId}-desc` : undefined}
 			{...restProps}
 		/>
+		{#if indeterminate}<Iconbox icon={luMinus} />{:else if checked}<Iconbox icon={luCheck} />{/if}
+		</span>
 		{#if label || description}
 			<div class="box gap-xs">
-				{#if label}<span class={disabled ? 'text-muted' : ''}>{label}</span>{/if}
+				{#if label}<span class="weight-500 {disabled ? 'text-muted' : ''}">{label}</span>{/if}
 				{#if description}<div id="{checkboxId}-desc" class="text-body-sm text-muted">{description}</div>{/if}
 			</div>
 		{/if}

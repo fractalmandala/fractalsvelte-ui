@@ -1,11 +1,12 @@
+<!-- @component A badge that floats gently, with optional pulsing dot. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsTone } from '../types';
-	import { TONE_TEXT } from '../classes';
+	import type { MessageText } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLSpanElement> {
-		tone?: FsTone;
+		tone?: MessageText;
 		/** Status dot */
 		dot?: boolean;
 		/** Radar ping around the dot */
@@ -18,7 +19,7 @@
 	}
 
 	let {
-		tone = 'success',
+		tone = 'text-success',
 		dot = true,
 		pulse = true,
 		duration = 1.6,
@@ -33,7 +34,7 @@
      none, so the motion lives in the SVG ping around the dot. -->
 <span class="chip row ycenter gap-xs bg-raised border-subtle shadow-sm shrink-0 {className}" {...restProps}>
 	{#if dot}
-		<svg viewBox="0 0 16 16" width="1em" height="1em" class="shrink-0 {TONE_TEXT[tone]}" aria-hidden="true">
+		<svg viewBox="0 0 16 16" width="1em" height="1em" class="shrink-0 {tone ?? 'text-theme'}" aria-hidden="true">
 			{#if pulse}
 				<circle cx="8" cy="8" r="3" fill="currentColor" opacity="0.5">
 					<animate attributeName="r" values="3;8" dur="{duration}s" repeatCount="indefinite" />

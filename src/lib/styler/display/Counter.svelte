@@ -1,13 +1,15 @@
+<!-- @component A number that counts up to `value`, with prefix, suffix and decimals. -->
+
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { TEXT_SIZE, type FsTextSize } from '../classes';
+	import type { TextSize } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		value: number;
+		value?: number;
 		prefix?: string;
 		suffix?: string;
 		decimals?: number;
-		size?: FsTextSize;
+		size?: TextSize;
 		/** Count-up duration in ms; 0 jumps straight to the value. */
 		duration?: number;
 		class?: string;
@@ -18,7 +20,7 @@
 		prefix = '',
 		suffix = '',
 		decimals = 0,
-		size = '3xl',
+		size = 'text-3xl',
 		duration = 600,
 		class: className = '',
 		...restProps
@@ -50,7 +52,7 @@
 </script>
 
 <div
-	class="row ybot gap-xs mono weight-600 lh11 {TEXT_SIZE[size]} {className}"
+	class="row ybot gap-xs tabular-nums weight-600 lh11 {size} {className}"
 	role="status"
 	aria-live="polite"
 	aria-label="{prefix}{value}{suffix}"

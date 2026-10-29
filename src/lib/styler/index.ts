@@ -7,7 +7,6 @@
  */
 
 export * from './types';
-export * from './classes';
 export { modeState, type FsMode } from './mode.svelte';
 
 // Actions
@@ -17,7 +16,6 @@ export { default as CloseButton } from './actions/CloseButton.svelte';
 export { default as CopyButton } from './actions/CopyButton.svelte';
 export { default as HoldToConfirm } from './actions/HoldToConfirm.svelte';
 export { default as IconButton } from './actions/IconButton.svelte';
-export { default as LinkButton } from './actions/LinkButton.svelte';
 export { default as SlideUnlock } from './actions/SlideUnlock.svelte';
 export { default as SplitButton } from './actions/SplitButton.svelte';
 
@@ -49,26 +47,16 @@ export { default as Avatar } from './display/Avatar.svelte';
 export type { AvatarStatus, AvatarShape } from './display/Avatar.svelte';
 export { default as AvatarGroup } from './display/AvatarGroup.svelte';
 export { default as Badge } from './display/Badge.svelte';
-export type { BadgeVariant } from './display/Badge.svelte';
 export { default as Banner } from './display/Banner.svelte';
-export type { BannerVariant } from './display/Banner.svelte';
 export { default as Counter } from './display/Counter.svelte';
 export { default as DotMatrix } from './display/DotMatrix.svelte';
-export { default as EmptyState } from './display/EmptyState.svelte';
 export { default as Kbd } from './display/Kbd.svelte';
-export type { KbdVariant } from './display/Kbd.svelte';
 export { default as Meter } from './display/Meter.svelte';
 export type { MeterZone } from './display/Meter.svelte';
 export { default as Progress } from './display/Progress.svelte';
-export { default as SizeReadout } from './display/SizeReadout.svelte';
-export { default as Skeleton } from './display/Skeleton.svelte';
-export type { SkeletonVariant, SkeletonAnimation } from './display/Skeleton.svelte';
-export { default as Sparkline } from './display/Sparkline.svelte';
 export { default as Spinner } from './display/Spinner.svelte';
-export { default as StatCard } from './display/StatCard.svelte';
-export type { StatDeltaType } from './display/StatCard.svelte';
 export { default as Tag } from './display/Tag.svelte';
-export type { TagVariant } from './display/Tag.svelte';
+export type { TagColor } from './display/Tag.svelte';
 
 // Layout
 export { default as BentoCell } from './layout/BentoCell.svelte';
@@ -82,7 +70,7 @@ export type { ContainerSize } from './layout/Container.svelte';
 export { default as DataTable } from './layout/DataTable.svelte';
 export type { DataColumn } from './layout/DataTable.svelte';
 export { default as Divider } from './layout/Divider.svelte';
-export type { DividerVariant, DividerLabelPosition } from './layout/Divider.svelte';
+export type { DividerLabelPosition } from './layout/Divider.svelte';
 export { default as Flex } from './layout/Flex.svelte';
 export { default as Grid } from './layout/Grid.svelte';
 export type { GridColumns } from './layout/Grid.svelte';
@@ -124,7 +112,6 @@ export type { TreeItem } from './navigation/TreeList.svelte';
 
 // Overlays
 export { default as AlertDialog } from './overlays/AlertDialog.svelte';
-export type { AlertConfirmVariant } from './overlays/AlertDialog.svelte';
 export { default as Anchor } from './overlays/Anchor.svelte';
 export type { Placement } from './overlays/Anchor.svelte';
 export { default as CenterMorphModal } from './overlays/CenterMorphModal.svelte';
@@ -152,13 +139,12 @@ export { default as Accordion } from './typography/Accordion.svelte';
 export type { AccordionItemData } from './typography/Accordion.svelte';
 export { default as Blockquote } from './typography/Blockquote.svelte';
 export { default as Code } from './typography/Code.svelte';
-export type { CodeVariant, CodeSize } from './typography/Code.svelte';
 export { default as CodeBlock } from './typography/CodeBlock.svelte';
 export { default as Collapsible } from './typography/Collapsible.svelte';
 export { default as Heading } from './typography/Heading.svelte';
 export type { HeadingLevel, HeadingTag, HeadingSize, HeadingTracking } from './typography/Heading.svelte';
 export { default as Text } from './typography/Text.svelte';
-export type { TextVariant, TextTag, TextSize, TextAlign } from './typography/Text.svelte';
+export type { TextTag, BodySize, TextColor, TextAlign } from './typography/Text.svelte';
 
 // Motion
 export { default as AnimatedButton } from './motion/AnimatedButton.svelte';

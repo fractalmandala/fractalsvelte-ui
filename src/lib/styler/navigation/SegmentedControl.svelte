@@ -1,3 +1,5 @@
+<!-- @component A row of joined buttons for picking one of a few options. -->
+
 <script lang="ts" module>
 	import type { Snippet } from 'svelte';
 
@@ -11,12 +13,12 @@
 
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsSize } from '../types';
+	import type { Size } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		options?: SegmentedOption[];
 		value?: string;
-		size?: FsSize;
+		size?: Size;
 		disabled?: boolean;
 		/** Submits the value with a form */
 		name?: string;
@@ -27,7 +29,7 @@
 	let {
 		options = [],
 		value = $bindable(''),
-		size = 'md',
+		size = 'h-md',
 		disabled = false,
 		name = '',
 		class: className = '',
@@ -72,10 +74,7 @@
 		<button
 			type="button"
 			role="radio"
-			class="gap-xs"
-			data-variant={selected ? 'primary' : 'ghost'}
-			data-size={size}
-			data-shape="modern"
+			class="gap-xs el-variant el-size el-shape modern {selected ? 'primary' : 'ghost'} {size}"
 			data-value={opt.value}
 			aria-checked={selected}
 			tabindex={selected ? 0 : -1}

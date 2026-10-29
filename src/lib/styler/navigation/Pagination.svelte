@@ -1,18 +1,20 @@
+<!-- @component Page number buttons with previous and next controls. -->
+
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luChevronLeft, luChevronRight } from 'fractalicons/lucide';
-	import type { FsVariant, FsSize, FsShape } from '../types';
+	import { Icon } from '@fractaldesign/icons';
+	import { luChevronLeft, luChevronRight } from '@fractaldesign/icons/lucide';
+	import type { Variant, Size, Shape } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
 		currentPage?: number;
 		totalPages?: number;
 		siblingCount?: number;
 		showEdges?: boolean;
-		size?: FsSize;
+		size?: Size;
 		/** Paint of the inactive pages; the current page is always primary */
-		variant?: FsVariant;
-		shape?: FsShape;
+		variant?: Variant;
+		shape?: Shape;
 		class?: string;
 		onPageChange?: (page: number) => void;
 	}
@@ -22,7 +24,7 @@
 		totalPages = 1,
 		siblingCount = 1,
 		showEdges = true,
-		size = 'lg',
+		size = 'h-lg',
 		variant = 'ghost',
 		shape = 'modern',
 		class: className = '',
@@ -63,10 +65,7 @@
 <nav class="row ycenter gap-xs wrap {className}" aria-label="Pagination" {...restProps}>
 	<button
 		type="button"
-		class="frame-1-1 px-xs"
-		data-variant={variant}
-		data-size={size}
-		data-shape={shape}
+		class="frame-1-1 px-xs el-variant el-size el-shape {variant} {size} {shape}"
 		disabled={currentPage <= 1}
 		aria-label="Previous page"
 		onclick={() => go(currentPage - 1)}
@@ -77,10 +76,7 @@
 		{#if typeof p === 'number'}
 			<button
 				type="button"
-				class="px-sm mono"
-				data-variant={p === currentPage ? 'primary' : variant}
-				data-size={size}
-				data-shape={shape}
+				class="px-sm mono el-variant el-size el-shape {p === currentPage ? 'primary' : variant} {size} {shape}"
 				aria-current={p === currentPage ? 'page' : undefined}
 				aria-label="Page {p}"
 				onclick={() => go(p)}
@@ -93,10 +89,7 @@
 	{/each}
 	<button
 		type="button"
-		class="frame-1-1 px-xs"
-		data-variant={variant}
-		data-size={size}
-		data-shape={shape}
+		class="frame-1-1 px-xs el-variant el-size el-shape {variant} {size} {shape}"
 		disabled={currentPage >= totalPages}
 		aria-label="Next page"
 		onclick={() => go(currentPage + 1)}

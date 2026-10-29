@@ -1,3 +1,5 @@
+<!-- @component A horizontal navigation bar of links. -->
+
 <script lang="ts" module>
 	export interface NavItem {
 		id?: string;

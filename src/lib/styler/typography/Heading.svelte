@@ -1,7 +1,9 @@
+<!-- @component A heading with level, size, tracking and weight props. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { WEIGHT, type FsWeight } from '../classes';
+	import type { Weight } from '../types';
 
 	export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 	export type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'span' | 'div';
@@ -14,7 +16,7 @@
 		as?: HeadingTag;
 		size?: HeadingSize;
 		tracking?: HeadingTracking;
-		weight?: FsWeight;
+		weight?: Weight;
 		class?: string;
 		children?: Snippet;
 	}
@@ -54,7 +56,7 @@
 
 <svelte:element
 	this={tag}
-	class="{SIZE_CLASSES[sizeKey]} {TRACKING_CLASSES[tracking]} {weight ? WEIGHT[weight] : ''} {className}"
+	class="{SIZE_CLASSES[sizeKey]} {TRACKING_CLASSES[tracking]} {weight ?? ''} {className}"
 	{...restProps}
 >
 	{@render children?.()}

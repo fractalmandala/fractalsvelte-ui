@@ -1,3 +1,5 @@
+<!-- @component A trail of links to the current page, collapsing the middle when long. -->
+
 <script lang="ts" module>
 	export interface BreadcrumbItem {
 		label: string;
@@ -9,8 +11,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luChevronRight } from 'fractalicons/lucide';
+	import { Icon } from '@fractaldesign/icons';
+	import { luChevronRight } from '@fractaldesign/icons/lucide';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
 		items?: BreadcrumbItem[];

@@ -1,10 +1,10 @@
 <script lang="ts" module>
-	import type { Snippet } from 'svelte';
+	import type { IconData } from '@fractaldesign/icons';
 
 	export interface MenuEntry {
 		id?: string;
 		label?: string;
-		icon?: Snippet;
+		icon?: IconData;
 		shortcut?: string;
 		danger?: boolean;
 		disabled?: boolean;
@@ -13,17 +13,35 @@
 </script>
 
 <script lang="ts">
-	// Shared menu body for DropdownMenu and ContextMenu: the fractalstyler
-	// dropdown recipe (ghost buttons, .ta-l, .text-danger for destructive rows)
-	// with roving focus on the arrow keys.
+	// Shared menu body for DropdownMenu and ContextMenu: ghost rows, .text-danger
+	// for destructive rows, roving focus on the arrow keys.
+	import { Icon } from '@fractaldesign/icons';
+	import Kbd from '../display/Kbd.svelte';
+	import type { Size, Surface, Border, Shadow, Shape } from '../types';
 	interface Props {
 		items: MenuEntry[];
 		label?: string;
 		onselect: (item: MenuEntry, index: number) => void;
 		onclose: () => void;
+		/** Row height */
+		size?: Size;
+		surface?: Surface;
+		border?: Border;
+		shadow?: Shadow;
+		shape?: Shape;
 	}
 
-	let { items, label, onselect, onclose }: Props = $props();
+	let {
+		items,
+		label,
+		onselect,
+		onclose,
+		size = 'h-md',
+		surface = 'bg-surface',
+		border = 'border',
+		shadow = 'shad-lg',
+		shape = 'modern'
+	}: Props = $props();
 
 	let menuEl = $state<HTMLDivElement | null>(null);
 
@@ -56,7 +74,7 @@
 	role="menu"
 	tabindex="-1"
 	aria-label={label}
-	class="box gap-xs pad-xs bg-surface border shadow-md radius-md"
+	class="box gap-xs pad-xs el-shape {surface} {border} {shadow} {shape}"
 	{onkeydown}
 >
 	{#each items as item, index (item.id ?? index)}
@@ -66,19 +84,15 @@
 			<button
 				type="button"
 				role="menuitem"
-				data-variant="ghost"
-				data-size="lg"
-				data-shape="modern"
-				class="row xbetween gap-md wfull ta-l px-sm"
+				class="row xbetween gap-md wfull ta-l px-sm el-variant el-size el-shape ghost {size} {shape}"
 				disabled={item.disabled}
 				onclick={() => onselect(item, index)}
 			>
-				<!-- Destructive ink on the label: on the button, button[data-variant] wins. -->
 				<span class="row ycenter gap-sm min0 {item.danger ? 'text-danger' : ''}">
-					{@render item.icon?.()}
+					{#if item.icon}<Icon icon={item.icon} />{/if}
 					<span class="truncate">{item.label}</span>
 				</span>
-				{#if item.shortcut}<kbd class="chip mono text-muted bg-sunken shrink-0">{item.shortcut}</kbd>{/if}
+				{#if item.shortcut}<Kbd static>{item.shortcut}</Kbd>{/if}
 			</button>
 		{/if}
 	{/each}

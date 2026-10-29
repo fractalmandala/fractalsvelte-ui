@@ -1,7 +1,9 @@
+<!-- @component A card that works as a checkbox or radio option. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsCardShape, FsPad } from '../types';
+	import type { Size, Surface, Border, Shape, Pad, Shadow } from '../types';
 
 	export type SelectableCardType = 'checkbox' | 'radio';
 	export type IndicatorPosition = 'right' | 'left';
@@ -13,8 +15,14 @@
 		value?: string;
 		name?: string;
 		indicatorPosition?: IndicatorPosition;
-		padding?: FsPad;
-		shape?: FsCardShape;
+		size?: Size;
+		surface?: Surface;
+		/** Border when not selected; selected cards always use border-strong. */
+		border?: Border;
+		shadow?: Shadow;
+		padding?: Pad;
+		/** Card corners; cards take no pill shape. */
+		shape?: Exclude<Shape, 'round'>;
 		title?: string;
 		description?: string;
 		class?: string;
@@ -30,7 +38,11 @@
 		value,
 		name,
 		indicatorPosition = 'right',
-		padding = 'md',
+		size = 'h-md',
+		surface = 'bg-panel',
+		border = 'border',
+		shadow = 'shad-none',
+		padding = 'pad-md',
 		shape = 'curved',
 		title,
 		description,
@@ -68,8 +80,6 @@
 	</span>
 {/snippet}
 
-<!-- Selected cards swap to the sunken/strong-border card paint; there is no
-     selected-state class in fractalstyler. -->
 <!-- svelte-ignore a11y_no_noninteractive_tabindex (role is checkbox or radio) -->
 <div
 	role={type}
@@ -78,10 +88,7 @@
 	tabindex={disabled ? -1 : 0}
 	data-value={value}
 	data-name={name}
-	class="card row ytop gap-sm {disabled ? 'text-muted' : ''} {className}"
-	data-variant={selected ? 'secondary' : 'primary'}
-	data-pad={padding}
-	data-shape={shape}
+	class="card card-sized card-clickable row ytop gap-sm el-shape {size} {shape} {padding} {surface} {shadow} {selected ? 'border-strong' : border} {disabled ? 'disabled text-muted' : ''} {className}"
 	onclick={toggle}
 	onkeydown={(e) => {
 		if (e.key === ' ' || e.key === 'Enter') {
@@ -93,8 +100,8 @@
 >
 	{#if indicatorPosition === 'left'}{@render mark()}{/if}
 	<div class="box gap-xs grow min0">
-		{#if title}<span class="text-sm weight-600 {disabled ? '' : 'text-primary'}">{title}</span>{/if}
-		{#if description}<span class="text-body-sm text-secondary">{description}</span>{/if}
+		{#if title}<span class="card-label weight-600 {disabled ? '' : 'text-primary'}">{title}</span>{/if}
+		{#if description}<span class="card-sub text-secondary">{description}</span>{/if}
 		{@render children?.()}
 	</div>
 	{#if indicatorPosition === 'right'}{@render mark()}{/if}

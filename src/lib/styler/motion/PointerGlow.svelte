@@ -4,15 +4,14 @@
 	// space is centred on the pointer; its colour is fractalstyler ink. Mount it
 	// as the first child of a padding-free .relative box so the .absolute.full
 	// overlay covers the whole card.
-	import type { FsTone } from '../types';
-	import { TONE_TEXT } from '../classes';
+	import type { MessageText } from '../types';
 
 	interface Props {
 		x: number;
 		y: number;
 		visible: boolean;
 		radius?: number;
-		tone?: FsTone | 'white';
+		tone?: MessageText | 'text-white';
 		/** fill washes the surface; stroke lights the border under the pointer */
 		mode?: 'fill' | 'stroke';
 		/** Peak opacity at the pointer */
@@ -29,7 +28,7 @@
 		y,
 		visible,
 		radius = 300,
-		tone = 'theme',
+		tone,
 		mode = 'fill',
 		intensity = 0.25,
 		rx = 8,
@@ -40,7 +39,7 @@
 	const uid = $props.id();
 </script>
 
-<svg class="absolute full {tone === 'white' ? 'text-white' : TONE_TEXT[tone]}" pointer-events="none" aria-hidden="true">
+<svg class="absolute full {tone ?? 'text-theme'}" pointer-events="none" aria-hidden="true">
 	<defs>
 		<radialGradient id="{uid}-g" gradientUnits="userSpaceOnUse" cx={x} cy={y} r={radius}>
 			<stop offset="0%" stop-color="currentColor" stop-opacity={intensity} />

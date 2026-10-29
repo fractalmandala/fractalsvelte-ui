@@ -1,10 +1,14 @@
+<!-- @component A text input with label, helper or error text, leading and trailing slots, and a clear button. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luX, luEye, luEyeOff } from 'fractalicons/lucide';
-	import type { FsFieldVariant, FsSize, FsShape } from '../types';
-	import { FIELD_PAINT, FIELD_HEIGHT, SHAPE_RADIUS } from '../classes';
+	import { Icon } from '@fractaldesign/icons';
+	import { luEye, luEyeOff } from '@fractaldesign/icons/lucide';
+	import IconButton from '../actions/IconButton.svelte';
+	import CloseButton from '../actions/CloseButton.svelte';
+	import type { Surface, Size, Shape, Shadow } from '../types';
+	import { getFieldLook } from './field-context';
 
 	interface Props extends Omit<HTMLInputAttributes, 'size'> {
 		value?: string | number;
@@ -13,9 +17,10 @@
 		helperText?: string;
 		error?: boolean | string;
 		clearable?: boolean;
-		variant?: FsFieldVariant;
-		size?: FsSize;
-		shape?: FsShape;
+		surface?: Surface;
+		size?: Size;
+		shape?: Shape;
+		shadow?: Shadow;
 		disabled?: boolean;
 		readonly?: boolean;
 		id?: string;
@@ -24,6 +29,8 @@
 		trailing?: Snippet;
 	}
 
+	const field = getFieldLook();
+
 	let {
 		value = $bindable(''),
 		type = 'text',
@@ -31,9 +38,10 @@
 		helperText,
 		error,
 		clearable = false,
-		variant = 'primary',
-		size = 'lg',
-		shape = 'modern',
+		surface = field.surface ?? 'bg-input',
+		size = field.size ?? 'h-lg',
+		shape = field.shape ?? 'modern',
+		shadow = field.shadow ?? 'shad-none',
 		disabled = false,
 		readonly = false,
 		id,
@@ -50,6 +58,7 @@
 
 	const effectiveType = $derived(type === 'password' && showPassword ? 'text' : type);
 	const errorMessage = $derived(typeof error === 'string' ? error : undefined);
+	const invalid = $derived(Boolean(error) || Boolean(field.invalid));
 	const canClear = $derived(clearable && !disabled && !readonly && String(value ?? '').length > 0);
 	const isPassword = $derived(type === 'password' && !disabled);
 	// A bare .input is the most faithful render; only affixes need the row frame.
@@ -70,7 +79,7 @@
 	{/if}
 
 	{#if framed}
-		<div class="row ycenter gap-xs px-xs {FIELD_PAINT[variant]} {FIELD_HEIGHT[size]} {SHAPE_RADIUS[shape]}">
+		<div class="row ycenter gap-xs px-xs border el-size el-shape {surface} {size} {shape} {shadow} {invalid ? 'is-invalid' : ''}">
 			{#if leading}
 				<span class="row ycenter shrink-0 pl-xs text-muted" aria-hidden="true">{@render leading()}</span>
 			{/if}
@@ -81,28 +90,25 @@
 				type={effectiveType}
 				{disabled}
 				{readonly}
-				aria-invalid={error ? true : undefined}
+				aria-invalid={invalid || undefined}
 				aria-describedby={describedBy}
-				class="input grow min0 hfull"
-				data-variant="ghost"
+				class="input grow min0 hfull border-none"
+				style:background="transparent"
 				{...restProps}
 			/>
 			{#if canClear}
-				<button type="button" data-variant="iconbox" class="px-xs text-muted" aria-label="Clear input" onclick={clear}>
-					<Icon icon={luX} />
-				</button>
+				<CloseButton label="Clear input" size="h-sm" onclick={clear} />
 			{/if}
 			{#if isPassword}
-				<button
-					type="button"
-					data-variant="iconbox"
-					class="px-xs text-muted"
-					aria-label={showPassword ? 'Hide password' : 'Show password'}
+				<IconButton
+					icon="ghost"
+					size="h-sm"
+					label={showPassword ? 'Hide password' : 'Show password'}
 					aria-pressed={showPassword}
 					onclick={() => (showPassword = !showPassword)}
 				>
 					<Icon icon={showPassword ? luEyeOff : luEye} />
-				</button>
+				</IconButton>
 			{/if}
 			{#if trailing}
 				<span class="row ycenter shrink-0 pr-xs text-muted" aria-hidden="true">{@render trailing()}</span>
@@ -116,12 +122,9 @@
 			type={effectiveType}
 			{disabled}
 			{readonly}
-			aria-invalid={error ? true : undefined}
+			aria-invalid={invalid || undefined}
 			aria-describedby={describedBy}
-			class="input wfull"
-			data-variant={variant}
-			data-size={size}
-			data-shape={shape}
+			class="input wfull border el-size el-shape {surface} {size} {shape} {shadow} {invalid ? 'is-invalid' : ''}"
 			{...restProps}
 		/>
 	{/if}

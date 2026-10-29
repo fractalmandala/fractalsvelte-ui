@@ -1,0 +1,836 @@
+=light-theme-tokens
+	color-scheme: light
+	--white-fixed: #FFFFFF
+	--black-fixed: #18181B
+	--bg: #FFFFFF
+	--bg-surface: #FAFAFA
+	--bg-panel: #F5F4EF
+	--bg-sunken: #F6F6F6
+	--bg-raised: #f4f4f4
+	--bg-extra: #F5F7F9
+	--bg-input: #F4F3EE
+	--bg-button: #6f6f6e
+	--text-primary: #1c1c1d
+	--text-secondary: #808182
+	--text-muted: #aaacaf
+	--text-inverse: #FFFFFF
+	--state-surface: #F4F4F6
+	--state-hover: #424243
+	--state-selected: #7c7c7a
+	--border: #E5E7EB
+	--border-subtle: #F0F1F3
+	--border-strong: #D1D5DB
+	--theme-color: #22c55e
+	--theme-color-alt: #00df89
+	--theme-color-sub: #10b981
+	--accent-orange: #FF7A00
+	--accent-green: #10B981
+	--success: #10B981
+	--success-hover: #059669
+	--warning: #FFD000
+	--warning-hover: #E5B800
+	--danger: #EF4444
+	--danger-hover: #DC2626
+	--info: #3B82F6
+	--info-hover: #2563EB
+	--ring: rgba(255, 208, 0, 0.4)
+	--shadow-color: 0 0 0
+	--shadow-rim: inset 0 1px 0 rgba(255, 255, 255, 0.6)
+	--shadow-xs: 0 1px 2px rgb(var(--shadow-color) / 0.05)
+	--shadow-sm: 0 1px 2px rgb(var(--shadow-color) / 0.1), 0 2px 4px rgb(var(--shadow-color) / 0.05)
+	--shadow-md: 0 2px 4px rgb(var(--shadow-color) / 0.1), 0 8px 16px rgb(var(--shadow-color) / 0.2)
+	--shadow-bs: 0 2px 4px rgb(var(--shadow-color) / 0.1), 0 6px 14px rgb(var(--shadow-color) / 0.2)
+	--shadow-lg: 0 4px 8px rgb(var(--shadow-color) / 0.1), 0 12px 24px rgb(var(--shadow-color) / 0.2)
+	--shadow-xl: 0 8px 16px rgb(var(--shadow-color) / 0.1), 0 20px 36px rgb(var(--shadow-color) / 0.2)
+	--shadow-2xl: 0 12px 24px rgb(var(--shadow-color) / 0.1), 0 28px 48px rgb(var(--shadow-color) / 0.2)
+	--shadow-3xl: 0 16px 32px rgb(var(--shadow-color) / 0.1), 0 36px 64px rgb(var(--shadow-color) / 0.2)
+
+=dark-theme-tokens
+	color-scheme: dark
+	--white-fixed: #FFFFFF
+	--black-fixed: #18181B
+	--bg: #121214
+	--bg-surface: #1C1C20
+	--bg-panel: #1E1E22
+	--bg-sunken: #27272C
+	--bg-raised: #36363D
+	--bg-extra: #161618
+	--bg-input: #27272C
+	--bg-button: #32323A
+	--text-primary: #F4F4F6
+	--text-secondary: #9D9DA8
+	--text-muted: #63636E
+	--text-inverse: #121214
+	--state-surface: #27272C
+	--state-hover: #33333C
+	--state-selected: #3E3E4A
+	--border: #2E2E36
+	--border-subtle: #222228
+	--border-strong: #44444E
+	--theme-color: #22c55e
+	--theme-color-alt: #00df89
+	--theme-color-sub: #10b981
+	--accent-orange: #FF7A00
+	--accent-green: #22C55E
+	--success: #22C55E
+	--success-hover: #34D399
+	--warning: #FFD000
+	--warning-hover: #FCD34D
+	--danger: #EF4444
+	--danger-hover: #F87171
+	--info: #60A5FA
+	--info-hover: #93C5FD
+	--ring: rgba(255, 208, 0, 0.45)
+	--shadow-color: 0 0 0
+	--shadow-umbra: rgb(0 0 0 / 0.60)
+	--shadow-rim: inset 0 1px 0 rgba(255, 255, 255, 0.08)
+	--shadow-xs: 0 1px 2px rgb(var(--shadow-color) / 0.3)
+	--shadow-sm: 0 1px 2px rgb(var(--shadow-color) / 0.25), 0 2px 4px rgb(var(--shadow-color) / 0.2)
+	--shadow-md: 0 2px 4px rgb(var(--shadow-color) / 0.2), 0 8px 16px rgb(var(--shadow-color) / 0.25)
+	--shadow-bs: 0 2px 4px rgb(var(--shadow-color) / 0.2), 0 6px 14px rgb(var(--shadow-color) / 0.25)
+	--shadow-lg: 0 4px 8px rgb(var(--shadow-color) / 0.25), 0 12px 24px rgb(var(--shadow-color) / 0.3)
+	--shadow-xl: 0 8px 16px rgb(var(--shadow-color) / 0.3), 0 20px 36px rgb(var(--shadow-color) / 0.35)
+	--shadow-2xl: 0 12px 24px rgb(var(--shadow-color) / 0.35), 0 28px 48px rgb(var(--shadow-color) / 0.4)
+	--shadow-3xl: 0 16px 32px rgb(var(--shadow-color) / 0.4), 0 36px 64px rgb(var(--shadow-color) / 0.45)
+
+@layer fractalstyler.tokens
+	[data-mode='dark']
+		+dark-theme-tokens
+
+	[data-mode='light']
+		+light-theme-tokens
+
+	:root
+		--font-mono: "Atkinson Hyperlegible Mono", monospace
+		--font-sans: "Google Sans", sans-serif
+		--text-xs: 0.67rem
+		--text-sm: 0.75rem
+		--text-md: 0.8061rem
+		--text-bs: 0.9489rem
+		--text-lg: 1.1156rem
+		--text-xl: 1.31rem
+		--text-2xl: 1.536rem
+		--text-3xl: 1.7983rem
+		--text-4xl: 2.1018rem
+		--text-5xl: 2.4519rem
+		@media (min-width: 1025px)
+			--text-md: 0.8333rem
+			--text-bs: 1rem
+			--text-lg: 1.2rem
+			--text-xl: 1.44rem
+			--text-2xl: 1.728rem
+			--text-3xl: 2.0736rem
+			--text-4xl: 2.4883rem
+			--text-5xl: 2.986rem
+		@media (min-width: 1281px)
+			--text-md: 0.9rem
+			--text-bs: 1rem
+			--text-lg: 1.4rem
+			--text-xl: 1.7578rem
+			--text-2xl: 2.1973rem
+			--text-3xl: 2.7466rem
+			--text-4xl: 3.4332rem
+			--text-5xl: 4.2915rem
+
+		--unit-space: 0.25rem
+		--space-xs: var(--unit-space)
+		--space-sm: calc(var(--unit-space) * 2)
+		--space-md: calc(var(--unit-space) * 3)
+		--space-bs: calc(var(--unit-space) * 4)
+		--space-lg: calc(var(--unit-space) * 6)
+		--space-xl: calc(var(--unit-space) * 8)
+		--space-2xl: calc(var(--unit-space) * 12)
+		--space-3xl: calc(var(--unit-space) * 16)
+
+		--radius-xs: 2px
+		--radius-sm: 4px
+		--radius-md: 8px
+		--radius-bs: 16px
+		--radius-lg: 32px
+		--radius-full: 9999px
+
+		// Avatar and switch channels. The switch numbers are load-bearing: the thumb
+		// must travel exactly the 18px hard-coded on .switch-track.checked, and the
+		// track is border-box (1px border + 2px padding), so w = 16 + 18 + 4 + 2.
+		--avatar-size: 32px
+		--switch-w: 40px
+		--switch-h: 22px
+		--switch-thumb: 16px
+
+		// Motion language (registry v1) — durations and easings all compositions read.
+		--transin1: cubic-bezier(0.470, 0.000, 0.745, 0.715)
+		--transin2: cubic-bezier(0.550, 0.055, 0.675, 0.190)
+		--transin3: cubic-bezier(0.755, 0.050, 0.855, 0.060)
+		--transout1: cubic-bezier(0.390, 0.575, 0.565, 1.000)
+		--transout2: cubic-bezier(0.215, 0.610, 0.355, 1.000)
+		--transout3: cubic-bezier(0.230, 1.000, 0.320, 1.000)
+		--speed0: 50ms
+		--speed1: 90ms
+		--speed2: 140ms
+		--speed3: 220ms
+		--motionin1: var(--speed0) var(--transin1)
+		--motionout1: var(--speed1) var(--transout1)
+		--motionin2: var(--speed2) var(--transin2)
+		--motionout2: var(--speed2) var(--transout2)
+		--motionin3: var(--speed3) var(--transin3)
+		--motionout3: var(--speed3) var(--transout3)
+		--header-height: 64px
+		--footer-height: 32px
+		--fit-height: calc(var(--header-height) + var(--footer-height))
+		--prose-clamp: 65ch
+		--content-clamp: 1600px
+		--app-inline: var(--space-lg)
+		--card-min: 240px
+		--height-xs: 16px
+		--height-sm: 20px
+		--height-md: 24px
+		--height-bs: 32px
+		--height-lg: 36px
+		--height-xl: 40px
+		--height-2xl: 48px
+		--sidebar-width: 280px
+		--sidebar-width-left: 280px
+		--sidebar-width-right: 280px
+		--z-sticky: 100
+		--z-raised: 200
+		--z-modal: 300
+		--z-toast: 500
+
+.font-mono
+	font-family: var(--font-mono)
+	
+button
+	transition: background var(--motionin1), border-color var(--motionin1), color var(--motionin1), transform var(--motion1)
+	font-family: var(--font-sans)
+	&:active
+		transform: scale(1.04)
+
+.el-variant
+	&.primary
+		background-color: var(--bg-button)
+		border: 1px solid var(--bg-button)
+		color: var(--white-fixed)
+		&:hover
+			background-color: var(--state-hover)
+			border: 1px solid var(--state-hover)
+		&.selected
+			background-color: var(--state-selected)
+			border: 1px solid var(--state-selected)
+	&.secondary
+		background-color: var(--bg-panel)
+		border: 1px solid var(--border-strong)
+		&:hover
+			border: 1px solid var(--border)
+		&.selected
+			background-color: var(--state-selected)
+			border: 1px solid var(--border)
+	&.themed
+		background-color: var(--theme-color)
+		border: 1px solid var(--theme-color)
+		color: var(--white-fixed)
+		&:hover
+			background-color: var(--theme-color-sub)
+			border: 1px solid var(--theme-color-sub)
+		&.selected
+			background-color: var(--theme-color-alt)
+			border: 1px solid var(--theme-color-alt)
+	&.outline
+		background-color: transparent
+		color: var(--text-primary)
+		border: 1px solid var(--border-strong)
+		&:hover
+			color: var(--theme-color)
+			border: 1px solid var(--theme-color)
+		&.selected
+			color: var(--text-primary)
+			background-color: var(--state-selected)
+			border: 1px solid var(--border-strong)
+	&.ghost
+		background-color: transparent
+		border: none
+		&:hover
+			background-color: var(--state-hover)
+			color: var(--white-fixed)
+		&:selected
+			background-color: var(--state-selected)
+			color: var(--white-fixed)
+	&.link
+		background-color: transparent
+		border: none
+		text-decoration: none
+		text-decoration-color: var(--theme-color)
+		&:hover
+			text-decoration: underline
+			border: none
+	&.info
+		background-color: var(--info)
+		border: 1px solid var(--info)
+		color: var(--white-fixed)
+	&.success
+		background-color: var(--success)
+		border: 1px solid var(--success)
+		color: var(--white-fixed)
+	&.warning
+		background-color: var(--warning)
+		border: 1px solid var(--warning)
+		color: var(--white-fixed)
+	&.danger
+		background-color: var(--danger)
+		border: 1px solid var(--danger)
+		color: var(--white-fixed)
+		&:hover
+			background-color: var(--danger-hover)
+			border: 1px solid var(--danger-hover)
+	&.icon
+		&.primary
+			background-color: var(--bg-button)
+			border: 1px solid var(--bg-button)
+			padding-inline: 0
+			padding-block: 0
+			&:hover
+				background-color: var(--state-hover)
+				border: 1px solid var(--state-hover)
+			&.selected
+				background-color: var(--state-selected)
+				border: 1px solid var(--state-selected)
+		&.secondary
+			background-color: var(--bg-panel)
+			border: 1px solid var(--border-subtle)
+			&:hover
+				border: 1px solid var(--border)
+			&.selected
+				background-color: var(--state-selected)
+				border: 1px solid var(--border)
+		&.themed
+			background-color: var(--theme-color)
+			border: 1px solid var(--theme-color)
+			&:hover
+				background-color: var(--theme-color-sub)
+				border: 1px solid var(--theme-color-sub)
+			&.selected
+				background-color: var(--theme-color-alt)
+				border: 1px solid var(--theme-color-alt)
+		&.outline
+			background-color: transparent
+			color: var(--text-primary)
+			border: 1px solid var(--border-dark)
+			&:hover
+				color: var(--theme-color)
+				border: 1px solid var(--theme-color)
+			&.selected
+				color: var(--text-primary)
+				background-color: var(--state-selected)
+				border: 1px solid var(--border-dark)
+		&.ghost
+			background-color: transparent
+			border: none
+			&:hover
+				background-color: var(--state-hover)
+			&:selected
+				background-color: var(--state-selected)
+		&.link
+			background-color: transparent
+			border: none
+			text-decoration: none
+			text-decoration-color: var(--theme-color)
+			&:hover
+				text-decoration: underline
+		
+.btn-icon
+	// icon only: always a square, width = the h-* size
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	flex-shrink: 0
+	aspect-ratio: 1
+	&.el-size
+		padding: 0
+		&.h-sm
+			width: var(--height-sm)
+		&.h-md
+			width: var(--height-md)
+		&.h-bs
+			width: var(--height-bs)
+		&.h-lg
+			width: var(--height-lg)
+		&.h-xl
+			width: var(--height-xl)
+	&.primary
+		background-color: var(--bg-button)
+		border: 1px solid var(--bg-button)
+		color: var(--white-fixed)
+		&:hover
+			background-color: var(--state-hover)
+			border: 1px solid var(--state-hover)
+		&.selected
+			background-color: var(--state-selected)
+			border: 1px solid var(--state-selected)
+	&.secondary
+		background-color: var(--bg-panel)
+		border: 1px solid var(--border-strong)
+		&:hover
+			border: 1px solid var(--border)
+		&.selected
+			background-color: var(--state-selected)
+			border: 1px solid var(--border)
+	&.themed
+		background-color: var(--theme-color)
+		border: 1px solid var(--theme-color)
+		color: var(--white-fixed)
+		&:hover
+			background-color: var(--theme-color-sub)
+			border: 1px solid var(--theme-color-sub)
+		&.selected
+			background-color: var(--theme-color-alt)
+			border: 1px solid var(--theme-color-alt)
+	&.outline
+		background-color: transparent
+		color: var(--text-primary)
+		border: 1px solid var(--border-strong)
+		&:hover
+			color: var(--theme-color)
+			border: 1px solid var(--theme-color)
+		&.selected
+			color: var(--text-primary)
+			background-color: var(--state-selected)
+			border: 1px solid var(--border-strong)
+	&.ghost
+		background-color: transparent
+		border: none
+		&:hover
+			background-color: var(--state-hover)
+			color: var(--white-fixed)
+		&:selected
+			background-color: var(--state-selected)
+			color: var(--white-fixed)
+	&.link
+		background-color: transparent
+		border: none
+		text-decoration: none
+		text-decoration-color: var(--theme-color)
+		&:hover
+			text-decoration: underline
+			border: none
+
+.btn-icon-text
+	display: flex
+	gap: var(--space-xs)
+	align-items: center
+	justify-content: xleft
+	&.primary
+		background-color: var(--bg-button)
+		border: 1px solid var(--bg-button)
+		color: var(--white-fixed)
+		&:hover
+			background-color: var(--state-hover)
+			border: 1px solid var(--state-hover)
+		&.selected
+			background-color: var(--state-selected)
+			border: 1px solid var(--state-selected)
+	&.secondary
+		background-color: var(--bg-panel)
+		border: 1px solid var(--border-strong)
+		&:hover
+			border: 1px solid var(--border)
+		&.selected
+			background-color: var(--state-selected)
+			border: 1px solid var(--border)
+	&.themed
+		background-color: var(--theme-color)
+		border: 1px solid var(--theme-color)
+		color: var(--white-fixed)
+		&:hover
+			background-color: var(--theme-color-sub)
+			border: 1px solid var(--theme-color-sub)
+		&.selected
+			background-color: var(--theme-color-alt)
+			border: 1px solid var(--theme-color-alt)
+	&.outline
+		background-color: transparent
+		color: var(--text-secondary)
+		border: 1px solid var(--border-strong)
+		&:hover
+			color: var(--theme-color)
+			border: 1px solid var(--theme-color)
+		&.selected
+			color: var(--text-primary)
+			background-color: var(--state-selected)
+			border: 1px solid var(--border-strong)
+	&.ghost
+		background-color: transparent
+		border: none
+		&:hover
+			background-color: var(--state-hover)
+			color: var(--white-fixed)
+		&:selected
+			background-color: var(--state-selected)
+			color: var(--white-fixed)
+	&.link
+		background-color: transparent
+		border: none
+		text-decoration: none
+		text-decoration-color: var(--theme-color)
+		&:hover
+			text-decoration: underline
+			border: none
+	&.el-size.h-sm
+		height: var(--height-sm)
+	&.el-size.h-md
+		height: var(--height-md)
+	&.el-size.h-bs
+		height: var(--height-bs)
+	&.el-size.h-lg
+		height: var(--height-lg)
+
+.el-shape
+	&.square
+		border-radius: 0
+	&.min
+		border-radius: 4px
+	&.modern
+		border-radius: 8px
+	&.curved
+		border-radius: 16px
+	&.round
+		border-radius: 9999px
+
+.el-size
+	&.h-sm
+		height: var(--height-sm)
+		font-size: var(--text-xs)
+	&.h-md
+		height: var(--height-md)
+		font-size: var(--text-sm)
+	&.h-bs
+		height: var(--height-bs)
+		font-size: var(--text-md)
+	&.h-lg
+		height: var(--height-lg)
+		font-size: var(--text-md)
+		padding-inline: var(--space-bs)
+	&.h-xl
+		height: var(--height-xl)
+		font-size: var(--text-bs)
+		padding-inline: var(--space-lg)
+
+.tint
+	&.info
+		background-color: color-mix(in srgb, var(--info) 10%, var(--bg-panel))
+		border-color: color-mix(in srgb, var(--info) 35%, transparent)
+	&.success
+		background-color: color-mix(in srgb, var(--success) 10%, var(--bg-panel))
+		border-color: color-mix(in srgb, var(--success) 35%, transparent)
+	&.warning
+		background-color: color-mix(in srgb, var(--warning) 10%, var(--bg-panel))
+		border-color: color-mix(in srgb, var(--warning) 35%, transparent)
+	&.danger
+		background-color: color-mix(in srgb, var(--danger) 10%, var(--bg-panel))
+		border-color: color-mix(in srgb, var(--danger) 35%, transparent)
+
+.avatar-group
+	// avatars shape themselves (svg rx); only the +N chip needs a radius here.
+	// A CSS radius on the svg would trim the status dot.
+	&.circle > .avatar-more
+		border-radius: 50%
+	&.rounded > .avatar-more
+		border-radius: 12%
+	// xs…lg use fractalstyler's gap-* classes; overlap stacks each avatar a quarter under the
+	// previous one, ringed so the edges read; touch is edge to edge (no gap class).
+	&.gap-overlap
+		--avatar-ring: var(--bg-panel)
+		> .avatar-more
+			box-shadow: 0 0 0 2px var(--bg-panel)
+		&.row > * + *
+			margin-inline-start: calc(var(--avatar-size) * -0.25)
+		&.box > * + *
+			margin-block-start: calc(var(--avatar-size) * -0.25)
+	.avatar-more
+		width: var(--avatar-size)
+		height: var(--avatar-size)
+		font-size: calc(var(--avatar-size) * 0.38)
+
+.badge
+	padding-inline: var(--space-sm)
+	font-weight: 500
+	white-space: nowrap
+
+.tag
+	padding-inline: var(--space-sm)
+	font-weight: 500
+	white-space: nowrap
+	background-color: var(--tag-color)
+	&.ink-auto
+		color: var(--text-primary)
+		@supports (color: oklch(from red l c h))
+			color: oklch(from var(--tag-color) clamp(0.2, calc((0.62 - l) * 1000), 1) 0 0)
+	&.text-only
+		background-color: transparent
+		color: var(--tag-color)
+	.tag-remove
+		height: 1.5em
+		width: 1.5em
+		margin-inline-end: calc(var(--space-xs) * -1)
+		color: inherit
+
+.switch-box
+	display: inline-flex
+	flex-shrink: 0
+	input
+		appearance: none
+		margin: 0
+		width: 2em
+		height: 1.125em
+		border: 1px solid var(--border-strong)
+		border-radius: 999px
+		background: radial-gradient(circle at 0.5em 50%, var(--text-muted) 0.32em, transparent 0.34em), var(--bg-input)
+		cursor: pointer
+		transition: background 0.15s
+		&:checked
+			border-color: var(--theme-color)
+			background: radial-gradient(circle at calc(100% - 0.5em) 50%, #fff 0.32em, transparent 0.34em), var(--theme-color)
+		&[aria-invalid="true"]
+			border-color: var(--danger)
+		&:focus-visible
+			outline: 2px solid var(--theme-color)
+			outline-offset: 2px
+		&:disabled
+			opacity: 0.5
+			cursor: not-allowed
+
+.checkbox-box
+	display: inline-grid
+	place-items: center
+	flex-shrink: 0
+	> *
+		grid-area: 1 / 1
+	input
+		appearance: none
+		margin: 0
+		width: 1.125em
+		height: 1.125em
+		border: 1px solid var(--border-strong)
+		border-radius: var(--radius-xs)
+		background-color: var(--bg-input)
+		cursor: pointer
+		&:checked, &[type="checkbox"]:indeterminate
+			background-color: var(--theme-color)
+			border-color: var(--theme-color)
+		&[aria-invalid="true"]
+			border-color: var(--danger)
+		&:focus-visible
+			outline: 2px solid var(--theme-color)
+			outline-offset: 2px
+		&:disabled
+			opacity: 0.5
+			cursor: not-allowed
+	svg
+		color: #fff
+		font-size: 0.75em
+		pointer-events: none
+	&.radio input
+		border-radius: 50%
+		&:checked
+			background: radial-gradient(circle, var(--theme-color) 40%, var(--bg-input) 45%)
+
+.border-none
+	border: none
+
+// .card takes h-* for its type step only; never the fixed control height.
+.card
+	height: auto
+	&.h-sm
+		font-size: var(--text-xs)
+	&.h-md
+		font-size: var(--text-sm)
+	&.h-bs
+		font-size: var(--text-md)
+	&.h-lg
+		font-size: var(--text-md)
+	&.h-xl
+		font-size: var(--text-bs)
+
+.shad-sm
+	box-shadow: var(--shadow-sm)
+.shad-bs
+	box-shadow: var(--shadow-bs)
+.shad-lg
+	box-shadow: var(--shadow-lg)
+.shad-xl
+	box-shadow: var(--shadow-xl)
+.shad-2xl
+	box-shadow: var(--shadow-2xl)
+
+.shad-hover-sm
+	box-shadow: var(--shadow-sm)
+	&:hover
+		box-shadow: var(--shadow-xs)
+.shad-hover-bs
+	box-shadow: var(--shadow-bs)
+	&:hover
+		box-shadow: var(--shadow-xs)
+.shad-hover-lg
+	box-shadow: var(--shadow-lg)
+	&:hover
+		box-shadow: var(--shadow-xs)
+.shad-hover-xl
+	box-shadow: var(--shadow-xl)
+	&:hover
+		box-shadow: var(--shadow-xs)
+.shad-hover-2xl
+	box-shadow: var(--shadow-2xl)
+	&:hover
+		box-shadow: var(--shadow-xs)
+
+.app-header
+	background: var(--bg)
+
+// fixed-width digits, so changing numbers don't shift the layout
+.tabular-nums
+	font-variant-numeric: tabular-nums
+
+// slide track: wide enough for the label beside the handle
+.slide-unlock
+	min-width: 16rem
+	user-select: none
+	touch-action: none
+
+// split button: `shape` rounds only the outer corners; the join stays a straight line
+.split-button
+	> :first-child
+		border-top-right-radius: 0
+		border-bottom-right-radius: 0
+	> :last-child
+		border-top-left-radius: 0
+		border-bottom-left-radius: 0
+
+.card-clickable
+	cursor: pointer
+	transition: border-color 0.15s, box-shadow 0.15s
+	&:hover
+		border-color: var(--border-strong)
+	&:focus-visible
+		outline: 2px solid var(--theme-color)
+		outline-offset: 2px
+	&.disabled
+		cursor: not-allowed
+		opacity: 0.6
+
+// Icon buttons stay square whatever variant or size class follows.
+.btn-icon.el-size.el-size
+	padding: 0
+
+// Surface fills fractalstyler doesn't ship as classes (it has the tokens only).
+.state-surface
+	background-color: var(--state-surface)
+.state-hover
+	background-color: var(--state-hover)
+.state-selected
+	background-color: var(--state-selected)
+.bg-button
+	background-color: var(--bg-button)
+.bg-input
+	background-color: var(--bg-input)
+
+// A control with both a variant and a surface (Select): the surface sets the fill.
+$surface-tokens: (bg-main: --bg, bg-surface: --bg-surface, bg-panel: --bg-panel, bg-sunken: --bg-sunken, bg-raised: --bg-raised, bg-extra: --bg-extra, state-surface: --state-surface, state-hover: --state-hover, state-selected: --state-selected, bg-button: --bg-button, bg-input: --bg-input)
+// Text colour picked from a fill's lightness: dark fill gets white ink, light fill near-black.
+// Set --ink-bg to the fill colour.
+.ink-auto
+	color: var(--text-primary)
+	@supports (color: oklch(from red l c h))
+		color: oklch(from var(--ink-bg) clamp(0.2, calc((0.62 - l) * 1000), 1) 0 0)
+
+.el-variant.el-surface
+	@each $cls, $token in $surface-tokens
+		&.#{$cls}, &.#{$cls}:hover
+			--ink-bg: var(#{$token})
+			background-color: var(#{$token})
+			@supports (color: oklch(from red l c h))
+				color: oklch(from var(--ink-bg) clamp(0.2, calc((0.62 - l) * 1000), 1) 0 0)
+				// muted bits (select chevron, placeholder) follow the auto ink, dimmed
+				.text-muted, .text-secondary
+					color: inherit
+					opacity: 0.65
+
+// split button: the group's shape class sets the outer radius (fractalstyler fixes it at radius-sm)
+$split-radius: (square: 0, min: var(--radius-sm), modern: var(--radius-md), curved: var(--radius-bs), round: 9999px)
+.split-button
+	@each $shape, $r in $split-radius
+		&.#{$shape} > :first-child
+			border-top-left-radius: $r
+			border-bottom-left-radius: $r
+		&.#{$shape} > :last-child
+			border-top-right-radius: $r
+			border-bottom-right-radius: $r
+
+// Card-type components: h-* steps the type scale (title, description, body), never a fixed height.
+.card-sized
+	&.h-lg
+		font-size: var(--text-bs)
+	&.h-xl
+		font-size: var(--text-lg)
+	.card-title
+		font-size: 1.5em
+	.card-desc
+		font-size: 1.075em
+	.card-label
+		font-size: 1em
+	.card-sub
+		font-size: 0.95em
+
+// Banner: h-* steps padding and text, not a fixed height (the text may wrap).
+.banner
+	&.h-sm
+		padding: var(--space-xs) var(--space-sm)
+		font-size: var(--text-sm)
+	&.h-md
+		padding: var(--space-sm) var(--space-md)
+		font-size: var(--text-md)
+	&.h-bs
+		padding: var(--space-sm) var(--space-md)
+		font-size: var(--text-bs)
+	&.h-lg
+		padding: var(--space-md) var(--space-bs)
+		font-size: var(--text-lg)
+	&.h-xl
+		padding: var(--space-md) var(--space-lg)
+		font-size: var(--text-xl)
+	&.h-sm, &.h-md, &.h-bs, &.h-lg, &.h-xl
+		height: auto
+
+// fractalstyler's grids stop at grid-4 and grid-6; grid-5 steps 1 → 3 → 5 like grid-6.
+.grid-5
+	display: grid
+	grid-template-columns: repeat(1, minmax(0, 1fr))
+	@media (min-width: 1025px)
+		grid-template-columns: repeat(3, minmax(0, 1fr))
+	@media (min-width: 1281px)
+		grid-template-columns: repeat(5, minmax(0, 1fr))
+
+// Keyboard key: a keycap edge on both the button and the static span, so size and shape read.
+.btn-icon.kbd, .btn-icon.kbd:hover
+	border: 1px solid var(--border-strong)
+	border-bottom-width: 2px
+	font-family: var(--font-mono)
+
+// Field error state: danger border on the control. Set from the control's own error prop
+// or from FormField through field-context.
+.is-invalid, .checkbox-box input.is-invalid, .border.is-invalid, .border-strong.is-invalid, .el-variant.is-invalid, .el-variant.is-invalid:hover
+	border-color: var(--danger)
+
+// native Select: fractalstyler paints a fixed-grey arrow; Select draws its own chevron instead
+.select-wrap
+	> select.select
+		background-image: none
+		padding-right: calc(var(--space-sm) + 1.25em)
+	> .select-chevron
+		position: absolute
+		right: var(--space-sm)
+		pointer-events: none
+
+.logotype
+	height: 20px
+	object-fit: contain
+
+.wmax
+	width: max-content

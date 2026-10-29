@@ -1,3 +1,5 @@
+<!-- @component A bottom tab bar for mobile navigation. -->
+
 <script lang="ts" module>
 	import type { Snippet } from 'svelte';
 

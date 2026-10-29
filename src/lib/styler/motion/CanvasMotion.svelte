@@ -1,27 +1,28 @@
+<!-- @component An animated canvas of drifting particles joined by lines. -->
+
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsTone } from '../types';
-	import { FRAME, TONE_TEXT, type FsRatio } from '../classes';
+	import type { MessageText, Frame } from '../types';
 	import { inkOf } from './ink';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		particleCount?: number;
-		tone?: FsTone;
+		tone?: MessageText;
 		maxDistance?: number;
 		speed?: number;
 		interactive?: boolean;
 		/** Box shape: one of fractalstyler's .frame-* ratios */
-		ratio?: FsRatio;
+		ratio?: Frame;
 		class?: string;
 	}
 
 	let {
 		particleCount = 45,
-		tone = 'theme',
+		tone,
 		maxDistance = 110,
 		speed = 0.6,
 		interactive = true,
-		ratio = '16/9',
+		ratio = 'frame-16-9',
 		class: className = '',
 		...restProps
 	}: Props = $props();
@@ -125,6 +126,6 @@
 	});
 </script>
 
-<div class="wfull radius-md bg-sunken border {FRAME[ratio]} {className}" {...restProps}>
-	<canvas bind:this={canvasEl} class="full {TONE_TEXT[tone]}" aria-hidden="true"></canvas>
+<div class="wfull radius-md bg-sunken border {ratio} {className}" {...restProps}>
+	<canvas bind:this={canvasEl} class="full {tone ?? 'text-theme'}" aria-hidden="true"></canvas>
 </div>

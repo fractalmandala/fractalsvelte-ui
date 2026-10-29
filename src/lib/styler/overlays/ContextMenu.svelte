@@ -1,3 +1,5 @@
+<!-- @component A menu that opens on right-click inside a region. -->
+
 <script lang="ts" module>
 	import type { MenuEntry } from './MenuList.svelte';
 
@@ -12,6 +14,7 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import Anchor, { type Placement } from './Anchor.svelte';
 	import MenuList from './MenuList.svelte';
+	import type { Size, Surface, Border, Shadow, Shape } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		items?: ContextMenuItem[];
@@ -22,6 +25,11 @@
 		 */
 		placement?: Placement;
 		label?: string;
+		size?: Size;
+		surface?: Surface;
+		border?: Border;
+		shadow?: Shadow;
+		shape?: Shape;
 		class?: string;
 		children?: Snippet;
 	}
@@ -30,6 +38,11 @@
 		items = [],
 		placement = 'bottom-start',
 		label = 'Context menu',
+		size = 'h-md',
+		surface = 'bg-surface',
+		border = 'border',
+		shadow = 'shad-lg',
+		shape = 'modern',
 		class: className = '',
 		children,
 		...restProps
@@ -74,6 +87,11 @@
 			<MenuList
 				{items}
 				{label}
+				{size}
+				{surface}
+				{border}
+				{shadow}
+				{shape}
 				onclose={() => (open = false)}
 				onselect={(item) => {
 					(item as ContextMenuItem).onselect?.();

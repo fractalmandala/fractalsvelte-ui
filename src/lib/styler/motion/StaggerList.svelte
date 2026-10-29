@@ -1,3 +1,5 @@
+<!-- @component A list whose items animate in one after another. -->
+
 <script lang="ts" module>
 	export interface StaggerListItem {
 		id: string;
@@ -8,14 +10,13 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsSpace } from '../types';
-	import { GAP } from '../classes';
+	import type { Space } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		items: StaggerListItem[];
 		/** ms between items */
 		stagger?: number;
-		gap?: FsSpace;
+		gap?: Space;
 		class?: string;
 		itemSnippet?: Snippet<[{ item: StaggerListItem; index: number }]>;
 	}
@@ -41,7 +42,7 @@
 	});
 </script>
 
-<div role="list" class="box {GAP[gap]} {className}" aria-busy={shown < items.length} {...restProps}>
+<div role="list" class="box gap-{gap} {className}" aria-busy={shown < items.length} {...restProps}>
 	{#each items.slice(0, shown) as item, index (item.id)}
 		<div role="listitem" class="box">{@render itemSnippet?.({ item, index })}</div>
 	{/each}

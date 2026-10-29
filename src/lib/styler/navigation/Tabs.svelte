@@ -1,3 +1,5 @@
+<!-- @component A tab bar that switches between panels of content. -->
+
 <script lang="ts" module>
 	import type { Snippet } from 'svelte';
 
@@ -12,7 +14,7 @@
 
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsSize } from '../types';
+	import type { Size, Variant, Shape } from '../types';
 
 	export type TabsVariant = 'underline' | 'pill' | 'bordered';
 
@@ -20,7 +22,7 @@
 		tabs?: TabItem[];
 		activeTab?: string;
 		variant?: TabsVariant;
-		size?: FsSize;
+		size?: Size;
 		class?: string;
 		/** Panel content for the active tab */
 		children?: Snippet;
@@ -31,7 +33,7 @@
 		tabs = [],
 		activeTab = $bindable(''),
 		variant = 'underline',
-		size = 'lg',
+		size = 'h-lg',
 		class: className = '',
 		children,
 		extra,
@@ -54,11 +56,13 @@
 		pill: 'text-primary',
 		bordered: 'text-primary'
 	};
-	const BUTTON_VARIANT: Record<TabsVariant, [string, string]> = {
+	const BUTTON_VARIANT: Record<TabsVariant, [Variant, Variant]> = {
 		underline: ['ghost', 'ghost'],
 		pill: ['secondary', 'ghost'],
 		bordered: ['outline', 'ghost']
 	};
+
+	const TAB_SHAPE: Record<TabsVariant, Shape> = { pill: 'round', underline: 'square', bordered: 'modern' };
 
 	function onkeydown(event: KeyboardEvent, index: number) {
 		const enabled = tabs.filter((t) => !t.disabled);
@@ -89,10 +93,7 @@
 					type="button"
 					id="{uid}-tab-{tab.id}"
 					role="tab"
-					class="shrink-0"
-					data-variant={BUTTON_VARIANT[variant][active ? 0 : 1]}
-					data-size={size}
-					data-shape={variant === 'pill' ? 'round' : variant === 'underline' ? 'square' : 'modern'}
+					class="shrink-0 el-variant el-size el-shape {BUTTON_VARIANT[variant][active ? 0 : 1]} {size} {TAB_SHAPE[variant]}"
 					disabled={tab.disabled}
 					aria-selected={active}
 					aria-controls="{uid}-panel"

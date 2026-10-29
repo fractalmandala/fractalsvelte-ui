@@ -1,0 +1,92 @@
+:root {
+  /* the catalog's theme switch sets color-scheme inline; a preview opened alone follows the system */
+  color-scheme: light dark;
+
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --radius-sm: 4px;
+  --radius-xs: 2px;
+
+  --text-primary: light-dark(#1c1a29, #ecebf5);
+  --text-secondary: light-dark(#6b6880, #a29fb8);
+  --bg: light-dark(#ffffff, #1f1d2b);
+  --bg-surface: light-dark(#f4f3fa, #282636);
+  --border: light-dark(#e4e2ef, #363347);
+
+  --theme-color: light-dark(#6d4aff, #9d86ff);
+  --theme-color-alt: light-dark(#5a36f0, #b4a2ff);
+  --theme-color-sub: light-dark(#efebff, #2c2650);
+  --text-theme: light-dark(#ffffff, #14112a);
+
+  --success: light-dark(#14915f, #3ecf8e);
+  --success-hover: light-dark(#e3f6ee, #173327);
+  --warning: light-dark(#b76e00, #f5b544);
+  --warning-hover: light-dark(#fdf1dc, #3a2e14);
+  --danger: light-dark(#d93a4a, #ff6b7a);
+  --danger-hover: light-dark(#fde7ea, #3d1d23);
+  --info: light-dark(#1f74d6, #5aa9ff);
+  --info-hover: light-dark(#e5f0fd, #162c45);
+
+  --shadow-md: 0 1px 2px light-dark(rgb(28 26 41 / 0.08), rgb(0 0 0 / 0.4));
+  --shadow-bs: 0 8px 24px -8px light-dark(rgb(28 26 41 / 0.18), rgb(0 0 0 / 0.55));
+}
+
+
+.demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.demo-stack {
+  display: grid;
+  gap: 16px;
+  max-width: 560px;
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.demo-narrow {
+  max-width: 360px;
+}
+
+.demo-note {
+  margin: 0;
+  color: var(--ex-muted);
+  font-size: 14px;
+}
+
+.demo-price {
+  color: var(--ex-text);
+  font-size: 1.1rem;
+}
+
+.demo-spacer {
+  flex: 1;
+}
+
+.demo-icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 8px;
+}
+
+.demo-icons figure {
+  display: grid;
+  place-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 14px 4px;
+  border: 1px solid var(--ex-border);
+  border-radius: var(--ex-radius);
+  background: var(--ex-surface);
+}
+
+.demo-icons figcaption {
+  color: var(--ex-muted);
+  font-size: 12px;
+}

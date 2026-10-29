@@ -43,13 +43,8 @@ export default {
 	Progress: 'A determinate, striped or indeterminate bar drawn in SVG, sized in em along the type scale.',
 	Meter: 'A gauge with the native meter’s optimum / sub-optimum / critical zones, coloured success, warning or danger, and low / high markers.',
 	Spinner: 'A loading ring rotated by SVG animateTransform, 1em of whichever text size you give it.',
-	Skeleton: 'Placeholder text lines, circles and blocks drawn in SVG, pulsing through a SMIL opacity animation.',
-	EmptyState: 'A centred placeholder with an icon, heading, description and action row.',
-	StatCard: 'A KPI .card with value, delta (green up, red down), timeframe and room for a sparkline.',
 	AspectRatio: 'A .frame-* box at one of fractalstyler’s ratios; media inside fills and covers it.',
-	Sparkline: 'An inline SVG trend line with a gradient fill in the chosen tone.',
 	DotMatrix: 'Text on a 5×7 LED grid, drawn as SVG circles with an optional blur glow.',
-	SizeReadout: 'A mono .chip readout of width × height, with a status LED and optional count, label and copied value.',
 	Counter: 'A large number that counts up to each new value; the motion is the text changing, not a transform.',
 
 	// Layout

@@ -1,3 +1,5 @@
+<!-- @component Wraps content with a sweeping shimmer highlight. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';

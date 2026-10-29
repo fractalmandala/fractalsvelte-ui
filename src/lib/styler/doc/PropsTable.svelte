@@ -1,3 +1,5 @@
+<!-- @component A docs table listing a component's props, types and defaults. -->
+
 <script lang="ts" module>
 	export interface PropItem {
 		name: string;
@@ -41,14 +43,14 @@
 						<tr>
 							<td class="px-md py-sm bb-sub">
 								<div class="row ycenter gap-xs wrap">
-									<Code variant="primary" size="sm">{item.name}</Code>
+									<Code size="h-md" class="text-theme">{item.name}</Code>
 									{#if !item.optional}<span class="chip bg-danger text-white">required</span>{/if}
 									{#if item.bindable}<span class="chip bg-info text-white">bindable</span>{/if}
 								</div>
 							</td>
-							<td class="px-md py-sm bb-sub"><Code size="sm">{item.type}</Code></td>
+							<td class="px-md py-sm bb-sub"><Code size="h-md">{item.type}</Code></td>
 							<td class="px-md py-sm bb-sub">
-								{#if item.default}<Code size="sm">{item.default}</Code>{:else}<span class="text-muted">—</span>{/if}
+								{#if item.default}<Code size="h-md">{item.default}</Code>{:else}<span class="text-muted">—</span>{/if}
 							</td>
 							<td class="px-md py-sm bb-sub text-secondary">{item.description || '—'}</td>
 						</tr>

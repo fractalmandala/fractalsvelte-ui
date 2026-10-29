@@ -1,11 +1,15 @@
+<!-- @component A search field with clear button, loading spinner and optional ⌘K shortcut. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luSearch, luX } from 'fractalicons/lucide';
-	import type { FsFieldVariant, FsSize, FsShape } from '../types';
-	import { FIELD_PAINT, FIELD_HEIGHT, SHAPE_RADIUS } from '../classes';
+	import { Icon } from '@fractaldesign/icons';
+	import { luSearch } from '@fractaldesign/icons/lucide';
+	import type { Surface, Size, Shape, Shadow } from '../types';
+	import { getFieldLook } from './field-context';
 	import Spinner from '../display/Spinner.svelte';
+	import Kbd from '../display/Kbd.svelte';
+	import CloseButton from '../actions/CloseButton.svelte';
 
 	interface Props extends Omit<HTMLInputAttributes, 'size'> {
 		value?: string;
@@ -15,15 +19,19 @@
 		listenForShortcut?: boolean;
 		loading?: boolean;
 		clearable?: boolean;
-		variant?: FsFieldVariant;
-		size?: FsSize;
-		shape?: FsShape;
+		surface?: Surface;
+		size?: Size;
+		shape?: Shape;
+		shadow?: Shadow;
 		disabled?: boolean;
 		id?: string;
 		class?: string;
 		leading?: Snippet;
 		trailing?: Snippet;
 	}
+
+	const field = getFieldLook();
+	const invalid = Boolean(field.invalid);
 
 	let {
 		value = $bindable(''),
@@ -32,9 +40,10 @@
 		listenForShortcut = false,
 		loading = false,
 		clearable = true,
-		variant = 'secondary',
-		size = 'lg',
-		shape = 'modern',
+		surface = field.surface ?? 'bg-input',
+		size = field.size ?? 'h-lg',
+		shape = field.shape ?? 'modern',
+		shadow = field.shadow ?? 'shad-none',
 		disabled = false,
 		id,
 		class: className = '',
@@ -61,9 +70,8 @@
 	});
 </script>
 
-<!-- The canonical fractalstyler search bar: a row frame around a ghost .input. -->
-<div class="row ycenter gap-xs px-sm {FIELD_PAINT[variant]} {FIELD_HEIGHT[size]} {SHAPE_RADIUS[shape]} {className}">
-	<span class="row ycenter shrink-0 text-muted" aria-hidden="true">
+<div class="row ycenter gap-xs px-xs border el-size el-shape {surface} {size} {shape} {shadow} {invalid ? 'is-invalid' : ''} {className}">
+	<span class="row ycenter shrink-0 pl-xs text-muted" aria-hidden="true">
 		{#if leading}{@render leading()}{:else}<Icon icon={luSearch} />{/if}
 	</span>
 	<input
@@ -74,27 +82,23 @@
 		{placeholder}
 		{disabled}
 		aria-label={restProps['aria-label'] ?? placeholder}
-		class="input grow min0 hfull"
-		data-variant="ghost"
+		class="input grow min0 hfull border-none"
+		style:background="transparent"
 		{...restProps}
 	/>
 	{#if loading}
 		<Spinner label="Searching" class="text-muted" />
 	{:else if canClear}
-		<button
-			type="button"
-			data-variant="iconbox"
-			class="px-xs text-muted"
-			aria-label="Clear search"
+		<CloseButton
+			label="Clear search"
+			size="h-sm"
 			onclick={() => {
 				value = '';
 				inputEl?.focus();
 			}}
-		>
-			<Icon icon={luX} />
-		</button>
+		/>
 	{:else if shortcut}
-		<kbd class="chip mono bg-sunken border text-muted shrink-0" aria-hidden="true">{shortcut}</kbd>
+		<Kbd static aria-hidden="true">{shortcut}</Kbd>
 	{/if}
-	{#if trailing}<span class="row ycenter shrink-0" aria-hidden="true">{@render trailing()}</span>{/if}
+	{#if trailing}<span class="row ycenter shrink-0 pr-xs" aria-hidden="true">{@render trailing()}</span>{/if}
 </div>

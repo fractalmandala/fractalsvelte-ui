@@ -1,6 +1,9 @@
+<!-- @component A small text hint shown on hover or focus. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import Anchor, { type Placement } from './Anchor.svelte';
+	import type { Surface, Border, Shadow } from '../types';
 
 	export type TooltipPlacement = Placement;
 
@@ -10,6 +13,9 @@
 		/** ms before showing on hover */
 		delay?: number;
 		disabled?: boolean;
+		surface?: Surface;
+		border?: Border;
+		shadow?: Shadow;
 		class?: string;
 		tooltipSnippet?: Snippet;
 		children?: Snippet;
@@ -20,6 +26,9 @@
 		placement = 'top',
 		delay = 200,
 		disabled = false,
+		surface = 'bg-raised',
+		border = 'border',
+		shadow = 'shad-bs',
 		class: className = '',
 		tooltipSnippet,
 		children
@@ -55,7 +64,7 @@
 		{#snippet trigger()}{@render children?.()}{/snippet}
 		{#snippet panel()}
 			<!-- .truncate keeps the tip on one line inside a narrow anchor. -->
-			<div id={uid} role="tooltip" class="chip bg-raised text-primary border shadow-md truncate {className}">
+			<div id={uid} role="tooltip" class="chip text-primary truncate {surface} {border} {shadow} {className}">
 				{#if tooltipSnippet}{@render tooltipSnippet()}{:else}{content}{/if}
 			</div>
 		{/snippet}

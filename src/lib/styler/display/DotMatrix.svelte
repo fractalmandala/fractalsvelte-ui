@@ -1,7 +1,8 @@
+<!-- @component Text drawn as an LED-style dot-matrix display. -->
+
 <script lang="ts">
 	import type { SVGAttributes } from 'svelte/elements';
-	import type { FsTone } from '../types';
-	import { TONE_TEXT } from '../classes';
+	import type { MessageText } from '../types';
 
 	// 5×7 dot-matrix font: 7 rows of 5 bits each.
 	const FONT_5X7: Record<string, number[]> = {
@@ -50,7 +51,7 @@
 
 	interface Props extends SVGAttributes<SVGSVGElement> {
 		text?: string;
-		tone?: FsTone;
+		tone?: MessageText;
 		glow?: boolean;
 		/** Height of the display in em; width follows the character count. */
 		height?: number;
@@ -59,7 +60,7 @@
 
 	let {
 		text = 'ONLINE',
-		tone = 'success',
+		tone = 'text-success',
 		glow = true,
 		height = 1.5,
 		class: className = '',
@@ -91,7 +92,7 @@
 	width="{(height * cols) / 7}em"
 	role="img"
 	aria-label={text}
-	class="shrink-0 {TONE_TEXT[tone]} {className}"
+	class="shrink-0 {tone} {className}"
 	{...restProps}
 >
 	{#if glow}

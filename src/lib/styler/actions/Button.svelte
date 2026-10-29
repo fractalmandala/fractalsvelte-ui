@@ -1,14 +1,16 @@
+<!-- @component A button, or a link styled as one when given `href`. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes, HTMLAnchorAttributes } from 'svelte/elements';
-	import type { FsVariant, FsSize, FsShape, BtnType } from '../types';
+	import type { Variant, Size, Shape, Shadow } from '../types';
 	import Spinner from '../display/Spinner.svelte';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'type'> {
-		variant?: FsVariant;
-		size?: FsSize;
-		shape?: FsShape;
-		type?: BtnType;
+		variant?: Variant;
+		size?: Size;
+		shape?: Shape;
+		shadow?: Shadow;
 		loading?: boolean;
 		disabled?: boolean | null;
 		/** Renders an `a.btn` instead of a `<button>`. */
@@ -21,9 +23,9 @@
 
 	let {
 		variant = 'primary',
-		size = 'md',
-		shape = 'modern',
-		type = 'button',
+		size = 'h-bs',
+		shape = 'min',
+		shadow = 'shad-none',
 		loading = false,
 		disabled = false,
 		href,
@@ -53,10 +55,7 @@
 	<!-- An inert anchor drops its href: a.btn has no disabled state to lean on. -->
 	<a
 		href={inert ? undefined : href}
-		class="btn gap-xs {className}"
-		data-variant={variant}
-		data-size={size}
-		data-shape={shape}
+		class="row ycenter gap-sm el-shape el-size el-variant {variant} {size} {shape} {shadow} {className}"
 		aria-busy={loading || undefined}
 		aria-disabled={inert || undefined}
 		{...restProps as HTMLAnchorAttributes}
@@ -65,11 +64,7 @@
 	</a>
 {:else}
 	<button
-		{type}
-		class="gap-xs {className}"
-		data-variant={variant}
-		data-size={size}
-		data-shape={shape}
+		class="row ycenter gap-sm el-shape el-size el-variant {variant} {size} {shape} {shadow} {className}"
 		disabled={inert}
 		aria-busy={loading || undefined}
 		{...restProps}
@@ -77,3 +72,4 @@
 		{@render content()}
 	</button>
 {/if}
+

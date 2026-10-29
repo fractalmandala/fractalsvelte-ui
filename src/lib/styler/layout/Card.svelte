@@ -1,19 +1,21 @@
+<!-- @component A content card with optional media, title, description, header and footer. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsCardVariant, FsCardShape, FsPad, FsShadow } from '../types';
-	import { SHADOW } from '../classes';
+	import type { Size, Surface, Border, Shape, Pad, Shadow } from '../types';
 
-	export type CardVariant = FsCardVariant;
-	export type CardElevation = 'none' | FsShadow;
+	export type CardVariant = Surface;
+	export type CardElevation = Shadow;
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		variant?: FsCardVariant;
-		elevation?: CardElevation;
-		/** .card[data-pad] */
-		padding?: FsPad;
-		/** .card[data-shape] */
-		shape?: FsCardShape;
+		size?: Size;
+		surface?: Surface;
+		border?: Border;
+		shadow?: Shadow;
+		padding?: Pad;
+		/** Card corners; cards take no pill shape. */
+		shape?: Exclude<Shape, 'round'>;
 		title?: string;
 		description?: string;
 		class?: string;
@@ -25,9 +27,11 @@
 	}
 
 	let {
-		variant = 'primary',
-		elevation = 'none',
-		padding = 'lg',
+		size = 'h-md',
+		surface = 'bg-panel',
+		border = 'border',
+		shadow = 'shad-none',
+		padding = 'pad-lg',
 		shape = 'curved',
 		title,
 		description,
@@ -45,10 +49,7 @@
 
 <!-- .card pushes a <footer> child to the bottom on its own (margin-top: auto). -->
 <div
-	class="card box gap-md {elevation === 'none' ? '' : SHADOW[elevation]} {className}"
-	data-variant={variant}
-	data-pad={padding}
-	data-shape={shape}
+	class="card card-sized box gap-md el-shape {size} {shape} {padding} {surface} {border} {shadow} {className}"
 	{...restProps}
 >
 	{#if media}<div class="box radius-sm scroll-x">{@render media()}</div>{/if}
@@ -65,6 +66,6 @@
 			</div>
 		{/if}
 	{/if}
-	{#if children}<div class="box gap-sm text-body-sm">{@render children()}</div>{/if}
+	{#if children}<div class="box gap-sm">{@render children()}</div>{/if}
 	{#if footer}<footer class="row ycenter gap-sm pt-sm bt-sub">{@render footer()}</footer>{/if}
 </div>

@@ -1,3 +1,5 @@
+<!-- @component A vertical navigation list with groups, badges and an icon-only mode. -->
+
 <script lang="ts" module>
 	import type { Snippet } from 'svelte';
 

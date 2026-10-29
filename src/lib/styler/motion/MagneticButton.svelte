@@ -1,14 +1,16 @@
+<!-- @component A button that is pulled toward the nearby pointer. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import type { FsVariant, FsSize, FsShape } from '../types';
+	import type { Variant, Size, Shape } from '../types';
 
 	interface Props extends HTMLButtonAttributes {
 		/** Pointer distance (px) that pulls the button */
 		range?: number;
-		variant?: FsVariant;
-		size?: FsSize;
-		shape?: FsShape;
+		variant?: Variant;
+		size?: Size;
+		shape?: Shape;
 		class?: string;
 		children?: Snippet;
 	}
@@ -16,7 +18,7 @@
 	let {
 		range = 100,
 		variant = 'primary',
-		size = 'lg',
+		size = 'h-lg',
 		shape = 'modern',
 		class: className = '',
 		children,
@@ -54,10 +56,7 @@
 <button
 	bind:this={btnEl}
 	type="button"
-	class="{X_CLASSES[dx]} {Y_CLASSES[dy]} {className}"
-	data-variant={variant}
-	data-size={size}
-	data-shape={shape}
+	class="{X_CLASSES[dx]} {Y_CLASSES[dy]} {className} el-variant el-size el-shape {variant} {size} {shape}"
 	{...restProps}
 >
 	{#if children}{@render children()}{:else}Magnetic button{/if}

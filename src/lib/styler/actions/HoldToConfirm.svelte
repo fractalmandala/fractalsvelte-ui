@@ -1,16 +1,19 @@
+<!-- @component A button that fires `onconfirm` only after being held for `holdTime` ms. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luCheck } from 'fractalicons/lucide';
-	import type { FsVariant, FsSize, FsShape } from '../types';
+	import { Icon } from '@fractaldesign/icons';
+	import { luCheck } from '@fractaldesign/icons/lucide';
+	import type { Variant, Size, Shape, Message } from '../types';
 
-	interface Props extends HTMLButtonAttributes {
+	interface Props extends Omit<HTMLButtonAttributes, 'type'> {
 		/** Milliseconds the pointer (or Space/Enter) must be held. */
 		holdTime?: number;
-		variant?: FsVariant;
-		size?: FsSize;
-		shape?: FsShape;
+		/** `danger` (a Message) paints it as a destructive action. */
+		variant?: Variant | Extract<Message, 'danger'>;
+		size?: Size;
+		shape?: Shape;
 		disabled?: boolean;
 		confirmedLabel?: string;
 		class?: string;
@@ -20,8 +23,8 @@
 
 	let {
 		holdTime = 1200,
-		variant = 'destructive',
-		size = 'md',
+		variant = 'danger',
+		size = 'h-md',
 		shape = 'modern',
 		disabled = false,
 		confirmedLabel = 'Confirmed',
@@ -84,10 +87,7 @@
 
 <button
 	type="button"
-	class="gap-xs {className}"
-	data-variant={variant}
-	data-size={size}
-	data-shape={shape}
+	class="row ycenter gap-xs el-shape el-size el-variant {variant} {size} {shape} {className}"
 	{disabled}
 	aria-live="polite"
 	onpointerdown={startHold}
@@ -118,7 +118,7 @@
 			/>
 		</svg>
 		{#if holding}
-			<span>Holding… {Math.round(progress * 100)}%</span>
+			<span class="tabular-nums">Holding… {String(Math.round(progress * 100)).padStart(3, '\u2007')}%</span>
 		{:else if children}
 			{@render children()}
 		{:else}

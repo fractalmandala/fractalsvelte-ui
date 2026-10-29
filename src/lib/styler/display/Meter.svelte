@@ -1,6 +1,8 @@
+<!-- @component A gauge bar for a value in a known range, coloured by low, high and optimum zones. -->
+
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsSize, FsTone } from '../types';
+	import type { Size, MessageText } from '../types';
 	import Bar, { type BarMarker } from './Bar.svelte';
 
 	export type MeterZone = 'optimum' | 'sub-optimum' | 'critical';
@@ -14,7 +16,10 @@
 		optimum?: number;
 		label?: string;
 		showValue?: boolean;
-		size?: FsSize;
+		size?: Size;
+		/** Bar colour. Unset, it follows the zone: text-success, text-warning or text-danger. */
+		tone?: MessageText;
+		direction?: 'horizontal' | 'vertical';
 		formatValue?: (val: number) => string;
 		class?: string;
 	}
@@ -28,7 +33,9 @@
 		optimum,
 		label,
 		showValue = false,
-		size = 'md',
+		size = 'h-md',
+		tone,
+		direction = 'horizontal',
 		formatValue,
 		class: className = '',
 		...restProps
@@ -55,10 +62,10 @@
 		return value >= effLow && value <= effHigh ? 'optimum' : 'sub-optimum';
 	});
 
-	const ZONE_TONE: Record<MeterZone, FsTone> = {
-		optimum: 'success',
-		'sub-optimum': 'warning',
-		critical: 'danger'
+	const ZONE_TONE: Record<MeterZone, MessageText> = {
+		optimum: 'text-success',
+		'sub-optimum': 'text-warning',
+		critical: 'text-danger'
 	};
 
 	const markers = $derived<BarMarker[]>([
@@ -69,11 +76,11 @@
 	const displayValue = $derived(formatValue ? formatValue(value) : `${Math.round(value)} / ${max}`);
 </script>
 
-<div class="box gap-xs {className}" {...restProps}>
+<div class="box gap-xs {direction === 'vertical' ? 'xcenter' : ''} {className}" {...restProps}>
 	{#if label || showValue}
-		<div class="row ycenter xbetween gap-sm">
+		<div class="{direction === 'vertical' ? 'box xcenter' : 'row ycenter xbetween'} gap-sm">
 			{#if label}<span class="text-sm weight-500 text-secondary">{label}</span>{/if}
-			{#if showValue}<span class="text-sm mono text-muted">{displayValue}</span>{/if}
+			{#if showValue}<span class="text-sm tabular-nums text-muted">{displayValue}</span>{/if}
 		</div>
 	{/if}
 	<div
@@ -83,8 +90,8 @@
 		aria-valuemax={max}
 		aria-label={label}
 		aria-valuetext="{displayValue} ({zone})"
-		class="wfull"
+		class={direction === 'vertical' ? 'row xcenter' : 'wfull'}
 	>
-		<Bar {fraction} tone={ZONE_TONE[zone]} {size} {markers} />
+		<Bar {fraction} tone={tone ?? ZONE_TONE[zone]} {size} {markers} {direction} />
 	</div>
 </div>

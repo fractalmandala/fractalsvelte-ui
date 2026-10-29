@@ -1,63 +1,60 @@
+<!-- @component A square button holding only an icon, named for screen readers by `label`. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import type { FsVariant, FsSize, FsShape, BtnType } from '../types';
+	import type { HTMLButtonAttributes, HTMLAnchorAttributes } from 'svelte/elements';
+	import type { Icon, Size, Shape, Shadow } from '../types';
 	import Spinner from '../display/Spinner.svelte';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'type'> {
 		/** Accessible name; also shown as the native tooltip. */
 		label: string;
 		/** `iconbox` is fractalstyler's bare icon button (transparent, hover fill). */
-		variant?: FsVariant | 'iconbox';
-		size?: FsSize;
-		shape?: FsShape;
-		type?: BtnType;
+		icon?: Icon;
+		size?: Size;
+		shape?: Shape;
+		shadow?: Shadow;
 		loading?: boolean;
 		disabled?: boolean | null;
 		class?: string;
 		children?: Snippet;
+		href?: string;
 	}
 
 	let {
 		label,
-		variant = 'secondary',
-		size = 'md',
+		icon = 'primary',
+		size = 'h-md',
 		shape = 'modern',
-		type = 'button',
+		shadow = 'shad-none',
 		loading = false,
 		disabled = false,
+		href,
 		class: className = '',
 		children,
 		...restProps
 	}: Props = $props();
-
-	// iconbox carries its own sizing ladder (sm, icon-md, icon-bs, icon-lg).
-	const ICONBOX_SIZE: Record<FsSize, string> = {
-		sm: 'sm',
-		md: 'icon-md',
-		bs: 'icon-bs',
-		lg: 'icon-lg'
-	};
-	const isIconbox = $derived(variant === 'iconbox');
+	const inert = $derived(Boolean(disabled || loading));
 </script>
 
-<!-- frame-1-1 squares the control to its data-size height; px-xs trims the
-     button's inline padding so the glyph gets the room. -->
+{#if href}
+<a href={inert ? undefined : href}
+	class="btn-icon el-size el-shape {icon} {size} {shape} {shadow} {className}"
+	aria-busy={loading || undefined}
+	aria-disabled={inert || undefined}
+	{...restProps as HTMLAnchorAttributes}
+>
+	{@render children?.()}
+</a>
+{:else}
 <button
-	{type}
-	class="{isIconbox ? 'px-xs' : 'frame-1-1 px-xs'} {className}"
-	data-variant={variant}
-	data-size={isIconbox ? ICONBOX_SIZE[size] : size}
-	data-shape={shape}
+	class="btn-icon el-size el-shape {icon} {size} {shape} {shadow} {className}"
 	aria-label={label}
 	title={label}
 	disabled={Boolean(disabled || loading)}
 	aria-busy={loading || undefined}
 	{...restProps}
 >
-	{#if loading}
-		<Spinner />
-	{:else}
-		{@render children?.()}
-	{/if}
+	{@render children?.()}
 </button>
+{/if}

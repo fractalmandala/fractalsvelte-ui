@@ -1,12 +1,13 @@
+<!-- @component Wraps content and throws sparks from each click. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsTone } from '../types';
-	import { TONE_TEXT } from '../classes';
+	import type { MessageText } from '../types';
 	import { inkOf } from './ink';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		tone?: FsTone;
+		tone?: MessageText;
 		sparkCount?: number;
 		/** Travel distance in px */
 		sparkRadius?: number;
@@ -19,7 +20,7 @@
 	}
 
 	let {
-		tone = 'theme',
+		tone,
 		sparkCount = 8,
 		sparkRadius = 18,
 		sparkSize = 10,
@@ -79,5 +80,5 @@
      position covers a padding-free .relative host. -->
 <div class="relative box {className}" role="presentation" {onclick} {...restProps}>
 	<div class="box">{@render children?.()}</div>
-	<canvas bind:this={canvasEl} class="absolute full {TONE_TEXT[tone]}" aria-hidden="true"></canvas>
+	<canvas bind:this={canvasEl} class="absolute full {tone ?? 'text-theme'}" aria-hidden="true"></canvas>
 </div>

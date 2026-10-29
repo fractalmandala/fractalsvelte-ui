@@ -1,11 +1,13 @@
+<!-- @component Wraps content and shows a ripple from each click. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsTone } from '../types';
+	import type { MessageText } from '../types';
 	import Ripples, { makeRipple, type Ripple } from './Ripples.svelte';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		tone?: FsTone | 'white';
+		tone?: MessageText | 'text-white';
 		/** ms */
 		duration?: number;
 		/** Ripple from the centre instead of the pointer */
@@ -15,7 +17,7 @@
 	}
 
 	let {
-		tone = 'theme',
+		tone,
 		duration = 600,
 		center = false,
 		class: className = '',

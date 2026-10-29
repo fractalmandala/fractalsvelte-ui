@@ -1,3 +1,5 @@
+<!-- @component A card that tilts in 3D toward the pointer, with optional glare. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
@@ -33,5 +35,5 @@
 	{...restProps}
 >
 	<div class="box">{@render children?.()}</div>
-	{#if glare}<PointerGlow {x} {y} visible={hovered} tone="white" radius={220} intensity={0.35} />{/if}
+	{#if glare}<PointerGlow {x} {y} visible={hovered} tone="text-white" radius={220} intensity={0.35} />{/if}
 </div>

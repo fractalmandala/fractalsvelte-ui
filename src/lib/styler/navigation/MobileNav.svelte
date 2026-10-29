@@ -1,7 +1,9 @@
+<!-- @component A slide-in navigation panel for small screens. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { Icon } from 'fractalicons';
-	import { luX } from 'fractalicons/lucide';
+	import { Icon } from '@fractaldesign/icons';
+	import { luX } from '@fractaldesign/icons/lucide';
 	import Modal, { type ModalPlacement } from '../overlays/Modal.svelte';
 
 	export type MobileNavPosition = 'left' | 'right' | 'top' | 'bottom';

@@ -1,11 +1,13 @@
+<!-- @component A searchable command menu opened with ⌘ / Ctrl and a key. -->
+
 <script lang="ts" module>
-	import type { Snippet } from 'svelte';
+	import type { IconData } from '@fractaldesign/icons';
 
 	export interface CommandItem {
 		id: string;
 		label: string;
 		description?: string;
-		icon?: Snippet;
+		icon?: IconData;
 		shortcut?: string;
 		onselect?: () => void;
 	}
@@ -17,9 +19,12 @@
 </script>
 
 <script lang="ts">
-	import { Icon } from 'fractalicons';
-	import { luSearch } from 'fractalicons/lucide';
+	import { Icon } from '@fractaldesign/icons';
+	import { luSearch } from '@fractaldesign/icons/lucide';
+	import type { Snippet } from 'svelte';
 	import Modal from './Modal.svelte';
+	import Kbd from '../display/Kbd.svelte';
+	import type { Surface, Border, Shadow, Shape } from '../types';
 
 	interface Props {
 		open?: boolean;
@@ -28,6 +33,10 @@
 		placeholder?: string;
 		emptyMessage?: string;
 		groups?: CommandGroup[];
+		surface?: Surface;
+		border?: Border;
+		shadow?: Shadow;
+		shape?: Shape;
 		class?: string;
 		onselect?: (itemId: string) => void;
 		trigger?: Snippet<[{ open: () => void }]>;
@@ -40,6 +49,10 @@
 		placeholder = 'Type a command or search…',
 		emptyMessage = 'No results found.',
 		groups = [],
+		surface = 'bg-surface',
+		border = 'border',
+		shadow = 'shad-2xl',
+		shape = 'curved',
 		class: className = '',
 		onselect,
 		trigger,
@@ -105,15 +118,14 @@
 
 {@render trigger?.({ open: () => (open = true) })}
 
-<Modal bind:open placement="top" aria-label="Command palette" panelClass="prose wfull {className}">
+<Modal bind:open placement="top" aria-label="Command palette" {surface} {border} {shadow} {shape} panelClass="prose wfull {className}">
 	<div class="row ycenter gap-sm px-md bb">
 		<Icon icon={luSearch} class="text-muted shrink-0" />
 		<input
 			bind:value={query}
 			type="text"
-			class="input grow min0"
-			data-variant="ghost"
-			data-size="lg"
+			class="input grow min0 h-lg border-none text-sm"
+			style:background="transparent"
 			{placeholder}
 			role="combobox"
 			aria-expanded="true"
@@ -122,7 +134,7 @@
 			aria-autocomplete="list"
 			{onkeydown}
 		/>
-		<kbd class="chip mono bg-sunken text-muted border shrink-0">ESC</kbd>
+		<Kbd static>ESC</Kbd>
 	</div>
 	<div id="{uid}-list" role="listbox" class="box gap-sm pad-xs scroll-y">
 		{#if children}
@@ -145,12 +157,12 @@
 							onclick={() => choose(item)}
 							onpointerenter={() => (active = flat.indexOf(item))}
 						>
-							{#if item.icon}<span class="row ycenter shrink-0 text-muted">{@render item.icon()}</span>{/if}
+							{#if item.icon}<span class="row ycenter shrink-0 text-muted"><Icon icon={item.icon} /></span>{/if}
 							<div class="box grow min0">
 								<span class="text-sm weight-500 truncate">{item.label}</span>
 								{#if item.description}<span class="text-body-sm text-muted truncate">{item.description}</span>{/if}
 							</div>
-							{#if item.shortcut}<kbd class="chip mono bg-sunken text-muted shrink-0">{item.shortcut}</kbd>{/if}
+							{#if item.shortcut}<Kbd static>{item.shortcut}</Kbd>{/if}
 						</div>
 					{/each}
 				</div>

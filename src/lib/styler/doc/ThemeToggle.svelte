@@ -1,32 +1,26 @@
+<!-- @component A button that switches between light and dark mode. -->
+
 <script lang="ts">
-	import { Icon } from 'fractalicons';
-	import { luSun, luMoon } from 'fractalicons/lucide';
-	import type { FsSize, FsVariant } from '../types';
+	import { Icon } from '@fractaldesign/icons';
+	import { luSun, luMoon } from '@fractaldesign/icons/lucide';
+	import type { Icon as IconVariant, Size } from '../types';
 	import { modeState } from '../mode.svelte';
+	import IconButton from '../actions/IconButton.svelte';
 
 	interface Props {
-		variant?: FsVariant | 'iconbox';
-		size?: FsSize;
+		variant?: IconVariant;
+		size?: Size;
 		class?: string;
 	}
 
-	let { variant = 'ghost', size = 'lg', class: className = '' }: Props = $props();
+	let { variant = 'ghost', size = 'h-lg', class: className = '' }: Props = $props();
 
 	$effect(() => modeState.init());
+
+	const label = $derived(`Switch to ${modeState.current === 'dark' ? 'light' : 'dark'} mode`);
 </script>
 
-<!-- Flips data-mode on <html>, which is all fractalstyler needs to swap token
-     sets. The original's theme-style pills are gone: fractalstyler compiles a
-     single palette, with no per-style hooks to switch. -->
-<button
-	type="button"
-	class="frame-1-1 px-xs {className}"
-	data-variant={variant}
-	data-size={size}
-	data-shape="modern"
-	aria-label="Switch to {modeState.current === 'dark' ? 'light' : 'dark'} mode"
-	title="Switch to {modeState.current === 'dark' ? 'light' : 'dark'} mode"
-	onclick={() => modeState.toggle()}
->
+<!-- Flips data-mode on <html>, which is all fractalstyler needs to swap token sets. -->
+<IconButton {label} icon={variant} {size} shape="modern" class={className} onclick={() => modeState.toggle()}>
 	<Icon icon={modeState.current === 'dark' ? luSun : luMoon} />
-</button>
+</IconButton>

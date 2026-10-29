@@ -35,6 +35,7 @@
 		"docs:extract": "node scripts/extract-docs.mjs",
 		"docs:extract:styler": "node scripts/extract-docs.mjs --styler",
 		"docs:check": "node scripts/docs-check.mjs",
+		"docs:components": "node scripts/component-docs.mjs",
 		"styler:check": "node scripts/styler-check.mjs"
 	},
 	"files": [
@@ -57,10 +58,6 @@
 			"types": "./dist/styler/index.d.ts",
 			"svelte": "./dist/styler/index.js"
 		},
-		"./components/*": {
-			"types": "./dist/components/*.d.ts",
-			"svelte": "./dist/components/*"
-		},
 		"./tokens.css": "./dist/styles/tokens.css",
 		"./types": {
 			"types": "./dist/types.d.ts",
@@ -77,14 +74,9 @@
 		"./package.json": "./package.json"
 	},
 	"peerDependencies": {
-		"svelte": "^5.0.0",
-		"@fractaldesign/fractalstyler": "^1.2.0",
-		"fractalicons": "^0.4.0"
+		"svelte": "^5.0.0"
 	},
 	"peerDependenciesMeta": {
-		"@fractaldesign/fractalstyler": {
-			"optional": true
-		},
 		"fractalicons": {
 			"optional": true
 		}
@@ -98,15 +90,17 @@
 		]
 	},
 	"devDependencies": {
-		"@fractaldesign/fractalstyler": "^1.2.0",
+		"@fractaldesign/fractalstyler": "file:/Users/amrit/fractaldesign/packages/fractalstyler",
+		"@fractaldesign/icons": "^0.1.0",
 		"@sveltejs/adapter-auto": "^8.0.0",
 		"@sveltejs/kit": "^3.0.0",
 		"@sveltejs/package": "^2.5.8",
 		"@sveltejs/vite-plugin-svelte": "^7.2.0",
 		"@types/node": "^24.0.0",
-		"fractalicons": "^0.4.0",
+		"mdsvex": "^0.12.8",
 		"publint": "^0.3.21",
 		"sass": "^1.105.1",
+		"sv-agentation": "^0.4.0",
 		"svelte": "^5.57.1",
 		"svelte-check": "^4.6.0",
 		"typescript": "^6.0.3",

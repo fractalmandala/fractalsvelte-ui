@@ -1,3 +1,5 @@
+<!-- @component The native `<dialog>` shell shared by Dialog, AlertDialog, Drawer, MobileNav and CommandPalette. -->
+
 <script lang="ts" module>
 	export type ModalPlacement = 'center' | 'top' | 'left' | 'right' | 'top-edge' | 'bottom-edge';
 </script>
@@ -8,18 +10,16 @@
 	 * MobileNav and CommandPalette.
 	 *
 	 * Browsers centre a modal dialog with `margin: auto`, but fractalstyler's
-	 * base reset (`* { margin: 0 }`) removes that, and the system has no
-	 * margin-auto or inset utilities to put it back. So the <dialog> itself is
-	 * a transparent, viewport-sized layer (.card[data-variant="ghost"] is the
-	 * one transparent fill fractalstyler has; .full sizes it; .mt-bs/.ml-bs
-	 * split the browser's 2em + 6px max-size allowance evenly), and an inner
-	 * flex row places the visible panel — centred, or against an edge.
+	 * base reset (`* { margin: 0 }`) removes that. So the <dialog> itself is a
+	 * transparent, viewport-sized layer and an inner flex row places the
+	 * visible panel — centred, or against an edge.
 	 *
 	 * The platform still provides focus trapping, inertness of the page,
 	 * ::backdrop, Escape (the cancel event) and focus restoration on close.
 	 */
 	import type { Snippet } from 'svelte';
 	import type { HTMLDialogAttributes } from 'svelte/elements';
+	import type { Surface, Border, Shadow, Shape } from '../types';
 
 	interface Props extends Omit<HTMLDialogAttributes, 'open' | 'children'> {
 		open?: boolean;
@@ -31,8 +31,16 @@
 		/** Called when Escape is pressed but closeOnEscape is false */
 		onescape?: () => void;
 		onclose?: () => void;
+		/** Panel look, as on Card */
+		surface?: Surface;
+		border?: Border;
+		shadow?: Shadow;
+		shape?: Shape;
 		/** Classes for the visible panel */
 		panelClass?: string;
+		/** Panel width (CSS length); never below min(28em, 100%) unless set smaller here */
+		width?: string;
+		minWidth?: string;
 		children?: Snippet;
 	}
 
@@ -44,6 +52,13 @@
 		onescape,
 		onclose,
 		panelClass = '',
+		width,
+		minWidth = 'min(28em, 100%)',
+		surface = 'bg-surface',
+		border = 'border',
+		shadow = 'shad-2xl',
+		shape = 'curved',
+
 		children,
 		...restProps
 	}: Props = $props();
@@ -71,8 +86,8 @@
 
 <dialog
 	bind:this={dialogEl}
-	class="card full mt-bs ml-bs pad-xs"
-	data-variant="ghost"
+	class="full mt-bs ml-bs pad-xs border-none"
+	style:background="transparent"
 	oncancel={(e) => {
 		if (!closeOnEscape) {
 			e.preventDefault();
@@ -91,7 +106,7 @@
 	{...restProps}
 >
 	<div class={ALIGN_CLASSES[placement]}>
-		<div bind:this={panelEl} class="box bg-surface text-primary border shadow-2xl radius-md {panelClass}">
+		<div bind:this={panelEl} class="box text-primary el-shape {surface} {border} {shadow} {shape} {panelClass}" style:width={width} style:min-width={minWidth} style:max-width="100%">
 			{@render children?.()}
 		</div>
 	</div>

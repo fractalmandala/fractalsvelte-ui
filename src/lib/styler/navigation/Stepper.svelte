@@ -1,3 +1,5 @@
+<!-- @component A step-by-step progress indicator for multi-step flows. -->
+
 <script lang="ts" module>
 	export interface StepItem {
 		label: string;
@@ -10,8 +12,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luCheck, luX } from 'fractalicons/lucide';
+	import { Icon } from '@fractaldesign/icons';
+	import { luCheck, luX } from '@fractaldesign/icons/lucide';
 	import type { Orientation } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {

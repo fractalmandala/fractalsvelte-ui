@@ -1,7 +1,9 @@
+<!-- @component A panel that slides in from a screen edge. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { Icon } from 'fractalicons';
-	import { luX } from 'fractalicons/lucide';
+	import CloseButton from '../actions/CloseButton.svelte';
+	import type { Surface, Border, Shadow, Shape } from '../types';
 	import Modal, { type ModalPlacement } from './Modal.svelte';
 
 	export type DrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
@@ -14,6 +16,10 @@
 		closeOnBackdrop?: boolean;
 		closeOnEscape?: boolean;
 		showCloseButton?: boolean;
+		surface?: Surface;
+		border?: Border;
+		shadow?: Shadow;
+		shape?: Shape;
 		class?: string;
 		onclose?: () => void;
 		trigger?: Snippet<[{ open: () => void }]>;
@@ -30,6 +36,10 @@
 		closeOnBackdrop = true,
 		closeOnEscape = true,
 		showCloseButton = true,
+		surface = 'bg-surface',
+		border = 'border',
+		shadow = 'shad-2xl',
+		shape = 'curved',
 		class: className = '',
 		onclose,
 		trigger,
@@ -58,8 +68,14 @@
 	{closeOnBackdrop}
 	{closeOnEscape}
 	{onclose}
+	{surface}
+	{border}
+	{shadow}
+	{shape}
 	aria-labelledby={title ? `${uid}-title` : undefined}
 	aria-describedby={description ? `${uid}-desc` : undefined}
+	width={placement === 'left' || placement === 'right' ? '24em' : undefined}
+	minWidth={placement === 'left' || placement === 'right' ? 'min(20em, 100%)' : undefined}
 	panelClass={className}
 >
 	{#if hasHeader || showCloseButton}
@@ -73,9 +89,7 @@
 				{/if}
 			</div>
 			{#if showCloseButton}
-				<button type="button" data-variant="iconbox" data-size="icon-bs" class="px-xs text-muted shrink-0" aria-label="Close drawer" onclick={() => (open = false)}>
-					<Icon icon={luX} />
-				</button>
+				<CloseButton label="Close drawer" size="h-sm" class="shrink-0" onclick={() => (open = false)} />
 			{/if}
 		</header>
 	{/if}

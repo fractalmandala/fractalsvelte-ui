@@ -1,17 +1,29 @@
+<!-- @component A single notification with title, description, tone, action and auto-dismiss. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luInfo, luCircleCheck, luTriangleAlert, luCircleX, luX } from 'fractalicons/lucide';
-	import type { Intent } from '../types';
-	import { TONE_TEXT } from '../classes';
+	import { Icon, type IconData } from '@fractaldesign/icons';
+	import { luInfo, luCircleCheck, luTriangleAlert, luCircleX } from '@fractaldesign/icons/lucide';
+	import type { Message, MessageText, Surface, Border, Shadow, Shape, Pad } from '../types';
 	import Bar from '../display/Bar.svelte';
+	import Card from '../layout/Card.svelte';
+	import CloseButton from '../actions/CloseButton.svelte';
 
-	interface Props extends HTMLAttributes<HTMLDivElement> {
+	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
 		id?: string;
 		title?: string;
-		message?: string;
-		intent?: Intent;
+		description?: string;
+		/** Tone of the icon and progress bar */
+		messageText?: MessageText;
+		/** An icon from @fractaldesign/icons; defaults to one per tone */
+		icon?: IconData;
+		surface?: Surface;
+		border?: Border;
+		shadow?: Shadow;
+		/** Card corners; cards take no pill shape. */
+		shape?: Exclude<Shape, 'round'>;
+		padding?: Pad;
 		/** ms until auto-dismiss; 0 keeps it open */
 		duration?: number;
 		dismissible?: boolean;
@@ -24,8 +36,14 @@
 	let {
 		id,
 		title,
-		message,
-		intent = 'info',
+		description,
+		messageText = 'text-info',
+		icon,
+		surface = 'bg-panel',
+		border = 'border',
+		shadow = 'shad-lg',
+		shape = 'curved',
+		padding = 'pad-md',
 		duration = 4000,
 		dismissible = true,
 		class: className = '',
@@ -35,7 +53,8 @@
 		...restProps
 	}: Props = $props();
 
-	const ICONS = { info: luInfo, success: luCircleCheck, warning: luTriangleAlert, danger: luCircleX };
+	const ICONS: Record<Message, IconData> = { info: luInfo, success: luCircleCheck, warning: luTriangleAlert, danger: luCircleX };
+	const tone = $derived(messageText.replace('text-', '') as Message);
 	let visible = $state(true);
 	let remaining = $state(1);
 	let paused = $state(false);
@@ -61,32 +80,32 @@
 </script>
 
 {#if visible}
-	<div
+	<Card
 		{id}
-		class="card box gap-sm shadow-lg {className}"
-		data-variant="primary"
-		data-shape="curved"
-		data-pad="md"
-		role={intent === 'danger' ? 'alert' : 'status'}
-		aria-live={intent === 'danger' ? 'assertive' : 'polite'}
+		{surface}
+		{border}
+		{shadow}
+		{shape}
+		{padding}
+		class={className}
+		role={tone === 'danger' ? 'alert' : 'status'}
+		aria-live={tone === 'danger' ? 'assertive' : 'polite'}
 		onpointerenter={() => (paused = true)}
 		onpointerleave={() => (paused = false)}
 		{...restProps}
 	>
 		<div class="row ytop gap-sm">
-			<span class="row ycenter shrink-0 text-lg {TONE_TEXT[intent]}" aria-hidden="true"><Icon icon={ICONS[intent]} /></span>
+			<span class="row ycenter shrink-0 text-lg {messageText}" aria-hidden="true"><Icon icon={icon ?? ICONS[tone]} /></span>
 			<div class="box gap-xs grow min0">
 				{#if title}<span class="text-sm weight-600">{title}</span>{/if}
-				{#if message}<p class="text-body-sm text-secondary">{message}</p>{/if}
+				{#if description}<p class="text-body-sm text-secondary">{description}</p>{/if}
 				{@render children?.()}
 			</div>
 			{#if action}<div class="row ycenter shrink-0">{@render action()}</div>{/if}
 			{#if dismissible}
-				<button type="button" data-variant="iconbox" class="px-xs text-muted shrink-0" aria-label="Close notification" onclick={dismiss}>
-					<Icon icon={luX} />
-				</button>
+				<CloseButton label="Close notification" size="h-sm" class="shrink-0" onclick={dismiss} />
 			{/if}
 		</div>
-		{#if duration > 0}<Bar fraction={remaining} tone={intent} size="sm" />{/if}
-	</div>
+		{#if duration > 0}<Bar fraction={remaining} tone={messageText} size="h-sm" />{/if}
+	</Card>
 {/if}

@@ -1,0 +1,1107 @@
+import { existsSync, mkdirSync, readFileSync, realpathSync, rmSync, symlinkSync } from 'node:fs';
+import { mkdtemp, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { sveltekit } from '@sveltejs/kit/vite';
+import { BuildEnvironment, normalizePath, resolveConfig, searchForWorkspaceRoot } from 'vite';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+import * as api from './index.js';
+import { self } from './index.js';
+import { extendFsAllow, libDir, resolveOptions } from './options.js';
+import { findPackage, loadTailwind } from './tailwind-load.js';
+import { ENTRY, META, metaId } from './virtual.js';
+
+vi.mock('./tailwind-load.js', async (importOriginal) => {
+  const original = await importOriginal<typeof import('./tailwind-load.js')>();
+  return { ...original, loadTailwind: vi.fn(original.loadTailwind) };
+});
+
+// hooks are called with hand-made fakes, so the plugin is typed loosely
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const plugin = self() as any;
+const source = '<Section title="Foo"><div>x</div></Section>';
+
+let dir: string;
+let selfFile: string;
+let docFile: string;
+
+/** every temp dir of this file lives here, so one afterAll removes them all */
+let tmpRoot: string;
+
+beforeAll(async () => {
+  tmpRoot = realpathSync(await mkdtemp(path.join(tmpdir(), 'self-')));
+  dir = tmpRoot;
+  selfFile = path.join(dir, 'Foo.self.svelte');
+  docFile = path.join(dir, 'Foo.self.md');
+  await writeFile(selfFile, source);
+  await writeFile(docFile, '# Foo');
+});
+
+afterAll(() => rmSync(tmpRoot, { recursive: true, force: true }));
+
+describe('hotUpdate', () => {
+  const metaMod = { id: '\0virtual:svelte-self/meta/app%2FA' };
+  const setup = (consumer: 'client' | 'server', metas: Map<string, unknown> = new Map([[metaMod.id, metaMod]])) => {
+    const ctx = {
+      environment: {
+        config: { consumer },
+        hot: { send: vi.fn() },
+        moduleGraph: {
+          idToModuleMap: metas,
+          invalidateModule: vi.fn()
+        }
+      }
+    };
+    const run = (type: string, file: string, modules: unknown[] = []) =>
+      plugin.hotUpdate.call(ctx, { type, file, modules, timestamp: 1 });
+    return { ctx, run };
+  };
+
+  it.each(['create', 'update', 'delete'])('invalidates the metadata on %s of an .md', (type) => {
+    const { ctx, run } = setup('client');
+    expect(run(type, docFile)).toEqual([]);
+    expect(ctx.environment.moduleGraph.invalidateModule.mock.calls[0][0]).toBe(metaMod);
+    expect(ctx.environment.hot.send).toHaveBeenCalledWith({ type: 'custom', event: 'self:reload' });
+    expect(ctx.environment.hot.send).not.toHaveBeenCalledWith({ type: 'full-reload' });
+  });
+
+  it('does not invalidate other modules of the graph', () => {
+    const other = { id: '/a/Button.svelte' };
+    const { ctx, run } = setup('client', new Map([[other.id, other]]));
+    expect(run('create', docFile)).toEqual([]);
+    expect(ctx.environment.moduleGraph.invalidateModule).not.toHaveBeenCalled();
+  });
+
+  it('reloads on catalog file update', () => {
+    const { ctx, run } = setup('client');
+    const mod = { id: selfFile };
+    expect(run('update', selfFile, [mod])).toEqual([]);
+    const invalidated = ctx.environment.moduleGraph.invalidateModule.mock.calls.map((c: unknown[]) => c[0]);
+    expect(invalidated).toEqual(expect.arrayContaining([mod, metaMod]));
+    expect(ctx.environment.hot.send).toHaveBeenCalledWith({ type: 'custom', event: 'self:reload' });
+  });
+
+  it('server environment invalidates without sending', () => {
+    const { ctx, run } = setup('server');
+    run('update', docFile);
+    expect(ctx.environment.moduleGraph.invalidateModule).toHaveBeenCalled();
+    expect(ctx.environment.hot.send).not.toHaveBeenCalled();
+  });
+
+  it('ignores unrelated files, including the old Document.md', () => {
+    const { ctx, run } = setup('client');
+    expect(run('update', path.join(dir, 'Button.svelte'))).toBeUndefined();
+    expect(run('update', path.join(dir, 'self', 'Document.md'))).toBeUndefined();
+    expect(ctx.environment.moduleGraph.invalidateModule).not.toHaveBeenCalled();
+    expect(ctx.environment.hot.send).not.toHaveBeenCalled();
+  });
+});
+
+// a temporary app: <tmp>/app/src/A.self.svelte, <tmp>/outside/B.self.svelte
+const makeApp = async () => {
+  const tmp = await mkdtemp(path.join(tmpRoot, 'app-'));
+  const root = normalizePath(path.join(tmp, 'app'));
+  const outside = normalizePath(path.join(tmp, 'outside'));
+  mkdirSync(path.join(root, 'src'), { recursive: true });
+  mkdirSync(outside);
+  await writeFile(path.join(tmp, 'pnpm-workspace.yaml'), '');
+  await writeFile(path.join(root, 'package.json'), JSON.stringify({ name: 'app' }));
+  await writeFile(path.join(root, 'src/A.self.svelte'), source);
+  await writeFile(path.join(outside, 'B.self.svelte'), source);
+  await writeFile(path.join(root, 'Wrapper.svelte'), '');
+  await writeFile(path.join(root, 'logo.png'), '');
+  return { tmp: normalizePath(tmp), root, outside };
+};
+
+// runs the hooks Vite calls before the server starts
+const boot = (root: string, options: Parameters<typeof self>[0] = {}, allow?: string[]) => {
+  const p = self(options) as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  const config: { root: string; server?: { fs?: { allow?: string[] } } } = {
+    root,
+    ...(allow && { server: { fs: { allow } } })
+  };
+  p.config.handler(config, { command: 'serve', mode: 'development' });
+  return { p, config };
+};
+
+// runs the config hook of `vite build` and returns what it adds
+const bootBuild = async (root: string, options: Parameters<typeof self>[0] = {}, user: object = {}) => {
+  const p = self(options) as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const config: any = { root, ...user };
+  const added = await p.config.handler(config, { command: 'build', mode: 'production' });
+  return { p, added, config };
+};
+
+const fakeServer = (root: string, base = '/', headers?: Record<string, string | string[]>) => ({
+  config: { root, base, logger: { info: vi.fn() }, server: { headers }, preview: { headers } },
+  middlewares: { use: vi.fn() },
+  watcher: { add: vi.fn() },
+  transformIndexHtml: vi.fn(async (_url: string, html: string) => html),
+  printUrls: vi.fn(),
+  resolvedUrls: null as null | { local: string[]; network: string[] }
+});
+
+const bundled = (file: string) => normalizePath(fileURLToPath(new URL(`../app/${file}`, import.meta.url)));
+
+describe('resolveOptions', () => {
+  it('fills in defaults', async () => {
+    const { root } = await makeApp();
+    expect(resolveOptions(root, {})).toEqual({
+      suffix: 'self',
+      wrapper: null,
+      logo: bundled('logo.svg'),
+      title: 'self',
+      locale: 'en',
+      theme: null,
+      build: false
+    });
+  });
+
+  it('resolves files from the root, and logo: false hides the logo', async () => {
+    const { root } = await makeApp();
+    expect(resolveOptions(root, { wrapper: 'Wrapper.svelte', logo: './logo.png' })).toMatchObject({
+      wrapper: `${root}/Wrapper.svelte`,
+      logo: `${root}/logo.png`
+    });
+    expect(resolveOptions(root, { logo: false }).logo).toBeNull();
+  });
+
+  it('rejects bad values', async () => {
+    const { root } = await makeApp();
+    // @ts-expect-error unknown locale
+    expect(() => resolveOptions(root, { locale: 'fr' })).toThrow(/locale "fr"/);
+    // @ts-expect-error unknown theme
+    expect(() => resolveOptions(root, { theme: 'blue' })).toThrow('unknown theme "blue" (use "light" or "dark")');
+    expect(() => resolveOptions(root, { wrapper: 'Nope.svelte' })).toThrow(`wrapper not found: ${root}/Nope.svelte`);
+    expect(() => resolveOptions(root, { logo: 'nope.svg' })).toThrow(`logo not found: ${root}/nope.svg`);
+    // directories are not files
+    expect(() => resolveOptions(root, { wrapper: '' })).toThrow(`wrapper not found: ${root}`);
+    expect(() => resolveOptions(root, { logo: 'src' })).toThrow(`logo not found: ${root}/src`);
+  });
+});
+
+describe('extendFsAllow', () => {
+  it('leaves allow alone when every dir is inside the root', async () => {
+    const { root } = await makeApp();
+    expect(extendFsAllow(root, [`${root}/src`], ['/x'])).toBeUndefined();
+  });
+
+  it('keeps an explicit allow list and adds the dirs outside the root', async () => {
+    const { tmp, root, outside } = await makeApp();
+    const ws = searchForWorkspaceRoot(root);
+    // an explicit list (SvelteKit's, or the user's) is kept as it is; the workspace root stands in only for Vite's default
+    expect(normalizePath(ws)).toBe(tmp);
+    expect(extendFsAllow(root, [`${root}/src`, outside], ['/x'])).toEqual(['/x', outside]);
+    expect(extendFsAllow(root, [outside], undefined)).toEqual([ws, outside]);
+  });
+
+  it('is applied in the config hook', async () => {
+    const { root, outside } = await makeApp();
+    const ws = searchForWorkspaceRoot(root);
+    // the library itself (src/lib here) is outside the temporary root
+    expect(boot(root).config.server?.fs?.allow).toEqual([ws, libDir]);
+    const { config } = boot(root, { groups: { a: 'src', b: '../outside' } }, ['/x']);
+    expect(config.server?.fs?.allow).toEqual(['/x', outside, libDir]);
+  });
+
+  it('adds the dir of a wrapper and the logo file outside the root', async () => {
+    const { root, outside } = await makeApp();
+    const assets = normalizePath(path.join(outside, 'assets'));
+    mkdirSync(assets);
+    await writeFile(path.join(outside, 'W.svelte'), '');
+    await writeFile(path.join(assets, 'logo.svg'), '');
+    const ws = searchForWorkspaceRoot(root);
+    const { config } = boot(root, { wrapper: '../outside/W.svelte', logo: '../outside/assets/logo.svg' });
+    expect(config.server?.fs?.allow).toEqual([ws, libDir, outside, `${assets}/logo.svg`]);
+    // inside the root, nothing is added for them
+    expect(boot(root, { wrapper: 'Wrapper.svelte', logo: 'logo.png' }).config.server?.fs?.allow).toEqual([ws, libDir]);
+  });
+
+  it('leaves allow alone when everything is inside the root', () => {
+    const repo = normalizePath(path.resolve(libDir, '../..'));
+    expect(boot(repo, { groups: { a: 'src' } }).config.server).toBeUndefined();
+  });
+});
+
+describe('virtual modules', () => {
+  it('resolves and loads the entry and the catalog', async () => {
+    const { root } = await makeApp();
+    const { p } = boot(root);
+    expect(p.resolveId('virtual:svelte-self/entry')).toBe('\0virtual:svelte-self/entry');
+    expect(p.resolveId('virtual:svelte-self/catalog')).toBe('\0virtual:svelte-self/catalog');
+    expect(p.resolveId('virtual:svelte-self/other')).toBeUndefined();
+    expect(p.load('\0virtual:svelte-self/catalog')).toContain(`import("${root}/src/A.self.svelte")`);
+    const entry = p.load('\0virtual:svelte-self/entry');
+    expect(entry).toContain(`import("${bundled('App.svelte')}")`);
+    expect(entry).toContain(`import logo from "${bundled('logo.svg')}?url"`);
+    expect(entry).toContain('searched: [{"group":"app","dirs":["src"]}]');
+  });
+
+  it('passes the searched dirs relative to the root', async () => {
+    const { tmp, root } = await makeApp();
+    const { p } = boot(root, { groups: { a: '.', b: ['src', '../outside'] } });
+    const entry = p.load('\0virtual:svelte-self/entry');
+    expect(entry).toContain('searched: [{"group":"a","dirs":["."]},{"group":"b","dirs":["src","../outside"]}]');
+    expect(entry).not.toContain(tmp);
+  });
+});
+
+describe('metadata modules', () => {
+  const meta = (path: string) => '\0' + metaId(path);
+
+  it('resolves the metadata of an entry and lists it in the catalog', async () => {
+    const { root } = await makeApp();
+    const { p } = boot(root);
+    expect(p.resolveId(metaId('app/A'))).toBe(meta('app/A'));
+    expect(p.load('\0virtual:svelte-self/catalog')).toContain(`import("${metaId('app/A')}")`);
+  });
+
+  it('serves the source of axe-core as a string', async () => {
+    const { root } = await makeApp();
+    const { p } = boot(root);
+    expect(p.resolveId('virtual:svelte-self/axe')).toBe('\0virtual:svelte-self/axe');
+    const code: string = p.load('\0virtual:svelte-self/axe');
+    expect(code.startsWith('export default "')).toBe(true);
+    expect(code).toContain('axe.run');
+    expect(code).not.toContain('axe.configure({ locale');
+    const ja: string = boot(root, { locale: 'ja' }).p.load('\0virtual:svelte-self/axe');
+    expect(ja).toContain('axe.configure({ locale');
+  });
+
+  it('exports the sections and no absolute path', async () => {
+    const { tmp, root } = await makeApp();
+    const { p } = boot(root);
+    const addWatchFile = vi.fn();
+    const code = p.load.call({ addWatchFile }, meta('app/A'));
+    expect(code).toContain('"title":"Foo"');
+    expect(code).toContain('"doc":null');
+    expect(code).not.toContain(tmp);
+    expect(addWatchFile).toHaveBeenCalledWith(`${root}/src/A.self.svelte`);
+  });
+
+  it('renders the .md next to the file and watches it', async () => {
+    const { root } = await makeApp();
+    await writeFile(path.join(root, 'src/A.self.md'), '# A');
+    const { p } = boot(root);
+    const addWatchFile = vi.fn();
+    expect(p.load.call({ addWatchFile }, meta('app/A'))).toContain('<h1>A</h1>');
+    expect(addWatchFile).toHaveBeenCalledWith(`${root}/src/A.self.md`);
+  });
+
+  it('reads the props of the component next to the file without making it an import of the metadata', async () => {
+    const { tmp, root } = await makeApp();
+    const { p } = boot(root);
+    expect(p.load.call({ addWatchFile: vi.fn() }, meta('app/A'))).toContain('"props":null,"propsType":null');
+    await writeFile(
+      path.join(root, 'src/A.svelte'),
+      '<script lang="ts">\n  let { a = 1 }: { a?: number } = $props();\n</script>'
+    );
+    const addWatchFile = vi.fn();
+    const code = p.load.call({ addWatchFile }, meta('app/A'));
+    expect(code).toContain('"props":[{"name":"a","type":"number","default":"1"');
+    expect(code).not.toContain(tmp);
+    expect(addWatchFile).not.toHaveBeenCalledWith(`${root}/src/A.svelte`);
+  });
+
+  it('reads B.<suffix>.md for a custom suffix', async () => {
+    const { root } = await makeApp();
+    await writeFile(path.join(root, 'src/B.catalog.svelte'), '<Section title="B"><p>b</p></Section>');
+    await writeFile(path.join(root, 'src/B.catalog.md'), '# B');
+    const { p } = boot(root, { suffix: 'catalog' });
+    const addWatchFile = vi.fn();
+    expect(p.load.call({ addWatchFile }, meta('app/B'))).toContain('<h1>B</h1>');
+    expect(addWatchFile).toHaveBeenCalledWith(`${root}/src/B.catalog.md`);
+  });
+
+  it('throws for an unknown ID', async () => {
+    const { root } = await makeApp();
+    const { p } = boot(root);
+    expect(() => p.load.call({ addWatchFile: vi.fn() }, meta('app/Nope'))).toThrow(/no catalog file/);
+  });
+
+  it.each(['My Button', '100%', 'theme.css', 'ボタン'])('finds the file %s', async (name) => {
+    const { root } = await makeApp();
+    await writeFile(path.join(root, `src/${name}.self.svelte`), '<Section title="B"><p>b</p></Section>');
+    const { p } = boot(root);
+    expect(p.load.call({ addWatchFile: vi.fn() }, meta(`app/${name}`))).toContain('"title":"B"');
+  });
+
+  it('rejects an ID that is not hex', async () => {
+    const { root } = await makeApp();
+    const { p } = boot(root);
+    expect(() => p.load.call({ addWatchFile: vi.fn() }, '\0' + META + 'zz')).toThrow(/no catalog file/);
+  });
+
+  it('finds a file created after the first load, without an HMR event', async () => {
+    const { root } = await makeApp();
+    const { p } = boot(root);
+    p.load.call({ addWatchFile: vi.fn() }, meta('app/A'));
+    await writeFile(path.join(root, 'src/C.self.svelte'), '<Section title="C"><p>c</p></Section>');
+    expect(p.load.call({ addWatchFile: vi.fn() }, meta('app/C'))).toContain('"title":"C"');
+  });
+
+  it('does not serve a file deleted with an HMR event', async () => {
+    const { root } = await makeApp();
+    const { p } = boot(root);
+    p.load.call({ addWatchFile: vi.fn() }, meta('app/A'));
+    rmSync(path.join(root, 'src/A.self.svelte'));
+    const ctx = {
+      environment: {
+        config: { consumer: 'client' },
+        hot: { send: vi.fn() },
+        moduleGraph: { getModuleById: vi.fn(), idToModuleMap: new Map(), invalidateModule: vi.fn() }
+      }
+    };
+    p.hotUpdate.call(ctx, { type: 'delete', file: `${root}/src/A.self.svelte`, modules: [], timestamp: 1 });
+    expect(() => p.load.call({ addWatchFile: vi.fn() }, meta('app/A'))).toThrow(/no catalog file/);
+  });
+});
+
+type Res = {
+  status?: string | number;
+  body?: string;
+  type?: string;
+  location?: string;
+  headers?: Record<string, unknown>;
+};
+const request = (mw: (...a: unknown[]) => void, url: string) =>
+  new Promise<Res>((resolve) => {
+    const out: Res = {};
+    const res = {
+      statusCode: 200,
+      setHeader: (k: string, v: string) => {
+        if (k.toLowerCase() === 'content-type') out.type = v;
+        else if (k.toLowerCase() === 'location') out.location = v;
+        else out.headers = { ...out.headers, [k.toLowerCase()]: v };
+      },
+      end(body?: string | Buffer) {
+        resolve({ ...out, ...(this.statusCode !== 200 && { status: this.statusCode }), body: body?.toString() });
+      }
+    };
+    mw({ url, method: 'GET' }, res, () => resolve({ status: 'next' }));
+  });
+
+describe('configureServer', () => {
+  it('serves the catalog as data at /__self/catalog.json', async () => {
+    const { tmp, root } = await makeApp();
+    await writeFile(path.join(root, 'src/A.self.md'), '# A\n\nAbout A.');
+    await writeFile(
+      path.join(root, 'src/A.svelte'),
+      '<script lang="ts">\n  let { a = 1 }: { a?: number } = $props();\n</script>'
+    );
+    await writeFile(path.join(root, 'src/Broken.self.svelte'), '<Section><p>x</p></Section>');
+    const { p } = boot(root, { title: 'My UI' });
+    const server = fakeServer(root);
+    p.configureServer(server);
+    const res = await request(server.middlewares.use.mock.calls[0][0], '/__self/catalog.json');
+    expect(res.type).toBe('application/json');
+    expect(res.body).not.toContain(tmp);
+    const data = JSON.parse(res.body!);
+    expect(data.title).toBe('My UI');
+    const a = data.components.find((c: { id: string }) => c.id === 'app/A');
+    expect(a).toMatchObject({
+      group: 'app',
+      name: 'A',
+      file: 'src/A.self.svelte',
+      component: 'src/A.svelte',
+      doc: '# A\n\nAbout A.',
+      props: [{ name: 'a', type: 'number', default: '1' }],
+      sections: [{ title: 'Foo', preview: '#/preview/app/A?section=Foo' }]
+    });
+    expect(a.sections[0].code).toBe('<div>x</div>');
+    expect(data.uncataloged).toEqual([]);
+    // a file that does not compile is listed with its error instead of failing the whole response
+    const broken = data.components.find((c: { id: string }) => c.id === 'app/Broken');
+    expect(broken).toMatchObject({
+      sections: [],
+      error: expect.stringMatching(/^src\/Broken\.self\.svelte:1 .*title/)
+    });
+  });
+
+  it('lists components without a catalog file in catalog.json and in the catalog module', async () => {
+    const { root } = await makeApp();
+    await writeFile(path.join(root, 'src/Lone.svelte'), '<p>lone</p>');
+    const { p } = boot(root);
+    const server = fakeServer(root);
+    p.configureServer(server);
+    const res = await request(server.middlewares.use.mock.calls[0][0], '/__self/catalog.json');
+    expect(JSON.parse(res.body!).uncataloged).toEqual([{ group: 'app', file: 'src/Lone.svelte' }]);
+    expect(p.load('\0virtual:svelte-self/catalog')).toContain(
+      'export const uncataloged = [{"group":"app","file":"src/Lone.svelte"}];'
+    );
+  });
+
+  it('gives the dev catalog the files to open in an editor, and the build none', async () => {
+    const { root } = await makeApp();
+    await writeFile(path.join(root, 'src/A.svelte'), '<p>a</p>');
+    const dev = boot(root).p.load('\0virtual:svelte-self/catalog');
+    expect(dev).toContain(`"edit":{"file":"${root}/src/A.self.svelte","component":"${root}/src/A.svelte"}`);
+    const { p } = await bootBuild(root, { build: true });
+    const built = p.load('\0virtual:svelte-self/catalog');
+    expect(built).not.toContain('"edit"');
+  });
+
+  it('serves the catalog HTML at /__self/', async () => {
+    const { root } = await makeApp();
+    const { p } = boot(root, { title: 'My UI', locale: 'ja' });
+    const server = fakeServer(root);
+    p.configureServer(server);
+    const mw = server.middlewares.use.mock.calls[0][0];
+    for (const url of ['/__self/', '/__self/?x', '/__self/?y#z']) {
+      const res = await request(mw, url);
+      expect(res.type).toMatch(/^text\/html/);
+      expect(res.body).toContain('<html lang="ja">');
+      expect(res.body).toContain('<title>My UI</title>');
+      expect(res.body).toContain('src="/@id/__x00__virtual:svelte-self/entry"');
+    }
+    // the query is dropped
+    for (const [url] of server.transformIndexHtml.mock.calls) expect(url).toBe('/__self/');
+    for (const url of ['/', '/__selfx', '/__self/x']) expect(await request(mw, url)).toEqual({ status: 'next' });
+  });
+
+  it('sends the configured server.headers', async () => {
+    const { root } = await makeApp();
+    const server = fakeServer(root, '/', { 'cross-origin-embedder-policy': 'require-corp', 'x-test': ['a', 'b'] });
+    boot(root).p.configureServer(server);
+    const res = await request(server.middlewares.use.mock.calls[0][0], '/__self/');
+    expect(res.type).toMatch(/^text\/html/);
+    expect(res.headers).toEqual({ 'cross-origin-embedder-policy': 'require-corp', 'x-test': ['a', 'b'] });
+  });
+
+  it('follows base', async () => {
+    const { root } = await makeApp();
+    const server = fakeServer(root, '/app/');
+    boot(root).p.configureServer(server);
+    const mw = server.middlewares.use.mock.calls[0][0];
+    expect((await request(mw, '/app/__self/')).body).toContain('<html');
+    expect(await request(mw, '/__self/')).toEqual({ status: 'next' });
+  });
+
+  it.each([
+    ['/', '/__self', '/__self/'],
+    ['/', '/__self?a=1', '/__self/?a=1'],
+    ['/app/', '/app/__self', '/app/__self/'],
+    ['/app/', '/app/__self?a=1', '/app/__self/?a=1']
+  ])('redirects with base %s from %s to %s', async (base, url, location) => {
+    const { root } = await makeApp();
+    const server = fakeServer(root, base);
+    boot(root).p.configureServer(server);
+    const mw = server.middlewares.use.mock.calls[0][0];
+    expect(await request(mw, url)).toMatchObject({ status: 302, location });
+  });
+
+  it('watches only the dirs outside the root', async () => {
+    const { root, outside } = await makeApp();
+    const server = fakeServer(root);
+    boot(root, { groups: { a: 'src', b: '../outside' } }).p.configureServer(server);
+    expect(server.watcher.add).toHaveBeenCalledTimes(1);
+    expect(server.watcher.add).toHaveBeenCalledWith([outside]);
+  });
+
+  // SvelteKit's `paths.base: '/app'` resolves to the base '/app/', but Vite prints it without the slash
+  it.each(['http://localhost:5173/app/', 'http://localhost:5173/app'])(
+    'prints the catalog URL after the server URLs (%s)',
+    async (url) => {
+      const { root } = await makeApp();
+      const server = fakeServer(root, '/app/');
+      const original = server.printUrls;
+      boot(root).p.configureServer(server);
+      server.resolvedUrls = { local: [url], network: [] };
+      server.printUrls();
+      expect(original).toHaveBeenCalled();
+      expect(server.config.logger.info).toHaveBeenCalledWith(
+        expect.stringContaining('http://localhost:5173/app/__self/')
+      );
+    }
+  );
+});
+
+describe('configurePreviewServer', () => {
+  const setup = async (
+    base = '/',
+    options: Parameters<typeof self>[0] = { build: true },
+    headers?: Record<string, string>
+  ) => {
+    const { root } = await makeApp();
+    mkdirSync(path.join(root, 'self-dist/_self'), { recursive: true });
+    await writeFile(path.join(root, 'self-dist/index.html'), '<html>catalog</html>');
+    await writeFile(path.join(root, 'self-dist/_self/self-abc.js'), 'export {}');
+    const server = fakeServer(root, base, headers);
+    boot(root, options).p.configurePreviewServer(server);
+    return { root, server, mw: server.middlewares.use.mock.calls[0]?.[0] };
+  };
+
+  it('serves index.html and the files under _self/', async () => {
+    const { mw } = await setup();
+    const html = await request(mw, '/__self/');
+    expect(html.body).toContain('catalog');
+    expect(html.type).toMatch(/^text\/html/);
+    expect((await request(mw, '/__self/_self/self-abc.js')).type).toMatch(/javascript/);
+  });
+
+  it.each([
+    ['photo.jpeg', 'image/jpeg'],
+    ['module.wasm', 'application/wasm'],
+    ['font.woff', 'font/woff']
+  ])('serves %s as %s', async (name, type) => {
+    const { root, mw } = await setup();
+    await writeFile(path.join(root, 'self-dist/_self', name), '');
+    expect((await request(mw, `/__self/_self/${name}`)).type).toBe(type);
+  });
+
+  it('sends the configured preview.headers', async () => {
+    const { mw } = await setup('/', { build: true }, { 'x-frame-options': 'DENY' });
+    expect((await request(mw, '/__self/')).headers).toEqual({ 'x-frame-options': 'DENY' });
+    const js = await request(mw, '/__self/_self/self-abc.js');
+    expect(js.type).toMatch(/javascript/);
+    expect(js.headers).toEqual({ 'x-frame-options': 'DENY' });
+  });
+
+  it('redirects /__self to /__self/', async () => {
+    const { mw } = await setup();
+    expect(await request(mw, '/__self?a=1')).toMatchObject({ status: 302, location: '/__self/?a=1' });
+  });
+
+  it('leaves other URLs and missing files to the next middleware', async () => {
+    const { mw } = await setup();
+    for (const url of ['/', '/__selfx', '/__self/nope.js'])
+      expect(await request(mw, url)).toEqual({ status: 'next' });
+  });
+
+  it('does not serve files outside the catalog directory', async () => {
+    const { mw } = await setup();
+    for (const url of ['/__self/..%2Fpackage.json', '/__self/%2e%2e/package.json'])
+      expect(await request(mw, url)).toEqual({ status: 'next' });
+  });
+
+  it('follows base', async () => {
+    const { mw } = await setup('/app/');
+    expect((await request(mw, '/app/__self/')).body).toContain('catalog');
+    expect(await request(mw, '/__self/')).toEqual({ status: 'next' });
+  });
+
+  it('does nothing without build', async () => {
+    const { server } = await setup('/', {});
+    expect(server.middlewares.use).not.toHaveBeenCalled();
+  });
+});
+
+describe('hotUpdate of the catalog list', () => {
+  const setup = async (consumer: 'client' | 'server' = 'client') => {
+    const { root, outside } = await makeApp();
+    const { p } = boot(root);
+    const catalogMod = { id: '\0virtual:svelte-self/catalog' };
+    const metaMod = { id: '\0virtual:svelte-self/meta/app%2FA' };
+    const ctx = {
+      environment: {
+        config: { consumer },
+        hot: { send: vi.fn() },
+        moduleGraph: {
+          getModuleById: vi.fn((id: string) => (id === catalogMod.id ? catalogMod : undefined)),
+          idToModuleMap: new Map([[metaMod.id, metaMod]]),
+          invalidateModule: vi.fn()
+        }
+      }
+    };
+    const run = (type: string, file: string, modules: unknown[] = []) =>
+      p.hotUpdate.call(ctx, { type, file, modules, timestamp: 1 });
+    return { root, outside, ctx, run, catalogMod, metaMod };
+  };
+
+  it.each(['create', 'delete'])('invalidates the list on %s inside a scanned dir', async (type) => {
+    const { root, ctx, run, catalogMod, metaMod } = await setup();
+    expect(run(type, `${root}/src/lib/New.self.svelte`)).toEqual([]);
+    const invalidated = ctx.environment.moduleGraph.invalidateModule.mock.calls.map((c: unknown[]) => c[0]);
+    expect(invalidated).toEqual(expect.arrayContaining([catalogMod, metaMod]));
+    expect(ctx.environment.hot.send).toHaveBeenCalledWith({ type: 'custom', event: 'self:reload' });
+    expect(ctx.environment.hot.send).not.toHaveBeenCalledWith({ type: 'full-reload' });
+  });
+
+  it.each(['create', 'delete'])('also invalidates the file itself on %s', async (type) => {
+    const { root, ctx, run, catalogMod, metaMod } = await setup();
+    const own = { id: `${root}/src/lib/New.self.svelte` };
+    expect(run(type, `${root}/src/lib/New.self.svelte`, [own])).toEqual([]);
+    const invalidated = ctx.environment.moduleGraph.invalidateModule.mock.calls.map((c: unknown[]) => c[0]);
+    expect(invalidated).toEqual(expect.arrayContaining([own, catalogMod, metaMod]));
+  });
+
+  it('server environment invalidates without sending', async () => {
+    const { root, ctx, run } = await setup('server');
+    run('create', `${root}/src/New.self.svelte`);
+    expect(ctx.environment.moduleGraph.invalidateModule).toHaveBeenCalled();
+    expect(ctx.environment.hot.send).not.toHaveBeenCalled();
+  });
+
+  it('ignores files created outside the scanned dirs', async () => {
+    const { root, outside, ctx, run } = await setup();
+    expect(run('create', `${outside}/New.self.svelte`)).toBeUndefined();
+    expect(run('create', `${root}/New.self.svelte`)).toBeUndefined();
+    expect(run('create', `${root}/src-other/New.self.svelte`)).toBeUndefined();
+    expect(ctx.environment.moduleGraph.invalidateModule).not.toHaveBeenCalled();
+    expect(ctx.environment.hot.send).not.toHaveBeenCalled();
+  });
+});
+
+describe('build', () => {
+  it('normalizes the option', async () => {
+    const { root } = await makeApp();
+    expect(resolveOptions(root, {}).build).toBe(false);
+    expect(resolveOptions(root, { build: false }).build).toBe(false);
+    expect(resolveOptions(root, { build: true }).build).toBe(`${root}/self-dist`);
+    expect(resolveOptions(root, { build: {} }).build).toBe(`${root}/self-dist`);
+    expect(resolveOptions(root, { build: { outDir: 'out/catalog' } }).build).toBe(`${root}/out/catalog`);
+  });
+
+  it('rejects a catalog outDir that is the root or overlaps the app outDir', async () => {
+    const { root, tmp } = await makeApp();
+    const reject = (outDir: string, user: object = {}) =>
+      expect(bootBuild(root, { build: { outDir } }, user)).rejects.toThrow(
+        /svelte-self: build\.outDir of the catalog/
+      );
+    await reject('.');
+    await reject(tmp);
+    // the app's default outDir is dist
+    await reject('dist');
+    await reject('dist/self');
+    await reject('out', { build: { outDir: 'out/app' } });
+    await reject('out/self', { build: { outDir: 'out' } });
+    // SvelteKit sets an absolute outDir
+    await reject('.svelte-kit/output/self', { build: { outDir: `${root}/.svelte-kit/output` } });
+    expect((await bootBuild(root, { build: { outDir: 'out' } }, { build: { outDir: 'output' } })).added).toBeDefined();
+  });
+
+  it("rejects a catalog outDir inside the app's publicDir", async () => {
+    const { root } = await makeApp();
+    const reject = (outDir: string, user: object = {}) =>
+      expect(bootBuild(root, { build: { outDir } }, user)).rejects.toThrow(
+        `svelte-self: build.outDir of the catalog (${root}/${outDir}) must not be inside the app's publicDir`
+      );
+    // Vite's default is public; SvelteKit sets it to kit.files.assets
+    await reject('public/self');
+    await reject('static/self', { publicDir: 'static' });
+    await reject('static', { publicDir: `${root}/static` });
+    expect((await bootBuild(root, { build: { outDir: 'public/self' } }, { publicDir: false })).added).toBeDefined();
+    expect((await bootBuild(root, { build: { outDir: 'public-self' } })).added).toBeDefined();
+  });
+
+  // the shape of the real plugin: Kit 3 keeps `kit.outDir` at `api.options.outDir`
+  const kitPlugins = (options: object = {}) => [
+    Promise.resolve([{ name: 'vite-plugin-sveltekit-setup', api: { options } }])
+  ];
+
+  it("rejects a catalog outDir that overlaps SvelteKit's kit.outDir", async () => {
+    const { root } = await makeApp();
+    const reject = (outDir: string, kit?: object) =>
+      expect(bootBuild(root, { build: { outDir } }, { plugins: kitPlugins(kit) })).rejects.toThrow(
+        /svelte-self: build\.outDir of the catalog .* must not overlap SvelteKit's kit\.outDir/
+      );
+    // the default is .svelte-kit
+    await reject('.svelte-kit');
+    await reject('.svelte-kit/self');
+    // Kit resolves its outDir to an absolute path
+    await reject('gen', { outDir: `${root}/gen` });
+    await reject('gen/self', { outDir: `${root}/gen` });
+    await reject('gen', { outDir: `${root}/gen/kit` });
+    const ok = await bootBuild(root, { build: { outDir: '.svelte-kit' } }, { plugins: kitPlugins({ outDir: 'gen' }) });
+    expect(ok.added).toBeDefined();
+    const real = (outDir: string) =>
+      bootBuild(root, { build: { outDir } }, { plugins: [sveltekit({ outDir: 'gen' })] });
+    await expect(real('gen/self')).rejects.toThrow(/must not overlap SvelteKit's kit\.outDir/);
+    expect((await real('.svelte-kit')).added).toBeDefined();
+    // without Kit, .svelte-kit is just a directory
+    expect((await bootBuild(root, { build: { outDir: '.svelte-kit/self' } })).added).toBeDefined();
+  });
+
+  type Env = { isBuilt: boolean };
+
+  it('runs the config hook after the other plugins', () => {
+    // so that a `builder` or a `renderBuiltUrl` set by another plugin is seen
+    expect(plugin.config.order).toBe('post');
+  });
+
+  it('adds nothing when disabled, when serving or on an SSR build', async () => {
+    const { root } = await makeApp();
+    expect((await bootBuild(root)).added).toBeUndefined();
+    expect((await bootBuild(root, { build: false })).added).toBeUndefined();
+    // step 2 of Vite's SSR build: `vite build --ssr src/entry-server.ts`
+    const ssr = await bootBuild(root, { build: true }, { build: { ssr: 'src/entry-server.ts' } });
+    expect(ssr.added).toBeUndefined();
+    expect(ssr.config).not.toHaveProperty('experimental');
+    const p = self({ build: true }) as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    expect(await p.config.handler({ root }, { command: 'serve', mode: 'development' })).toBeUndefined();
+  });
+
+  it('adds the self environment', async () => {
+    const { root } = await makeApp();
+    const { added } = await bootBuild(root, { build: { outDir: 'out/catalog' } });
+    // plain `vite build` sets up only the client environment without `builder`
+    expect(added.builder).toEqual({});
+    expect(added.environments.self).toEqual({
+      consumer: 'client',
+      build: {
+        outDir: `${root}/out/catalog`,
+        manifest: false,
+        copyPublicDir: false,
+        rolldownOptions: {
+          input: { self: 'virtual:svelte-self/entry' },
+          output: {
+            entryFileNames: '_self/[name]-[hash].js',
+            chunkFileNames: '_self/[name]-[hash].js',
+            assetFileNames: '_self/[name]-[hash][extname]'
+          }
+        }
+      }
+    });
+    expect((await bootBuild(root, { build: true })).added.environments.self.build.outDir).toBe(`${root}/self-dist`);
+  });
+
+  it('defines the SvelteKit globals only with SvelteKit', async () => {
+    const { root } = await makeApp();
+    const kit = [Promise.resolve([{ name: 'vite-plugin-sveltekit-setup' }])];
+    const { added } = await bootBuild(root, { build: true }, { plugins: kit });
+    expect(added.environments.self.define).toEqual({
+      __SVELTEKIT_PAYLOAD__: 'undefined',
+      __SVELTEKIT_HAS_SERVER_LOAD__: 'false',
+      __SVELTEKIT_HAS_UNIVERSAL_LOAD__: 'false'
+    });
+    const plain = await bootBuild(root, { build: true }, { plugins: [{ name: 'vite-plugin-svelte' }] });
+    expect(plain.added.environments.self).not.toHaveProperty('define');
+  });
+
+  it('keeps the app build settings out of the self environment', async () => {
+    const { root } = await makeApp();
+    const { p } = await bootBuild(root, { build: true });
+    const inherited = () => ({
+      build: {
+        ssr: 'src/entry-server.ts',
+        lib: { entry: 'src/index.ts' },
+        cssCodeSplit: false,
+        cssTarget: 'chrome107',
+        rolldownOptions: { input: { main: 'index.html', nested: 'nested/index.html', self: ENTRY } }
+      }
+    });
+    const env = inherited();
+    p.configEnvironment('self', env);
+    expect(env.build).toEqual({
+      ssr: false,
+      lib: false,
+      emptyOutDir: false,
+      cssCodeSplit: true,
+      cssTarget: ['chrome123', 'edge123', 'firefox120', 'safari17.5'],
+      chunkSizeWarningLimit: 1000,
+      rolldownOptions: { input: { self: ENTRY } }
+    });
+    const client = inherited();
+    p.configEnvironment('client', client);
+    expect(client).toEqual(inherited());
+  });
+
+  it('makes the URLs of the catalog files relative, and leaves the others to the existing renderBuiltUrl', async () => {
+    const { root } = await makeApp();
+    const ctx = { hostId: 'assets/index.js', hostType: 'js', type: 'asset', ssr: false };
+    const own = vi.fn(() => 'https://cdn.example/x.js');
+    const { config } = await bootBuild(root, { build: true }, { experimental: { renderBuiltUrl: own } });
+    const render = config.experimental.renderBuiltUrl;
+    expect(render('_self/App-1.js', { ...ctx, hostId: '_self/self-1.js' })).toEqual({ relative: true });
+    expect(render('_self/App-1.css', ctx)).toEqual({ relative: true });
+    expect(own).not.toHaveBeenCalled();
+    expect(render('assets/index-1.js', ctx)).toBe('https://cdn.example/x.js');
+    expect(own).toHaveBeenCalledWith('assets/index-1.js', ctx);
+    // without one, the app's files get Vite's default
+    const plain = await bootBuild(root, { build: true });
+    expect(plain.config.experimental.renderBuiltUrl('assets/index-1.js', ctx)).toBeUndefined();
+  });
+
+  const fakeBuilder = (fileName: string, others: Record<string, Env>, { array = false, watch = false } = {}) => {
+    const selfEnv = { isBuilt: false };
+    const output = {
+      output: [
+        // an entry of the app's own input that leaked in would also be an entry
+        { type: 'chunk', isEntry: true, name: 'main', fileName: '_self/main-1.js' },
+        { type: 'chunk', isEntry: false, name: 'App', fileName: '_self/App-1.js' },
+        { type: 'chunk', isEntry: true, name: 'self', fileName }
+      ]
+    };
+    const builder = {
+      config: { build: { watch: watch ? {} : null }, logger: { warn: vi.fn() } },
+      environments: { self: selfEnv, ...others } as Record<string, Env>,
+      build: vi.fn(async (env: Env) => {
+        env.isBuilt = true;
+        return env === selfEnv ? (array ? [output] : output) : { output: [] };
+      })
+    };
+    return { builder, selfEnv };
+  };
+
+  it('runs after the other buildApp hooks', () => {
+    expect(plugin.buildApp.order).toBe('post');
+  });
+
+  it('builds nothing when disabled', async () => {
+    const { root } = await makeApp();
+    const { p } = await bootBuild(root, { build: false });
+    const { builder } = fakeBuilder('_self/self-abc.js', { client: { isBuilt: false } });
+    delete builder.environments.self;
+    await p.buildApp.handler(builder);
+    expect(builder.build).not.toHaveBeenCalled();
+  });
+
+  it.each([false, true])('writes index.html with a relative script (array output: %s)', async (array) => {
+    const { root } = await makeApp();
+    const outDir = `${root}/self-dist`;
+    mkdirSync(`${outDir}/_app`, { recursive: true });
+    await writeFile(`${outDir}/_app/version.json`, '{}');
+    const { p } = await bootBuild(root, { build: true, title: 'My UI', locale: 'ja' }, { plugins: kitPlugins() });
+    const { builder, selfEnv } = fakeBuilder('_self/self-abc.js', { client: { isBuilt: true } }, { array });
+    await p.buildApp.handler(builder);
+    expect(builder.build).toHaveBeenCalledTimes(1);
+    expect(builder.build).toHaveBeenCalledWith(selfEnv);
+    const html = readFileSync(`${outDir}/index.html`, 'utf-8');
+    expect(html).toContain('<script type="module" src="./_self/self-abc.js"></script>');
+    expect(html).toContain('<html lang="ja">');
+    expect(html).toContain('<title>My UI</title>');
+    expect(existsSync(`${outDir}/_app`)).toBe(false);
+  });
+
+  it('removes only version.json from _app when other files are there', async () => {
+    const { root } = await makeApp();
+    const outDir = `${root}/self-dist`;
+    mkdirSync(`${outDir}/_app/immutable/workers`, { recursive: true });
+    await writeFile(`${outDir}/_app/version.json`, '{}');
+    await writeFile(`${outDir}/_app/immutable/workers/w.js`, '');
+    const { p } = await bootBuild(root, { build: true }, { plugins: kitPlugins() });
+    const { builder } = fakeBuilder('_self/self-abc.js', { client: { isBuilt: true } });
+    await p.buildApp.handler(builder);
+    expect(existsSync(`${outDir}/_app/version.json`)).toBe(false);
+    expect(existsSync(`${outDir}/_app/immutable/workers/w.js`)).toBe(true);
+  });
+
+  it("removes version.json from SvelteKit's custom appDir", async () => {
+    const { root } = await makeApp();
+    const outDir = `${root}/self-dist`;
+    mkdirSync(`${outDir}/kit-app`, { recursive: true });
+    await writeFile(`${outDir}/kit-app/version.json`, '{}');
+    const { p } = await bootBuild(root, { build: true }, { plugins: kitPlugins({ appDir: 'kit-app' }) });
+    const { builder } = fakeBuilder('_self/self-abc.js', { client: { isBuilt: true } });
+    await p.buildApp.handler(builder);
+    expect(existsSync(`${outDir}/kit-app`)).toBe(false);
+  });
+
+  it('leaves _app/version.json alone without SvelteKit', async () => {
+    const { root } = await makeApp();
+    const outDir = `${root}/self-dist`;
+    mkdirSync(`${outDir}/_app`, { recursive: true });
+    await writeFile(`${outDir}/_app/version.json`, '{}');
+    const { p } = await bootBuild(root, { build: true });
+    const { builder } = fakeBuilder('_self/self-abc.js', { client: { isBuilt: true } });
+    await p.buildApp.handler(builder);
+    expect(existsSync(`${outDir}/_app/version.json`)).toBe(true);
+  });
+
+  it('removes only the files of the previous catalog', async () => {
+    const { root } = await makeApp();
+    const outDir = `${root}/self-dist`;
+    mkdirSync(`${outDir}/_self`, { recursive: true });
+    await writeFile(`${outDir}/_self/old.js`, '');
+    await writeFile(`${outDir}/index.html`, 'old');
+    await writeFile(`${outDir}/keep.txt`, '');
+    const { p } = await bootBuild(root, { build: true });
+    const { builder } = fakeBuilder('_self/self-abc.js', { client: { isBuilt: true } });
+    await p.buildApp.handler(builder);
+    expect(existsSync(`${outDir}/_self/old.js`)).toBe(false);
+    expect(existsSync(`${outDir}/keep.txt`)).toBe(true);
+    expect(readFileSync(`${outDir}/index.html`, 'utf-8')).toContain('./_self/self-abc.js');
+  });
+
+  it.each([
+    ['build', true],
+    ['build/self', true],
+    ['self-dist', false],
+    ['built', false]
+  ])('with SvelteKit, warns once about a catalog outDir %s overlapping build/: %s', async (outDir, warns) => {
+    const { root } = await makeApp();
+    mkdirSync(`${root}/${outDir}`, { recursive: true });
+    const { p } = await bootBuild(root, { build: { outDir } }, { plugins: kitPlugins() });
+    const { builder } = fakeBuilder('_self/self-abc.js', { client: { isBuilt: true } });
+    await p.buildApp.handler(builder);
+    const warned = builder.config.logger.warn.mock.calls.map(([m]) => m);
+    expect(warned).toEqual(
+      warns
+        ? [
+            `svelte-self: build.outDir of the catalog (${root}/${outDir}) overlaps ${root}/build, which SvelteKit adapters usually empty after the catalog is written; set another one with \`build: { outDir }\``
+          ]
+        : []
+    );
+  });
+
+  it('does not warn about build/ without SvelteKit', async () => {
+    const { root } = await makeApp();
+    mkdirSync(`${root}/build`);
+    const { p } = await bootBuild(root, { build: { outDir: 'build' } });
+    const { builder } = fakeBuilder('_self/self-abc.js', { client: { isBuilt: true } });
+    await p.buildApp.handler(builder);
+    expect(builder.config.logger.warn).not.toHaveBeenCalled();
+  });
+
+  it('skips the catalog with a warning in watch mode', async () => {
+    const { root } = await makeApp();
+    const { p } = await bootBuild(root, { build: true });
+    const client = { isBuilt: false };
+    const { builder } = fakeBuilder('_self/self-abc.js', { client }, { watch: true });
+    await p.buildApp.handler(builder);
+    expect(builder.build.mock.calls.map(([env]) => env)).toEqual([client]);
+    expect(builder.config.logger.warn).toHaveBeenCalledWith(expect.stringMatching(/svelte-self: .*watch/));
+  });
+
+  // Vite builds the app only when no buildApp hook built an environment
+  it.each([
+    ['client', {}],
+    ['every', { builder: {} }]
+  ] as const)('builds the %s environment of the app first when no other hook did', async (which, user) => {
+    const { root } = await makeApp();
+    mkdirSync(`${root}/self-dist`);
+    const { p } = await bootBuild(root, { build: true }, user);
+    const client = { isBuilt: false };
+    const server = { isBuilt: false };
+    const { builder, selfEnv } = fakeBuilder('_self/self-abc.js', { client, ssr: server });
+    await p.buildApp.handler(builder);
+    const app = { client: [client], every: [client, server] }[which];
+    expect(builder.build.mock.calls.map(([env]) => env)).toEqual([...app, selfEnv]);
+  });
+});
+
+describe('Tailwind CSS', () => {
+  // the dev server's environments are never read without an entry, so the fake server has none
+  it('does not load Tailwind until the list module is loaded', async () => {
+    const { root } = await makeApp();
+    await writeFile(path.join(root, 'src/app.css'), '@import "tailwindcss";');
+    vi.mocked(loadTailwind).mockClear();
+    const { p } = boot(root);
+    p.configureServer(fakeServer(root));
+    p.load('\0virtual:svelte-self/entry');
+    p.load('\0virtual:svelte-self/catalog');
+    expect(loadTailwind).not.toHaveBeenCalled();
+  });
+
+  it('leaves the Tailwind import out of the entry module without an entry', async () => {
+    const { root } = await makeApp();
+    const entry = boot(root).p.load('\0virtual:svelte-self/entry');
+    expect(entry).not.toContain('virtual:svelte-self/tailwind');
+    expect(entry).toContain('tailwind: []');
+  });
+
+  it('serves catalog.json with tailwind null without Tailwind', async () => {
+    const { root } = await makeApp();
+    const { p } = boot(root);
+    const server = fakeServer(root);
+    p.configureServer(server);
+    const res = await request(server.middlewares.use.mock.calls[0][0], '/__self/catalog.json');
+    expect(JSON.parse(res.body!).tailwind).toBeNull();
+  });
+
+  it('keeps a failed generation out of hotUpdate and out of the cache', async () => {
+    const { root } = await makeApp();
+    const { p } = boot(root);
+    const server = fakeServer(root);
+    p.configureServer(server);
+    const list = { id: '\0virtual:svelte-self/tailwind' };
+    const ctx = {
+      environment: {
+        config: { consumer: 'client' },
+        logger: { warn: vi.fn() },
+        hot: { send: vi.fn() },
+        moduleGraph: {
+          getModuleById: vi.fn((id: string) => (id === list.id ? list : undefined)),
+          idToModuleMap: new Map([[list.id, list]]),
+          invalidateModule: vi.fn()
+        }
+      }
+    };
+    vi.mocked(loadTailwind).mockClear();
+    vi.mocked(loadTailwind).mockRejectedValueOnce(new Error('boom'));
+    const result = p.hotUpdate.call(ctx, { type: 'create', file: `${root}/src/new.css`, modules: [], timestamp: 1 });
+    expect(result).toBeUndefined();
+    await vi.waitFor(() =>
+      expect(ctx.environment.logger.warn).toHaveBeenCalledWith(expect.stringMatching(/^svelte-self: .*boom/))
+    );
+    expect(ctx.environment.hot.send).not.toHaveBeenCalled();
+    const res = await request(server.middlewares.use.mock.calls[0][0], '/__self/catalog.json');
+    expect(JSON.parse(res.body!).tailwind).toBeNull();
+    expect(loadTailwind).toHaveBeenCalledTimes(2);
+  });
+
+  it('writes catalog.json with tailwind null without Tailwind', async () => {
+    const { root } = await makeApp();
+    mkdirSync(`${root}/self-dist`);
+    const { p } = await bootBuild(root, { build: true });
+    const builder = {
+      config: { build: { watch: null }, logger: { warn: vi.fn() } },
+      environments: { client: { isBuilt: true }, self: { isBuilt: false } },
+      build: vi.fn(async () => ({ output: [{ type: 'chunk', name: 'self', fileName: '_self/self-1.js' }] }))
+    };
+    await p.buildApp.handler(builder);
+    expect(JSON.parse(readFileSync(`${root}/self-dist/catalog.json`, 'utf-8')).tailwind).toBeNull();
+    expect(builder.config.logger.warn).not.toHaveBeenCalled();
+  });
+
+  it('warns once per failing entry in the build and writes its error to catalog.json', async () => {
+    const { tmp, root } = await makeApp();
+    for (const name of ['tailwindcss', '@tailwindcss/node']) {
+      const at = path.join(root, 'node_modules', name);
+      mkdirSync(path.dirname(at), { recursive: true });
+      symlinkSync(findPackage(name, import.meta.dirname)!, at, 'junction');
+    }
+    await writeFile(path.join(root, 'src/app.css'), '@import "tailwindcss";\n@theme { --color-brand: red; }');
+    await writeFile(path.join(root, 'src/broken.css'), '@import "tailwindcss";\n@import "./missing.css";');
+    const { p } = await bootBuild(root, { build: true });
+    mkdirSync(`${root}/self-dist`);
+    const config = await resolveConfig(
+      { root, configFile: false, logLevel: 'silent', environments: { self: {} } },
+      'build'
+    );
+    const selfEnv = new BuildEnvironment('self', config);
+    const builder = {
+      config: { build: { watch: null }, logger: { warn: vi.fn() } },
+      environments: { client: { isBuilt: true }, self: selfEnv },
+      build: vi.fn(async () => ({ output: [{ type: 'chunk', name: 'self', fileName: '_self/self-1.js' }] }))
+    };
+    await p.buildApp.handler(builder);
+    const warned = builder.config.logger.warn.mock.calls.map(([m]) => m);
+    expect(warned).toEqual([
+      expect.stringMatching(/^svelte-self: Tailwind CSS entry src\/broken\.css: .*missing\.css/)
+    ]);
+    const json = readFileSync(`${root}/self-dist/catalog.json`, 'utf-8');
+    expect(json).not.toContain(tmp);
+    const { tailwind } = JSON.parse(json);
+    expect(tailwind.map((t: { file: string }) => t.file)).toEqual(['src/app.css', 'src/broken.css']);
+    expect(tailwind[0].variables['--color-brand']).toBe('red');
+    expect(tailwind[1].error).toMatch(/missing\.css/);
+  });
+});
+
+describe('public API', () => {
+  it('exports only self', () => {
+    expect(Object.keys(api)).toEqual(['self']);
+  });
+
+  it('is a pre plugin without a transform hook', () => {
+    expect(plugin.name).toBe('vite-plugin-svelte-self');
+    expect(plugin.enforce).toBe('pre');
+    expect(plugin.transform).toBeUndefined();
+  });
+});
+
+it("the svelte peer range starts no lower than Vite's Svelte plugin needs", () => {
+  const floor = (dir: string) => {
+    const range: string = JSON.parse(readFileSync(path.join(dir, 'package.json'), 'utf8')).peerDependencies.svelte;
+    const [major, minor, patch] = range
+      .match(/^\^(\d+)\.(\d+)\.(\d+)$/)!
+      .slice(1)
+      .map(Number);
+    return major * 1e6 + minor * 1e3 + patch;
+  };
+  const sveltePlugin = findPackage('@sveltejs/vite-plugin-svelte', import.meta.dirname)!;
+  expect(floor(fileURLToPath(new URL('../../..', import.meta.url)))).toBeGreaterThanOrEqual(floor(sveltePlugin));
+});

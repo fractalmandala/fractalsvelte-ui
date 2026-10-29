@@ -1,7 +1,9 @@
+<!-- @component A slider that wipes between a before and an after image. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsRatio } from '../classes';
+	type Ratio = '16/9' | '9/16' | '4/3' | '3/4' | '3/2' | '2/3' | '1/1';
 	import SegmentedControl from '../navigation/SegmentedControl.svelte';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -12,7 +14,7 @@
 		/** Image URLs: when both are set, the wipe is drawn in SVG */
 		beforeSrc?: string;
 		afterSrc?: string;
-		ratio?: FsRatio;
+		ratio?: Ratio;
 		class?: string;
 		/** HTML panes: shown one at a time behind a Before / After switch */
 		before?: Snippet;

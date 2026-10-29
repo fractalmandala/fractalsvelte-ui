@@ -1,7 +1,9 @@
+<!-- @component A multi-line text input with optional auto-resize and character count. -->
+
 <script lang="ts">
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
-	import type { FsFieldVariant, FsSize, FsShape } from '../types';
-	import { FIELD_TEXT } from '../classes';
+	import type { Surface, Shape, Shadow } from '../types';
+	import { getFieldLook } from './field-context';
 
 	interface Props extends HTMLTextareaAttributes {
 		value?: string;
@@ -14,16 +16,17 @@
 		maxRows?: number;
 		showCount?: boolean;
 		maxlength?: number;
-		variant?: FsFieldVariant;
-		/** Type size only: a textarea has no fixed control height. */
-		size?: FsSize;
-		shape?: FsShape;
+		surface?: Surface;
+		shape?: Shape;
+		shadow?: Shadow;
 		rows?: number;
 		disabled?: boolean;
 		readonly?: boolean;
 		id?: string;
 		class?: string;
 	}
+
+	const field = getFieldLook();
 
 	let {
 		value = $bindable(''),
@@ -34,9 +37,9 @@
 		maxRows = 12,
 		showCount = false,
 		maxlength,
-		variant = 'primary',
-		size = 'md',
-		shape = 'modern',
+		surface = field.surface ?? 'bg-input',
+		shape = field.shape ?? 'modern',
+		shadow = field.shadow ?? 'shad-none',
 		rows = 3,
 		disabled = false,
 		readonly = false,
@@ -48,11 +51,13 @@
 	const uid = $props.id();
 	const textareaId = $derived(id || uid);
 	const errorMessage = $derived(typeof error === 'string' ? error : undefined);
+	const invalid = $derived(Boolean(error) || Boolean(field.invalid));
 	const charCount = $derived(String(value ?? '').length);
 	const COUNT_CLASSES = { ok: 'text-muted', near: 'text-warning', over: 'text-danger' };
 	const countState = $derived(
 		maxlength === undefined ? 'ok' : charCount > maxlength ? 'over' : charCount >= maxlength * 0.9 ? 'near' : 'ok'
 	);
+	const countText = $derived(String(charCount).padStart(String(maxlength ?? '').length, '\u2007'));
 	const effectiveRows = $derived(
 		autoResize ? Math.min(maxRows, Math.max(rows, String(value ?? '').split('\n').length)) : rows
 	);
@@ -62,7 +67,6 @@
 	{#if label}
 		<label for={textareaId} class="text-xs weight-500 text-secondary">{label}</label>
 	{/if}
-	<!-- data-size is left off on purpose: on .input it fixes the height. -->
 	<textarea
 		bind:value
 		id={textareaId}
@@ -70,11 +74,10 @@
 		{maxlength}
 		{disabled}
 		{readonly}
-		aria-invalid={error ? true : undefined}
+		aria-invalid={invalid || undefined}
 		aria-describedby={errorMessage ? `${textareaId}-error` : helperText ? `${textareaId}-helper` : undefined}
-		class="input wfull py-sm lh15 {FIELD_TEXT[size]}"
-		data-variant={variant}
-		data-shape={shape}
+		class="input wfull py-sm px-sm lh15 text-sm border el-shape {surface} {shape} {shadow} {invalid ? 'is-invalid' : ''}"
+		style:height="auto"
 		{...restProps}
 	></textarea>
 	<div class="row ytop xbetween gap-sm">
@@ -86,8 +89,8 @@
 			{/if}
 		</div>
 		{#if showCount || maxlength !== undefined}
-			<span class="text-sm mono shrink-0 {COUNT_CLASSES[countState]}" aria-live="polite">
-				{charCount}{#if maxlength !== undefined}&nbsp;/ {maxlength}{/if}
+			<span class="text-sm tabular-nums shrink-0 {COUNT_CLASSES[countState]}" aria-live="polite">
+				{countText}{#if maxlength !== undefined}&nbsp;/ {maxlength}{/if}
 			</span>
 		{/if}
 	</div>

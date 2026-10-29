@@ -1,8 +1,10 @@
+<!-- @component A button with Copy Icon, copies `text` to the clipboard and briefly shows a copied state. -->
+
 <script lang="ts">
 	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luCopy, luCheck } from 'fractalicons/lucide';
-	import type { FsVariant, FsSize, FsShape } from '../types';
+	import { Icon } from '@fractaldesign/icons';
+	import { luCopy, luCheck } from '@fractaldesign/icons/lucide';
+	import type { Variant, Size, Shape } from '../types';
 	import Button from './Button.svelte';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'type'> {
@@ -11,9 +13,9 @@
 		copiedLabel?: string;
 		/** How long the copied state holds, in ms. */
 		resetAfter?: number;
-		variant?: FsVariant;
-		size?: FsSize;
-		shape?: FsShape;
+		variant?: Variant;
+		size?: Size;
+		shape?: Shape;
 		class?: string;
 	}
 
@@ -23,7 +25,7 @@
 		copiedLabel = 'Copied',
 		resetAfter = 2000,
 		variant = 'secondary',
-		size = 'md',
+		size = 'h-md',
 		shape = 'modern',
 		class: className = '',
 		...restProps

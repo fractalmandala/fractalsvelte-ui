@@ -1,15 +1,16 @@
+<!-- @component Content that scrolls continuously in a loop. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsSpace } from '../types';
-	import { GAP } from '../classes';
+	import type { Space } from '../types';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		/** Pixels per second */
 		speed?: number;
 		pauseOnHover?: boolean;
 		reverse?: boolean;
-		gap?: FsSpace;
+		gap?: Space;
 		class?: string;
 		children?: Snippet;
 	}
@@ -55,13 +56,13 @@
 
 <div
 	bind:this={railEl}
-	class="row scroll-x {GAP[gap]} {className}"
+	class="row scroll-x gap-{gap} {className}"
 	role="marquee"
 	onpointerenter={() => pauseOnHover && (paused = true)}
 	onpointerleave={() => (paused = false)}
 	{...restProps}
 >
-	<div bind:this={firstEl} class="row ycenter shrink-0 {GAP[gap]}">{@render children?.()}</div>
-	<div class="row ycenter shrink-0 {GAP[gap]}" aria-hidden="true">{@render children?.()}</div>
-	<div class="row ycenter shrink-0 {GAP[gap]}" aria-hidden="true">{@render children?.()}</div>
+	<div bind:this={firstEl} class="row ycenter shrink-0 gap-{gap}">{@render children?.()}</div>
+	<div class="row ycenter shrink-0 gap-{gap}" aria-hidden="true">{@render children?.()}</div>
+	<div class="row ycenter shrink-0 gap-{gap}" aria-hidden="true">{@render children?.()}</div>
 </div>

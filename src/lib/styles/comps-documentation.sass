@@ -1,0 +1,101 @@
+.props-section
+	display: flex
+	flex-direction: column
+	gap: var(--space-lg)
+
+.props-row
+	display: flex
+	flex-direction: row
+	flex-wrap: wrap
+	align-items: center
+	justify-content: center
+	gap: var(--space-bs)
+	border: 1px solid var(--border)
+	padding: var(--space-xl) var(--space-2xl)
+	min-height: 160px
+
+.compdocs
+	display: flex
+	flex-direction: column
+	gap: var(--space-2xl)
+
+.page-section
+	display: flex
+	flex-direction: column
+	gap: var(--space-lg)
+
+.card-header
+	display: flex
+	flex-direction: column
+	gap: 0
+	h3, h2, p
+		margin: 0
+
+a.nav-link
+	padding: 0.35rem var(--space-sm)
+	border-radius: var(--radius-sm)
+	font-size: var(--text-md)
+	line-height: 1.2
+	letter-spacing: 0.01rem
+	color: var(--text-secondary)
+	&:hover
+		background-color: var(--bg-raised)
+
+.nav-section
+	display: flex
+	flex-direction: column
+	gap: var(--space-md)
+
+.props-table
+	width: 100%
+	table-layout: fixed
+	td, td code
+		overflow-wrap: anywhere
+		word-break: break-word
+	border-collapse: separate
+	border-spacing: 0
+	border: 1px solid var(--border)
+	border-radius: var(--radius-md)
+	overflow: hidden
+	font-size: var(--text-md)
+	line-height: 1.5
+	th, td
+		padding: var(--space-sm) var(--space-md)
+		text-align: left
+		vertical-align: top
+		border-bottom: 1px solid var(--border-subtle)
+	thead th
+		background-color: var(--bg-surface)
+		color: var(--text-secondary)
+		font-size: var(--text-sm)
+		font-weight: 600
+		text-transform: uppercase
+		letter-spacing: 0.04rem
+		border-bottom: 1px solid var(--border)
+	tbody tr:last-child td
+		border-bottom: 0
+	tbody tr:hover
+		background-color: var(--bg-surface)
+	td:nth-child(1), td:nth-child(2), td:nth-child(3)
+		white-space: nowrap
+	td:nth-child(4)
+		color: var(--text-secondary)
+	code
+		font-family: inherit
+		font-size: var(--text-sm)
+		padding: 0.1rem 0.35rem
+		border-radius: var(--radius-sm)
+		background-color: var(--bg-raised)
+		color: var(--text-primary)
+	td:nth-child(1) code
+		font-weight: 600
+	.draft
+		color: var(--text-muted)
+		font-size: var(--text-sm)
+
+// `backticked` terms in prop definitions render as <em>: sans, not mono
+.props-table td em, .card-header p em
+	font-family: inherit
+	font-style: normal
+	font-weight: 500
+	color: var(--text-primary)

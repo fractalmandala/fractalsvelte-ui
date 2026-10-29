@@ -1,3 +1,5 @@
+<!-- @component A table built from columns and rows, with sortable columns. -->
+
 <script lang="ts" module>
 	export interface DataColumn<T = any> {
 		key: keyof T | string;
@@ -10,19 +12,35 @@
 <script lang="ts" generics="T extends Record<string, any>">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from 'fractalicons';
-	import { luChevronUp, luChevronDown, luChevronsUpDown } from 'fractalicons/lucide';
+	import { Icon } from '@fractaldesign/icons';
+	import Button from '../actions/Button.svelte';
+	import type { Surface, Border, Shape, Shadow } from '../types';
+	import { luChevronUp, luChevronDown, luChevronsUpDown } from '@fractaldesign/icons/lucide';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		columns: DataColumn<T>[];
 		rows: T[];
 		striped?: boolean;
-		bordered?: boolean;
+		surface?: Surface;
+		border?: Border;
+		shape?: Shape;
+		shadow?: Shadow;
 		class?: string;
 		cell?: Snippet<[{ row: T; column: DataColumn<T>; value: any }]>;
 	}
 
-	let { columns, rows, striped = true, bordered = true, class: className = '', cell, ...restProps }: Props = $props();
+	let {
+		columns,
+		rows,
+		striped = true,
+		surface = 'bg-panel',
+		border = 'border',
+		shape = 'curved',
+		shadow = 'shad-none',
+		class: className = '',
+		cell,
+		...restProps
+	}: Props = $props();
 
 	let sortKey = $state<string | null>(null);
 	let sortOrder = $state<'asc' | 'desc'>('asc');
@@ -54,9 +72,7 @@
 	});
 </script>
 
-<!-- fractalstyler has no table classes; cells are padded and ruled with the
-     spacing and partition-border utilities. -->
-<div class="scroll-x {bordered ? 'border radius-md' : ''} {className}" {...restProps}>
+<div class="scroll-x el-shape {surface} {border} {shape} {shadow} {className}" {...restProps}>
 	<table class="wfull text-sm">
 		<thead class="bg-sunken">
 			<tr>
@@ -68,19 +84,13 @@
 						aria-sort={sortKey === key ? (sortOrder === 'asc' ? 'ascending' : 'descending') : undefined}
 					>
 						{#if col.sortable}
-							<button
-								type="button"
-								data-variant="ghost"
-								data-size="sm"
-								class="px-xs gap-xs wfull {HEAD_ALIGN_CLASSES[col.align ?? 'left']}"
-								onclick={() => toggleSort(col)}
-							>
+							<Button variant="ghost" size="h-sm" class="wfull {HEAD_ALIGN_CLASSES[col.align ?? 'left']}" onclick={() => toggleSort(col)}>
 								<span>{col.label}</span>
 								<Icon
 									icon={sortKey === key ? (sortOrder === 'asc' ? luChevronUp : luChevronDown) : luChevronsUpDown}
 									class={sortKey === key ? 'text-theme' : 'text-muted'}
 								/>
-							</button>
+							</Button>
 						{:else}
 							{col.label}
 						{/if}
@@ -92,7 +102,7 @@
 			{#each sortedRows as row, r (r)}
 				<tr class={striped && r % 2 === 1 ? 'bg-sunken' : ''}>
 					{#each columns as col (col.key)}
-						<td class="px-md py-sm bb-sub {ALIGN_CLASSES[col.align ?? 'left']}">
+						<td class="px-md py-sm bb-sub tabular-nums {ALIGN_CLASSES[col.align ?? 'left']}">
 							{#if cell}
 								{@render cell({ row, column: col, value: row[col.key as keyof T] })}
 							{:else}

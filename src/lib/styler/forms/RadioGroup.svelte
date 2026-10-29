@@ -1,3 +1,5 @@
+<!-- @component A labelled group of radio buttons built from an `options` list. -->
+
 <script lang="ts" module>
 	export interface RadioOption {
 		value: string | number;
@@ -10,8 +12,7 @@
 <script lang="ts">
 	import { setContext, type Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Orientation } from '../types';
-	import Radio from './Radio.svelte';
+		import Radio from './Radio.svelte';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		value?: string | number;
@@ -20,7 +21,7 @@
 		description?: string;
 		helperText?: string;
 		error?: boolean | string;
-		orientation?: Orientation;
+		direction?: 'horizontal' | 'vertical';
 		options?: RadioOption[];
 		disabled?: boolean;
 		children?: Snippet;
@@ -34,7 +35,7 @@
 		description,
 		helperText,
 		error,
-		orientation = 'vertical',
+		direction = 'vertical',
 		options = [],
 		disabled = false,
 		children,
@@ -52,6 +53,7 @@
 		name: () => groupName,
 		value: () => value,
 		disabled: () => disabled,
+		invalid: () => Boolean(error),
 		select: (val: string | number) => (value = val)
 	});
 </script>
@@ -72,7 +74,7 @@
 			{#if description}<span id="{uid}-desc" class="text-body-sm text-muted">{description}</span>{/if}
 		</div>
 	{/if}
-	<div class="{orientation === 'horizontal' ? 'row wrap gap-md' : 'box gap-sm'}">
+	<div class="{direction === 'horizontal' ? 'row wrap gap-md' : 'box gap-sm'}">
 		{#each options as opt (opt.value)}
 			<Radio value={opt.value} label={opt.label} description={opt.description} disabled={opt.disabled} />
 		{/each}

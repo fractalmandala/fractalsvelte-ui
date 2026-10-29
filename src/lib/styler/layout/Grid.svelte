@@ -1,23 +1,28 @@
+<!-- @component A grid container with responsive column counts, gap and alignment. -->
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { FsSpace } from '../types';
-	import { GAP, CGAP, RGAP, GRID_COLS, GRID_ALIGN, GRID_JUSTIFY, cx, type FsAlign, type FsColumns } from '../classes';
+	import type { Space } from '../types';
+	import type { Align } from './Stack.svelte';
+
+	const GRID_ALIGN: Record<Align, string> = { start: 'ytop', center: 'ycenter', end: 'ybot', stretch: 'ystretch' };
+	const GRID_JUSTIFY: Record<Align, string> = { start: 'xleft', center: 'xcenter', end: 'xright', stretch: 'xstretch' };
 
 	/**
 	 * 1–6 use fractalstyler's responsive grids (grid-3 is 1 → 3, grid-4 is
 	 * 1 → 2 → 4, grid-6 is 1 → 3 → 6). 'auto-fit' is .card-grid: as many
 	 * columns of at least --card-min as fit.
 	 */
-	export type GridColumns = FsColumns | 'auto-fit';
+	export type GridColumns = 1 | 2 | 3 | 4 | 5 | 6 | 'auto-fit';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		columns?: GridColumns;
-		gap?: FsSpace;
-		gapX?: FsSpace;
-		gapY?: FsSpace;
-		align?: FsAlign;
-		justify?: FsAlign;
+		gap?: Space;
+		gapX?: Space;
+		gapY?: Space;
+		align?: Align;
+		justify?: Align;
 		class?: string;
 		children?: Snippet;
 	}
@@ -39,15 +44,15 @@
 </script>
 
 <div
-	class={cx(
-		isAuto ? 'card-grid' : GRID_COLS[columns as FsColumns],
+	class={[
+		isAuto ? 'card-grid' : `grid-${columns}`,
 		!isAuto && GRID_ALIGN[align],
 		!isAuto && GRID_JUSTIFY[justify],
-		!gapX && !gapY && GAP[gap],
-		CGAP[gapX ?? gap],
-		RGAP[gapY ?? gap],
+		!gapX && !gapY && `gap-${gap}`,
+		`cgap-${gapX ?? gap}`,
+		`rgap-${gapY ?? gap}`,
 		className
-	)}
+	]}
 	{...restProps}
 >
 	{@render children?.()}
