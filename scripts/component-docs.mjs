@@ -1,10 +1,9 @@
 // @ts-nocheck
-// Steps 1 + 2 of the component-docs plan (docs/doc-templates.md).
-//   1. Component list  <- src/lib/styler/index.ts (export name, path, category from `// Section` comments),
+// Steps 1 + 2 of the component-docs pipeline (AGENTS.md):
+//   1. Component list  <- src/lib/components/index.ts (export name, path, category from `// Section` comments),
 //      plus a one-line description from the component's `<!-- @component ... -->` comment.
-//   2. Props per comp  <- `interface Props` + `$props()` defaults (ported from
-//      modules/create-docs-svelte/pipeline/extract-props.mjs), plus which CoreProps
-//      it declares, resolved to their literal values from styler/types.ts.
+//   2. Props per comp  <- `interface Props` + `$props()` defaults, plus preview props
+//      from src/site/data/component-previews.ts resolved against src/lib/types.ts.
 // Usage: node scripts/component-docs.mjs [Name ...]   (no names = every component)
 import fs from 'node:fs';
 import path from 'node:path';
@@ -17,12 +16,12 @@ import ts from 'typescript';
 /** @typedef {{ extends: string[], props: PropEntry[], coreProps: Record<string, CoreExample[]> }} ComponentProps */
 
 const root = path.resolve(import.meta.dirname, '..');
-const styler = path.join(root, 'src/lib/styler');
-const outDir = path.join(styler, 'doc/data');
+const compsDir = path.join(root, 'src/lib/components');
+const outDir = path.join(root, 'src/site/doc/data');
 const only = process.argv.slice(2);
 
-// --- types.ts: const arrays and the union types built from them ---------------
-const typesSrc = fs.readFileSync(path.join(styler, 'types.ts'), 'utf8');
+// --- src/lib/types.ts: const arrays and the union types built from them ---------------
+const typesSrc = fs.readFileSync(path.join(root, 'src/lib/types.ts'), 'utf8');
 /** @type {Record<string, string[]>} Variants -> ['primary', ...] */
 const consts = {};
 for (const m of typesSrc.matchAll(/export const (\w+) = \[([\s\S]*?)\] as const/g))
@@ -30,25 +29,20 @@ for (const m of typesSrc.matchAll(/export const (\w+) = \[([\s\S]*?)\] as const/
 /** @type {Record<string, string>} Variant -> Variants */
 const unions = {};
 for (const m of typesSrc.matchAll(/export type (\w+) = \(typeof (\w+)\)\[number\]/g)) unions[m[1]] = m[2];
-const CoreProps = consts.CoreProps ?? [];
 
 // --- Step 1: component list -----------------------------------------------------
 /**
- * First line of the Svelte `<!-- @component ... -->` doc comment (the one editors show on hover).
- * @param {string} rel path under lib/styler, without .svelte
+ * First line of the Svelte `<!-- @component ... -->` doc comment.
+ * @param {string} rel path under lib/components, without .svelte
  * @returns {string | null}
  */
 function describe(rel) {
-	const src = fs.readFileSync(path.join(styler, rel + '.svelte'), 'utf8');
+	const src = fs.readFileSync(path.join(compsDir, rel + '.svelte'), 'utf8');
 	const m = src.match(/<!--\s*@component\s*([\s\S]*?)-->/);
 	const line = m?.[1].split('\n').map((l) => l.trim()).find(Boolean);
 	return line ?? null;
 }
 
-/**
- * Display title from the export name: ButtonGroup -> "Button Group", Card3D -> "Card 3D".
- * @param {string} name
- */
 const titleOf = (name) =>
 	name.replace(/([a-z])([A-Z0-9])/g, '$1 $2').replace(/([A-Z])([A-Z][a-z])/g, '$1 $2');
 
@@ -56,7 +50,7 @@ const titleOf = (name) =>
 const components = [];
 /** @type {string | null} */
 let category = null;
-for (const line of fs.readFileSync(path.join(styler, 'index.ts'), 'utf8').split('\n')) {
+for (const line of fs.readFileSync(path.join(compsDir, 'index.ts'), 'utf8').split('\n')) {
 	const c = line.match(/^\/\/\s*(.+)$/);
 	if (c) category = c[1].trim();
 	const e = line.match(/export \{ default as (\w+) \} from '\.\/(.+)\.svelte'/);
@@ -65,27 +59,17 @@ for (const line of fs.readFileSync(path.join(styler, 'index.ts'), 'utf8').split(
 }
 
 // --- Step 2: props per component ------------------------------------------------
-/**
- * @param {string} file
- * @returns {ComponentProps}
- */
 function extract(file) {
 	const src = fs.readFileSync(file, 'utf8');
 	const scripts = [...src.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)];
 	const code = scripts.map((m) => m[2]).join('\n');
 	const sf = ts.createSourceFile('c.ts', code, ts.ScriptTarget.Latest, true);
-	/** @param {ts.Node} n */
 	const text = (n) => n.getText(sf).replace(/\s+/g, ' ').trim();
-	/** @type {RawProp[]} */
 	const raw = [];
-	/** @type {string[]} */
 	let ext = [];
-	/** @type {Record<string, string>} */
 	const defaults = {};
-	/** @type {Set<string>} */
 	const bindable = new Set();
 
-	/** @param {ts.Node} n */
 	function visit(n) {
 		if (ts.isInterfaceDeclaration(n) && n.name.text === 'Props') {
 			ext = (n.heritageClauses ?? []).flatMap((h) => h.types.map(text));
@@ -125,38 +109,37 @@ function extract(file) {
 	}
 	visit(sf);
 
-	/** @type {PropEntry[]} */
 	const props = raw.map((p) => ({ ...p, default: defaults[p.name] ?? null, bindable: bindable.has(p.name) }));
 	return { extends: ext, props, coreProps: {} };
 }
 
-// --- Step 3: core props from the curated doc/data/core-props.ts ------------------
-// Each curated prop becomes a list of examples { label, value }. value is plain
-// JSON, or a marker the docs page turns into something live:
-//   { $snippet: 'text' }  a small sample snippet
-//   { $icon: 'luStar' }   an icon from @fractaldesign/icons/lucide
-const curatedSrc = fs.readFileSync(path.join(outDir, 'core-props.ts'), 'utf8');
+// --- Step 3: preview props from src/site/data/component-previews.ts ------------------
+const curatedSrc = fs.readFileSync(path.join(root, 'src/site/data/component-previews.ts'), 'utf8');
 /** @type {Record<string, string[]>} */
 const curated = {};
 for (const m of curatedSrc.matchAll(/'([\w/]+)':\s*\[([^\]]*)\]/g))
 	curated[m[1]] = [...m[2].matchAll(/'([^']+)'/g)].map((x) => x[1]);
 
-/** Per-component example overrides, for props whose type gives no useful sample. */
-const OVERRIDES = {
-	'blocks/HeroBlock': {
-		children: [{ label: 'plain', value: { $snippet: 'Hero content' } }],
-		card: [
-			{ label: 'card=false', value: false },
-			{ label: 'card=true', value: true },
-			{ label: 'card + bg-sunken, shad-lg', value: true, extra: { cardProps: { surface: 'bg-sunken', shadow: 'shad-lg', border: 'border-strong' } } }
-		]
-	}
+const CARDLIKE = new Set(['layout/Card', 'layout/ClickableCard', 'layout/SelectableCard']);
+const SAMPLE_TEXT = {
+	avatar: 'https://picsum.photos/id/64/80/80',
+	timeframe: 'vs last month',
+	title: 'Title',
+	label: 'Label',
+	description: 'A short description.',
+	badge: 'New',
+	placeholder: 'Type here…',
+	popularLabel: 'Best value',
+	helperText: 'Helper text',
+	unit: '%',
+	prefix: '$',
+	suffix: 'k',
+	shortcut: '⌘K',
+	counter: '12/50',
+	error: 'Something went wrong'
 };
-const CARDLIKE = new Set(['layout/Card', 'blocks/PricingCard', 'layout/ClickableCard', 'layout/SelectableCard', 'layout/BentoCell']);
 
-const SAMPLE_TEXT = { avatar: 'https://picsum.photos/id/64/80/80', timeframe: 'vs last month', title: 'Title', label: 'Label', description: 'A short description.', badge: 'New', placeholder: 'Type here…', popularLabel: 'Best value', helperText: 'Helper text', unit: '%', prefix: '$', suffix: 'k', shortcut: '⌘K', counter: '12/50', error: 'Something went wrong' };
-
-/** Local type aliases across lib/styler: `type Align = 'start' | ...` etc. */
+/** Local type aliases across lib/components */
 const aliases = {};
 (function scan(dir) {
 	for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -166,9 +149,8 @@ const aliases = {};
 			for (const m of fs.readFileSync(f, 'utf8').matchAll(/(?:export\s+)?type\s+(\w+)\s*=\s*([^;=]+?)(?:;|\n\s*(?:export|const|let|interface|type|\/\/|\/\*|<\/script>|$))/g))
 				if (!(m[1] in aliases)) aliases[m[1]] = m[2].replace(/\s+/g, ' ').replace(/^\|\s*/, '').trim();
 	}
-})(styler);
+})(compsDir);
 
-/** Split a type on top-level `|`. */
 function parts(type) {
 	const out = []; let depth = 0, cur = '';
 	for (const ch of type) {
@@ -181,8 +163,6 @@ function parts(type) {
 }
 
 function examples(name, prop, compPath) {
-	const o = OVERRIDES[compPath]?.[name];
-	if (o) return o;
 	if (!prop) return [{ label: 'snippet', value: { $snippet: 'Sample' } }];
 	const t = prop.type;
 	const ex = [];
@@ -213,24 +193,21 @@ function examples(name, prop, compPath) {
 	}
 	if (!ex.length && /\[\]$/.test(t)) { ex.push({ label: 'none', value: [] }, { label: 'sample', value: { $base: name } }); }
 	if (!ex.length) ex.push({ label: 'sample', value: { $base: name } });
-	// Card-type components never offer round.
 	const out = CARDLIKE.has(compPath) && name === 'shape' ? ex.filter((e) => e.value !== 'round') : ex;
-	// de-duplicate by label
 	return out.filter((e, i) => out.findIndex((x) => x.label === e.label) === i);
 }
-
-
 
 /** @type {Record<string, ComponentProps>} */
 const propsData = {};
 for (const c of components) {
-	const d = extract(path.join(styler, c.path + '.svelte'));
+	const d = extract(path.join(compsDir, c.path + '.svelte'));
 	const list = curated[c.path] ?? [];
 	d.coreProps = Object.fromEntries(list.map((n) => [n, examples(n, d.props.find((p) => p.name === n), c.path)]));
 	propsData[c.path] = d;
 }
 
+fs.mkdirSync(outDir, { recursive: true });
 const banner = { _generated: 'by scripts/component-docs.mjs — do not edit by hand' };
 fs.writeFileSync(path.join(outDir, 'components.json'), JSON.stringify({ ...banner, components }, null, '\t') + '\n');
 fs.writeFileSync(path.join(outDir, 'props.json'), JSON.stringify({ ...banner, props: propsData }, null, '\t') + '\n');
-console.log(`[component-docs] ${components.length} component(s) -> src/lib/styler/doc/data/{components,props}.json`);
+console.log(`[component-docs] ${components.length} component(s) -> src/site/doc/data/{components,props}.json`);

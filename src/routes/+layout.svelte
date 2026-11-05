@@ -4,10 +4,10 @@
 	import type { Snippet } from 'svelte';
 	import '@fractaldesign/fractalstyler/css'
 	import '$lib/styles/globals.sass'
-	import '$lib/styles/comps-documentation.sass'
-	import manifest from '$lib/documentation/manifest.styler.json';
-	import { modeScript, mode } from '#lib/mode/mode.svelte.js'
-	import ModeToggle from '#lib/mode/ModeToggle.svelte';
+	import '$site/styles/comps-documentation.sass'
+	import '$lib/styles/components.sass'
+	import { modeScript, mode } from '$site/mode/mode.svelte.js'
+	import ModeToggle from '$site/mode/ModeToggle.svelte';
   import {
     Agentation,
     type AnnotationProps,
@@ -84,7 +84,7 @@
 		</div>
 		<nav class="header-nav ycenter row gap-bs">
 			<a href="/">link</a>
-			<a href="/designer">Design</a>
+			<a href="/finalcomps">finalcomps</a>
 			<a href="/components">components</a>
 			<ModeToggle/>
 		</nav>

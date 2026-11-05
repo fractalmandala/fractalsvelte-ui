@@ -1,6 +1,6 @@
 {
 	"name": "@fractaldesign/fractalsvelte-ui",
-	"version": "0.8.0",
+	"version": "1.0.0",
 	"description": "Massive, modern, token-driven Svelte 5 runes component library for SvelteKit. Zero Tailwind. Scoped, beautiful, performant.",
 	"homepage": "https://fractalsvelte.dev/fractalsvelte-ui",
 	"type": "module",
@@ -28,56 +28,63 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
-		"package": "svelte-package",
-		"prepack": "svelte-kit sync && svelte-package && publint",
+		"css": "node scripts/build-css.mjs",
+		"package": "svelte-package && node scripts/build-css.mjs",
+		"prepack": "svelte-kit sync && svelte-package && node scripts/build-css.mjs && publint",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"docs:extract": "node scripts/extract-docs.mjs",
-		"docs:extract:styler": "node scripts/extract-docs.mjs --styler",
-		"docs:check": "node scripts/docs-check.mjs",
-		"docs:components": "node scripts/component-docs.mjs",
-		"styler:check": "node scripts/styler-check.mjs"
+		"docs:components": "node scripts/component-docs.mjs"
 	},
 	"files": [
 		"dist",
 		"!dist/**/*.test.*",
-		"!dist/**/*.spec.*",
-		"!dist/documentation"
+		"!dist/**/*.spec.*"
 	],
 	"sideEffects": [
-		"**/*.css"
+		"**/*.css",
+		"**/*.sass"
 	],
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
-			"svelte": "./dist/index.js"
+			"svelte": "./dist/index.js",
+			"default": "./dist/index.js"
 		},
-		"./styler": {
-			"types": "./dist/styler/index.d.ts",
-			"svelte": "./dist/styler/index.js"
-		},
-		"./tokens.css": "./dist/styles/tokens.css",
 		"./types": {
 			"types": "./dist/types.d.ts",
 			"default": "./dist/types.js"
 		},
-		"./view-transitions": {
-			"types": "./dist/view-transitions.d.ts",
-			"default": "./dist/view-transitions.js"
+		"./css": {
+			"types": "./dist/asset.d.ts",
+			"default": "./dist/css/fractalsvelte-ui.css"
 		},
-		"./transitions": {
-			"types": "./dist/transitions.d.ts",
-			"default": "./dist/transitions.js"
+		"./css/min": {
+			"types": "./dist/asset.d.ts",
+			"default": "./dist/css/fractalsvelte-ui.min.css"
+		},
+		"./styles": {
+			"types": "./dist/asset.d.ts",
+			"default": "./dist/styles/index.sass"
+		},
+		"./styles/*": "./dist/styles/*",
+		"./tokens.css": {
+			"types": "./dist/asset.d.ts",
+			"default": "./dist/styles/tokens.css"
 		},
 		"./package.json": "./package.json"
 	},
+	"dependencies": {
+		"@fractaldesign/icons": "^0.1.0"
+	},
 	"peerDependencies": {
+		"@fractaldesign/fractalstyler": "^1.5.0",
+		"sass": "^1.102.0",
 		"svelte": "^5.0.0"
 	},
 	"peerDependenciesMeta": {
-		"fractalicons": {
+		"sass": {
 			"optional": true
 		}
 	},
@@ -91,7 +98,6 @@
 	},
 	"devDependencies": {
 		"@fractaldesign/fractalstyler": "file:/Users/amrit/fractaldesign/packages/fractalstyler",
-		"@fractaldesign/icons": "^0.1.0",
 		"@fractaldesign/pop-svelte": "^0.3.1",
 		"@sveltejs/adapter-auto": "^8.0.0",
 		"@sveltejs/kit": "^3.0.0",

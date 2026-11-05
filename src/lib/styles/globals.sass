@@ -1,50 +1,3 @@
-=light-theme-tokens
-	color-scheme: light
-	--white-fixed: #FFFFFF
-	--black-fixed: #18181B
-	--bg: #FFFFFF
-	--bg-surface: #FAFAFA
-	--bg-panel: #F5F4EF
-	--bg-sunken: #F6F6F6
-	--bg-raised: #f4f4f4
-	--bg-extra: #F5F7F9
-	--bg-input: #F4F3EE
-	--bg-button: #6f6f6e
-	--text-primary: #1c1c1d
-	--text-secondary: #808182
-	--text-muted: #aaacaf
-	--text-inverse: #FFFFFF
-	--state-surface: #73d689ae
-	--state-hover: #7ee295ae
-	--state-selected: #7c7c7a
-	--border: #E5E7EB
-	--border-subtle: #F0F1F3
-	--border-strong: #bebebe
-	--theme-color: #22c55e
-	--theme-color-alt: #00df89
-	--theme-color-sub: #10b981
-	--accent-orange: #FF7A00
-	--accent-green: #10B981
-	--success: #10B981
-	--success-hover: #059669
-	--warning: #FFD000
-	--warning-hover: #E5B800
-	--danger: #EF4444
-	--danger-hover: #DC2626
-	--info: #3B82F6
-	--info-hover: #2563EB
-	--ring: rgba(255, 208, 0, 0.4)
-	--shadow-color: 0 0 0
-	--shadow-rim: inset 0 1px 0 rgba(255, 255, 255, 0.6)
-	--shadow-xs: 0 1px 2px rgb(var(--shadow-color) / 0.05)
-	--shadow-sm: 0 1px 2px rgb(var(--shadow-color) / 0.1), 0 2px 4px rgb(var(--shadow-color) / 0.05)
-	--shadow-md: 0 2px 4px rgb(var(--shadow-color) / 0.1), 0 8px 16px rgb(var(--shadow-color) / 0.2)
-	--shadow-bs: 0 2px 4px rgb(var(--shadow-color) / 0.1), 0 6px 14px rgb(var(--shadow-color) / 0.2)
-	--shadow-lg: 0 4px 8px rgb(var(--shadow-color) / 0.1), 0 12px 24px rgb(var(--shadow-color) / 0.2)
-	--shadow-xl: 0 8px 16px rgb(var(--shadow-color) / 0.1), 0 20px 36px rgb(var(--shadow-color) / 0.2)
-	--shadow-2xl: 0 12px 24px rgb(var(--shadow-color) / 0.1), 0 28px 48px rgb(var(--shadow-color) / 0.2)
-	--shadow-3xl: 0 16px 32px rgb(var(--shadow-color) / 0.1), 0 36px 64px rgb(var(--shadow-color) / 0.2)
-
 =dark-theme-tokens
 	color-scheme: dark
 	--white-fixed: #FFFFFF
@@ -96,9 +49,6 @@
 @layer fractalstyler.tokens
 	[data-mode='dark']
 		+dark-theme-tokens
-
-	[data-mode='light']
-		+light-theme-tokens
 
 	:root
 		--font-mono: "Atkinson Hyperlegible Mono", monospace
@@ -204,330 +154,6 @@ button
 	font-family: var(--font-sans)
 	&:active
 		transform: scale(1.04)
-
-.el-variant
-	&.primary
-		background-color: var(--bg-button)
-		border: 1px solid var(--bg-button)
-		color: var(--white-fixed)
-		&:hover
-			background-color: var(--state-hover)
-			border: 1px solid var(--state-hover)
-		&.selected
-			background-color: var(--state-selected)
-			border: 1px solid var(--state-selected)
-	&.secondary
-		background-color: var(--state-surface)
-		&:hover
-			background-color: var(--state-hover)
-		&.selected
-			background-color: var(--state-selected)
-			border: 1px solid var(--border)
-	&.themed
-		background-color: var(--theme-color)
-		border: 1px solid var(--theme-color)
-		color: var(--white-fixed)
-		&:hover
-			background-color: var(--theme-color-sub)
-			border: 1px solid var(--theme-color-sub)
-		&.selected
-			background-color: var(--theme-color-alt)
-			border: 1px solid var(--theme-color-alt)
-	&.outline
-		background-color: transparent
-		color: var(--text-primary)
-		border: 1px solid var(--border-strong)
-		&:hover
-			color: var(--theme-color)
-			border: 1px solid var(--theme-color)
-		&.selected
-			color: var(--text-primary)
-			background-color: var(--state-selected)
-			border: 1px solid var(--border-strong)
-	&.ghost
-		background-color: transparent
-		border: none
-		&:hover
-			background-color: var(--state-hover)
-			color: var(--white-fixed)
-		&:selected
-			background-color: var(--state-selected)
-			color: var(--white-fixed)
-	&.link
-		background-color: transparent
-		border: none
-		text-decoration: none
-		text-decoration-color: var(--theme-color)
-		&:hover
-			text-decoration: underline
-			border: none
-	&.info
-		background-color: var(--info)
-		border: 1px solid var(--info)
-		color: var(--white-fixed)
-	&.success
-		background-color: var(--success)
-		border: 1px solid var(--success)
-		color: var(--white-fixed)
-	&.warning
-		background-color: var(--warning)
-		border: 1px solid var(--warning)
-		color: var(--white-fixed)
-	&.danger
-		background-color: var(--danger)
-		border: 1px solid var(--danger)
-		color: var(--white-fixed)
-		&:hover
-			background-color: var(--danger-hover)
-			border: 1px solid var(--danger-hover)
-	&.icon
-		&.primary
-			background-color: var(--bg-button)
-			border: 1px solid var(--bg-button)
-			padding-inline: 0
-			padding-block: 0
-			&:hover
-				background-color: var(--state-hover)
-				border: 1px solid var(--state-hover)
-			&.selected
-				background-color: var(--state-selected)
-				border: 1px solid var(--state-selected)
-		&.secondary
-			background-color: var(--bg-panel)
-			border: 1px solid var(--border-subtle)
-			&:hover
-				border: 1px solid var(--border)
-			&.selected
-				background-color: var(--state-selected)
-				border: 1px solid var(--border)
-		&.themed
-			background-color: var(--theme-color)
-			border: 1px solid var(--theme-color)
-			&:hover
-				background-color: var(--theme-color-sub)
-				border: 1px solid var(--theme-color-sub)
-			&.selected
-				background-color: var(--theme-color-alt)
-				border: 1px solid var(--theme-color-alt)
-		&.outline
-			background-color: transparent
-			color: var(--text-primary)
-			border: 1px solid var(--border-dark)
-			&:hover
-				color: var(--theme-color)
-				border: 1px solid var(--theme-color)
-			&.selected
-				color: var(--text-primary)
-				background-color: var(--state-selected)
-				border: 1px solid var(--border-dark)
-		&.ghost
-			background-color: transparent
-			border: none
-			&:hover
-				background-color: var(--state-hover)
-			&:selected
-				background-color: var(--state-selected)
-		&.link
-			background-color: transparent
-			border: none
-			text-decoration: none
-			text-decoration-color: var(--theme-color)
-			&:hover
-				text-decoration: underline
-		
-.btn-icon
-	// icon only: always a square, width = the h-* size
-	display: inline-flex
-	align-items: center
-	justify-content: center
-	flex-shrink: 0
-	aspect-ratio: 1
-	&.el-size
-		padding: 0
-		&.h-sm
-			width: var(--height-sm)
-		&.h-md
-			width: var(--height-md)
-		&.h-bs
-			width: var(--height-bs)
-		&.h-lg
-			width: var(--height-lg)
-		&.h-xl
-			width: var(--height-xl)
-	&.primary
-		background-color: var(--bg-button)
-		border: 1px solid var(--bg-button)
-		color: var(--white-fixed)
-		&:hover
-			background-color: var(--state-hover)
-			border: 1px solid var(--state-hover)
-		&.selected
-			background-color: var(--state-selected)
-			border: 1px solid var(--state-selected)
-	&.secondary
-		background-color: var(--bg-panel)
-		border: 1px solid var(--border-strong)
-		&:hover
-			border: 1px solid var(--border)
-		&.selected
-			background-color: var(--state-selected)
-			border: 1px solid var(--border)
-	&.themed
-		background-color: var(--theme-color)
-		border: 1px solid var(--theme-color)
-		color: var(--white-fixed)
-		&:hover
-			background-color: var(--theme-color-sub)
-			border: 1px solid var(--theme-color-sub)
-		&.selected
-			background-color: var(--theme-color-alt)
-			border: 1px solid var(--theme-color-alt)
-	&.outline
-		background-color: transparent
-		color: var(--text-primary)
-		border: 1px solid var(--border-strong)
-		&:hover
-			color: var(--theme-color)
-			border: 1px solid var(--theme-color)
-		&.selected
-			color: var(--text-primary)
-			background-color: var(--state-selected)
-			border: 1px solid var(--border-strong)
-	&.ghost
-		background-color: transparent
-		border: none
-		&:hover
-			background-color: var(--state-hover)
-			color: var(--white-fixed)
-		&:selected
-			background-color: var(--state-selected)
-			color: var(--white-fixed)
-	&.link
-		background-color: transparent
-		border: none
-		text-decoration: none
-		text-decoration-color: var(--theme-color)
-		&:hover
-			text-decoration: underline
-			border: none
-
-.btn-icon-text
-	display: flex
-	gap: var(--space-xs)
-	align-items: center
-	justify-content: xleft
-	&.primary
-		background-color: var(--bg-button)
-		border: 1px solid var(--bg-button)
-		color: var(--white-fixed)
-		&:hover
-			background-color: var(--state-hover)
-			border: 1px solid var(--state-hover)
-		&.selected
-			background-color: var(--state-selected)
-			border: 1px solid var(--state-selected)
-	&.secondary
-		background-color: var(--bg-panel)
-		border: 1px solid var(--border-strong)
-		&:hover
-			border: 1px solid var(--border)
-		&.selected
-			background-color: var(--state-selected)
-			border: 1px solid var(--border)
-	&.themed
-		background-color: var(--theme-color)
-		border: 1px solid var(--theme-color)
-		color: var(--white-fixed)
-		&:hover
-			background-color: var(--theme-color-sub)
-			border: 1px solid var(--theme-color-sub)
-		&.selected
-			background-color: var(--theme-color-alt)
-			border: 1px solid var(--theme-color-alt)
-	&.outline
-		background-color: transparent
-		color: var(--text-secondary)
-		border: 1px solid var(--border-strong)
-		&:hover
-			color: var(--theme-color)
-			border: 1px solid var(--theme-color)
-		&.selected
-			color: var(--text-primary)
-			background-color: var(--state-selected)
-			border: 1px solid var(--border-strong)
-	&.ghost
-		background-color: transparent
-		border: none
-		&:hover
-			background-color: var(--state-hover)
-			color: var(--white-fixed)
-		&:selected
-			background-color: var(--state-selected)
-			color: var(--white-fixed)
-	&.link
-		background-color: transparent
-		border: none
-		text-decoration: none
-		text-decoration-color: var(--theme-color)
-		&:hover
-			text-decoration: underline
-			border: none
-	&.el-size.h-sm
-		height: var(--height-sm)
-	&.el-size.h-md
-		height: var(--height-md)
-	&.el-size.h-bs
-		height: var(--height-bs)
-	&.el-size.h-lg
-		height: var(--height-lg)
-
-.el-shape
-	&.square
-		border-radius: 0
-	&.min
-		border-radius: 4px
-	&.modern
-		border-radius: 8px
-	&.curved
-		border-radius: 16px
-	&.round
-		border-radius: 9999px
-
-.el-size
-	&.h-xs
-		height: var(--height-xs)
-		font-size: var(--text-xs)
-	&.h-sm
-		height: var(--height-sm)
-		font-size: var(--text-xs)
-	&.h-md
-		height: var(--height-md)
-		font-size: var(--text-sm)
-	&.h-bs
-		height: var(--height-bs)
-		font-size: var(--text-sm)
-	&.h-lg
-		height: var(--height-lg)
-		font-size: var(--text-md)
-		padding-inline: var(--space-bs)
-	&.h-xl
-		height: var(--height-xl)
-		font-size: var(--text-md)
-		padding-inline: var(--space-lg)
-
-.tint
-	&.info
-		background-color: color-mix(in srgb, var(--info) 10%, var(--bg-panel))
-		border-color: color-mix(in srgb, var(--info) 35%, transparent)
-	&.success
-		background-color: color-mix(in srgb, var(--success) 10%, var(--bg-panel))
-		border-color: color-mix(in srgb, var(--success) 35%, transparent)
-	&.warning
-		background-color: color-mix(in srgb, var(--warning) 10%, var(--bg-panel))
-		border-color: color-mix(in srgb, var(--warning) 35%, transparent)
-	&.danger
-		background-color: color-mix(in srgb, var(--danger) 10%, var(--bg-panel))
-		border-color: color-mix(in srgb, var(--danger) 35%, transparent)
 
 .avatar-group
 	// avatars shape themselves (svg rx); only the +N chip needs a radius here.
@@ -718,7 +344,7 @@ button
 		opacity: 0.6
 
 // Icon buttons stay square whatever variant or size class follows.
-.btn-icon.el-size.el-size
+.btn-icon.size.size
 	padding: 0
 
 // Surface fills fractalstyler doesn't ship as classes (it has the tokens only).
@@ -742,7 +368,7 @@ $surface-tokens: (bg-main: --bg, bg-surface: --bg-surface, bg-panel: --bg-panel,
 	@supports (color: oklch(from red l c h))
 		color: oklch(from var(--ink-bg) clamp(0.2, calc((0.62 - l) * 1000), 1) 0 0)
 
-.el-variant.el-surface
+.variant.el-surface
 	@each $cls, $token in $surface-tokens
 		&.#{$cls}, &.#{$cls}:hover
 			--ink-bg: var(#{$token})
@@ -755,7 +381,7 @@ $surface-tokens: (bg-main: --bg, bg-surface: --bg-surface, bg-panel: --bg-panel,
 					opacity: 0.65
 
 // split button: the group's shape class sets the outer radius (fractalstyler fixes it at radius-sm)
-$split-radius: (square: 0, min: var(--radius-sm), modern: var(--radius-md), curved: var(--radius-bs), round: 9999px)
+$split-radius: (rect: 0, min: var(--radius-sm), modern: var(--radius-md), curved: var(--radius-bs), round: 9999px)
 .split-button
 	@each $shape, $r in $split-radius
 		&.#{$shape} > :first-child
@@ -817,7 +443,7 @@ $split-radius: (square: 0, min: var(--radius-sm), modern: var(--radius-md), curv
 
 // Field error state: danger border on the control. Set from the control's own error prop
 // or from FormField through field-context.
-.is-invalid, .checkbox-box input.is-invalid, .border.is-invalid, .border-strong.is-invalid, .el-variant.is-invalid, .el-variant.is-invalid:hover
+.is-invalid, .checkbox-box input.is-invalid, .border.is-invalid, .border-strong.is-invalid, .variant.is-invalid, .variant.is-invalid:hover
 	border-color: var(--danger)
 
 // native Select: fractalstyler paints a fixed-grey arrow; Select draws its own chevron instead

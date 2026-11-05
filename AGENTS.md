@@ -1,30 +1,76 @@
 # AGENTS
 
-The top of the README in every project must have:
+Fractalsvelte UI is a Sveltekit components library.
 
-name - name of project
-description - 1 line description
-type - sveltekit/gpui/site/ext/other
-//when relevant:
-gitlink - 
-npmlink - 
-url - 
+## Rules
 
-1. Every project must have README.md, AGENTS.md (this file and its contents), and if relevant DESIGN.md; and if/when published on NPM/githun a LICENSE if relevant
-2. Readme must contain commands for run dev, run desktop, run build, build .dmg.
+- The components are those in `lib/components` ONLY. Any other files in other folders are not components.
+- The canonical props are at `types.ts` at `lib/types.ts`. Any other file is to be ignored. In case of conflicts or ambiguities `lib/types.ts` is the final word.
+- The canonical styling for all the canonical props are in `fscomponents.sass` at `lib/fscomponents.sass`.
+- The canonical list of tokens and their current default values is `fstokens.sass` at `lib/fstokens.sass`. In case of conflicts or ambiguities, `lib/fstokens.sass` is the final word. See section `## Tokens` below.
+- `src/lib` should only contain components and any/all supporting files for them that should be accessible to the user. That is, it should only contain what is to be published in the package as part of fractalsvelte-ui. 
+	- `src/routes` is for preview pages, doc testing etc.
+	- everything else should be in `src/site`.
 
-3. When beginning a new project:
-	- `pnpm add -D sass` && `pnpm add -D @fractaldesign/fractalstyler`
-	- `https://www.npmjs.com/package/@fractaldesign/fractalstyler` and `import '@fractaldesign/fractalstyler/css'` into root layout
-	- add an entry for this project in `/Users/amrit/ars-docs/alldocs/04canonicals/project-tracker.json`
-	- Use and follow DESIGN.md
-	
-4. Do not initiate git or push to github unless user instructs.
+> A component, its canonical props, styling, AND the setup for its documentation are ONE SINGLE UNIT. That is, a component is not complete till its documentation is also prepared, in the form of:
+1. Component file path
+2. Component name
+3. One line description
+4. Component group
+5. Preview Props - the props for this component that must be shown on its documentation page. see sections `## Documentation` and `## Props` below.
+6. Demo Usage - a `<component-name>.svelte` file in `lib/demos` which imports and uses the component exactly as it would be by a user. It acts as the simulation of real-world component usage.
 
-5. When developing, load and use poteto-mode - `/Users/amrit/ars-docs/alldocs/90skills/pstack/skills/poteto-mode`
+> The canonical preview props per component are at `component-previews.ts` at `site/data/component-previews.ts`. Any other file is to be ignored. In case of conflicts or ambiguities `site/data/component-previews.ts` is the final word.
 
+## Component Workflow
 
-## Knowledge
+1. New component goes in `lib/components/<group-name>/`
+2. It must use from `lib/types.ts`, and if additional are needed they should be added there.
+3. See `## Tokens` and `## Props` to see which classes, props, variables to use.
+4. Add to `site/data/component-previews.ts` the props which should be used for this component's documentation page.
+5. Add a `site/demos/<group-name>/<component-name>.svelte` as the component's import and usage demo.
+6. Begin every component file with:
+> `<!-- @component <add component description here>. -->`
+7. Add and use 'TextSize` prop in components that have text, so that users can decide their own text sizes. Use `text-bs` or `text-md` as defaults. 
+8. Always keep the `{className}` in component classes, so that users can set their own classes.
 
-For GPUI, you have access to `/Users/amrit/ars-docs/alldocs/04canonicals/gpui-wiki`.
-You can use the skills at `/Users/amrit/ars-docs/alldocs/90skills`
+## Documentation
+
+> **A component, its canonical props, styling, AND the setup for its documentation are ONE SINGLE UNIT. That is, a component is not complete till its documentation is also prepared**
+> **The documentation becomes the proof. If a component is complete, its documentation must by definition be complete and ready and functioning. If documentation is not complete and functioning, the component is not complete.**
+> **Therefore, the definition of "done" in this project is "component + component documentation complete."**
+
+### Documentation Structure
+
+```
+Component Name
+Component Description
+Component Group
+
+Component Hero Demo - this is the component demo added at `site/demos/<group-name>/<component-name>.svelte`
+
+Installation and Usage
+
+Component Prop Previews - Preview areas showing all iterations of the component given variation in prop values. Definitions must be given for each prop, from `site/data/prop-definitions.ts`. See section `## Props` below.
+
+Props Table - A table showing all props the component uses and explaining each.
+```
+
+## Props
+
+The universal canonical file of all prop types is `src/lib/types.ts`. 
+Also important is `src/site/data/component-previews.ts`, which lists which props should be in the documentation page of each component. The demos for any prop type should be such:
+
+Ex: take prop 'variant' which has possible values - 'primary', 'secondary', 'themed', 'outline', 'ghost', 'link'. 
+So, for all components that have `variant` listed in the `component-previews.ts` file, the demo for variants should be:
+
+```
+<div class="row wrap gap-bs ycenter">
+	<Component class="variant primary'>Primary</Component>
+	<Component class="variant secondary'>Secondary</Component>
+	<Component class="variant themed'>Themed</Component>
+	<Component class="variant outline'>Outline</Component>
+	<Component class="variant ghost'>Ghost</Component>
+	<Component class="variant link'>Link</Component>
+</div>
+```

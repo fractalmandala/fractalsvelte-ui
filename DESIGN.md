@@ -9,6 +9,19 @@
 5. You are a guest in this project. Follow established conventions. For any styling, layout, ui, markup decision - first see whether existing standard is being used in the project for that.
 6. Do not use gap-xs. At largest containers on pages, use gap-xl (when containers are `box` class), and second level use gap-lg, at 3rd level like cards use gap-bs. For items clamped closer, inside cards for example, like a heading and description in a `box` class, use `gap-md` or `gap-sm` on the box.
 
+## Color Behaviour
+
+- primary variant is default variant for components where its used - buttons, iconbuttons
+- on light mode, dark greys/blacks for bg-button, and text-inverse for text on buttons
+	- on dark mode, soft whites for bg, text-inverse on button
+
+- secondary is soft, low contrast with main background. 
+- themed paints bg in theme color, on light mode should be dark because text-inverse is white
+	on dark mode text-primary, if theme color is still dark
+
+- outline has dark border and text primary
+
+
 ## Canonical Layouts
 
 **This is the canonical markup permitted**

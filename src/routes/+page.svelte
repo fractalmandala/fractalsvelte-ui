@@ -1,7 +1,7 @@
 <script lang="ts">
 
 	import '@fractaldesign/fractalstyler/css'
-	import CorePropsRows from '$lib/styler/doc/CorePropsRows.svelte'
+	import CorePropsRows from '$site/doc/CorePropsRows.svelte'
 
 </script>
 

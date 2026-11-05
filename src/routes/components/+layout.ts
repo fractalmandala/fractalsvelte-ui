@@ -1,13 +1,23 @@
-import { components } from '$lib/styler/doc/data/components.json';
+import { components } from '$site/doc/data/components.json';
 export const prerender = true;
 
-const CATEGORY_ORDER = ['actions', 'blocks', 'display', 'forms', 'layout', 'motion', 'navigation', 'overlays', 'typography'] as const;
+const CATEGORY_ORDER = [
+	'actions',
+	'blocks',
+	'display',
+	'forms',
+	'layout',
+	'navigation',
+	'overlays',
+	'typography'
+] as const;
+
 const CATEGORY_LABEL: Record<string, string> = {
 	actions: 'Actions',
 	blocks: 'Blocks',
 	display: 'Display',
 	forms: 'Forms',
-	motion: 'Motion',
+	layout: 'Layout',
 	navigation: 'Navigation',
 	overlays: 'Overlays',
 	typography: 'Typography'
@@ -18,12 +28,13 @@ export function load() {
 		category,
 		label: CATEGORY_LABEL[category],
 		items: components
-			// components.json categories are capitalised ("Actions")
-			.filter((c) => c.category.toLowerCase() === category)
-			// matches the [slug] route: /components/button
-			.map((c) => ({ name: c.title, slug: `/components/${c.name.toLowerCase()}` }))
-	}));
-
+			.filter((c) => c.category?.toLowerCase() === category)
+			.map((c) => ({
+				name: c.title,
+				description: c.description,
+				slug: `/components/${c.name.toLowerCase()}`
+			}))
+	})).filter((g) => g.items.length > 0);
 
 	return { groups };
 }

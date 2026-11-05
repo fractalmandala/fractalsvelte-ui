@@ -7,13 +7,14 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@fractaldesign/icons':
+        specifier: ^0.1.0
+        version: 0.1.0(svelte@5.57.2)
     devDependencies:
       '@fractaldesign/fractalstyler':
         specifier: file:/Users/amrit/fractaldesign/packages/fractalstyler
         version: file:../fractalstyler(sass@1.105.1)(svelte@5.57.2)(zod@4.6.7)
-      '@fractaldesign/icons':
-        specifier: ^0.1.0
-        version: 0.1.0(svelte@5.57.2)
       '@fractaldesign/pop-svelte':
         specifier: ^0.3.1
         version: 0.3.1

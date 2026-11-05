@@ -4,12 +4,8 @@
  * Zero Tailwind. Scoped CSS. Precision ergonomics.
  */
 
-// Types, Transitions, and Design Tokens
-export * from './transitions';
-export * from './view-transitions';
-export { themeState } from './theme.svelte';
+// Types
+export * from './types';
 
-// Components (the styler edition)
-export * from './styler';
-// Names both ./types and ./styler export: the styler axes win.
-export type { Pad, Placement, Shadow, Shape, Size, Space, Variant } from './styler';
+// Components
+export * from './components';

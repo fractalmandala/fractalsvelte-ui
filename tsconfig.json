@@ -6,7 +6,9 @@
 			"$lib": ["./src/lib"],
 			"$lib/*": ["./src/lib/*"],
 			"#lib": ["./src/lib"],
-			"#lib/*": ["./src/lib/*"]
+			"#lib/*": ["./src/lib/*"],
+			"$site": ["./src/site"],
+			"$site/*": ["./src/site/*"]
 		}
 	},
 	"include": ["src", "vite.config.ts", "scripts"]

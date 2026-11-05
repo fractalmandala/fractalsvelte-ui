@@ -1,11 +1,11 @@
 <script lang="ts">
 
 	import { Icon } from '@fractaldesign/icons'
-	import IconTextButton from '#lib/styler/actions/IconTextButton.svelte'
+	import IconTextButton from '$site/doc/IconTextButton.svelte'
 	import { reMarkdownLine, reFileCopyLine, reRobot2Line } from '@fractaldesign/icons/remix'
 	import { onMount } from 'svelte'
 	import { page } from '$app/state'
-	import { htmlToMarkdown } from '#lib/utils/htmlToMarkdown'
+	import { htmlToMarkdown } from '$site/utils/htmlToMarkdown'
 	let { children, data } = $props()
 	let query = $state('');
 	const needle = $derived(query.trim().toLowerCase());

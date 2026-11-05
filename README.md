@@ -20,7 +20,7 @@ A massive, modern, token-driven **Svelte 5 Runes** component library for **Svelt
 ## Component Catalog (91+ Components)
 
 ### 1. Actions & Triggers (`src/lib/components/actions/`)
-- **`Button`**: Versatile interactive button with variants (`primary`, `secondary`, `soft`, `outline`, `ghost`, `destructive`, `surface`), sizes (`xs`–`xl`), shapes (`rounded`, `pill`, `square`), loading spinner, and dual button/anchor rendering.
+- **`Button`**: Versatile interactive button with variants (`primary`, `secondary`, `soft`, `outline`, `ghost`, `destructive`, `surface`), sizes (`xs`–`xl`), shapes (`rounded`, `pill`, `rect`), loading spinner, and dual button/anchor rendering.
 - **`IconButton`**: Compact square/circle action button with accessible `aria-label`, hover tooltips, and scale tiers.
 - **`ButtonGroup`**: Seamlessly attached or spaced cluster container supporting horizontal and vertical orientations.
 - **`SplitButton`**: Dual-action split component combining a main action button with a dropdown trigger chevron button.
@@ -202,7 +202,7 @@ Shared unions for building your own wrappers live in `/types`:
 import { VARIANTS, SIZES, SHAPES, type Variant, type Size, type Shape } from '@fractaldesign/fractalsvelte-ui/types';
 // Variant: 'primary' | 'secondary' | 'soft' | 'outline' | 'ghost' | 'destructive' | 'surface'
 // Size:    'xs' | 'sm' | 'md' | 'lg' | 'xl'
-// Shape:   'square' | 'rounded' | 'pill'
+// Shape:   'rect' | 'rounded' | 'pill'
 ```
 
 ### 3. Style it your way — your CSS always wins
@@ -278,7 +278,7 @@ Component names and most props match the main library. The visual axes are fract
 | `variant` (buttons) | `primary` `secondary` `soft` `outline` `ghost` `link` `destructive` (+ `iconbox` on IconButton) |
 | `variant` (fields) | `primary` `secondary` `soft` `outline` `ghost` |
 | `size` | `sm` `md` `bs` `lg` (control heights 20 / 24 / 28 / 32px) |
-| `shape` | `square` `modern` `curved` `round` (cards: no `square`) |
+| `shape` | `rect` `modern` `curved` `round` |
 | `padding` (cards) | `sm` `md` `bs` `lg` `xl` |
 | `tone` (replaces colour strings) | `neutral` `theme` `info` `success` `warning` `danger` |
 
