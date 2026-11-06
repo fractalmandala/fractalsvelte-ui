@@ -1,6 +1,6 @@
 {
 	"name": "@fractaldesign/fractalsvelte-ui",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "Massive, modern, token-driven Svelte 5 runes component library for SvelteKit. Zero Tailwind. Scoped, beautiful, performant.",
 	"homepage": "https://fractalsvelte.dev/fractalsvelte-ui",
 	"type": "module",
