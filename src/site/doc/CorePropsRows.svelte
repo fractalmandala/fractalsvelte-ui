@@ -2,28 +2,16 @@
 	// Component Prop Previews: renders one preview section per prop listed for the component
 	// in src/site/data/component-previews.ts, using definitions from src/site/data/prop-definitions.ts.
 	import { createRawSnippet, type Component, type Snippet } from 'svelte';
-	import propsJson from './data/props.json';
 	import { coreSamples } from './data/core-samples';
 	import { componentPreviews } from '$site/data/component-previews';
 	import { definitionFor, definitionHtml } from '$site/data/prop-definitions';
+	import {
+		getLiveComponentByPath,
+		getLiveExamplesForProp,
+		type Example
+	} from '$site/doc/live-components';
 	import * as lucide from '@fractaldesign/icons/lucide';
 	import Select from '$lib/components/forms/Select.svelte';
-
-	interface Example {
-		label: string;
-		value: unknown;
-		extra?: Record<string, unknown>;
-	}
-	interface PropMeta {
-		name: string;
-		type?: string;
-		optional?: boolean;
-		comment?: string | null;
-	}
-	interface Entry {
-		props: PropMeta[];
-		coreProps: Record<string, Example[]>;
-	}
 
 	interface Props {
 		/** Path under lib/components without extension, e.g. "actions/Button". */
@@ -39,7 +27,8 @@
 		eager: true,
 		import: 'default'
 	});
-	const data = (propsJson as unknown as { props: Record<string, Entry> }).props;
+
+	const entry = $derived(getLiveComponentByPath(path));
 
 	const samples = $derived(
 		Object.fromEntries(
@@ -47,15 +36,16 @@
 		)
 	);
 	const Comp = $derived(components[`/src/lib/components/${path}.svelte`]);
-	const entry = $derived(data[path]);
+
 	const rows = $derived.by(() => {
-		const coreMap = entry?.coreProps ?? {};
-		const previewOrder = componentPreviews[path];
-		if (!previewOrder) return Object.entries(coreMap);
-		return previewOrder
-			.filter((prop) => prop in coreMap)
-			.map((prop) => [prop, coreMap[prop]] as [string, Example[]]);
+		const previewProps = componentPreviews[path] ?? [];
+		const propMetaMap = new Map((entry?.props ?? []).map((p) => [p.name, p]));
+		return previewProps.map((prop) => {
+			const examples = getLiveExamplesForProp(path, prop, propMetaMap.get(prop));
+			return [prop, examples] as [string, Example[]];
+		});
 	});
+
 	const hasChildren = $derived(Boolean(entry?.props.some((p) => p.name === 'children')));
 	const usesTextLabelAsChildren = $derived(
 		hasChildren &&
@@ -105,6 +95,8 @@
 
 	const STYLE_KEYS = new Set([
 		'variant',
+		'iconVariant',
+		'iconvariant',
 		'size',
 		'shape',
 		'shadow',

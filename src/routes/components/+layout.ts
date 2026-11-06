@@ -1,4 +1,4 @@
-import { components } from '$site/doc/data/components.json';
+import { liveComponents } from '$site/doc/live-components';
 export const prerender = true;
 
 const CATEGORY_ORDER = [
@@ -27,7 +27,7 @@ export function load() {
 	const groups = CATEGORY_ORDER.map((category) => ({
 		category,
 		label: CATEGORY_LABEL[category],
-		items: components
+		items: liveComponents
 			.filter((c) => c.category?.toLowerCase() === category)
 			.map((c) => ({
 				name: c.title,

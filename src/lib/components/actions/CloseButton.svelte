@@ -1,38 +1,37 @@
-<!-- @component An icon button with an Close Icon, for closing panels, dialogs and dismissible items. -->
+<!-- @component A dismiss button with an X icon for closing panels, dialogs and dismissible items. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import { Icon as Iconbox } from '@fractaldesign/icons';
-	import { luX } from '@fractaldesign/icons/lucide';
-	import type { Size, Shape, Icon } from '$lib/types.js';
-	import IconButton from './IconButton.svelte';
+	import type { IconVariant, Size, Shape, Shadow } from '$lib/types.js';
+	import IconButton from '$lib/components/actions/IconButton.svelte';
+	import Close from '$lib/icons/close.svelte';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'type'> {
-		/** Accessible name; also shown as the native tooltip. */
 		label?: string;
-		icon?: Icon;
+		/** Visual style variant for close button. */
+		iconVariant?: IconVariant;
+		/** Alias for iconVariant */
+		variant?: IconVariant;
 		size?: Size;
 		shape?: Shape;
-		loading?: boolean;
-		disabled?: boolean | null;
+		shadow?: Shadow;
 		class?: string;
-		href?: string;
-		/** Ignored: the glyph is always an X. */
-		children?: Snippet;
 	}
 
 	let {
 		label = 'Close',
-		icon = 'ghost',
+		iconVariant,
+		variant,
 		size = 'h-md',
-		shape = 'min',
+		shape = 'rect',
+		shadow = 'shad-none',
 		class: className = '',
-		children: _children,
 		...restProps
 	}: Props = $props();
+
+	const currentVariant = $derived(iconVariant ?? variant ?? 'ghost');
 </script>
 
-<IconButton {label} {icon} {size} {shape} class={className} {...restProps}>
-	<Iconbox icon={luX} />
+<IconButton {label} iconVariant={currentVariant} {size} {shape} {shadow} class={className} {...restProps}>
+	<Close />
 </IconButton>

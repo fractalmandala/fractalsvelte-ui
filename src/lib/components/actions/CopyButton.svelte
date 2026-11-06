@@ -1,34 +1,33 @@
-<!-- @component A button with Copy Icon, copies `text` to the clipboard and briefly shows a copied state. -->
+<!-- @component Clipboard copy trigger with automatic check-mark feedback state. -->
 
 <script lang="ts">
 	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import { Icon } from '@fractaldesign/icons';
-	import { luCopy, luCheck } from '@fractaldesign/icons/lucide';
-	import type { Variant, Size, Shape, TextSize } from '$lib/types.js';
-	import Button from './Button.svelte';
+	import type { IconVariant, Size, Shape, Shadow } from '$lib/types.js';
+	import IconButton from '$lib/components/actions/IconButton.svelte';
+	import Copy from '$lib/icons/copy.svelte';
+	import Check from '$lib/icons/check.svelte';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'type'> {
 		text: string;
-		label?: string;
 		copiedLabel?: string;
-		/** How long the copied state holds, in ms. */
 		resetAfter?: number;
-		variant?: Variant;
+		iconVariant?: IconVariant;
+		variant?: IconVariant;
 		size?: Size;
 		shape?: Shape;
-		textsize?: TextSize;
+		shadow?: Shadow;
 		class?: string;
 	}
 
 	let {
 		text,
-		label = 'Copy',
 		copiedLabel = 'Copied',
 		resetAfter = 2000,
-		variant = 'secondary',
+		iconVariant,
+		variant,
 		size = 'h-md',
-		shape = 'modern',
-		textsize = 'text-md',
+		shape = 'rect',
+		shadow = 'shad-none',
 		class: className = '',
 		...restProps
 	}: Props = $props();
@@ -44,14 +43,23 @@
 			console.error('Failed to copy to clipboard', err);
 		}
 	}
+
+	const currentVariant = $derived(iconVariant ?? variant ?? 'ghost');
 </script>
 
-<Button {variant} {size} {shape} {textsize} class={className} onclick={handleCopy} aria-live="polite" {...restProps}>
+<IconButton
+	variant={currentVariant}
+	label={copied ? copiedLabel : 'Copy'}
+	{size}
+	{shape}
+	{shadow}
+	class={className}
+	onclick={handleCopy}
+	{...restProps}
+>
 	{#if copied}
-		<Icon icon={luCheck} class="text-success" />
-		<span>{copiedLabel}</span>
+		<Check />
 	{:else}
-		<Icon icon={luCopy} />
-		<span>{label}</span>
+		<Copy />
 	{/if}
-</Button>
+</IconButton>

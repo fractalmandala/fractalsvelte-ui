@@ -18,6 +18,53 @@ export const coreSamples: Record<string, Record<string, unknown>> = {
 			{ title: 'Themeable', description: 'Light and dark modes.', icon: { $icon: 'luPalette' } }
 		]
 	},
+	'blocks/Audio': {
+		title: 'Ambient Echoes',
+		caption: 'Soundscape Studio',
+		src: 'https://cdn.freesound.org/previews/612/612095_5674468-lq.mp3'
+	},
+	'blocks/AudioTrack': {
+		trackNumber: 1,
+		title: 'Solaris Resonance',
+		artist: 'Fractal Sound Lab',
+		album: 'Modular Harmonics',
+		duration: 245,
+		active: true
+	},
+	'blocks/AudioTrackList': {
+		tracks: [
+			{ id: 1, title: 'Solaris Resonance', artist: 'Fractal Sound Lab', album: 'Modular Harmonics', duration: '4:05' },
+			{ id: 2, title: 'Prism Horizon', artist: 'Aura', album: 'Modular Harmonics', duration: '3:22' },
+			{ id: 3, title: 'Kinetic Waves', artist: 'Vector One', album: 'Modular Harmonics', duration: '5:10' }
+		]
+	},
+	'blocks/Canvas': {
+		ratio: '16/9',
+		label: 'Interactive Canvas'
+	},
+	'blocks/Carousel': {
+		items: ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4']
+	},
+	'blocks/EmptyState': {
+		title: 'No documents yet',
+		description: 'Create a new document to get started.'
+	},
+	'blocks/FlowCanvas': {
+		nodes: [
+			{ id: '1', x: 20, y: 30, label: 'Start' },
+			{ id: '2', x: 180, y: 30, label: 'Process' }
+		]
+	},
+	'blocks/Video': {
+		title: 'Product Tour',
+		caption: 'Overview of features',
+		poster: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?w=600&auto=format&fit=crop&q=80'
+	},
+	'blocks/Waveform': {
+		peaks: [0.2, 0.5, 0.8, 0.4, 0.7, 0.9, 0.6, 0.3, 0.8, 0.5],
+		progress: 40,
+		duration: 180
+	},
 	'display/Alert': { title: 'Saved', description: 'Your changes have been saved.' },
 	'display/Avatar': { initials: 'AP' },
 	'display/AvatarGroup': {
@@ -38,11 +85,97 @@ export const coreSamples: Record<string, Record<string, unknown>> = {
 	'display/Kbd': { label: 'Keyboard shortcuts', children: { $snippet: 'K' } },
 	'display/Meter': { label: 'Storage', value: 64 },
 	'display/Progress': { label: 'Uploading', value: 60 },
+	'display/Ribbon': {
+		children: { $snippet: 'PRO' }
+	},
+	'display/Skeleton': {
+		lines: 3,
+		width: '100%'
+	},
+	'display/Spinner': {
+		label: 'Loading…'
+	},
+	'display/Stamp': {
+		children: { $snippet: '★' }
+	},
+	'display/Status': {
+		label: 'Operational',
+		variant: 'success'
+	},
+	'display/Table': {
+		columns: [
+			{ key: 'id', label: 'ID' },
+			{ key: 'status', label: 'Status' }
+		],
+		rows: [
+			{ id: 'INV-01', status: 'Paid' },
+			{ id: 'INV-02', status: 'Pending' }
+		]
+	},
 	'display/Tag': { children: { $snippet: 'Design' } },
+	'display/AspectRatio': {
+		ratio: '16/9'
+	},
+	'display/Datatable': {
+		columns: [
+			{ key: 'name', label: 'Name' },
+			{ key: 'role', label: 'Role' }
+		],
+		rows: [
+			{ id: 1, name: 'Alice', role: 'Engineer' },
+			{ id: 2, name: 'Bob', role: 'Designer' }
+		]
+	},
+	'display/Divider': {
+		label: 'OR'
+	},
+	'display/Dot': {
+		variant: 'success'
+	},
+	'display/Img': {
+		src: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=300&auto=format&fit=crop&q=80',
+		alt: 'Sample Artwork',
+		ratio: '1/1'
+	},
 	'forms/Checkbox': { label: 'Accept terms' },
 	'forms/ColorPicker': { label: 'Colour' },
+	'forms/Combobox': {
+		placeholder: 'Choose framework…',
+		options: [
+			{ value: 'svelte', label: 'Svelte' },
+			{ value: 'vue', label: 'Vue' },
+			{ value: 'react', label: 'React' }
+		]
+	},
+	'forms/Fader': {
+		value: 65,
+		label: 'Master (dB)'
+	},
+	'forms/Fieldset': {
+		legend: 'Account Settings',
+		children: {
+			$html: '<div class="text-xs text-secondary">Manage your profile and workspace preferences.</div>'
+		}
+	},
+	'forms/FileUpload': {
+		label: 'Upload Assets',
+		hint: 'PNG, JPG up to 10MB'
+	},
 	'forms/FormField': { label: 'Country', id: 'email', helperText: 'Where you live.' },
 	'forms/Input': { label: 'Name' },
+	'forms/Label': {
+		children: { $snippet: 'Email address' },
+		description: 'We will not share your email.'
+	},
+	'forms/MultiSelect': {
+		placeholder: 'Choose skills…',
+		options: [
+			{ value: 'svelte', label: 'Svelte' },
+			{ value: 'design', label: 'Design' },
+			{ value: 'motion', label: 'Motion' }
+		],
+		value: ['svelte']
+	},
 	'forms/NumberInput': { label: 'Quantity' },
 	'forms/PinInput': { label: 'Verification code' },
 	'forms/Radio': { name: 'plan', value: 'pro', label: 'Pro' },
@@ -74,6 +207,10 @@ export const coreSamples: Record<string, Record<string, unknown>> = {
 	},
 	'forms/TagInput': { label: 'Tags' },
 	'forms/TextArea': { label: 'Message' },
+	'forms/XYPad': {
+		value: { x: 60, y: 40 },
+		label: 'Filter Resonance'
+	},
 	'layout/Card': {
 		title: 'Project',
 		description: 'Last updated today.',
@@ -89,6 +226,17 @@ export const coreSamples: Record<string, Record<string, unknown>> = {
 	'layout/SplitPane': {
 		paneA: { $snippet: 'Left pane' },
 		paneB: { $snippet: 'Right pane' }
+	},
+	'layout/Grid': {
+		cols: 3,
+		children: {
+			$html: '<div class="card bg-panel border radius-sm p-sm text-xs ta-c font-mono">1</div><div class="card bg-panel border radius-sm p-sm text-xs ta-c font-mono">2</div><div class="card bg-panel border radius-sm p-sm text-xs ta-c font-mono">3</div>'
+		}
+	},
+	'layout/Stack': {
+		children: {
+			$html: '<div class="card bg-panel border radius-sm px-md py-xs text-xs">First</div><div class="card bg-panel border radius-sm px-md py-xs text-xs">Second</div><div class="card bg-panel border radius-sm px-md py-xs text-xs">Third</div>'
+		}
 	},
 	'navigation/AppShell': {
 		header: { $snippet: 'App' },
@@ -250,5 +398,11 @@ export const coreSamples: Record<string, Record<string, unknown>> = {
 		code: 'pnpm add @fractaldesign/fractalsvelte-ui',
 		showLineNumbers: true
 	},
-	'typography/Collapsible': { title: 'Details' }
+	'typography/Collapsible': { title: 'Details' },
+	'typography/Heading': {
+		children: { $snippet: 'Design Systems' }
+	},
+	'typography/Text': {
+		children: { $snippet: 'Building resilient user interfaces.' }
+	}
 };

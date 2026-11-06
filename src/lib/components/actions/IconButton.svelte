@@ -3,14 +3,17 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes, HTMLAnchorAttributes } from 'svelte/elements';
-	import type { Icon, Size, Shape, Shadow } from '$lib/types.js';
-	import Spinner from '../display/Spinner.svelte';
+	import type { IconVariant, Size, Shape, Shadow } from '$lib/types.js';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'type'> {
 		/** Accessible name; also shown as the native tooltip. */
 		label: string;
-		/** `iconbox` is fractalstyler's bare icon button (transparent, hover fill). */
-		icon?: Icon;
+		/** Visual style variant for icon button. */
+		iconVariant?: IconVariant;
+		/** Alias for iconVariant */
+		variant?: IconVariant;
+		/** Alias for iconVariant */
+		icon?: IconVariant;
 		size?: Size;
 		shape?: Shape;
 		shadow?: Shadow;
@@ -23,9 +26,11 @@
 
 	let {
 		label,
-		icon = 'primary',
+		iconVariant,
+		variant,
+		icon,
 		size = 'h-md',
-		shape = 'modern',
+		shape = 'rect',
 		shadow = 'shad-none',
 		loading = false,
 		disabled = false,
@@ -34,12 +39,14 @@
 		children,
 		...restProps
 	}: Props = $props();
+
 	const inert = $derived(Boolean(disabled || loading));
+	const currentVariant = $derived(iconVariant ?? variant ?? icon ?? 'themed');
 </script>
 
 {#if href}
 <a href={inert ? undefined : href}
-	class="btn-icon size shape {icon} {size} {shape} {shadow} {className}"
+	class="btn-icon size shape {currentVariant} {size} {shape} {shadow} {className}"
 	aria-busy={loading || undefined}
 	aria-disabled={inert || undefined}
 	{...restProps as HTMLAnchorAttributes}
@@ -48,7 +55,7 @@
 </a>
 {:else}
 <button
-	class="btn-icon size shape {icon} {size} {shape} {shadow} {className}"
+	class="btn-icon size shape {currentVariant} {size} {shape} {shadow} {className}"
 	aria-label={label}
 	title={label}
 	disabled={Boolean(disabled || loading)}

@@ -210,4 +210,15 @@ fs.mkdirSync(outDir, { recursive: true });
 const banner = { _generated: 'by scripts/component-docs.mjs — do not edit by hand' };
 fs.writeFileSync(path.join(outDir, 'components.json'), JSON.stringify({ ...banner, components }, null, '\t') + '\n');
 fs.writeFileSync(path.join(outDir, 'props.json'), JSON.stringify({ ...banner, props: propsData }, null, '\t') + '\n');
+
+// Verify core-samples.ts coverage
+const coreSamplesSrc = fs.readFileSync(path.join(root, 'src/site/doc/data/core-samples.ts'), 'utf8');
+const missingCore = components.filter((c) => !coreSamplesSrc.includes(`'${c.path}':`));
+if (missingCore.length) {
+	console.warn(`[component-docs] ⚠️ Warning: ${missingCore.length} component(s) missing from core-samples.ts:`);
+	for (const m of missingCore) console.warn(`  - ${m.path}`);
+} else {
+	console.log(`[component-docs] ✔ 100% core-samples coverage (${components.length}/${components.length})`);
+}
+
 console.log(`[component-docs] ${components.length} component(s) -> src/site/doc/data/{components,props}.json`);

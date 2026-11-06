@@ -210,6 +210,147 @@
 				]
 			}
 		},
+		"actions/ButtonGroup": {
+			"extends": [
+				"HTMLAttributes<HTMLDivElement>"
+			],
+			"props": [
+				{
+					"name": "attached",
+					"type": "boolean",
+					"optional": true,
+					"comment": "Connect child buttons seamlessly with unified borders and outer radius.",
+					"default": "true",
+					"bindable": false
+				},
+				{
+					"name": "orientation",
+					"type": "Orientation",
+					"optional": true,
+					"comment": "Layout orientation: horizontal or vertical.",
+					"default": "'horizontal'",
+					"bindable": false
+				},
+				{
+					"name": "size",
+					"type": "Size",
+					"optional": true,
+					"comment": null,
+					"default": "'h-md'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'modern'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-none'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "children",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"attached": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				],
+				"orientation": [
+					{
+						"label": "horizontal",
+						"value": "horizontal"
+					},
+					{
+						"label": "vertical",
+						"value": "vertical"
+					}
+				],
+				"size": [
+					{
+						"label": "h-xs",
+						"value": "h-xs"
+					},
+					{
+						"label": "h-sm",
+						"value": "h-sm"
+					},
+					{
+						"label": "h-md",
+						"value": "h-md"
+					},
+					{
+						"label": "h-bs",
+						"value": "h-bs"
+					},
+					{
+						"label": "h-lg",
+						"value": "h-lg"
+					},
+					{
+						"label": "h-xl",
+						"value": "h-xl"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				]
+			}
+		},
 		"actions/CloseButton": {
 			"extends": [
 				"Omit<HTMLButtonAttributes, 'type'>"
@@ -729,6 +870,703 @@
 				]
 			}
 		},
+		"blocks/Audio": {
+			"extends": [
+				"HTMLAudioAttributes"
+			],
+			"props": [
+				{
+					"name": "title",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "caption",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "controls",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "true",
+					"bindable": false
+				},
+				{
+					"name": "preload",
+					"type": "'auto' | 'metadata' | 'none'",
+					"optional": true,
+					"comment": null,
+					"default": "'metadata'",
+					"bindable": false
+				},
+				{
+					"name": "surface",
+					"type": "Surface",
+					"optional": true,
+					"comment": null,
+					"default": "'bg-surface'",
+					"bindable": false
+				},
+				{
+					"name": "border",
+					"type": "Border",
+					"optional": true,
+					"comment": null,
+					"default": "'border'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'modern'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-none'",
+					"bindable": false
+				},
+				{
+					"name": "padding",
+					"type": "Pad",
+					"optional": true,
+					"comment": null,
+					"default": "'pad-md'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "children",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"title": [
+					{
+						"label": "Title",
+						"value": "Title"
+					}
+				],
+				"caption": [
+					{
+						"label": "Sample",
+						"value": "Sample"
+					}
+				],
+				"surface": [
+					{
+						"label": "bg-main",
+						"value": "bg-main"
+					},
+					{
+						"label": "bg-surface",
+						"value": "bg-surface"
+					},
+					{
+						"label": "bg-panel",
+						"value": "bg-panel"
+					},
+					{
+						"label": "bg-sunken",
+						"value": "bg-sunken"
+					},
+					{
+						"label": "bg-raised",
+						"value": "bg-raised"
+					},
+					{
+						"label": "bg-extra",
+						"value": "bg-extra"
+					},
+					{
+						"label": "state-surface",
+						"value": "state-surface"
+					},
+					{
+						"label": "state-hover",
+						"value": "state-hover"
+					},
+					{
+						"label": "state-selected",
+						"value": "state-selected"
+					},
+					{
+						"label": "bg-button",
+						"value": "bg-button"
+					},
+					{
+						"label": "bg-input",
+						"value": "bg-input"
+					}
+				],
+				"border": [
+					{
+						"label": "border",
+						"value": "border"
+					},
+					{
+						"label": "border-subtle",
+						"value": "border-subtle"
+					},
+					{
+						"label": "border-strong",
+						"value": "border-strong"
+					},
+					{
+						"label": "border-none",
+						"value": "border-none"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"shadow": [
+					{
+						"label": "shad-none",
+						"value": "shad-none"
+					},
+					{
+						"label": "shad-sm",
+						"value": "shad-sm"
+					},
+					{
+						"label": "shad-bs",
+						"value": "shad-bs"
+					},
+					{
+						"label": "shad-lg",
+						"value": "shad-lg"
+					},
+					{
+						"label": "shad-xl",
+						"value": "shad-xl"
+					},
+					{
+						"label": "shad-2xl",
+						"value": "shad-2xl"
+					},
+					{
+						"label": "shad-hover-sm",
+						"value": "shad-hover-sm"
+					},
+					{
+						"label": "shad-hover-bs",
+						"value": "shad-hover-bs"
+					},
+					{
+						"label": "shad-hover-lg",
+						"value": "shad-hover-lg"
+					},
+					{
+						"label": "shad-hover-xl",
+						"value": "shad-hover-xl"
+					},
+					{
+						"label": "shad-hover-2xl",
+						"value": "shad-hover-2xl"
+					}
+				]
+			}
+		},
+		"blocks/AudioTrack": {
+			"extends": [
+				"HTMLAttributes<HTMLDivElement>"
+			],
+			"props": [
+				{
+					"name": "trackNumber",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "title",
+					"type": "string",
+					"optional": false,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "artist",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "album",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "duration",
+					"type": "string | number",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "artwork",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "active",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "playing",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "surface",
+					"type": "Surface",
+					"optional": true,
+					"comment": null,
+					"default": "'bg-surface'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'curved'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "actions",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "onplay",
+					"type": "() => void",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"title": [
+					{
+						"label": "Title",
+						"value": "Title"
+					}
+				],
+				"artist": [
+					{
+						"label": "Sample",
+						"value": "Sample"
+					}
+				],
+				"active": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				],
+				"surface": [
+					{
+						"label": "bg-main",
+						"value": "bg-main"
+					},
+					{
+						"label": "bg-surface",
+						"value": "bg-surface"
+					},
+					{
+						"label": "bg-panel",
+						"value": "bg-panel"
+					},
+					{
+						"label": "bg-sunken",
+						"value": "bg-sunken"
+					},
+					{
+						"label": "bg-raised",
+						"value": "bg-raised"
+					},
+					{
+						"label": "bg-extra",
+						"value": "bg-extra"
+					},
+					{
+						"label": "state-surface",
+						"value": "state-surface"
+					},
+					{
+						"label": "state-hover",
+						"value": "state-hover"
+					},
+					{
+						"label": "state-selected",
+						"value": "state-selected"
+					},
+					{
+						"label": "bg-button",
+						"value": "bg-button"
+					},
+					{
+						"label": "bg-input",
+						"value": "bg-input"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				]
+			}
+		},
+		"blocks/AudioTrackList": {
+			"extends": [
+				"Omit<HTMLAttributes<HTMLDivElement>, 'onselect'>"
+			],
+			"props": [
+				{
+					"name": "tracks",
+					"type": "AudioTrackItem[]",
+					"optional": false,
+					"comment": null,
+					"default": "[]",
+					"bindable": false
+				},
+				{
+					"name": "activeIndex",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "0",
+					"bindable": true
+				},
+				{
+					"name": "playing",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "surface",
+					"type": "Surface",
+					"optional": true,
+					"comment": null,
+					"default": "'bg-panel'",
+					"bindable": false
+				},
+				{
+					"name": "border",
+					"type": "Border",
+					"optional": true,
+					"comment": null,
+					"default": "'border'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'curved'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-sm'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "trackSnippet",
+					"type": "Snippet<[AudioTrackItem, number]>",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "emptySnippet",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "onselect",
+					"type": "(index: number, track: AudioTrackItem) => void",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"surface": [
+					{
+						"label": "bg-main",
+						"value": "bg-main"
+					},
+					{
+						"label": "bg-surface",
+						"value": "bg-surface"
+					},
+					{
+						"label": "bg-panel",
+						"value": "bg-panel"
+					},
+					{
+						"label": "bg-sunken",
+						"value": "bg-sunken"
+					},
+					{
+						"label": "bg-raised",
+						"value": "bg-raised"
+					},
+					{
+						"label": "bg-extra",
+						"value": "bg-extra"
+					},
+					{
+						"label": "state-surface",
+						"value": "state-surface"
+					},
+					{
+						"label": "state-hover",
+						"value": "state-hover"
+					},
+					{
+						"label": "state-selected",
+						"value": "state-selected"
+					},
+					{
+						"label": "bg-button",
+						"value": "bg-button"
+					},
+					{
+						"label": "bg-input",
+						"value": "bg-input"
+					}
+				],
+				"border": [
+					{
+						"label": "border",
+						"value": "border"
+					},
+					{
+						"label": "border-subtle",
+						"value": "border-subtle"
+					},
+					{
+						"label": "border-strong",
+						"value": "border-strong"
+					},
+					{
+						"label": "border-none",
+						"value": "border-none"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"shadow": [
+					{
+						"label": "shad-none",
+						"value": "shad-none"
+					},
+					{
+						"label": "shad-sm",
+						"value": "shad-sm"
+					},
+					{
+						"label": "shad-bs",
+						"value": "shad-bs"
+					},
+					{
+						"label": "shad-lg",
+						"value": "shad-lg"
+					},
+					{
+						"label": "shad-xl",
+						"value": "shad-xl"
+					},
+					{
+						"label": "shad-2xl",
+						"value": "shad-2xl"
+					},
+					{
+						"label": "shad-hover-sm",
+						"value": "shad-hover-sm"
+					},
+					{
+						"label": "shad-hover-bs",
+						"value": "shad-hover-bs"
+					},
+					{
+						"label": "shad-hover-lg",
+						"value": "shad-hover-lg"
+					},
+					{
+						"label": "shad-hover-xl",
+						"value": "shad-hover-xl"
+					},
+					{
+						"label": "shad-hover-2xl",
+						"value": "shad-hover-2xl"
+					}
+				]
+			}
+		},
 		"blocks/BeforeAfter": {
 			"extends": [
 				"HTMLAttributes<HTMLDivElement>"
@@ -866,6 +1704,352 @@
 					{
 						"label": "1/1",
 						"value": "1/1"
+					}
+				]
+			}
+		},
+		"blocks/Canvas": {
+			"extends": [
+				"HTMLCanvasAttributes"
+			],
+			"props": [
+				{
+					"name": "draw",
+					"type": "(ctx: CanvasRenderingContext2D, size: { width: number; height: number }) => void",
+					"optional": true,
+					"comment": "Canvas 2D render callback invoked on mount and resize with device pixel ratio scaling.",
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "ratio",
+					"type": "string",
+					"optional": true,
+					"comment": "Aspect ratio string, e.g. '16 / 9' or '2 / 1'.",
+					"default": "'2 / 1'",
+					"bindable": false
+				},
+				{
+					"name": "label",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "surface",
+					"type": "Surface",
+					"optional": true,
+					"comment": null,
+					"default": "'bg-surface'",
+					"bindable": false
+				},
+				{
+					"name": "border",
+					"type": "Border",
+					"optional": true,
+					"comment": null,
+					"default": "'border'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'modern'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-none'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "children",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"ratio": [
+					{
+						"label": "Sample",
+						"value": "Sample"
+					}
+				],
+				"border": [
+					{
+						"label": "border",
+						"value": "border"
+					},
+					{
+						"label": "border-subtle",
+						"value": "border-subtle"
+					},
+					{
+						"label": "border-strong",
+						"value": "border-strong"
+					},
+					{
+						"label": "border-none",
+						"value": "border-none"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"shadow": [
+					{
+						"label": "shad-none",
+						"value": "shad-none"
+					},
+					{
+						"label": "shad-sm",
+						"value": "shad-sm"
+					},
+					{
+						"label": "shad-bs",
+						"value": "shad-bs"
+					},
+					{
+						"label": "shad-lg",
+						"value": "shad-lg"
+					},
+					{
+						"label": "shad-xl",
+						"value": "shad-xl"
+					},
+					{
+						"label": "shad-2xl",
+						"value": "shad-2xl"
+					},
+					{
+						"label": "shad-hover-sm",
+						"value": "shad-hover-sm"
+					},
+					{
+						"label": "shad-hover-bs",
+						"value": "shad-hover-bs"
+					},
+					{
+						"label": "shad-hover-lg",
+						"value": "shad-hover-lg"
+					},
+					{
+						"label": "shad-hover-xl",
+						"value": "shad-hover-xl"
+					},
+					{
+						"label": "shad-hover-2xl",
+						"value": "shad-hover-2xl"
+					}
+				]
+			}
+		},
+		"blocks/Carousel": {
+			"extends": [
+				"HTMLAttributes<HTMLElement>"
+			],
+			"props": [
+				{
+					"name": "items",
+					"type": "T[]",
+					"optional": true,
+					"comment": null,
+					"default": "[]",
+					"bindable": false
+				},
+				{
+					"name": "slide",
+					"type": "Snippet<[T, number]>",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "label",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "'Carousel'",
+					"bindable": false
+				},
+				{
+					"name": "index",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "0",
+					"bindable": true
+				},
+				{
+					"name": "perView",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "1",
+					"bindable": false
+				},
+				{
+					"name": "gap",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "'1rem'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'modern'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-none'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"perView": [
+					{
+						"label": "1",
+						"value": 1
+					},
+					{
+						"label": "3",
+						"value": 3
+					}
+				],
+				"gap": [
+					{
+						"label": "Sample",
+						"value": "Sample"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"shadow": [
+					{
+						"label": "shad-none",
+						"value": "shad-none"
+					},
+					{
+						"label": "shad-sm",
+						"value": "shad-sm"
+					},
+					{
+						"label": "shad-bs",
+						"value": "shad-bs"
+					},
+					{
+						"label": "shad-lg",
+						"value": "shad-lg"
+					},
+					{
+						"label": "shad-xl",
+						"value": "shad-xl"
+					},
+					{
+						"label": "shad-2xl",
+						"value": "shad-2xl"
+					},
+					{
+						"label": "shad-hover-sm",
+						"value": "shad-hover-sm"
+					},
+					{
+						"label": "shad-hover-bs",
+						"value": "shad-hover-bs"
+					},
+					{
+						"label": "shad-hover-lg",
+						"value": "shad-hover-lg"
+					},
+					{
+						"label": "shad-hover-xl",
+						"value": "shad-hover-xl"
+					},
+					{
+						"label": "shad-hover-2xl",
+						"value": "shad-hover-2xl"
 					}
 				]
 			}
@@ -1063,6 +2247,271 @@
 						"value": {
 							"$snippet": "Sample"
 						}
+					}
+				]
+			}
+		},
+		"blocks/EmptyState": {
+			"extends": [
+				"HTMLAttributes<HTMLDivElement>"
+			],
+			"props": [
+				{
+					"name": "title",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "'No items'",
+					"bindable": false
+				},
+				{
+					"name": "description",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "surface",
+					"type": "Surface",
+					"optional": true,
+					"comment": null,
+					"default": "'bg-surface'",
+					"bindable": false
+				},
+				{
+					"name": "border",
+					"type": "Border",
+					"optional": true,
+					"comment": null,
+					"default": "'border'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'modern'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-none'",
+					"bindable": false
+				},
+				{
+					"name": "padding",
+					"type": "Pad",
+					"optional": true,
+					"comment": null,
+					"default": "'pad-xl'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "icon",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "actions",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "children",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"title": [
+					{
+						"label": "Title",
+						"value": "Title"
+					}
+				],
+				"surface": [
+					{
+						"label": "bg-main",
+						"value": "bg-main"
+					},
+					{
+						"label": "bg-surface",
+						"value": "bg-surface"
+					},
+					{
+						"label": "bg-panel",
+						"value": "bg-panel"
+					},
+					{
+						"label": "bg-sunken",
+						"value": "bg-sunken"
+					},
+					{
+						"label": "bg-raised",
+						"value": "bg-raised"
+					},
+					{
+						"label": "bg-extra",
+						"value": "bg-extra"
+					},
+					{
+						"label": "state-surface",
+						"value": "state-surface"
+					},
+					{
+						"label": "state-hover",
+						"value": "state-hover"
+					},
+					{
+						"label": "state-selected",
+						"value": "state-selected"
+					},
+					{
+						"label": "bg-button",
+						"value": "bg-button"
+					},
+					{
+						"label": "bg-input",
+						"value": "bg-input"
+					}
+				],
+				"border": [
+					{
+						"label": "border",
+						"value": "border"
+					},
+					{
+						"label": "border-subtle",
+						"value": "border-subtle"
+					},
+					{
+						"label": "border-strong",
+						"value": "border-strong"
+					},
+					{
+						"label": "border-none",
+						"value": "border-none"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"shadow": [
+					{
+						"label": "shad-none",
+						"value": "shad-none"
+					},
+					{
+						"label": "shad-sm",
+						"value": "shad-sm"
+					},
+					{
+						"label": "shad-bs",
+						"value": "shad-bs"
+					},
+					{
+						"label": "shad-lg",
+						"value": "shad-lg"
+					},
+					{
+						"label": "shad-xl",
+						"value": "shad-xl"
+					},
+					{
+						"label": "shad-2xl",
+						"value": "shad-2xl"
+					},
+					{
+						"label": "shad-hover-sm",
+						"value": "shad-hover-sm"
+					},
+					{
+						"label": "shad-hover-bs",
+						"value": "shad-hover-bs"
+					},
+					{
+						"label": "shad-hover-lg",
+						"value": "shad-hover-lg"
+					},
+					{
+						"label": "shad-hover-xl",
+						"value": "shad-hover-xl"
+					},
+					{
+						"label": "shad-hover-2xl",
+						"value": "shad-hover-2xl"
+					}
+				],
+				"padding": [
+					{
+						"label": "pad-sm",
+						"value": "pad-sm"
+					},
+					{
+						"label": "pad-md",
+						"value": "pad-md"
+					},
+					{
+						"label": "pad-bs",
+						"value": "pad-bs"
+					},
+					{
+						"label": "pad-lg",
+						"value": "pad-lg"
+					},
+					{
+						"label": "pad-xl",
+						"value": "pad-xl"
 					}
 				]
 			}
@@ -1318,6 +2767,570 @@
 						"value": {
 							"$snippet": "Sample"
 						}
+					}
+				]
+			}
+		},
+		"blocks/Video": {
+			"extends": [
+				"HTMLVideoAttributes"
+			],
+			"props": [
+				{
+					"name": "src",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "poster",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "title",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "caption",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "controls",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "true",
+					"bindable": false
+				},
+				{
+					"name": "autoplay",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "muted",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "loop",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "ratio",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "'16 / 9'",
+					"bindable": false
+				},
+				{
+					"name": "preload",
+					"type": "'auto' | 'metadata' | 'none'",
+					"optional": true,
+					"comment": null,
+					"default": "'metadata'",
+					"bindable": false
+				},
+				{
+					"name": "surface",
+					"type": "Surface",
+					"optional": true,
+					"comment": null,
+					"default": "'bg-surface'",
+					"bindable": false
+				},
+				{
+					"name": "border",
+					"type": "Border",
+					"optional": true,
+					"comment": null,
+					"default": "'border'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'modern'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-none'",
+					"bindable": false
+				},
+				{
+					"name": "padding",
+					"type": "Pad",
+					"optional": true,
+					"comment": null,
+					"default": "'pad-sm'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "children",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"ratio": [
+					{
+						"label": "Sample",
+						"value": "Sample"
+					}
+				],
+				"controls": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				],
+				"surface": [
+					{
+						"label": "bg-main",
+						"value": "bg-main"
+					},
+					{
+						"label": "bg-surface",
+						"value": "bg-surface"
+					},
+					{
+						"label": "bg-panel",
+						"value": "bg-panel"
+					},
+					{
+						"label": "bg-sunken",
+						"value": "bg-sunken"
+					},
+					{
+						"label": "bg-raised",
+						"value": "bg-raised"
+					},
+					{
+						"label": "bg-extra",
+						"value": "bg-extra"
+					},
+					{
+						"label": "state-surface",
+						"value": "state-surface"
+					},
+					{
+						"label": "state-hover",
+						"value": "state-hover"
+					},
+					{
+						"label": "state-selected",
+						"value": "state-selected"
+					},
+					{
+						"label": "bg-button",
+						"value": "bg-button"
+					},
+					{
+						"label": "bg-input",
+						"value": "bg-input"
+					}
+				],
+				"border": [
+					{
+						"label": "border",
+						"value": "border"
+					},
+					{
+						"label": "border-subtle",
+						"value": "border-subtle"
+					},
+					{
+						"label": "border-strong",
+						"value": "border-strong"
+					},
+					{
+						"label": "border-none",
+						"value": "border-none"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"shadow": [
+					{
+						"label": "shad-none",
+						"value": "shad-none"
+					},
+					{
+						"label": "shad-sm",
+						"value": "shad-sm"
+					},
+					{
+						"label": "shad-bs",
+						"value": "shad-bs"
+					},
+					{
+						"label": "shad-lg",
+						"value": "shad-lg"
+					},
+					{
+						"label": "shad-xl",
+						"value": "shad-xl"
+					},
+					{
+						"label": "shad-2xl",
+						"value": "shad-2xl"
+					},
+					{
+						"label": "shad-hover-sm",
+						"value": "shad-hover-sm"
+					},
+					{
+						"label": "shad-hover-bs",
+						"value": "shad-hover-bs"
+					},
+					{
+						"label": "shad-hover-lg",
+						"value": "shad-hover-lg"
+					},
+					{
+						"label": "shad-hover-xl",
+						"value": "shad-hover-xl"
+					},
+					{
+						"label": "shad-hover-2xl",
+						"value": "shad-hover-2xl"
+					}
+				]
+			}
+		},
+		"blocks/Waveform": {
+			"extends": [
+				"HTMLAttributes<HTMLDivElement>"
+			],
+			"props": [
+				{
+					"name": "peaks",
+					"type": "number[]",
+					"optional": true,
+					"comment": null,
+					"default": "defaultPeaks",
+					"bindable": false
+				},
+				{
+					"name": "progress",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "35",
+					"bindable": true
+				},
+				{
+					"name": "duration",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "barWidth",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "4",
+					"bindable": false
+				},
+				{
+					"name": "barGap",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "2",
+					"bindable": false
+				},
+				{
+					"name": "interactive",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "true",
+					"bindable": false
+				},
+				{
+					"name": "variant",
+					"type": "Variant | Message",
+					"optional": true,
+					"comment": null,
+					"default": "'primary'",
+					"bindable": false
+				},
+				{
+					"name": "surface",
+					"type": "Surface",
+					"optional": true,
+					"comment": null,
+					"default": "'bg-panel'",
+					"bindable": false
+				},
+				{
+					"name": "border",
+					"type": "Border",
+					"optional": true,
+					"comment": null,
+					"default": "'border'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'curved'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-sm'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "onseek",
+					"type": "(progress: number) => void",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"interactive": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				],
+				"surface": [
+					{
+						"label": "bg-main",
+						"value": "bg-main"
+					},
+					{
+						"label": "bg-surface",
+						"value": "bg-surface"
+					},
+					{
+						"label": "bg-panel",
+						"value": "bg-panel"
+					},
+					{
+						"label": "bg-sunken",
+						"value": "bg-sunken"
+					},
+					{
+						"label": "bg-raised",
+						"value": "bg-raised"
+					},
+					{
+						"label": "bg-extra",
+						"value": "bg-extra"
+					},
+					{
+						"label": "state-surface",
+						"value": "state-surface"
+					},
+					{
+						"label": "state-hover",
+						"value": "state-hover"
+					},
+					{
+						"label": "state-selected",
+						"value": "state-selected"
+					},
+					{
+						"label": "bg-button",
+						"value": "bg-button"
+					},
+					{
+						"label": "bg-input",
+						"value": "bg-input"
+					}
+				],
+				"border": [
+					{
+						"label": "border",
+						"value": "border"
+					},
+					{
+						"label": "border-subtle",
+						"value": "border-subtle"
+					},
+					{
+						"label": "border-strong",
+						"value": "border-strong"
+					},
+					{
+						"label": "border-none",
+						"value": "border-none"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"shadow": [
+					{
+						"label": "shad-none",
+						"value": "shad-none"
+					},
+					{
+						"label": "shad-sm",
+						"value": "shad-sm"
+					},
+					{
+						"label": "shad-bs",
+						"value": "shad-bs"
+					},
+					{
+						"label": "shad-lg",
+						"value": "shad-lg"
+					},
+					{
+						"label": "shad-xl",
+						"value": "shad-xl"
+					},
+					{
+						"label": "shad-2xl",
+						"value": "shad-2xl"
+					},
+					{
+						"label": "shad-hover-sm",
+						"value": "shad-hover-sm"
+					},
+					{
+						"label": "shad-hover-bs",
+						"value": "shad-hover-bs"
+					},
+					{
+						"label": "shad-hover-lg",
+						"value": "shad-hover-lg"
+					},
+					{
+						"label": "shad-hover-xl",
+						"value": "shad-hover-xl"
+					},
+					{
+						"label": "shad-hover-2xl",
+						"value": "shad-hover-2xl"
 					}
 				]
 			}
@@ -2534,6 +4547,662 @@
 				]
 			}
 		},
+		"display/Datatable": {
+			"extends": [
+				"HTMLAttributes<HTMLDivElement>"
+			],
+			"props": [
+				{
+					"name": "columns",
+					"type": "Column<T>[]",
+					"optional": true,
+					"comment": null,
+					"default": "[]",
+					"bindable": false
+				},
+				{
+					"name": "rows",
+					"type": "T[]",
+					"optional": true,
+					"comment": null,
+					"default": "[]",
+					"bindable": false
+				},
+				{
+					"name": "rowKey",
+					"type": "keyof T & string",
+					"optional": true,
+					"comment": null,
+					"default": "'id' as keyof T & string",
+					"bindable": false
+				},
+				{
+					"name": "caption",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "searchable",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "true",
+					"bindable": false
+				},
+				{
+					"name": "searchPlaceholder",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "'Search rows…'",
+					"bindable": false
+				},
+				{
+					"name": "pageSize",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "5",
+					"bindable": false
+				},
+				{
+					"name": "selectable",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "selected",
+					"type": "unknown[]",
+					"optional": true,
+					"comment": null,
+					"default": "[]",
+					"bindable": true
+				},
+				{
+					"name": "striped",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "surface",
+					"type": "Surface",
+					"optional": true,
+					"comment": null,
+					"default": "'bg-surface'",
+					"bindable": false
+				},
+				{
+					"name": "border",
+					"type": "Border",
+					"optional": true,
+					"comment": null,
+					"default": "'border'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'modern'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-none'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "cell",
+					"type": "Snippet<[T, Column<T>]>",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "toolbar",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "empty",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"searchable": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				],
+				"selectable": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				],
+				"striped": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				],
+				"surface": [
+					{
+						"label": "bg-main",
+						"value": "bg-main"
+					},
+					{
+						"label": "bg-surface",
+						"value": "bg-surface"
+					},
+					{
+						"label": "bg-panel",
+						"value": "bg-panel"
+					},
+					{
+						"label": "bg-sunken",
+						"value": "bg-sunken"
+					},
+					{
+						"label": "bg-raised",
+						"value": "bg-raised"
+					},
+					{
+						"label": "bg-extra",
+						"value": "bg-extra"
+					},
+					{
+						"label": "state-surface",
+						"value": "state-surface"
+					},
+					{
+						"label": "state-hover",
+						"value": "state-hover"
+					},
+					{
+						"label": "state-selected",
+						"value": "state-selected"
+					},
+					{
+						"label": "bg-button",
+						"value": "bg-button"
+					},
+					{
+						"label": "bg-input",
+						"value": "bg-input"
+					}
+				],
+				"border": [
+					{
+						"label": "border",
+						"value": "border"
+					},
+					{
+						"label": "border-subtle",
+						"value": "border-subtle"
+					},
+					{
+						"label": "border-strong",
+						"value": "border-strong"
+					},
+					{
+						"label": "border-none",
+						"value": "border-none"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				]
+			}
+		},
+		"display/Divider": {
+			"extends": [
+				"HTMLAttributes<HTMLDivElement>"
+			],
+			"props": [
+				{
+					"name": "label",
+					"type": "string",
+					"optional": true,
+					"comment": "Optional text label centered along the divider line.",
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "vertical",
+					"type": "boolean",
+					"optional": true,
+					"comment": "Vertical orientation instead of default horizontal.",
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "border",
+					"type": "Border",
+					"optional": true,
+					"comment": null,
+					"default": "'border'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-sm'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "children",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"label": [
+					{
+						"label": "Label",
+						"value": "Label"
+					}
+				],
+				"vertical": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				],
+				"border": [
+					{
+						"label": "border",
+						"value": "border"
+					},
+					{
+						"label": "border-subtle",
+						"value": "border-subtle"
+					},
+					{
+						"label": "border-strong",
+						"value": "border-strong"
+					},
+					{
+						"label": "border-none",
+						"value": "border-none"
+					}
+				]
+			}
+		},
+		"display/Dot": {
+			"extends": [
+				"HTMLAttributes<HTMLSpanElement>"
+			],
+			"props": [
+				{
+					"name": "variant",
+					"type": "Variant | Message",
+					"optional": true,
+					"comment": null,
+					"default": "'primary'",
+					"bindable": false
+				},
+				{
+					"name": "size",
+					"type": "DotSize",
+					"optional": true,
+					"comment": null,
+					"default": "'md'",
+					"bindable": false
+				},
+				{
+					"name": "animated",
+					"type": "boolean",
+					"optional": true,
+					"comment": "Whether the dot pulsates with an animated outer ping ring",
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"variant": [
+					{
+						"label": "primary",
+						"value": "primary"
+					},
+					{
+						"label": "secondary",
+						"value": "secondary"
+					},
+					{
+						"label": "themed",
+						"value": "themed"
+					},
+					{
+						"label": "outline",
+						"value": "outline"
+					},
+					{
+						"label": "ghost",
+						"value": "ghost"
+					},
+					{
+						"label": "link",
+						"value": "link"
+					},
+					{
+						"label": "info",
+						"value": "info"
+					},
+					{
+						"label": "success",
+						"value": "success"
+					},
+					{
+						"label": "warning",
+						"value": "warning"
+					},
+					{
+						"label": "danger",
+						"value": "danger"
+					}
+				],
+				"size": [
+					{
+						"label": "sm",
+						"value": "sm"
+					},
+					{
+						"label": "md",
+						"value": "md"
+					},
+					{
+						"label": "lg",
+						"value": "lg"
+					}
+				],
+				"animated": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				]
+			}
+		},
+		"display/Img": {
+			"extends": [
+				"HTMLImgAttributes"
+			],
+			"props": [
+				{
+					"name": "alt",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "src",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "ratio",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "fit",
+					"type": "'cover' | 'contain' | 'fill' | 'scale-down'",
+					"optional": true,
+					"comment": null,
+					"default": "'cover'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'modern'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-none'",
+					"bindable": false
+				},
+				{
+					"name": "loading",
+					"type": "'lazy' | 'eager'",
+					"optional": true,
+					"comment": null,
+					"default": "'lazy'",
+					"bindable": false
+				},
+				{
+					"name": "fallback",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"ratio": [
+					{
+						"label": "Sample",
+						"value": "Sample"
+					}
+				],
+				"fit": [
+					{
+						"label": "cover",
+						"value": "cover"
+					},
+					{
+						"label": "contain",
+						"value": "contain"
+					},
+					{
+						"label": "fill",
+						"value": "fill"
+					},
+					{
+						"label": "scale-down",
+						"value": "scale-down"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"shadow": [
+					{
+						"label": "shad-none",
+						"value": "shad-none"
+					},
+					{
+						"label": "shad-sm",
+						"value": "shad-sm"
+					},
+					{
+						"label": "shad-bs",
+						"value": "shad-bs"
+					},
+					{
+						"label": "shad-lg",
+						"value": "shad-lg"
+					},
+					{
+						"label": "shad-xl",
+						"value": "shad-xl"
+					},
+					{
+						"label": "shad-2xl",
+						"value": "shad-2xl"
+					},
+					{
+						"label": "shad-hover-sm",
+						"value": "shad-hover-sm"
+					},
+					{
+						"label": "shad-hover-bs",
+						"value": "shad-hover-bs"
+					},
+					{
+						"label": "shad-hover-lg",
+						"value": "shad-hover-lg"
+					},
+					{
+						"label": "shad-hover-xl",
+						"value": "shad-hover-xl"
+					},
+					{
+						"label": "shad-hover-2xl",
+						"value": "shad-hover-2xl"
+					}
+				]
+			}
+		},
 		"display/Kbd": {
 			"extends": [
 				"Omit<HTMLButtonAttributes, 'type'>"
@@ -3102,6 +5771,244 @@
 				]
 			}
 		},
+		"display/Ribbon": {
+			"extends": [
+				"HTMLAttributes<HTMLDivElement>"
+			],
+			"props": [
+				{
+					"name": "position",
+					"type": "RibbonPosition",
+					"optional": true,
+					"comment": null,
+					"default": "'top-right'",
+					"bindable": false
+				},
+				{
+					"name": "variant",
+					"type": "Variant | Message",
+					"optional": true,
+					"comment": null,
+					"default": "'primary'",
+					"bindable": false
+				},
+				{
+					"name": "bookmark",
+					"type": "boolean",
+					"optional": true,
+					"comment": "Render with a decorative triangular bookmark notch",
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "children",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"variant": [
+					{
+						"label": "primary",
+						"value": "primary"
+					},
+					{
+						"label": "secondary",
+						"value": "secondary"
+					},
+					{
+						"label": "themed",
+						"value": "themed"
+					},
+					{
+						"label": "outline",
+						"value": "outline"
+					},
+					{
+						"label": "ghost",
+						"value": "ghost"
+					},
+					{
+						"label": "link",
+						"value": "link"
+					},
+					{
+						"label": "info",
+						"value": "info"
+					},
+					{
+						"label": "success",
+						"value": "success"
+					},
+					{
+						"label": "warning",
+						"value": "warning"
+					},
+					{
+						"label": "danger",
+						"value": "danger"
+					}
+				],
+				"position": [
+					{
+						"label": "top-right",
+						"value": "top-right"
+					},
+					{
+						"label": "top-left",
+						"value": "top-left"
+					},
+					{
+						"label": "bottom-right",
+						"value": "bottom-right"
+					},
+					{
+						"label": "bottom-left",
+						"value": "bottom-left"
+					}
+				],
+				"bookmark": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				]
+			}
+		},
+		"display/Skeleton": {
+			"extends": [
+				"HTMLAttributes<HTMLDivElement>"
+			],
+			"props": [
+				{
+					"name": "width",
+					"type": "string",
+					"optional": true,
+					"comment": "Width of the skeleton item (e.g. '100%', '8rem').",
+					"default": "'100%'",
+					"bindable": false
+				},
+				{
+					"name": "height",
+					"type": "string",
+					"optional": true,
+					"comment": "Height of the skeleton item (e.g. '1rem', '2.5rem').",
+					"default": "'1rem'",
+					"bindable": false
+				},
+				{
+					"name": "circle",
+					"type": "boolean",
+					"optional": true,
+					"comment": "Render as a circular avatar or icon placeholder.",
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "lines",
+					"type": "number",
+					"optional": true,
+					"comment": "Number of skeleton line blocks to stack.",
+					"default": "1",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'min'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"lines": [
+					{
+						"label": "1",
+						"value": 1
+					},
+					{
+						"label": "3",
+						"value": 3
+					}
+				],
+				"circle": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				],
+				"width": [
+					{
+						"label": "Sample",
+						"value": "Sample"
+					}
+				],
+				"height": [
+					{
+						"label": "Sample",
+						"value": "Sample"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				]
+			}
+		},
 		"display/Spinner": {
 			"extends": [
 				"SVGAttributes<SVGSVGElement>"
@@ -3213,6 +6120,637 @@
 					{
 						"label": "Label",
 						"value": "Label"
+					}
+				]
+			}
+		},
+		"display/Stamp": {
+			"extends": [
+				"HTMLAttributes<HTMLDivElement>"
+			],
+			"props": [
+				{
+					"name": "size",
+					"type": "Size",
+					"optional": true,
+					"comment": null,
+					"default": "'h-lg'",
+					"bindable": false
+				},
+				{
+					"name": "variant",
+					"type": "Variant | Message",
+					"optional": true,
+					"comment": null,
+					"default": "'primary'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'curved'",
+					"bindable": false
+				},
+				{
+					"name": "position",
+					"type": "StampPosition",
+					"optional": true,
+					"comment": null,
+					"default": "'inline'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "icon",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "children",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"variant": [
+					{
+						"label": "primary",
+						"value": "primary"
+					},
+					{
+						"label": "secondary",
+						"value": "secondary"
+					},
+					{
+						"label": "themed",
+						"value": "themed"
+					},
+					{
+						"label": "outline",
+						"value": "outline"
+					},
+					{
+						"label": "ghost",
+						"value": "ghost"
+					},
+					{
+						"label": "link",
+						"value": "link"
+					},
+					{
+						"label": "info",
+						"value": "info"
+					},
+					{
+						"label": "success",
+						"value": "success"
+					},
+					{
+						"label": "warning",
+						"value": "warning"
+					},
+					{
+						"label": "danger",
+						"value": "danger"
+					}
+				],
+				"size": [
+					{
+						"label": "h-xs",
+						"value": "h-xs"
+					},
+					{
+						"label": "h-sm",
+						"value": "h-sm"
+					},
+					{
+						"label": "h-md",
+						"value": "h-md"
+					},
+					{
+						"label": "h-bs",
+						"value": "h-bs"
+					},
+					{
+						"label": "h-lg",
+						"value": "h-lg"
+					},
+					{
+						"label": "h-xl",
+						"value": "h-xl"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"position": [
+					{
+						"label": "inline",
+						"value": "inline"
+					},
+					{
+						"label": "top-start",
+						"value": "top-start"
+					},
+					{
+						"label": "top-end",
+						"value": "top-end"
+					},
+					{
+						"label": "bottom-start",
+						"value": "bottom-start"
+					},
+					{
+						"label": "bottom-end",
+						"value": "bottom-end"
+					}
+				]
+			}
+		},
+		"display/Status": {
+			"extends": [
+				"HTMLAttributes<HTMLSpanElement>"
+			],
+			"props": [
+				{
+					"name": "variant",
+					"type": "Variant | Message",
+					"optional": true,
+					"comment": null,
+					"default": "'success'",
+					"bindable": false
+				},
+				{
+					"name": "size",
+					"type": "Size",
+					"optional": true,
+					"comment": null,
+					"default": "'h-sm'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'round'",
+					"bindable": false
+				},
+				{
+					"name": "lite",
+					"type": "boolean",
+					"optional": true,
+					"comment": "Lite mode renders a subtle transparent border outline instead of a tinted surface",
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "animated",
+					"type": "boolean",
+					"optional": true,
+					"comment": "Pulsating animation on the indicator dot",
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "label",
+					"type": "string",
+					"optional": true,
+					"comment": "Status label text",
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "children",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"variant": [
+					{
+						"label": "primary",
+						"value": "primary"
+					},
+					{
+						"label": "secondary",
+						"value": "secondary"
+					},
+					{
+						"label": "themed",
+						"value": "themed"
+					},
+					{
+						"label": "outline",
+						"value": "outline"
+					},
+					{
+						"label": "ghost",
+						"value": "ghost"
+					},
+					{
+						"label": "link",
+						"value": "link"
+					},
+					{
+						"label": "info",
+						"value": "info"
+					},
+					{
+						"label": "success",
+						"value": "success"
+					},
+					{
+						"label": "warning",
+						"value": "warning"
+					},
+					{
+						"label": "danger",
+						"value": "danger"
+					}
+				],
+				"size": [
+					{
+						"label": "h-xs",
+						"value": "h-xs"
+					},
+					{
+						"label": "h-sm",
+						"value": "h-sm"
+					},
+					{
+						"label": "h-md",
+						"value": "h-md"
+					},
+					{
+						"label": "h-bs",
+						"value": "h-bs"
+					},
+					{
+						"label": "h-lg",
+						"value": "h-lg"
+					},
+					{
+						"label": "h-xl",
+						"value": "h-xl"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"lite": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				],
+				"animated": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				]
+			}
+		},
+		"display/Table": {
+			"extends": [
+				"Omit<HTMLTableAttributes, 'border'>"
+			],
+			"props": [
+				{
+					"name": "columns",
+					"type": "Column<T>[]",
+					"optional": true,
+					"comment": null,
+					"default": "[]",
+					"bindable": false
+				},
+				{
+					"name": "rows",
+					"type": "T[]",
+					"optional": true,
+					"comment": null,
+					"default": "[]",
+					"bindable": false
+				},
+				{
+					"name": "caption",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "striped",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "surface",
+					"type": "Surface",
+					"optional": true,
+					"comment": null,
+					"default": "'bg-surface'",
+					"bindable": false
+				},
+				{
+					"name": "border",
+					"type": "Border",
+					"optional": true,
+					"comment": null,
+					"default": "'border'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'modern'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-none'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "cell",
+					"type": "Snippet<[T, Column<T>]>",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "empty",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "children",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"striped": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				],
+				"surface": [
+					{
+						"label": "bg-main",
+						"value": "bg-main"
+					},
+					{
+						"label": "bg-surface",
+						"value": "bg-surface"
+					},
+					{
+						"label": "bg-panel",
+						"value": "bg-panel"
+					},
+					{
+						"label": "bg-sunken",
+						"value": "bg-sunken"
+					},
+					{
+						"label": "bg-raised",
+						"value": "bg-raised"
+					},
+					{
+						"label": "bg-extra",
+						"value": "bg-extra"
+					},
+					{
+						"label": "state-surface",
+						"value": "state-surface"
+					},
+					{
+						"label": "state-hover",
+						"value": "state-hover"
+					},
+					{
+						"label": "state-selected",
+						"value": "state-selected"
+					},
+					{
+						"label": "bg-button",
+						"value": "bg-button"
+					},
+					{
+						"label": "bg-input",
+						"value": "bg-input"
+					}
+				],
+				"border": [
+					{
+						"label": "border",
+						"value": "border"
+					},
+					{
+						"label": "border-subtle",
+						"value": "border-subtle"
+					},
+					{
+						"label": "border-strong",
+						"value": "border-strong"
+					},
+					{
+						"label": "border-none",
+						"value": "border-none"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"shadow": [
+					{
+						"label": "shad-none",
+						"value": "shad-none"
+					},
+					{
+						"label": "shad-sm",
+						"value": "shad-sm"
+					},
+					{
+						"label": "shad-bs",
+						"value": "shad-bs"
+					},
+					{
+						"label": "shad-lg",
+						"value": "shad-lg"
+					},
+					{
+						"label": "shad-xl",
+						"value": "shad-xl"
+					},
+					{
+						"label": "shad-2xl",
+						"value": "shad-2xl"
+					},
+					{
+						"label": "shad-hover-sm",
+						"value": "shad-hover-sm"
+					},
+					{
+						"label": "shad-hover-bs",
+						"value": "shad-hover-bs"
+					},
+					{
+						"label": "shad-hover-lg",
+						"value": "shad-hover-lg"
+					},
+					{
+						"label": "shad-hover-xl",
+						"value": "shad-hover-xl"
+					},
+					{
+						"label": "shad-hover-2xl",
+						"value": "shad-hover-2xl"
 					}
 				]
 			}
@@ -3851,6 +7389,968 @@
 					{
 						"label": "round",
 						"value": "round"
+					}
+				]
+			}
+		},
+		"forms/Combobox": {
+			"extends": [
+				"Omit<HTMLInputAttributes, 'value' | 'type' | 'role' | 'size'>"
+			],
+			"props": [
+				{
+					"name": "options",
+					"type": "SelectOption[]",
+					"optional": false,
+					"comment": null,
+					"default": "[]",
+					"bindable": false
+				},
+				{
+					"name": "value",
+					"type": "string | number | null",
+					"optional": true,
+					"comment": null,
+					"default": "null",
+					"bindable": true
+				},
+				{
+					"name": "placeholder",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "'Search…'",
+					"bindable": false
+				},
+				{
+					"name": "emptyText",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "'No matches found'",
+					"bindable": false
+				},
+				{
+					"name": "label",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "error",
+					"type": "boolean | string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "disabled",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "variant",
+					"type": "Variant",
+					"optional": true,
+					"comment": null,
+					"default": "'outline'",
+					"bindable": false
+				},
+				{
+					"name": "size",
+					"type": "Size",
+					"optional": true,
+					"comment": null,
+					"default": "'h-md'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'modern'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-none'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "onchoose",
+					"type": "(option: SelectOption) => void",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "empty",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"variant": [
+					{
+						"label": "primary",
+						"value": "primary"
+					},
+					{
+						"label": "secondary",
+						"value": "secondary"
+					},
+					{
+						"label": "themed",
+						"value": "themed"
+					},
+					{
+						"label": "outline",
+						"value": "outline"
+					},
+					{
+						"label": "ghost",
+						"value": "ghost"
+					},
+					{
+						"label": "link",
+						"value": "link"
+					}
+				],
+				"size": [
+					{
+						"label": "h-xs",
+						"value": "h-xs"
+					},
+					{
+						"label": "h-sm",
+						"value": "h-sm"
+					},
+					{
+						"label": "h-md",
+						"value": "h-md"
+					},
+					{
+						"label": "h-bs",
+						"value": "h-bs"
+					},
+					{
+						"label": "h-lg",
+						"value": "h-lg"
+					},
+					{
+						"label": "h-xl",
+						"value": "h-xl"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"shadow": [
+					{
+						"label": "shad-none",
+						"value": "shad-none"
+					},
+					{
+						"label": "shad-sm",
+						"value": "shad-sm"
+					},
+					{
+						"label": "shad-bs",
+						"value": "shad-bs"
+					},
+					{
+						"label": "shad-lg",
+						"value": "shad-lg"
+					},
+					{
+						"label": "shad-xl",
+						"value": "shad-xl"
+					},
+					{
+						"label": "shad-2xl",
+						"value": "shad-2xl"
+					},
+					{
+						"label": "shad-hover-sm",
+						"value": "shad-hover-sm"
+					},
+					{
+						"label": "shad-hover-bs",
+						"value": "shad-hover-bs"
+					},
+					{
+						"label": "shad-hover-lg",
+						"value": "shad-hover-lg"
+					},
+					{
+						"label": "shad-hover-xl",
+						"value": "shad-hover-xl"
+					},
+					{
+						"label": "shad-hover-2xl",
+						"value": "shad-hover-2xl"
+					}
+				],
+				"disabled": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				]
+			}
+		},
+		"forms/Fader": {
+			"extends": [
+				"Omit<HTMLAttributes<HTMLDivElement>, 'onchange'>"
+			],
+			"props": [
+				{
+					"name": "value",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "50",
+					"bindable": true
+				},
+				{
+					"name": "min",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "0",
+					"bindable": false
+				},
+				{
+					"name": "max",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "100",
+					"bindable": false
+				},
+				{
+					"name": "step",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "1",
+					"bindable": false
+				},
+				{
+					"name": "orientation",
+					"type": "Orientation",
+					"optional": true,
+					"comment": null,
+					"default": "'vertical'",
+					"bindable": false
+				},
+				{
+					"name": "disabled",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "size",
+					"type": "Size",
+					"optional": true,
+					"comment": null,
+					"default": "'h-xl'",
+					"bindable": false
+				},
+				{
+					"name": "surface",
+					"type": "Surface",
+					"optional": true,
+					"comment": null,
+					"default": "'bg-panel'",
+					"bindable": false
+				},
+				{
+					"name": "border",
+					"type": "Border",
+					"optional": true,
+					"comment": null,
+					"default": "'border'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'curved'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-sm'",
+					"bindable": false
+				},
+				{
+					"name": "label",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "showValue",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "true",
+					"bindable": false
+				},
+				{
+					"name": "thumbMarks",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "3",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "onchange",
+					"type": "(value: number) => void",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"orientation": [
+					{
+						"label": "horizontal",
+						"value": "horizontal"
+					},
+					{
+						"label": "vertical",
+						"value": "vertical"
+					}
+				],
+				"thumbMarks": [
+					{
+						"label": "3",
+						"value": 3
+					},
+					{
+						"label": "9",
+						"value": 9
+					}
+				],
+				"showValue": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				],
+				"surface": [
+					{
+						"label": "bg-main",
+						"value": "bg-main"
+					},
+					{
+						"label": "bg-surface",
+						"value": "bg-surface"
+					},
+					{
+						"label": "bg-panel",
+						"value": "bg-panel"
+					},
+					{
+						"label": "bg-sunken",
+						"value": "bg-sunken"
+					},
+					{
+						"label": "bg-raised",
+						"value": "bg-raised"
+					},
+					{
+						"label": "bg-extra",
+						"value": "bg-extra"
+					},
+					{
+						"label": "state-surface",
+						"value": "state-surface"
+					},
+					{
+						"label": "state-hover",
+						"value": "state-hover"
+					},
+					{
+						"label": "state-selected",
+						"value": "state-selected"
+					},
+					{
+						"label": "bg-button",
+						"value": "bg-button"
+					},
+					{
+						"label": "bg-input",
+						"value": "bg-input"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"disabled": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				]
+			}
+		},
+		"forms/Fieldset": {
+			"extends": [
+				"HTMLFieldsetAttributes"
+			],
+			"props": [
+				{
+					"name": "legend",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "disabled",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "surface",
+					"type": "Surface",
+					"optional": true,
+					"comment": null,
+					"default": "'bg-surface'",
+					"bindable": false
+				},
+				{
+					"name": "border",
+					"type": "Border",
+					"optional": true,
+					"comment": null,
+					"default": "'border'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'modern'",
+					"bindable": false
+				},
+				{
+					"name": "padding",
+					"type": "Pad",
+					"optional": true,
+					"comment": null,
+					"default": "'pad-md'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-none'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "children",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"legend": [
+					{
+						"label": "Sample",
+						"value": "Sample"
+					}
+				],
+				"surface": [
+					{
+						"label": "bg-main",
+						"value": "bg-main"
+					},
+					{
+						"label": "bg-surface",
+						"value": "bg-surface"
+					},
+					{
+						"label": "bg-panel",
+						"value": "bg-panel"
+					},
+					{
+						"label": "bg-sunken",
+						"value": "bg-sunken"
+					},
+					{
+						"label": "bg-raised",
+						"value": "bg-raised"
+					},
+					{
+						"label": "bg-extra",
+						"value": "bg-extra"
+					},
+					{
+						"label": "state-surface",
+						"value": "state-surface"
+					},
+					{
+						"label": "state-hover",
+						"value": "state-hover"
+					},
+					{
+						"label": "state-selected",
+						"value": "state-selected"
+					},
+					{
+						"label": "bg-button",
+						"value": "bg-button"
+					},
+					{
+						"label": "bg-input",
+						"value": "bg-input"
+					}
+				],
+				"border": [
+					{
+						"label": "border",
+						"value": "border"
+					},
+					{
+						"label": "border-subtle",
+						"value": "border-subtle"
+					},
+					{
+						"label": "border-strong",
+						"value": "border-strong"
+					},
+					{
+						"label": "border-none",
+						"value": "border-none"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"padding": [
+					{
+						"label": "pad-sm",
+						"value": "pad-sm"
+					},
+					{
+						"label": "pad-md",
+						"value": "pad-md"
+					},
+					{
+						"label": "pad-bs",
+						"value": "pad-bs"
+					},
+					{
+						"label": "pad-lg",
+						"value": "pad-lg"
+					},
+					{
+						"label": "pad-xl",
+						"value": "pad-xl"
+					}
+				],
+				"disabled": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				]
+			}
+		},
+		"forms/FileUpload": {
+			"extends": [
+				"Omit<HTMLInputAttributes, 'type' | 'files' | 'value'>"
+			],
+			"props": [
+				{
+					"name": "files",
+					"type": "File[]",
+					"optional": true,
+					"comment": null,
+					"default": "[]",
+					"bindable": true
+				},
+				{
+					"name": "label",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "'Drop files here or browse'",
+					"bindable": false
+				},
+				{
+					"name": "hint",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "accept",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "maxSize",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "multiple",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "true",
+					"bindable": false
+				},
+				{
+					"name": "disabled",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "surface",
+					"type": "Surface",
+					"optional": true,
+					"comment": null,
+					"default": "'bg-surface'",
+					"bindable": false
+				},
+				{
+					"name": "border",
+					"type": "Border",
+					"optional": true,
+					"comment": null,
+					"default": "'border'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'modern'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-none'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "onfiles",
+					"type": "(files: File[]) => void",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"multiple": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				],
+				"maxSize": [
+					{
+						"label": "0",
+						"value": 0
+					},
+					{
+						"label": "50",
+						"value": 50
+					}
+				],
+				"surface": [
+					{
+						"label": "bg-main",
+						"value": "bg-main"
+					},
+					{
+						"label": "bg-surface",
+						"value": "bg-surface"
+					},
+					{
+						"label": "bg-panel",
+						"value": "bg-panel"
+					},
+					{
+						"label": "bg-sunken",
+						"value": "bg-sunken"
+					},
+					{
+						"label": "bg-raised",
+						"value": "bg-raised"
+					},
+					{
+						"label": "bg-extra",
+						"value": "bg-extra"
+					},
+					{
+						"label": "state-surface",
+						"value": "state-surface"
+					},
+					{
+						"label": "state-hover",
+						"value": "state-hover"
+					},
+					{
+						"label": "state-selected",
+						"value": "state-selected"
+					},
+					{
+						"label": "bg-button",
+						"value": "bg-button"
+					},
+					{
+						"label": "bg-input",
+						"value": "bg-input"
+					}
+				],
+				"border": [
+					{
+						"label": "border",
+						"value": "border"
+					},
+					{
+						"label": "border-subtle",
+						"value": "border-subtle"
+					},
+					{
+						"label": "border-strong",
+						"value": "border-strong"
+					},
+					{
+						"label": "border-none",
+						"value": "border-none"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"disabled": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
 					}
 				]
 			}
@@ -4528,6 +9028,358 @@
 						"value": {
 							"$snippet": "Sample"
 						}
+					}
+				]
+			}
+		},
+		"forms/Label": {
+			"extends": [
+				"HTMLLabelAttributes"
+			],
+			"props": [
+				{
+					"name": "for",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "required",
+					"type": "boolean",
+					"optional": true,
+					"comment": "Show a required asterisk indicator",
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "description",
+					"type": "string",
+					"optional": true,
+					"comment": "Optional descriptive helper text placed below or next to label",
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "size",
+					"type": "Size",
+					"optional": true,
+					"comment": null,
+					"default": "'h-sm'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "children",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"required": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				],
+				"description": [
+					{
+						"label": "A short description.",
+						"value": "A short description."
+					}
+				],
+				"size": [
+					{
+						"label": "h-xs",
+						"value": "h-xs"
+					},
+					{
+						"label": "h-sm",
+						"value": "h-sm"
+					},
+					{
+						"label": "h-md",
+						"value": "h-md"
+					},
+					{
+						"label": "h-bs",
+						"value": "h-bs"
+					},
+					{
+						"label": "h-lg",
+						"value": "h-lg"
+					},
+					{
+						"label": "h-xl",
+						"value": "h-xl"
+					}
+				]
+			}
+		},
+		"forms/MultiSelect": {
+			"extends": [
+				"HTMLAttributes<HTMLDivElement>"
+			],
+			"props": [
+				{
+					"name": "options",
+					"type": "SelectOption[]",
+					"optional": false,
+					"comment": null,
+					"default": "[]",
+					"bindable": false
+				},
+				{
+					"name": "value",
+					"type": "(string | number)[]",
+					"optional": true,
+					"comment": null,
+					"default": "[]",
+					"bindable": true
+				},
+				{
+					"name": "placeholder",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "'Select options…'",
+					"bindable": false
+				},
+				{
+					"name": "label",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "max",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "disabled",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "variant",
+					"type": "Variant",
+					"optional": true,
+					"comment": null,
+					"default": "'outline'",
+					"bindable": false
+				},
+				{
+					"name": "size",
+					"type": "Size",
+					"optional": true,
+					"comment": null,
+					"default": "'h-md'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'modern'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-none'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"variant": [
+					{
+						"label": "primary",
+						"value": "primary"
+					},
+					{
+						"label": "secondary",
+						"value": "secondary"
+					},
+					{
+						"label": "themed",
+						"value": "themed"
+					},
+					{
+						"label": "outline",
+						"value": "outline"
+					},
+					{
+						"label": "ghost",
+						"value": "ghost"
+					},
+					{
+						"label": "link",
+						"value": "link"
+					}
+				],
+				"size": [
+					{
+						"label": "h-xs",
+						"value": "h-xs"
+					},
+					{
+						"label": "h-sm",
+						"value": "h-sm"
+					},
+					{
+						"label": "h-md",
+						"value": "h-md"
+					},
+					{
+						"label": "h-bs",
+						"value": "h-bs"
+					},
+					{
+						"label": "h-lg",
+						"value": "h-lg"
+					},
+					{
+						"label": "h-xl",
+						"value": "h-xl"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"shadow": [
+					{
+						"label": "shad-none",
+						"value": "shad-none"
+					},
+					{
+						"label": "shad-sm",
+						"value": "shad-sm"
+					},
+					{
+						"label": "shad-bs",
+						"value": "shad-bs"
+					},
+					{
+						"label": "shad-lg",
+						"value": "shad-lg"
+					},
+					{
+						"label": "shad-xl",
+						"value": "shad-xl"
+					},
+					{
+						"label": "shad-2xl",
+						"value": "shad-2xl"
+					},
+					{
+						"label": "shad-hover-sm",
+						"value": "shad-hover-sm"
+					},
+					{
+						"label": "shad-hover-bs",
+						"value": "shad-hover-bs"
+					},
+					{
+						"label": "shad-hover-lg",
+						"value": "shad-hover-lg"
+					},
+					{
+						"label": "shad-hover-xl",
+						"value": "shad-hover-xl"
+					},
+					{
+						"label": "shad-hover-2xl",
+						"value": "shad-hover-2xl"
+					}
+				],
+				"max": [
+					{
+						"label": "0",
+						"value": 0
+					},
+					{
+						"label": "50",
+						"value": 50
+					}
+				],
+				"disabled": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
 					}
 				]
 			}
@@ -7423,6 +12275,311 @@
 				]
 			}
 		},
+		"forms/XYPad": {
+			"extends": [
+				"Omit<HTMLAttributes<HTMLDivElement>, 'onchange'>"
+			],
+			"props": [
+				{
+					"name": "value",
+					"type": "Point",
+					"optional": true,
+					"comment": null,
+					"default": "{ x: 50, y: 50 }",
+					"bindable": true
+				},
+				{
+					"name": "minX",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "0",
+					"bindable": false
+				},
+				{
+					"name": "maxX",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "100",
+					"bindable": false
+				},
+				{
+					"name": "minY",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "0",
+					"bindable": false
+				},
+				{
+					"name": "maxY",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "100",
+					"bindable": false
+				},
+				{
+					"name": "stepX",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "1",
+					"bindable": false
+				},
+				{
+					"name": "stepY",
+					"type": "number",
+					"optional": true,
+					"comment": null,
+					"default": "1",
+					"bindable": false
+				},
+				{
+					"name": "disabled",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "size",
+					"type": "Size",
+					"optional": true,
+					"comment": null,
+					"default": "'h-xl'",
+					"bindable": false
+				},
+				{
+					"name": "surface",
+					"type": "Surface",
+					"optional": true,
+					"comment": null,
+					"default": "'bg-panel'",
+					"bindable": false
+				},
+				{
+					"name": "border",
+					"type": "Border",
+					"optional": true,
+					"comment": null,
+					"default": "'border'",
+					"bindable": false
+				},
+				{
+					"name": "shape",
+					"type": "Shape",
+					"optional": true,
+					"comment": null,
+					"default": "'curved'",
+					"bindable": false
+				},
+				{
+					"name": "shadow",
+					"type": "Shadow",
+					"optional": true,
+					"comment": null,
+					"default": "'shad-sm'",
+					"bindable": false
+				},
+				{
+					"name": "label",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "showValues",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "true",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "onchange",
+					"type": "(value: Point) => void",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"showValues": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				],
+				"surface": [
+					{
+						"label": "bg-main",
+						"value": "bg-main"
+					},
+					{
+						"label": "bg-surface",
+						"value": "bg-surface"
+					},
+					{
+						"label": "bg-panel",
+						"value": "bg-panel"
+					},
+					{
+						"label": "bg-sunken",
+						"value": "bg-sunken"
+					},
+					{
+						"label": "bg-raised",
+						"value": "bg-raised"
+					},
+					{
+						"label": "bg-extra",
+						"value": "bg-extra"
+					},
+					{
+						"label": "state-surface",
+						"value": "state-surface"
+					},
+					{
+						"label": "state-hover",
+						"value": "state-hover"
+					},
+					{
+						"label": "state-selected",
+						"value": "state-selected"
+					},
+					{
+						"label": "bg-button",
+						"value": "bg-button"
+					},
+					{
+						"label": "bg-input",
+						"value": "bg-input"
+					}
+				],
+				"border": [
+					{
+						"label": "border",
+						"value": "border"
+					},
+					{
+						"label": "border-subtle",
+						"value": "border-subtle"
+					},
+					{
+						"label": "border-strong",
+						"value": "border-strong"
+					},
+					{
+						"label": "border-none",
+						"value": "border-none"
+					}
+				],
+				"shape": [
+					{
+						"label": "rect",
+						"value": "rect"
+					},
+					{
+						"label": "min",
+						"value": "min"
+					},
+					{
+						"label": "modern",
+						"value": "modern"
+					},
+					{
+						"label": "curved",
+						"value": "curved"
+					},
+					{
+						"label": "round",
+						"value": "round"
+					}
+				],
+				"shadow": [
+					{
+						"label": "shad-none",
+						"value": "shad-none"
+					},
+					{
+						"label": "shad-sm",
+						"value": "shad-sm"
+					},
+					{
+						"label": "shad-bs",
+						"value": "shad-bs"
+					},
+					{
+						"label": "shad-lg",
+						"value": "shad-lg"
+					},
+					{
+						"label": "shad-xl",
+						"value": "shad-xl"
+					},
+					{
+						"label": "shad-2xl",
+						"value": "shad-2xl"
+					},
+					{
+						"label": "shad-hover-sm",
+						"value": "shad-hover-sm"
+					},
+					{
+						"label": "shad-hover-bs",
+						"value": "shad-hover-bs"
+					},
+					{
+						"label": "shad-hover-lg",
+						"value": "shad-hover-lg"
+					},
+					{
+						"label": "shad-hover-xl",
+						"value": "shad-hover-xl"
+					},
+					{
+						"label": "shad-hover-2xl",
+						"value": "shad-hover-2xl"
+					}
+				],
+				"disabled": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				]
+			}
+		},
 		"layout/Card": {
 			"extends": [
 				"HTMLAttributes<HTMLDivElement>"
@@ -8204,6 +13361,101 @@
 				]
 			}
 		},
+		"layout/Grid": {
+			"extends": [
+				"HTMLAttributes<HTMLDivElement>"
+			],
+			"props": [
+				{
+					"name": "cols",
+					"type": "number",
+					"optional": true,
+					"comment": "Fixed number of equal-width columns. Omit for responsive auto-fit.",
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "min",
+					"type": "string",
+					"optional": true,
+					"comment": "Minimum column track width for auto-fit, e.g. '14rem' or '250px'.",
+					"default": "'14rem'",
+					"bindable": false
+				},
+				{
+					"name": "gap",
+					"type": "number | string",
+					"optional": true,
+					"comment": "Grid gap spacing unit (number * 0.25rem) or explicit CSS string.",
+					"default": "4",
+					"bindable": false
+				},
+				{
+					"name": "padding",
+					"type": "Pad",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "children",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"cols": [
+					{
+						"label": "0",
+						"value": 0
+					},
+					{
+						"label": "50",
+						"value": 50
+					}
+				],
+				"min": [
+					{
+						"label": "Sample",
+						"value": "Sample"
+					}
+				],
+				"gap": [
+					{
+						"label": "4",
+						"value": 4
+					},
+					{
+						"label": "12",
+						"value": 12
+					},
+					{
+						"label": "Sample",
+						"value": "Sample"
+					}
+				]
+			}
+		},
 		"layout/SelectableCard": {
 			"extends": [
 				"Omit<HTMLAttributes<HTMLDivElement>, 'onchange'>"
@@ -8818,6 +14070,165 @@
 					{
 						"label": "shad-hover-2xl",
 						"value": "shad-hover-2xl"
+					}
+				]
+			}
+		},
+		"layout/Stack": {
+			"extends": [
+				"HTMLAttributes<HTMLDivElement>"
+			],
+			"props": [
+				{
+					"name": "direction",
+					"type": "'row' | 'column'",
+					"optional": true,
+					"comment": null,
+					"default": "'column'",
+					"bindable": false
+				},
+				{
+					"name": "gap",
+					"type": "number | string",
+					"optional": true,
+					"comment": null,
+					"default": "3",
+					"bindable": false
+				},
+				{
+					"name": "align",
+					"type": "'start' | 'center' | 'end' | 'stretch' | 'baseline'",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "justify",
+					"type": "'start' | 'center' | 'end' | 'between' | 'around'",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "wrap",
+					"type": "boolean",
+					"optional": true,
+					"comment": null,
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "padding",
+					"type": "Pad",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "children",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"direction": [
+					{
+						"label": "row",
+						"value": "row"
+					},
+					{
+						"label": "column",
+						"value": "column"
+					}
+				],
+				"gap": [
+					{
+						"label": "3",
+						"value": 3
+					},
+					{
+						"label": "9",
+						"value": 9
+					},
+					{
+						"label": "Sample",
+						"value": "Sample"
+					}
+				],
+				"align": [
+					{
+						"label": "start",
+						"value": "start"
+					},
+					{
+						"label": "center",
+						"value": "center"
+					},
+					{
+						"label": "end",
+						"value": "end"
+					},
+					{
+						"label": "stretch",
+						"value": "stretch"
+					},
+					{
+						"label": "baseline",
+						"value": "baseline"
+					}
+				],
+				"justify": [
+					{
+						"label": "start",
+						"value": "start"
+					},
+					{
+						"label": "center",
+						"value": "center"
+					},
+					{
+						"label": "end",
+						"value": "end"
+					},
+					{
+						"label": "between",
+						"value": "between"
+					},
+					{
+						"label": "around",
+						"value": "around"
+					}
+				],
+				"wrap": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
 					}
 				]
 			}
@@ -14886,6 +20297,324 @@
 						"value": {
 							"$snippet": "Sample"
 						}
+					}
+				]
+			}
+		},
+		"typography/Heading": {
+			"extends": [
+				"HTMLAttributes<HTMLHeadingElement>"
+			],
+			"props": [
+				{
+					"name": "level",
+					"type": "1 | 2 | 3 | 4 | 5 | 6",
+					"optional": true,
+					"comment": "Heading tag level (h1 through h6). Defaults to 2.",
+					"default": "2",
+					"bindable": false
+				},
+				{
+					"name": "size",
+					"type": "1 | 2 | 3 | 4 | 5 | 6",
+					"optional": true,
+					"comment": "Visual size scale 1-6. When omitted, matches the level.",
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "weight",
+					"type": "Weight",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "children",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"level": [
+					{
+						"label": "1",
+						"value": 1
+					},
+					{
+						"label": "2",
+						"value": 2
+					},
+					{
+						"label": "3",
+						"value": 3
+					},
+					{
+						"label": "4",
+						"value": 4
+					},
+					{
+						"label": "5",
+						"value": 5
+					},
+					{
+						"label": "6",
+						"value": 6
+					}
+				],
+				"size": [
+					{
+						"label": "1",
+						"value": 1
+					},
+					{
+						"label": "2",
+						"value": 2
+					},
+					{
+						"label": "3",
+						"value": 3
+					},
+					{
+						"label": "4",
+						"value": 4
+					},
+					{
+						"label": "5",
+						"value": 5
+					},
+					{
+						"label": "6",
+						"value": 6
+					}
+				],
+				"weight": [
+					{
+						"label": "weight-300",
+						"value": "weight-300"
+					},
+					{
+						"label": "weight-400",
+						"value": "weight-400"
+					},
+					{
+						"label": "weight-500",
+						"value": "weight-500"
+					},
+					{
+						"label": "weight-600",
+						"value": "weight-600"
+					},
+					{
+						"label": "weight-700",
+						"value": "weight-700"
+					},
+					{
+						"label": "weight-800",
+						"value": "weight-800"
+					}
+				]
+			}
+		},
+		"typography/Text": {
+			"extends": [
+				"HTMLAttributes<HTMLElement>"
+			],
+			"props": [
+				{
+					"name": "as",
+					"type": "'p' | 'span' | 'div' | 'small' | 'strong' | 'em' | 'label'",
+					"optional": true,
+					"comment": "HTML tag to render. Defaults to 'p'.",
+					"default": "'p'",
+					"bindable": false
+				},
+				{
+					"name": "tone",
+					"type": "TextTone",
+					"optional": true,
+					"comment": "Semantic text tone color.",
+					"default": "'default'",
+					"bindable": false
+				},
+				{
+					"name": "textsize",
+					"type": "TextSize",
+					"optional": true,
+					"comment": null,
+					"default": "'text-md'",
+					"bindable": false
+				},
+				{
+					"name": "weight",
+					"type": "Weight",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				},
+				{
+					"name": "mono",
+					"type": "boolean",
+					"optional": true,
+					"comment": "Monospace code font family.",
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "truncate",
+					"type": "boolean",
+					"optional": true,
+					"comment": "Single-line text truncation with ellipsis.",
+					"default": "false",
+					"bindable": false
+				},
+				{
+					"name": "class",
+					"type": "string",
+					"optional": true,
+					"comment": null,
+					"default": "''",
+					"bindable": false
+				},
+				{
+					"name": "children",
+					"type": "Snippet",
+					"optional": true,
+					"comment": null,
+					"default": null,
+					"bindable": false
+				}
+			],
+			"coreProps": {
+				"as": [
+					{
+						"label": "p",
+						"value": "p"
+					},
+					{
+						"label": "span",
+						"value": "span"
+					},
+					{
+						"label": "div",
+						"value": "div"
+					},
+					{
+						"label": "small",
+						"value": "small"
+					},
+					{
+						"label": "strong",
+						"value": "strong"
+					},
+					{
+						"label": "em",
+						"value": "em"
+					},
+					{
+						"label": "label",
+						"value": "label"
+					}
+				],
+				"tone": [
+					{
+						"label": "default",
+						"value": "default"
+					},
+					{
+						"label": "secondary",
+						"value": "secondary"
+					},
+					{
+						"label": "muted",
+						"value": "muted"
+					},
+					{
+						"label": "themed",
+						"value": "themed"
+					},
+					{
+						"label": "info",
+						"value": "info"
+					},
+					{
+						"label": "success",
+						"value": "success"
+					},
+					{
+						"label": "warning",
+						"value": "warning"
+					},
+					{
+						"label": "danger",
+						"value": "danger"
+					}
+				],
+				"weight": [
+					{
+						"label": "weight-300",
+						"value": "weight-300"
+					},
+					{
+						"label": "weight-400",
+						"value": "weight-400"
+					},
+					{
+						"label": "weight-500",
+						"value": "weight-500"
+					},
+					{
+						"label": "weight-600",
+						"value": "weight-600"
+					},
+					{
+						"label": "weight-700",
+						"value": "weight-700"
+					},
+					{
+						"label": "weight-800",
+						"value": "weight-800"
+					}
+				],
+				"mono": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
+					}
+				],
+				"truncate": [
+					{
+						"label": "false",
+						"value": false
+					},
+					{
+						"label": "true",
+						"value": true
 					}
 				]
 			}

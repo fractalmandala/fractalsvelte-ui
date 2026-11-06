@@ -5,7 +5,7 @@
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 	import { Icon as Iconbox, type IconData } from '@fractaldesign/icons';
 	import { luKeyboard } from '@fractaldesign/icons/lucide';
-	import type { Size, Shape, Icon, TextSize } from '$lib/types.js';
+	import type { Size, Shape, IconVariant, TextSize } from '$lib/types.js';
 	import IconButton from '../actions/IconButton.svelte';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'type'> {
@@ -14,7 +14,8 @@
 		/** The key's icon, e.g. luCommand or luArrowBigUp. */
 		glyph?: IconData;
 		/** Keycap look; ghost by default, for the button and the static keycap alike. */
-		icon?: Icon;
+		icon?: IconVariant;
+		iconVariant?: IconVariant;
 		size?: Size;
 		shape?: Shape;
 		/** Render a non-interactive keycap (a span) instead of a button. */
@@ -30,6 +31,7 @@
 		label = 'Keyboard',
 		glyph = luKeyboard,
 		icon,
+		iconVariant,
 		size = 'h-sm',
 		shape = 'min',
 		static: isStatic = false,
@@ -38,7 +40,7 @@
 		children,
 		...restProps
 	}: Props = $props();
-	const look = $derived<Icon>(icon ?? 'ghost');
+	const look = $derived<IconVariant>(iconVariant ?? icon ?? 'ghost');
 </script>
 
 {#if isStatic}
@@ -46,7 +48,7 @@
 		{#if children}{@render children()}{:else}<Iconbox icon={glyph} />{/if}
 	</span>
 {:else}
-	<IconButton {label} icon={look} {size} {shape} class="kbd {textsize} {className}" {...restProps}>
+	<IconButton {label} iconVariant={look} {size} {shape} class="kbd {textsize} {className}" {...restProps}>
 		{#if children}{@render children()}{:else}<Iconbox icon={glyph} />{/if}
 	</IconButton>
 {/if}

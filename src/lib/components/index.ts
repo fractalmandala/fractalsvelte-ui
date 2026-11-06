@@ -6,9 +6,14 @@ export { default as IconButton } from './actions/IconButton.svelte';
 
 // Blocks
 export { default as BeforeAfter } from './blocks/BeforeAfter.svelte';
+export { default as Canvas } from './blocks/Canvas.svelte';
+export { default as Carousel } from './blocks/Carousel.svelte';
 export { default as ChatBubble } from './blocks/ChatBubble.svelte';
+export { default as EmptyState } from './blocks/EmptyState.svelte';
 export { default as FeatureGrid } from './blocks/FeatureGrid.svelte';
 export { default as FlowCanvas } from './blocks/FlowCanvas.svelte';
+export { default as Video } from './blocks/Video.svelte';
+export { default as Waveform } from './blocks/Waveform.svelte';
 
 // Display
 export { default as Alert } from './display/Alert.svelte';
@@ -19,17 +24,32 @@ export { default as Badge } from './display/Badge.svelte';
 export { default as Banner } from './display/Banner.svelte';
 export { default as Bar } from './display/Bar.svelte';
 export { default as Counter } from './display/Counter.svelte';
+export { default as Datatable } from './display/Datatable.svelte';
+export { default as Divider } from './display/Divider.svelte';
+export { default as Dot } from './display/Dot.svelte';
+export { default as Img } from './display/Img.svelte';
 export { default as Kbd } from './display/Kbd.svelte';
 export { default as Meter } from './display/Meter.svelte';
 export { default as Progress } from './display/Progress.svelte';
+export { default as Ribbon } from './display/Ribbon.svelte';
+export { default as Skeleton } from './display/Skeleton.svelte';
 export { default as Spinner } from './display/Spinner.svelte';
+export { default as Stamp } from './display/Stamp.svelte';
+export { default as Status } from './display/Status.svelte';
+export { default as Table } from './display/Table.svelte';
 export { default as Tag } from './display/Tag.svelte';
 
 // Forms
 export { default as Checkbox } from './forms/Checkbox.svelte';
 export { default as ColorPicker } from './forms/ColorPicker.svelte';
+export { default as Combobox } from './forms/Combobox.svelte';
+export { default as Fader } from './forms/Fader.svelte';
+export { default as Fieldset } from './forms/Fieldset.svelte';
+export { default as FileUpload } from './forms/FileUpload.svelte';
 export { default as FormField } from './forms/FormField.svelte';
 export { default as Input } from './forms/Input.svelte';
+export { default as Label } from './forms/Label.svelte';
+export { default as MultiSelect } from './forms/MultiSelect.svelte';
 export { default as NumberInput } from './forms/NumberInput.svelte';
 export { default as PinInput } from './forms/PinInput.svelte';
 export { default as Radio } from './forms/Radio.svelte';
@@ -43,13 +63,16 @@ export { default as SliderTrack } from './forms/SliderTrack.svelte';
 export { default as Switch } from './forms/Switch.svelte';
 export { default as TagInput } from './forms/TagInput.svelte';
 export { default as TextArea } from './forms/TextArea.svelte';
+export { default as XYPad } from './forms/XYPad.svelte';
 
 // Layout
 export { default as Card } from './layout/Card.svelte';
 export { default as ClickableCard } from './layout/ClickableCard.svelte';
 export { default as Container } from './layout/Container.svelte';
+export { default as Grid } from './layout/Grid.svelte';
 export { default as SelectableCard } from './layout/SelectableCard.svelte';
 export { default as SplitPane } from './layout/SplitPane.svelte';
+export { default as Stack } from './layout/Stack.svelte';
 
 // Navigation
 export { default as AppShell } from './navigation/AppShell.svelte';
@@ -86,3 +109,5 @@ export { default as Blockquote } from './typography/Blockquote.svelte';
 export { default as Code } from './typography/Code.svelte';
 export { default as CodeBlock } from './typography/CodeBlock.svelte';
 export { default as Collapsible } from './typography/Collapsible.svelte';
+export { default as Heading } from './typography/Heading.svelte';
+export { default as Text } from './typography/Text.svelte';

@@ -3,13 +3,13 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes, HTMLAnchorAttributes } from 'svelte/elements';
-	import type { Icon, Size, Shape, Shadow } from '$lib/types.js';
+	import type { IconVariant, Size, Shape, Shadow } from '$lib/types.js';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'type'> {
 		/** Accessible name; also shown as the native tooltip. */
 		label: string;
 		/** `iconbox` is fractalstyler's bare icon button (transparent, hover fill). */
-		icon?: Icon;
+		icon?: IconVariant;
 		size?: Size;
 		shape?: Shape;
 		loading?: boolean;

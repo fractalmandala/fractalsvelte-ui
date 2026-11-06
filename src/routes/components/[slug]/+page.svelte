@@ -9,12 +9,9 @@
 	import CorePropsRows from '$site/doc/CorePropsRows.svelte';
 	import ComponentDemo from '$site/doc/ComponentDemo.svelte';
 	import ComponentInstall from '$site/doc/ComponentInstall.svelte';
-	import propsJson from '$site/doc/data/props.json';
 
 	let { data } = $props();
-	const extendsList = $derived(
-		(propsJson.props as Record<string, { extends: string[] }>)[data.entry.path]?.extends ?? []
-	);
+	const extendsList = $derived(data.entry.extendsList ?? []);
 </script>
 
 <svelte:head>

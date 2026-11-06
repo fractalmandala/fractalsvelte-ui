@@ -9,6 +9,13 @@
 			"description": "A button, or a link styled as one when given `href`."
 		},
 		{
+			"name": "ButtonGroup",
+			"title": "Button Group",
+			"path": "actions/ButtonGroup",
+			"category": "Actions",
+			"description": "Group of buttons attached together horizontally or vertically with unified borders and corner rounding."
+		},
+		{
 			"name": "CloseButton",
 			"title": "Close Button",
 			"path": "actions/CloseButton",
@@ -30,6 +37,27 @@
 			"description": "A square button holding only an icon, named for screen readers by `label`."
 		},
 		{
+			"name": "Audio",
+			"title": "Audio",
+			"path": "blocks/Audio",
+			"category": "Blocks",
+			"description": "Styled media card with audio title, caption, native controls wrapper, and tokenized frame."
+		},
+		{
+			"name": "AudioTrack",
+			"title": "Audio Track",
+			"path": "blocks/AudioTrack",
+			"category": "Blocks",
+			"description": "A media audio track item with artwork thumbnail, track number, artist, duration, and playback trigger."
+		},
+		{
+			"name": "AudioTrackList",
+			"title": "Audio Track List",
+			"path": "blocks/AudioTrackList",
+			"category": "Blocks",
+			"description": "A playlist track container with active track highlighting, artwork display, and selection events."
+		},
+		{
 			"name": "BeforeAfter",
 			"title": "Before After",
 			"path": "blocks/BeforeAfter",
@@ -37,11 +65,32 @@
 			"description": "A slider that wipes between a before and an after image."
 		},
 		{
+			"name": "Canvas",
+			"title": "Canvas",
+			"path": "blocks/Canvas",
+			"category": "Blocks",
+			"description": "High-DPI auto-resizing HTML5 canvas container with draw callback and aspect ratio."
+		},
+		{
+			"name": "Carousel",
+			"title": "Carousel",
+			"path": "blocks/Carousel",
+			"category": "Blocks",
+			"description": "Responsive scrollable carousel slider with slide snippet, next/prev arrow buttons, and indicator dots."
+		},
+		{
 			"name": "ChatBubble",
 			"title": "Chat Bubble",
 			"path": "blocks/ChatBubble",
 			"category": "Blocks",
 			"description": "A chat message bubble with avatar, timestamp and status."
+		},
+		{
+			"name": "EmptyState",
+			"title": "Empty State",
+			"path": "blocks/EmptyState",
+			"category": "Blocks",
+			"description": "Zero-state placeholder illustration with title, description, and action button slot."
 		},
 		{
 			"name": "FeatureGrid",
@@ -56,6 +105,20 @@
 			"path": "blocks/FlowCanvas",
 			"category": "Blocks",
 			"description": "A pannable, zoomable grid canvas for node diagrams."
+		},
+		{
+			"name": "Video",
+			"title": "Video",
+			"path": "blocks/Video",
+			"category": "Blocks",
+			"description": "Styled media card with video player, title, caption, aspect ratio, poster, and tokenized frame."
+		},
+		{
+			"name": "Waveform",
+			"title": "Waveform",
+			"path": "blocks/Waveform",
+			"category": "Blocks",
+			"description": "An interactive audio waveform visualizer and scrubber with progress fill and seek support."
 		},
 		{
 			"name": "Alert",
@@ -114,6 +177,34 @@
 			"description": "A number that counts up to `value`, with prefix, suffix and decimals."
 		},
 		{
+			"name": "Datatable",
+			"title": "Datatable",
+			"path": "display/Datatable",
+			"category": "Display",
+			"description": "Rich data table with search filtering, sortable column headers, row selection checkboxes, pagination, and custom cell snippets."
+		},
+		{
+			"name": "Divider",
+			"title": "Divider",
+			"path": "display/Divider",
+			"category": "Display",
+			"description": "Horizontal or vertical divider separator rule with optional centered label."
+		},
+		{
+			"name": "Dot",
+			"title": "Dot",
+			"path": "display/Dot",
+			"category": "Display",
+			"description": "A compact status dot indicator with optional pulsing animation and status variants."
+		},
+		{
+			"name": "Img",
+			"title": "Img",
+			"path": "display/Img",
+			"category": "Display",
+			"description": "Enhanced image component with aspect ratio, object-fit, fallback snippet, and shape."
+		},
+		{
 			"name": "Kbd",
 			"title": "Kbd",
 			"path": "display/Kbd",
@@ -135,11 +226,46 @@
 			"description": "A progress bar, determinate or indeterminate, with optional value label."
 		},
 		{
+			"name": "Ribbon",
+			"title": "Ribbon",
+			"path": "display/Ribbon",
+			"category": "Display",
+			"description": "A corner ribbon banner for cards and containers, with bookmark styling and variant themes."
+		},
+		{
+			"name": "Skeleton",
+			"title": "Skeleton",
+			"path": "display/Skeleton",
+			"category": "Display",
+			"description": "Animated shimmer placeholder for loading states with line count, dimensions, and shape."
+		},
+		{
 			"name": "Spinner",
 			"title": "Spinner",
 			"path": "display/Spinner",
 			"category": "Display",
 			"description": "A spinning loading indicator sized to the surrounding text."
+		},
+		{
+			"name": "Stamp",
+			"title": "Stamp",
+			"path": "display/Stamp",
+			"category": "Display",
+			"description": "An icon or metric tile stamp with square aspect ratio, rounded corners, and status variants."
+		},
+		{
+			"name": "Status",
+			"title": "Status",
+			"path": "display/Status",
+			"category": "Display",
+			"description": "A status pill or badge with an integrated indicator dot and label."
+		},
+		{
+			"name": "Table",
+			"title": "Table",
+			"path": "display/Table",
+			"category": "Display",
+			"description": "Responsive data table supporting declarative columns and rows sorting or compound children."
 		},
 		{
 			"name": "Tag",
@@ -163,6 +289,34 @@
 			"description": "A colour input with optional hex field and preset swatches."
 		},
 		{
+			"name": "Combobox",
+			"title": "Combobox",
+			"path": "forms/Combobox",
+			"category": "Forms",
+			"description": "Searchable combobox input with dropdown suggestions, keyboard navigation, and custom empty state."
+		},
+		{
+			"name": "Fader",
+			"title": "Fader",
+			"path": "forms/Fader",
+			"category": "Forms",
+			"description": "A studio audio level fader with tactile grooved thumb marks and vertical/horizontal orientation."
+		},
+		{
+			"name": "Fieldset",
+			"title": "Fieldset",
+			"path": "forms/Fieldset",
+			"category": "Forms",
+			"description": "HTML fieldset container with styled legend, borders, padding, and disabled cascade."
+		},
+		{
+			"name": "FileUpload",
+			"title": "File Upload",
+			"path": "forms/FileUpload",
+			"category": "Forms",
+			"description": "Drag-and-drop file upload dropzone with file picker, multiple selection, and removable file list."
+		},
+		{
 			"name": "FormField",
 			"title": "Form Field",
 			"path": "forms/FormField",
@@ -175,6 +329,20 @@
 			"path": "forms/Input",
 			"category": "Forms",
 			"description": "A text input with label, helper or error text, leading and trailing slots, and a clear button."
+		},
+		{
+			"name": "Label",
+			"title": "Label",
+			"path": "forms/Label",
+			"category": "Forms",
+			"description": "An accessible form label with required indicator and optional description text."
+		},
+		{
+			"name": "MultiSelect",
+			"title": "Multi Select",
+			"path": "forms/MultiSelect",
+			"category": "Forms",
+			"description": "Multi-value selection input with chips, search filtering, and keyboard navigation."
 		},
 		{
 			"name": "NumberInput",
@@ -268,6 +436,13 @@
 			"description": "A multi-line text input with optional auto-resize and character count."
 		},
 		{
+			"name": "XYPad",
+			"title": "XY Pad",
+			"path": "forms/XYPad",
+			"category": "Forms",
+			"description": "A 2D interactive XY control pad with crosshair guide, draggable puck, and value readout."
+		},
+		{
 			"name": "Card",
 			"title": "Card",
 			"path": "layout/Card",
@@ -289,6 +464,13 @@
 			"description": "A centred wrapper that caps content at a maximum width."
 		},
 		{
+			"name": "Grid",
+			"title": "Grid",
+			"path": "layout/Grid",
+			"category": "Layout",
+			"description": "Responsive CSS Grid container with explicit columns or auto-fit/auto-fill minmax tracks."
+		},
+		{
 			"name": "SelectableCard",
 			"title": "Selectable Card",
 			"path": "layout/SelectableCard",
@@ -301,6 +483,13 @@
 			"path": "layout/SplitPane",
 			"category": "Layout",
 			"description": "Two panes side by side or stacked, where either can be collapsed."
+		},
+		{
+			"name": "Stack",
+			"title": "Stack",
+			"path": "layout/Stack",
+			"category": "Layout",
+			"description": "Flexible linear stack layout container with direction, gap, alignment, and wrap options."
 		},
 		{
 			"name": "AppShell",
@@ -511,6 +700,20 @@
 			"path": "typography/Collapsible",
 			"category": "Typography",
 			"description": "A single section that expands and collapses under a header."
+		},
+		{
+			"name": "Heading",
+			"title": "Heading",
+			"path": "typography/Heading",
+			"category": "Typography",
+			"description": "Polymorphic heading element with semantic level, text size scale, tracking, and weight."
+		},
+		{
+			"name": "Text",
+			"title": "Text",
+			"path": "typography/Text",
+			"category": "Typography",
+			"description": "Polymorphic typography primitive supporting semantic tags, tone colors, weights, and truncation."
 		}
 	]
 }

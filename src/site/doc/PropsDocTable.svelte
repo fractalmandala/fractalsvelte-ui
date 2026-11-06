@@ -1,6 +1,6 @@
 <script lang="ts">
-	// Props table for one component, joining props.json with src/site/data/prop-definitions.ts.
-	import propsJson from './data/props.json';
+	// Props table for one component, directly reading live component props and src/site/data/prop-definitions.ts.
+	import { getLiveComponentByPath } from '$site/doc/live-components';
 	import { definitionFor, definitionHtml } from '$site/data/prop-definitions';
 
 	interface Props {
@@ -10,18 +10,10 @@
 
 	let { path }: Props = $props();
 
-	type Row = {
-		name: string;
-		type: string;
-		default: string | null;
-		optional: boolean;
-		comment?: string | null;
-	};
-	const data = propsJson.props as Record<string, { extends: string[]; props: Row[] }>;
-	const entry = $derived(data[path]);
+	const entry = $derived(getLiveComponentByPath(path));
 </script>
 
-{#if entry}
+{#if entry && entry.props.length}
 	<table class="props-table">
 		<thead>
 			<tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
