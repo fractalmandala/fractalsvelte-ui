@@ -99,7 +99,7 @@
 		aria-valuenow={value}
 		aria-valuetext="{value}{unit}"
 		aria-disabled={disabled || undefined}
-		class="radius-full {disabled ? 'text-muted' : (tone ?? 'text-theme')}"
+		class="round touch-none {disabled ? 'text-muted' : (tone ?? 'text-theme')}"
 		onpointerdown={(e) => {
 			if (disabled) return;
 			dragging = true;
@@ -136,5 +136,5 @@
 			<circle cx="50" cy="50" r="6" class="text-secondary" fill="currentColor" />
 		</svg>
 	</div>
-	{#if showReadout}<span class="chip tabular-nums bg-sunken text-secondary">{value}{unit}</span>{/if}
+	{#if showReadout}<span class="px-sm mincurved text-xs tabular-nums state-hover text-secondary">{value}{unit}</span>{/if}
 </div>

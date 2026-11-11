@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SliderTrack from '$lib/components/forms/SliderTrack.svelte';
+	import { SliderTrack } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <div class="relative" style="width: 200px; height: 24px;">

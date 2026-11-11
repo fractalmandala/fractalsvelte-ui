@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Fader from '$lib/components/forms/Fader.svelte';
+	import { Fader } from '@fractaldesign/fractalsvelte-ui';
 	let master = $state(75);
 	let balance = $state(50);
 </script>

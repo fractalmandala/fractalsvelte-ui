@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Waveform from '$lib/components/blocks/Waveform.svelte';
+	import { Waveform } from '@fractaldesign/fractalsvelte-ui';
 	let progress = $state(42);
 </script>
 

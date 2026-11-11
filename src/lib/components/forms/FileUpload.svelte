@@ -2,8 +2,9 @@
 
 <script lang="ts">
 	import type { HTMLInputAttributes } from 'svelte/elements';
-	import { Icon } from '@fractaldesign/icons';
-	import { luUpload, luFile, luX } from '@fractaldesign/icons/lucide';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import CloseButton from '../actions/CloseButton.svelte';
+	import { klFile, klUpload } from '$lib/icons/keylinestroke.js';
 	import type { Surface, Border, Shape, Shadow, TextSize } from '$lib/types.js';
 
 	interface Props extends Omit<HTMLInputAttributes, 'type' | 'files' | 'value'> {
@@ -32,7 +33,7 @@
 		multiple = true,
 		disabled = false,
 		surface = 'bg-surface',
-		border = 'border',
+		border = 'border-dashed',
 		shape = 'modern',
 		shadow = 'shad-none',
 		textsize = 'text-md',
@@ -73,9 +74,9 @@
 	}
 </script>
 
-<div class="file-upload-root box gap-xs {textsize} {className}">
+<div class="box gap-xs wfull {textsize} {className}">
 	<label
-		class="dropzone box xcenter ycenter text-center {surface} {border} {shape} {shadow} {over ? 'is-dragover' : ''} {disabled ? 'is-disabled' : ''}"
+		class="field relative box xcenter ycenter gap-sm pad-lg {shape} {shadow} {over ? 'state-selected' : surface} {border} {disabled ? 'text-muted' : 'pointer'}"
 		ondragover={(e) => {
 			e.preventDefault();
 			if (!disabled) over = true;
@@ -93,104 +94,34 @@
 			{multiple}
 			{accept}
 			{disabled}
-			class="hidden-file-input"
+			class="sr-only"
 			onchange={(e) => {
 				handleAdd(e.currentTarget.files);
 				e.currentTarget.value = '';
 			}}
 		/>
-
-		<div class="upload-icon row xcenter ycenter text-theme" aria-hidden="true">
-			<Icon icon={luUpload} />
-		</div>
-
-		<span class="upload-label font-medium text-sm text-primary">{label}</span>
-
+		<Icon icon={klUpload} size={24} class={disabled ? 'text-muted' : 'text-theme'} />
+		<span class="weight-500 text-sm {disabled ? 'text-muted' : 'text-primary'}">{label}</span>
 		{#if hint}
-			<span class="upload-hint text-xs text-secondary">{hint}</span>
+			<span class="text-xs text-secondary">{hint}</span>
 		{/if}
 	</label>
-
 	{#if error}
-		<span class="upload-error text-xs text-danger">{error}</span>
+		<p class="text-body-sm text-danger" role="alert">{error}</p>
 	{/if}
-
 	{#if files.length > 0}
-		<ul class="file-list box gap-xs list-none p0 m0">
+		<ul class="box gap-xs">
 			{#each files as f, i (f.name + i)}
-				<li class="file-row row ycenter xbetween px-sm py-xs border radius-sm text-xs text-primary">
+				<li class="row ycenter xbetween gap-sm px-sm py-xs mincurved bg-surface text-xs text-primary">
 					<div class="row ycenter gap-xs min0">
-						<Icon icon={luFile} />
-						<span class="truncate font-medium">{f.name}</span>
-						<span class="text-secondary shrink-0">({formatSize(f.size)})</span>
+						<Icon icon={klFile} class="text-muted" />
+						<span class="truncate weight-500">{f.name}</span>
+						<span class="text-secondary shrink-0 tabular-nums">({formatSize(f.size)})</span>
 					</div>
-					<button
-						type="button"
-						class="remove-btn text-secondary"
-						aria-label="Remove {f.name}"
-						onclick={() => removeFile(i)}
-					>
-						<Icon icon={luX} />
-					</button>
+					<CloseButton label="Remove {f.name}" size="h-sm" onclick={() => removeFile(i)} />
 				</li>
 			{/each}
 		</ul>
 	{/if}
 </div>
 
-<style>
-	.file-upload-root {
-		width: 100%;
-	}
-
-	.dropzone {
-		border-style: dashed;
-		padding: 1.5rem 1rem;
-		cursor: pointer;
-		gap: 0.5rem;
-		transition: border-color 150ms ease, background 150ms ease;
-	}
-
-	.dropzone.is-dragover {
-		border-color: var(--theme-color, #22c55e);
-		background: var(--state-surface, #f4f4f4);
-	}
-
-	.dropzone.is-disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
-
-	.hidden-file-input {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		border: 0;
-	}
-
-	.upload-icon {
-		font-size: 1.5rem;
-	}
-
-	.file-row {
-		background: var(--bg-surface, #ffffff);
-	}
-
-	.remove-btn {
-		background: none;
-		border: none;
-		padding: 0;
-		cursor: pointer;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.remove-btn:hover {
-		color: var(--danger, #ef4444);
-	}
-</style>

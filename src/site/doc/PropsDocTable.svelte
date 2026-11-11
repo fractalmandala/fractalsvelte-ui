@@ -1,6 +1,6 @@
 <script lang="ts">
 	// Props table for one component, directly reading live component props and src/site/data/prop-definitions.ts.
-	import { getLiveComponentByPath } from '$site/doc/live-components';
+	import { getLiveComponentByPath, TYPE_VALUES } from '$site/doc/live-components';
 	import { definitionFor, definitionHtml } from '$site/data/prop-definitions';
 
 	interface Props {
@@ -19,11 +19,16 @@
 			<tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
 		</thead>
 		<tbody>
-			{#each entry.props as p (p.name)}
+			{#each entry.props as p, i (p.name + '_' + i)}
 				{@const defText = definitionFor(p.name, p.comment)}
 				<tr>
 					<td><code>{p.name}{p.optional ? '?' : ''}</code></td>
-					<td><code>{p.type}</code></td>
+					<td>
+						<code>{p.type}</code>
+						{#if TYPE_VALUES[p.type]}
+							<span class="props-values text-sm text-secondary">{TYPE_VALUES[p.type].join(' · ')}</span>
+						{/if}
+					</td>
 					<td>{#if p.default}<code>{p.default}</code>{:else}—{/if}</td>
 					<td>{#if defText}{@html definitionHtml(defText)}{:else}—{/if}</td>
 				</tr>

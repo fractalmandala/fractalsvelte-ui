@@ -51,8 +51,8 @@
 		}
 	});
 
-	// Selected ink per variant, applied to the inner label: on the button itself
-	// button[data-variant] would outrank it. Underline draws its rule there too.
+	// Selected ink per variant, applied to the inner label so the button's variant
+	// colour does not override it. Underline draws its rule there too.
 	const SELECTED_CLASSES: Record<TabsVariant, string> = {
 		underline: 'text-theme bb-str',
 		pill: 'text-primary',
@@ -95,7 +95,7 @@
 					type="button"
 					id="{uid}-tab-{tab.id}"
 					role="tab"
-					class="shrink-0 variant size shape {BUTTON_VARIANT[variant][active ? 0 : 1]} {size} {TAB_SHAPE[variant]}"
+					class="shrink-0 {BUTTON_VARIANT[variant][active ? 0 : 1]} {size} {TAB_SHAPE[variant]}"
 					disabled={tab.disabled}
 					aria-selected={active}
 					aria-controls="{uid}-panel"
@@ -106,7 +106,7 @@
 					<span class="row ycenter gap-xs py-xs {active ? SELECTED_CLASSES[variant] : 'text-secondary'}">
 						{@render tab.icon?.()}
 						<span>{tab.label}</span>
-						{#if tab.badge !== undefined}<span class="chip bg-sunken text-secondary">{tab.badge}</span>{/if}
+						{#if tab.badge !== undefined}<span class="px-sm mincurved text-xs state-hover text-secondary">{tab.badge}</span>{/if}
 					</span>
 				</button>
 			{/each}

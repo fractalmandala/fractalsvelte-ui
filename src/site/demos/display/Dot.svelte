@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Dot from '$lib/components/display/Dot.svelte';
+	import { Dot } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <div class="row ycenter gap-md">

@@ -3,18 +3,19 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from '@fractaldesign/icons';
-	import { luGripVertical } from '@fractaldesign/icons/lucide';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klGripVertical } from '$lib/icons/keylinestroke.js';
 	import type { Surface, Border, Shape, Shadow } from '$lib/types.js';
 
 	/**
-	 * Which pane is collapsed. fractalstyler has no width utilities beyond
+	 * Which pane is collapsed. the stylesheet has no width utilities beyond
 	 * .grow, so the split snaps between three states instead of a free
 	 * percentage: both panes sharing the space, or one of them collapsed.
 	 */
 	export type SplitCollapse = 'a' | 'b' | null;
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
+		/** `horizontal` puts the panes side by side; `vertical` stacks them. */
 		direction?: 'horizontal' | 'vertical';
 		surface?: Surface;
 		border?: Border;
@@ -81,7 +82,7 @@
 	}
 </script>
 
-<div class="{horizontal ? 'row' : 'box'} wfull hfull min0 shape {surface} {border} {shape} {shadow} {className}" style:overflow="hidden" {...restProps}>
+<div class="{horizontal ? 'row' : 'box'} wfull hfull min0 {surface} {border} {shape} {shadow} overflow-hidden {className}" {...restProps}>
 	<div class="grow min0 scroll-y" hidden={collapsed === 'a'}>
 		{@render paneA?.()}
 	</div>
@@ -96,7 +97,7 @@
 		aria-valuenow={collapsed === 'a' ? 0 : collapsed === 'b' ? 100 : 50}
 		aria-label="Resize panes"
 		tabindex="0"
-		class="{horizontal ? 'box bl br px-xs' : 'row bt bb py-xs'} ycenter xcenter shrink-0 bg-sunken text-muted"
+		class="{horizontal ? 'box bl br px-xs' : 'row bt bb py-xs'} ycenter xcenter shrink-0 state-hover text-muted"
 		{onpointerdown}
 		{onpointermove}
 		onpointerup={() => (start = null)}
@@ -104,7 +105,7 @@
 		ondblclick={() => (collapsed = null)}
 		{onkeydown}
 	>
-		<Icon icon={luGripVertical} />
+		<Icon icon={klGripVertical} />
 	</div>
 	<div class="grow min0 scroll-y" hidden={collapsed === 'b'}>
 		{@render paneB?.()}

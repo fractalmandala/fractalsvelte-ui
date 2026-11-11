@@ -1,8 +1,6 @@
 <script lang="ts">
 
-	import { Icon } from '@fractaldesign/icons'
 	import IconTextButton from '$site/doc/IconTextButton.svelte'
-	import { reMarkdownLine, reFileCopyLine, reRobot2Line } from '@fractaldesign/icons/remix'
 	import { onMount } from 'svelte'
 	import { page } from '$app/state'
 	import { htmlToMarkdown } from '$site/utils/htmlToMarkdown'
@@ -79,8 +77,8 @@
 	<nav class="box gap-xl">
 			{#each groups as group (group.category)}
 		<div class="nav-section">
-			<p class="tt-u text-primary weight-600 text-xs pl-sm">{group.category}</p>
-			<div class="box gap-">
+			<p class="tt-u text-primary weight-600 text-xs pl-sm">{group.label}</p>
+			<div class="box">
 				{#each group.items as item (item.slug)}
 				<a class="nav-link" href={item.slug}>{item.name}</a>
 				{/each}
@@ -90,21 +88,21 @@
 	</nav>
 </aside>
 <section class="main-section py-lg">
-	<section class="content-section narrow-full" bind:this={content}>
+	<section class="content-section narrow-full gap-2xl" bind:this={content}>
 		{@render children()}
 	</section>
 </section>
 <aside class="sidebar-right px-lg py-lg">
 	
 	<div class="box gap-md">
-			<IconTextButton label={copied ? 'Copied' : 'Copy this Page'} shape="min" icon="secondary" size="h-md" onclick={copyPage}>
-		<Icon icon={reFileCopyLine}/>
+			<IconTextButton label={copied ? 'Copied' : 'Copy this Page'} shape="mincurved" icon="secondary" size="h-md" onclick={copyPage}>
+		copy
 	</IconTextButton>
-	<IconTextButton label="Open as Markdown" shape="min" icon="secondary" size="h-md" onclick={openMarkdown}>
-		<Icon icon={reMarkdownLine}/>
+	<IconTextButton label="Open as Markdown" shape="mincurved" icon="secondary" size="h-md" onclick={openMarkdown}>
+		remark
 	</IconTextButton>
-	<IconTextButton label="Send to AI" shape="min" icon="secondary" size="h-md" onclick={sendToAI}>
-		<Icon icon={reRobot2Line}/>
+	<IconTextButton label="Send to AI" shape="mincurved" icon="secondary" size="h-md" onclick={sendToAI}>
+		robot
 	</IconTextButton>
 	</div>
 </aside>

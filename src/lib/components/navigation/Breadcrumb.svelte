@@ -12,8 +12,8 @@
 	import type { TextSize } from '$lib/types.js';
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from '@fractaldesign/icons';
-	import { luChevronRight } from '@fractaldesign/icons/lucide';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klChevronRight } from '$lib/icons/keylinestroke.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
 		items?: BreadcrumbItem[];
@@ -37,16 +37,15 @@
 </script>
 
 {#snippet sep()}
-	<div role="listitem" class="row ycenter breadcrumb-spacer" aria-hidden="true">
-		{#if separator}{@render separator()}{:else}<Icon icon={luChevronRight} />{/if}
+	<div role="listitem" class="row ycenter text-muted" aria-hidden="true">
+		{#if separator}{@render separator()}{:else}<Icon icon={klChevronRight} />{/if}
 	</div>
 {/snippet}
 
-<!-- fractalstyler's breadcrumb set: .breadcrumb rail, .breadcrumb-link, .breadcrumb-spacer. -->
 <nav aria-label="Breadcrumb" class="{textsize} {className}" {...restProps}>
-	<div role="list" class="breadcrumb row ycenter gap-xs wrap">
+	<div role="list" class="row ycenter gap-xs wrap text-sm">
 		{#if home}
-			<div role="listitem" class="row ycenter breadcrumb-link">{@render home()}</div>
+			<div role="listitem" class="row ycenter link-plain">{@render home()}</div>
 			{#if items.length > 0}{@render sep()}{/if}
 		{/if}
 		{#each visible as entry, idx (idx)}
@@ -55,8 +54,7 @@
 				<div role="listitem" class="row ycenter">
 					<button
 						type="button"
-						data-variant="iconbox"
-						class="px-xs breadcrumb-spacer"
+						class="ghost px-xs h-md mincurved text-muted"
 						aria-label="Show all breadcrumb items"
 						onclick={() => (expanded = true)}>…</button
 					>
@@ -65,11 +63,11 @@
 				{@const current = entry.current ?? idx === visible.length - 1}
 				<div role="listitem" class="row ycenter">
 					{#if current}
-						<span class="breadcrumb-spacer text-primary weight-600" aria-current="page">{entry.label}</span>
+						<span class="text-primary weight-600" aria-current="page">{entry.label}</span>
 					{:else if entry.href}
-						<a href={entry.href} class="breadcrumb-link">{entry.label}</a>
+						<a href={entry.href} class="link-plain text-secondary">{entry.label}</a>
 					{:else}
-						<span class="breadcrumb-spacer">{entry.label}</span>
+						<span class="text-secondary">{entry.label}</span>
 					{/if}
 				</div>
 			{/if}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Header from '$lib/components/navigation/Header.svelte';
+	import { Header } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <Header>

@@ -3,7 +3,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon as Iconbox, type IconData } from '@fractaldesign/icons';
+	import Iconbox from '$lib/components/core/Icon.svelte';
+	import type { IconNode } from '$lib/icons/types.js';
 	import type { Size, Shape, Surface, ThemeColor, Message, TextSize } from '$lib/types.js';
 	import CloseButton from '../actions/CloseButton.svelte';
 
@@ -19,7 +20,7 @@
 		removable?: boolean;
 		removeLabel?: string;
 		onremove?: (event: MouseEvent) => void;
-		icon?: IconData;
+		icon?: IconNode;
 		textsize?: TextSize;
 		class?: string;
 		children?: Snippet;
@@ -29,7 +30,7 @@
 		variant = 'theme-color',
 		textOnly = false,
 		size = 'h-sm',
-		shape = 'min',
+		shape = 'mincurved',
 		removable = false,
 		removeLabel = 'Remove tag',
 		onremove,
@@ -51,7 +52,7 @@
 </script>
 
 <span
-	class="tag row ycenter gap-xs shrink-0 size shape {size} {shape} {textOnly ? 'text-only' : ink} {textsize} {className}"
+	class="tag row ycenter gap-xs shrink-0 {size} {shape} {textOnly ? 'text-only' : ink} {textsize} {className}"
 	style:--tag-color="var(--{variant})"
 	{...restProps}
 >

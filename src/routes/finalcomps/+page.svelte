@@ -14,13 +14,19 @@
 		TextSizes
 	} from '$lib/types.js';
 	import { coreSamples } from '$site/doc/data/core-samples';
+	import { docIcons } from '$site/doc/data/doc-icons';
 	import CodeSnippet from '$site/doc/CodeSnippet.svelte';
-	import Select from '$lib/components/forms/Select.svelte';
+	import Select from '#lib/components/core/Select.svelte';
 	import IconButton from '$lib/components/actions/IconButton.svelte';
-	import Button from '$lib/components/actions/Button.svelte';
-	import { Icon } from '@fractaldesign/icons';
-	import * as lucide from '@fractaldesign/icons/lucide';
-	const { luMinus, luPlus, luMaximize2, luRotateCcw, luLayoutGrid } = lucide;
+	import Button from '#lib/components/core/Button.svelte';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import {
+		klGrid2x2,
+		klMaximize2,
+		klMinus,
+		klPlus,
+		klRotateCcw
+	} from '$lib/icons/keylinestroke';
 
 	type AxisName = 'variant' | 'shape' | 'size' | 'shadow';
 
@@ -80,6 +86,8 @@
 		eager: true
 	});
 
+	const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 	function resolveTypeValues(
 		typeStr: string,
 		src: string,
@@ -96,7 +104,7 @@
 
 		let expanded = trimmed;
 		if (!(expanded in TYPE_UNIONS)) {
-			const localAlias = src.match(new RegExp(`type\\s+${expanded}\\s*=\\s*([^;\\n]+)`));
+			const localAlias = src.match(new RegExp(`type\\s+${escapeRe(expanded)}\\s*=\\s*([^;\\n]+)`));
 			if (localAlias) expanded = localAlias[1].trim();
 		}
 
@@ -186,7 +194,7 @@
 	const triggerSnippet = (label: string) =>
 		createRawSnippet<[{ open?: () => void; toggle?: () => void }]>((api) => ({
 			render: () =>
-				`<button type="button" class="row ycenter gap-sm shape size variant outline h-sm min">${label}</button>`,
+				`<button type="button" class="row ycenter gap-sm outline h-sm mincurved">${label}</button>`,
 			setup: (node) => {
 				const go = () => (api()?.open ?? api()?.toggle)?.();
 				node.addEventListener('click', go);
@@ -289,11 +297,7 @@
 		}
 	};
 
-	const iconData = (name: string) => {
-		return (lucide as Record<string, unknown>)[name] as
-			| { body?: string; viewBox?: string }
-			| undefined;
-	};
+	const iconData = (name: string) => docIcons[name];
 
 	function resolveSampleValue(v: unknown): unknown {
 		if (v && typeof v === 'object' && !Array.isArray(v)) {
@@ -514,13 +518,10 @@
 </script>
 
 {#snippet fieldSample()}
-	<Select
-		options={[
-			{ value: 'in', label: 'India' },
-			{ value: 'jp', label: 'Japan' }
-		]}
-		value="in"
-	/>
+	<Select label="Country" value="in">
+		<option value="in">India</option>
+		<option value="jp">Japan</option>
+	</Select>
 {/snippet}
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
@@ -617,12 +618,12 @@
 
 	<div class="canvas-controls" data-canvas-controls>
 		<IconButton
-			icon="ghost"
+			variant="ghost"
 			size="h-md"
 			label="Zoom out"
 			onclick={() => camera.zoomStep(-0.15, viewport)}
 		>
-			<Icon icon={luMinus} />
+			<Icon icon={klMinus} />
 		</IconButton>
 		<Button
 			variant="ghost"
@@ -633,36 +634,36 @@
 			{Math.round(camera.zoom * 100)}%
 		</Button>
 		<IconButton
-			icon="ghost"
+			variant="ghost"
 			size="h-md"
 			label="Zoom in"
 			onclick={() => camera.zoomStep(0.15, viewport)}
 		>
-			<Icon icon={luPlus} />
+			<Icon icon={klPlus} />
 		</IconButton>
 		<IconButton
-			icon="ghost"
+			variant="ghost"
 			size="h-md"
 			label="Auto fit"
 			onclick={() => camera.fitToView(viewport, plane)}
 		>
-			<Icon icon={luMaximize2} />
+			<Icon icon={klMaximize2} />
 		</IconButton>
 		<IconButton
-			icon="ghost"
+			variant="ghost"
 			size="h-md"
 			label="Reset block positions"
 			onclick={resetAllPositions}
 		>
-			<Icon icon={luLayoutGrid} />
+			<Icon icon={klGrid2x2} />
 		</IconButton>
 		<IconButton
-			icon="ghost"
+			variant="ghost"
 			size="h-md"
 			label="Reset view"
 			onclick={() => camera.reset()}
 		>
-			<Icon icon={luRotateCcw} />
+			<Icon icon={klRotateCcw} />
 		</IconButton>
 	</div>
 </div>

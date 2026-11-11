@@ -3,9 +3,9 @@
 <script lang="ts">
 	import type { TextSize } from '$lib/types.js';
 	import type { Snippet } from 'svelte';
-	import { Icon } from '@fractaldesign/icons';
-	import { luX } from '@fractaldesign/icons/lucide';
-	import Modal, { type ModalPlacement } from '../overlays/Modal.svelte';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klX } from '$lib/icons/keylinestroke.js';
+	import Modal, { type ModalPlacement } from '../core/Modal.svelte';
 
 	export type MobileNavPosition = 'left' | 'right' | 'top' | 'bottom';
 
@@ -49,8 +49,8 @@
 		{:else}
 			<span class="page-heading-bs">{title}</span>
 		{/if}
-		<button type="button" data-variant="iconbox" data-size="icon-bs" class="px-xs text-muted" aria-label="Close navigation" onclick={() => (open = false)}>
-			<Icon icon={luX} />
+		<button type="button" class="btn-icon inline-flex row xcenter ycenter ghost h-lg mincurved text-muted" aria-label="Close navigation" onclick={() => (open = false)}>
+			<Icon icon={klX} />
 		</button>
 	</header>
 	<nav class="box gap-xs pad-sm grow scroll-y" aria-label={title || 'Navigation'}>

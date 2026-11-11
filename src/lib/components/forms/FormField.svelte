@@ -3,10 +3,10 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from '@fractaldesign/icons';
-	import { luCircleAlert } from '@fractaldesign/icons/lucide';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klCircleAlert } from '$lib/icons/keylinestroke.js';
 	import type { Surface, Variant, Size, Shape, Shadow, TextSize } from '$lib/types.js';
-	import { setFieldLook } from './field-context';
+	import { setFieldLook } from './field-context.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		label?: string;
@@ -82,7 +82,7 @@
 	</div>
 	{#if error}
 		<p class="text-body-sm text-danger row ycenter gap-xs" id={id ? `${id}-error` : undefined} role="alert">
-			<Icon icon={luCircleAlert} class="shrink-0" />
+			<Icon icon={klCircleAlert} class="shrink-0" />
 			<span>{error}</span>
 		</p>
 	{:else if helperText}

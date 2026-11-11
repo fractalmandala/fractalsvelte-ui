@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SegmentedControl from '$lib/components/navigation/SegmentedControl.svelte';
+	import { SegmentedControl } from '@fractaldesign/fractalsvelte-ui';
 
 	const options = [
 		{ value: 'day', label: 'Day' },

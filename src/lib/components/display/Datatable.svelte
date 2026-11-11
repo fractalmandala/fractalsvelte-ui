@@ -4,20 +4,24 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { Snippet } from 'svelte';
 	import type { Column, Surface, Border, Shape, Shadow, TextSize } from '$lib/types.js';
-	import Checkbox from '../forms/Checkbox.svelte';
+	import Checkbox from '../core/Checkbox.svelte';
 	import Pagination from '../navigation/Pagination.svelte';
 	import SearchInput from '../forms/SearchInput.svelte';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		columns?: Column<T>[];
+		/** The records to show, one object per row. */
 		rows?: T[];
 		rowKey?: keyof T & string;
 		caption?: string;
 		searchable?: boolean;
 		searchPlaceholder?: string;
+		/** Rows per page; pagination appears when there are more. */
 		pageSize?: number;
 		selectable?: boolean;
+		/** Bindable list of the `rowKey` values of the selected rows. */
 		selected?: unknown[];
+		/** Shades every other row. */
 		striped?: boolean;
 		surface?: Surface;
 		border?: Border;
@@ -113,24 +117,24 @@
 </script>
 
 <div
-	class="datatable-root box gap-sm {textsize} {className}"
+	class="box gap-sm wfull {textsize} {className}"
 	{...restProps}
 >
 	{#if searchable || toolbar || (selectable && selected.length)}
 		<div class="row ycenter xbetween gap-sm wrap">
 			<div class="row ycenter gap-sm grow">
 				{#if searchable}
-					<div class="search-box">
+					<div>
 						<SearchInput
 							bind:value={query}
 							placeholder={searchPlaceholder}
-							size="h-sm"
+							size="h-bs"
 							oninput={() => (page = 1)}
 						/>
 					</div>
 				{/if}
 				{#if selectable && selected.length}
-					<span class="selected-badge text-xs font-medium text-secondary">
+					<span class="px-sm mincurved state-hover text-xs weight-500 text-secondary">
 						{selected.length} selected
 					</span>
 				{/if}
@@ -143,15 +147,15 @@
 		</div>
 	{/if}
 
-	<div class="table-wrap {surface} {border} {shape} {shadow}">
-		<table class="datatable {striped ? 'striped' : ''}">
+	<div class="wfull scroll-x {surface} {border} {shape} {shadow}">
+		<table class="data-table {striped ? 'striped' : ''}">
 			{#if caption}
-				<caption class="text-secondary text-sm font-medium">{caption}</caption>
+				<caption class="text-secondary text-sm weight-500">{caption}</caption>
 			{/if}
 			<thead>
 				<tr>
 					{#if selectable}
-						<th class="sel-col">
+						<th class="data-table-select">
 							<Checkbox
 								checked={allOnPage}
 								indeterminate={someOnPage}
@@ -163,17 +167,17 @@
 					{#each columns as c (c.key)}
 						<th
 							scope="col"
-							style:text-align={c.align ?? 'left'}
+							class="{c.align === 'right' ? 'ta-r' : c.align === 'center' ? 'ta-c' : ''}"
 							aria-sort={sortKey === c.key ? (dir === 1 ? 'ascending' : 'descending') : undefined}
 						>
 							{#if c.sortable}
 								<button
 									type="button"
-									class="sort-btn row ycenter gap-xs"
+									class="row ycenter gap-xs pad-none border-none bg-none text-xs weight-600 tt-u"
 									onclick={() => toggleSort(c.key)}
 								>
 									<span>{c.label}</span>
-									<span class="sort-indicator text-xs" aria-hidden="true">
+									<span class="text-xs text-muted" aria-hidden="true">
 										{sortKey === c.key ? (dir === 1 ? '↑' : '↓') : '↕'}
 									</span>
 								</button>
@@ -189,7 +193,7 @@
 					{@const isSelected = selected.includes(r[rowKey])}
 					<tr class={isSelected ? 'selected' : ''}>
 						{#if selectable}
-							<td class="sel-col">
+							<td class="data-table-select">
 								<Checkbox
 									checked={isSelected}
 									aria-label="Select row {String(r[rowKey])}"
@@ -198,7 +202,7 @@
 							</td>
 						{/if}
 						{#each columns as c (c.key)}
-							<td style:text-align={c.align ?? 'left'}>
+							<td class="{c.align === 'right' ? 'ta-r' : c.align === 'center' ? 'ta-c' : ''}">
 								{#if cell}
 									{@render cell(r, c)}
 								{:else}
@@ -210,7 +214,7 @@
 				{:else}
 					<tr>
 						<td
-							class="empty-cell text-center text-secondary"
+							class="data-table-empty text-secondary"
 							colspan={columns.length + (selectable ? 1 : 0)}
 						>
 							{#if empty}
@@ -235,98 +239,8 @@
 				: '0 rows'}
 		</span>
 		{#if pages > 1}
-			<Pagination bind:currentPage={page} totalPages={pages} size="h-sm" />
+			<Pagination bind:currentPage={page} totalPages={pages} size="h-bs" />
 		{/if}
 	</div>
 </div>
 
-<style>
-	.datatable-root {
-		width: 100%;
-	}
-
-	.search-box {
-		width: min(18rem, 100%);
-	}
-
-	.selected-badge {
-		padding: 0.125rem 0.5rem;
-		background: var(--bg-sunken, #f4f4f4);
-		border-radius: var(--radius-sm, 4px);
-	}
-
-	.table-wrap {
-		width: 100%;
-		overflow-x: auto;
-	}
-
-	.datatable {
-		width: 100%;
-		border-collapse: collapse;
-		font-size: 0.875rem;
-		color: var(--text-primary, #111);
-	}
-
-	caption {
-		caption-side: top;
-		text-align: left;
-		padding: 0.75rem 1rem 0.25rem;
-	}
-
-	th {
-		padding: 0.625rem 1rem;
-		font-size: 0.75rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-		color: var(--text-secondary, #6b7280);
-		border-bottom: 1px solid var(--border, #e5e7eb);
-		background: var(--bg-sunken, #f4f4f4);
-		white-space: nowrap;
-	}
-
-	.sort-btn {
-		background: none;
-		border: none;
-		padding: 0;
-		cursor: pointer;
-		font: inherit;
-		color: inherit;
-		text-transform: inherit;
-		letter-spacing: inherit;
-	}
-
-	.sort-indicator {
-		opacity: 0.6;
-	}
-
-	td {
-		padding: 0.625rem 1rem;
-		border-bottom: 1px solid var(--border, #e5e7eb);
-	}
-
-	tbody tr:last-child td {
-		border-bottom: none;
-	}
-
-	tbody tr:hover td {
-		background: var(--state-surface, rgba(0, 0, 0, 0.02));
-	}
-
-	tr.selected td {
-		background: var(--state-selected, rgba(0, 0, 0, 0.05));
-	}
-
-	.striped tbody tr:nth-child(even) td {
-		background: var(--bg-sunken, #f9fafb);
-	}
-
-	.sel-col {
-		width: 2.75rem;
-		padding-right: 0;
-	}
-
-	.empty-cell {
-		padding: 2.5rem 1rem;
-	}
-</style>

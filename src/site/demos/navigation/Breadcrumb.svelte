@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Breadcrumb from '$lib/components/navigation/Breadcrumb.svelte';
+	import { Breadcrumb } from '@fractaldesign/fractalsvelte-ui';
 
 	const items = [
 		{ label: 'Home', href: '/' },

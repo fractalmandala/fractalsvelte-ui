@@ -1,12 +1,12 @@
 <!-- @component Shared keyboard-navigable menu list for DropdownMenu and ContextMenu. -->
 
 <script lang="ts" module>
-	import type { IconData } from '@fractaldesign/icons';
+	import type { IconNode } from '$lib/icons/types.js';
 
 	export interface MenuEntry {
 		id?: string;
 		label?: string;
-		icon?: IconData;
+		icon?: IconNode;
 		shortcut?: string;
 		danger?: boolean;
 		disabled?: boolean;
@@ -17,7 +17,7 @@
 <script lang="ts">
 	// Shared menu body for DropdownMenu and ContextMenu: ghost rows, .text-danger
 	// for destructive rows, roving focus on the arrow keys.
-	import { Icon } from '@fractaldesign/icons';
+	import Icon from '$lib/components/core/Icon.svelte';
 	import Kbd from '../display/Kbd.svelte';
 	import type { Size, Surface, Border, Shadow, Shape, TextSize } from '$lib/types.js';
 	interface Props {
@@ -41,7 +41,7 @@
 		onselect,
 		onclose,
 		size = 'h-md',
-		surface = 'bg-surface',
+		surface = 'bg-overlay',
 		border = 'border',
 		shadow = 'shad-lg',
 		shape = 'modern',
@@ -80,7 +80,7 @@
 	role="menu"
 	tabindex="-1"
 	aria-label={label}
-	class="box gap-xs pad-xs shape {surface} {border} {shadow} {shape} {textsize}"
+	class="box gap-xs pad-xs {surface} {border} {shadow} {shape} {textsize}"
 	{onkeydown}
 >
 	{#each items as item, index (item.id ?? index)}
@@ -90,7 +90,7 @@
 			<button
 				type="button"
 				role="menuitem"
-				class="row xbetween gap-md wfull ta-l px-sm variant size shape ghost {size} {shape}"
+				class="row xbetween gap-md wfull ta-l px-sm ghost {size} {shape}"
 				disabled={item.disabled}
 				onclick={() => onselect(item, index)}
 			>

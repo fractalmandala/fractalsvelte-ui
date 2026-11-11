@@ -22,7 +22,7 @@
 		items?: NavItem[];
 		activeId?: string;
 		variant?: TopNavVariant;
-		/** fractalstyler's .header-nav treatment: uppercased md links */
+		/** Uppercase links, as in the stylesheet's .header-nav treatment. */
 		uppercase?: boolean;
 		textsize?: TextSize;
 		class?: string;
@@ -44,7 +44,7 @@
 
 	const ACTIVE_CLASSES: Record<TopNavVariant, string> = {
 		underline: 'text-theme bb-str',
-		pills: 'bg-sunken text-primary',
+		pills: 'state-hover text-primary',
 		subtle: 'text-primary weight-600'
 	};
 
@@ -74,24 +74,20 @@
 						onclick={() => !entry.disabled && (activeId = keyOf(entry, i))}
 					>
 						{entry.label}
-						{#if entry.badge !== undefined}<span class="chip bg-sunken text-secondary">{entry.badge}</span>{/if}
+						{#if entry.badge !== undefined}<span class="px-sm mincurved text-xs state-hover text-secondary">{entry.badge}</span>{/if}
 					</a>
 				{:else}
-					<!-- Pills swap the variant for the fill; ink and the underline rule sit
-					     on the inner label, where button[data-variant] cannot override them. -->
+					<!-- Pills swap the variant for the fill; ink and the underline rule sit on the inner label. -->
 					<button
 						type="button"
-						data-variant={active && variant === 'pills' ? 'secondary' : 'ghost'}
-						data-size="lg"
-						data-shape="modern"
-						class="nav-link"
+						class="nav-link h-lg modern {active && variant === 'pills' ? 'secondary' : 'ghost'}"
 						disabled={entry.disabled}
 						aria-current={active ? 'page' : undefined}
 						onclick={() => (activeId = keyOf(entry, i))}
 					>
 						<span class="row ycenter gap-xs {active ? BUTTON_ACTIVE_CLASSES[variant] : 'text-secondary'}">
 							{entry.label}
-							{#if entry.badge !== undefined}<span class="chip bg-sunken text-secondary">{entry.badge}</span>{/if}
+							{#if entry.badge !== undefined}<span class="px-sm mincurved text-xs state-hover text-secondary">{entry.badge}</span>{/if}
 						</span>
 					</button>
 				{/if}

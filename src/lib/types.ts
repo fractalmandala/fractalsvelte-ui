@@ -1,6 +1,6 @@
-// Axis unions for the fractalstyler edition. These are the values the compiled
-// fractalstyler stylesheet answers on data-variant / data-size / data-shape /
-// data-pad — nothing outside them resolves, so nothing outside them is typed.
+// The props language. Every value below is a class defined in src/lib/styles
+// (component-props.css and the layers beside it): a component puts the value
+// straight into its class list, so nothing outside these unions is typed.
 
 export const union = (values: readonly string[]): string =>
 	values.map((v) => `'${v}'`).join(' | ');
@@ -10,7 +10,7 @@ export const CoreProps = [
 ] as const;
 export type CoreProp = (typeof CoreProps)[number]
 
-// Variant defines the aesthetic finish and looks of the component. To activate, use 'variant' in the component class, and add 1 of the variant types.
+// Variant defines the aesthetic finish and looks of the component. Each value is a class of the same name.
 export const Variants = [
 	'primary',
 	'secondary',
@@ -21,36 +21,35 @@ export const Variants = [
 ] as const;
 export type Variant = (typeof Variants)[number];
 
-// Size defines component heights primarily, along with padding and min-widths at larger sizes. To activate, use 'size' in the component class, and add 1 of the size types.
+// Size defines component heights primarily, along with padding and min-widths at larger sizes. Each value is a class of the same name.
 export const Sizes = ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl'] as const;
 export type Size = (typeof Sizes)[number];
 
-// Shape defines the roundedness of the component, ie - border radius. Shape types range from no border-radius - set at 0px, to fully rounded - set at 9999px. To activate, use 'shape' in the component class, and add 1 of the size types.
-export const Shapes = ['rect', 'min', 'modern', 'curved', 'round'] as const;
+// Shape defines the roundedness of the component, ie - border radius. Shape types range from no border-radius - set at 0px, to fully rounded - set at 9999px. Each value is a class of the same name.
+export const Shapes = ['rect', 'mincurved', 'modern', 'curved', 'round'] as const;
 export type Shape = (typeof Shapes)[number];
 
-// Shadow defines the component's box shadow, with two kinds. The 'shad-' prefix assigns a static box shadow to the component, the 'shad-hover-' prefix assigns a box shadow which goes away on hover. Use only one of these, not both. To activate, use 'shadow' in the component class, and add 1 of the shadow types.
+// Shadow defines the component's box shadow, with two kinds. The 'shad-' prefix assigns a static box shadow to the component, the 'shad-hover-' prefix assigns a box shadow which goes away on hover. Use only one of these, not both. Each value is a class of the same name.
 export const Shadows = ['shad-none', 'shad-sm', 'shad-bs', 'shad-lg', 'shad-xl', 'shad-2xl', 'shad-hover-sm', 'shad-hover-bs', 'shad-hover-lg', 'shad-hover-xl', 'shad-hover-2xl'] as const;
 export type Shadow = (typeof Shadows)[number];
 
-// Pad does not need any activation class, and the pad types can be used in any component class directly to set padding.
-export const Pads = ['pad-sm', 'pad-md', 'pad-bs', 'pad-lg', 'pad-xl'] as const;
-export type Pad = (typeof Pads)[number];
-
 // Components do not lock any text size, leaving it an open prop for the user to determine. The default size components usually ship with is 'text-md' or 'text-bs'. To edit it, simply use 1 of the text size types in the component class.
+// For components like Accordion, a relationship is needed between 2 bodies of text. Accordion trigger text larger, content text smaller. 
 export const TextSizes = ['text-xs', 'text-sm', 'text-md', 'text-bs', 'text-lg', 'text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-5xl'] as const;
 export type TextSize = (typeof TextSizes)[number];
+export const ChildTextSizes = ['text-xs', 'text-sm', 'text-md', 'text-bs'] as const;
+export type ChildTextSize = (typeof ChildTextSizes)[number];
 
 export const Spaces = ['xs', 'sm', 'md', 'bs', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'] as const;
 export type Space = (typeof Spaces)[number];
 
-export const Surfaces = ['bg-main', 'bg-surface', 'bg-panel', 'bg-sunken', 'bg-raised', 'bg-extra', 'state-surface', 'state-hover', 'state-selected', 'bg-button', 'bg-input'] as const;
+export const Surfaces = ['bg-main', 'bg-surface', 'bg-panel', 'bg-overlay', 'state-hover', 'state-selected', 'bg-button', 'bg-input'] as const;
 export type Surface = (typeof Surfaces)[number];
 
-export const ThemeColors = ['theme-color', 'theme-color-alt', 'theme-color-sub'] as const;
+export const ThemeColors = ['theme-color', 'theme-color-up', 'theme-color-down'] as const;
 export type ThemeColor = (typeof ThemeColors)[number];
 
-export const Borders = ['border', 'border-subtle', 'border-strong', 'border-none'] as const;
+export const Borders = ['border', 'border-subtle', 'border-strong', 'border-dashed', 'border-none', 'bb', 'bb-str', 'bb-sub', 'bb-dash'] as const;
 export type Border = (typeof Borders)[number];
 
 export const Messages = ['info', 'success', 'warning', 'danger'] as const;
@@ -78,9 +77,6 @@ export type Frame = (typeof Frames)[number];
 
 export const ORIENTATIONS = ['horizontal', 'vertical'] as const;
 export type Orientation = (typeof ORIENTATIONS)[number];
-
-export const INTENTS = ['info', 'success', 'warning', 'danger'] as const;
-export type Intent = (typeof INTENTS)[number];
 
 export interface SelectOption {
 	value: string | number;

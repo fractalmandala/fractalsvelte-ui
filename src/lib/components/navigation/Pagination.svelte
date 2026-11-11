@@ -2,8 +2,8 @@
 
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from '@fractaldesign/icons';
-	import { luChevronLeft, luChevronRight } from '@fractaldesign/icons/lucide';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klChevronLeft, klChevronRight } from '$lib/icons/keylinestroke.js';
 	import type { Variant, Size, Shape, TextSize } from '$lib/types.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
@@ -67,18 +67,18 @@
 <nav class="row ycenter gap-xs wrap {textsize} {className}" aria-label="Pagination" {...restProps}>
 	<button
 		type="button"
-		class="frame-1-1 px-xs variant size shape {variant} {size} {shape}"
+		class="frame-1-1 px-xs {variant} {size} {shape}"
 		disabled={currentPage <= 1}
 		aria-label="Previous page"
 		onclick={() => go(currentPage - 1)}
 	>
-		<Icon icon={luChevronLeft} />
+		<Icon icon={klChevronLeft} />
 	</button>
 	{#each pages as p, i (typeof p === 'number' ? `p${p}` : `${p}${i}`)}
 		{#if typeof p === 'number'}
 			<button
 				type="button"
-				class="px-sm mono variant size shape {p === currentPage ? 'primary' : variant} {size} {shape}"
+				class="px-sm font-mono {p === currentPage ? 'primary' : variant} {size} {shape}"
 				aria-current={p === currentPage ? 'page' : undefined}
 				aria-label="Page {p}"
 				onclick={() => go(p)}
@@ -91,11 +91,11 @@
 	{/each}
 	<button
 		type="button"
-		class="frame-1-1 px-xs variant size shape {variant} {size} {shape}"
+		class="frame-1-1 px-xs {variant} {size} {shape}"
 		disabled={currentPage >= totalPages}
 		aria-label="Next page"
 		onclick={() => go(currentPage + 1)}
 	>
-		<Icon icon={luChevronRight} />
+		<Icon icon={klChevronRight} />
 	</button>
 </nav>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Carousel from '$lib/components/blocks/Carousel.svelte';
+	import { Carousel } from '@fractaldesign/fractalsvelte-ui';
 
 	const slides = [
 		{ title: 'Slide One', color: '#22c55e' },

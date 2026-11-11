@@ -16,7 +16,7 @@
 	}
 
 	let {
-		surface = 'bg-sunken',
+		surface = 'state-hover',
 		border = 'border-none',
 		size = 'h-sm',
 		textsize = 'text-md',
@@ -26,6 +26,6 @@
 	}: Props = $props();
 </script>
 
-<code class="mono px-xs radius-xs size {surface} {border} {size} {textsize} {className}" style:height="auto" {...restProps}>
+<code class="font-mono px-xs mincurved hgrow {surface} {border} {size} {textsize} {className}" {...restProps}>
 	{@render children?.()}
 </code>

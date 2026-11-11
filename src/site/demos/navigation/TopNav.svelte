@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TopNav from '$lib/components/navigation/TopNav.svelte';
+	import { TopNav } from '@fractaldesign/fractalsvelte-ui';
 
 	const items = [
 		{ label: 'Home', href: '/' },

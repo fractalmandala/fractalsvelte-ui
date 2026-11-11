@@ -11,6 +11,7 @@
 		size?: Size;
 		variant?: Variant | Message;
 		shape?: Shape;
+		/** `inline` flows with the content; the others pin the stamp to a corner of its positioned parent. */
 		position?: StampPosition;
 		textsize?: TextSize;
 		class?: string;
@@ -34,40 +35,23 @@
 
 	const positionClasses: Record<StampPosition, string> = {
 		inline: 'relative',
-		'top-start': 'absolute top-2 start-2 z-10',
-		'top-end': 'absolute top-2 end-2 z-10',
-		'bottom-start': 'absolute bottom-2 start-2 z-10',
-		'bottom-end': 'absolute bottom-2 end-2 z-10'
+		'top-start': 'pin-tl',
+		'top-end': 'pin-tr',
+		'bottom-start': 'pin-bl',
+		'bottom-end': 'pin-br'
 	};
 </script>
 
 <div
-	class="stamp inline-flex items-center justify-center aspect-square shrink-0 size shape {size} {shape} {positionClasses[position]} {textsize} {isMessage ? `tint ${variant}` : `variant ${variant}`} {className}"
+	class="btn-icon inline-flex row xcenter ycenter weight-600 {size} {shape} {positionClasses[position]} {textsize} {isMessage ? `tint ${variant}` : variant} {className}"
 	{...restProps}
 >
-	{#if icon}
-		{@render icon()}
-	{:else if children}
-		{@render children()}
-	{/if}
+	<span class="row ycenter {isMessage ? `text-${variant}` : ''}">
+		{#if icon}
+			{@render icon()}
+		{:else if children}
+			{@render children()}
+		{/if}
+	</span>
 </div>
 
-<style>
-	.stamp {
-		width: auto;
-		min-width: unset;
-		padding: 0;
-	}
-	.stamp.tint.info {
-		color: var(--info);
-	}
-	.stamp.tint.success {
-		color: var(--success);
-	}
-	.stamp.tint.warning {
-		color: var(--warning-hover);
-	}
-	.stamp.tint.danger {
-		color: var(--danger);
-	}
-</style>

@@ -3,15 +3,21 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { Snippet } from 'svelte';
-	import type { Pad, TextSize } from '$lib/types.js';
+	import type { Space, TextSize } from '$lib/types.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
+		/** `row` lays children side by side; `column` stacks them. */
 		direction?: 'row' | 'column';
-		gap?: number | string;
+		/** Space between children, from the spacing scale. */
+		gap?: Space;
+		/** Alignment across the stacking direction. */
 		align?: 'start' | 'center' | 'end' | 'stretch' | 'baseline';
+		/** Distribution along the stacking direction. */
 		justify?: 'start' | 'center' | 'end' | 'between' | 'around';
+		/** Lets children wrap onto more lines when they run out of room. */
 		wrap?: boolean;
-		padding?: Pad;
+		/** Padding classes, e.g. `pad-md` or `px-lg py-sm`. */
+		padding?: string;
 		textsize?: TextSize;
 		class?: string;
 		children?: Snippet;
@@ -19,7 +25,7 @@
 
 	let {
 		direction = 'column',
-		gap = 3,
+		gap = 'md',
 		align,
 		justify,
 		wrap = false,
@@ -30,39 +36,20 @@
 		...restProps
 	}: Props = $props();
 
-	const computedGap = $derived(typeof gap === 'number' ? `${gap * 0.25}rem` : gap);
-	const computedJustify = $derived(
-		justify === 'between'
-			? 'space-between'
-			: justify === 'around'
-				? 'space-around'
-				: justify
-	);
-	const computedAlign = $derived(
-		align === 'start'
-			? 'flex-start'
-			: align === 'end'
-				? 'flex-end'
-				: align
-	);
+	// Alignment is the class language's x/y pair: in a column x is the cross
+	// axis, in a row it is the main axis.
+	const column = $derived(direction === 'column');
+	const CROSS_X = { start: 'xleft', center: 'xcenter', end: 'xright', stretch: '', baseline: '' };
+	const CROSS_Y = { start: 'ytop', center: 'ycenter', end: 'ybot', stretch: '', baseline: '' };
+	const MAIN_X = { start: 'xleft', center: 'xcenter', end: 'xright', between: 'xbetween', around: 'xaround' };
+	const MAIN_Y = { start: 'ytop', center: 'ycenter', end: 'ybot', between: 'ybetween', around: 'yaround' };
+	const alignClass = $derived(align ? (column ? CROSS_X : CROSS_Y)[align] : '');
+	const justifyClass = $derived(justify ? (column ? MAIN_Y : MAIN_X)[justify] : '');
 </script>
 
 <div
-	class="stack-container {padding ?? ''} {textsize} {className}"
-	style:flex-direction={direction}
-	style:gap={computedGap}
-	style:align-items={computedAlign}
-	style:justify-content={computedJustify}
-	style:flex-wrap={wrap ? 'wrap' : undefined}
+	class="{column ? 'box' : 'row'} min0 gap-{gap} {alignClass} {justifyClass} {wrap ? 'wrap' : ''} {padding ?? ''} {textsize} {className}"
 	{...restProps}
 >
 	{@render children?.()}
 </div>
-
-<style>
-	.stack-container {
-		display: flex;
-		min-width: 0;
-		box-sizing: border-box;
-	}
-</style>

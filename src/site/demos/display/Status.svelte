@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Status from '$lib/components/display/Status.svelte';
+	import { Status } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <div class="row ycenter wrap gap-sm">

@@ -12,8 +12,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from '@fractaldesign/icons';
-	import { luCheck, luX } from '@fractaldesign/icons/lucide';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klCheck, klX } from '$lib/icons/keylinestroke.js';
 	import type { Orientation, TextSize } from '$lib/types.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -50,20 +50,22 @@
 	}
 </script>
 
+{#snippet glyph(s: StepItem, i: number, status: StepStatus)}
+	{#if status === 'completed'}<Icon icon={klCheck} />{:else if s.error}<Icon icon={klX} class="text-danger" />{:else}<span class="font-mono text-sm">{i + 1}</span>{/if}
+{/snippet}
+
 {#snippet marker(s: StepItem, i: number, status: StepStatus)}
-	<button
-		type="button"
-		class="frame-1-1 px-xs radius-full shrink-0"
-		data-variant={s.error ? 'outline' : status === 'upcoming' ? 'outline' : status === 'current' ? 'primary' : 'soft'}
-		data-size="lg"
-		data-shape="round"
-		disabled={!(clickable && i <= currentStep)}
-		aria-label="Step {i + 1}: {s.label}"
-		aria-current={status === 'current' ? 'step' : undefined}
-		onclick={() => go(i)}
-	>
-		{#if status === 'completed'}<Icon icon={luCheck} />{:else if s.error}<Icon icon={luX} class="text-danger" />{:else}<span class="mono">{i + 1}</span>{/if}
-	</button>
+	{@const look = `btn-icon inline-flex row xcenter ycenter h-lg round shrink-0 ${s.error || status === 'upcoming' ? 'outline' : status === 'current' ? 'primary' : 'secondary'}`}
+	<!-- Only a step you can go back to is a button; the rest are plain markers, not disabled buttons. -->
+	{#if clickable && i < currentStep}
+		<button type="button" class={look} aria-label="Go to step {i + 1}: {s.label}" onclick={() => go(i)}>
+			{@render glyph(s, i, status)}
+		</button>
+	{:else}
+		<span class={look} aria-label="Step {i + 1}: {s.label}" aria-current={status === 'current' ? 'step' : undefined}>
+			{@render glyph(s, i, status)}
+		</span>
+	{/if}
 {/snippet}
 
 {#snippet text(s: StepItem, i: number, status: StepStatus)}
@@ -75,7 +77,7 @@
 	{/if}
 {/snippet}
 
-<div role="list" class="{vertical ? 'box' : 'row ytop'} {textsize} {className}" aria-label="Progress" {...restProps}>
+<div role="list" class="{vertical ? 'box' : 'row ytop wfull'} {textsize} {className}" aria-label="Progress" {...restProps}>
 	{#each steps as s, i (s.label + i)}
 		{@const status = statusOf(i)}
 		{@const last = i === steps.length - 1}

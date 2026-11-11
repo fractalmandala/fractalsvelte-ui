@@ -1,5 +1,5 @@
 <script lang="ts">
-	import FileUpload from '$lib/components/forms/FileUpload.svelte';
+	import { FileUpload } from '@fractaldesign/fractalsvelte-ui';
 
 	let uploadedFiles = $state<File[]>([]);
 </script>

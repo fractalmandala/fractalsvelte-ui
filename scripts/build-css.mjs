@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 // @ts-nocheck
 /**
- * Compile src/lib/styles/index.sass to plain CSS in dist/css/ for consumers
- * without a SASS toolchain, and generate dist/asset.d.ts so side-effect
- * stylesheet imports type-check cleanly.
+ * Flatten src/lib/styles/index.css (its @imports inlined, in order) into
+ * dist/css/ as one expanded and one minified stylesheet, and generate
+ * dist/asset.d.ts so side-effect stylesheet imports type-check cleanly.
  */
 import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -12,29 +12,33 @@ import { gzipSync } from 'node:zlib';
 import * as sass from 'sass';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const entry = join(root, 'src/lib/styles/index.sass');
+const stylesDir = join(root, 'src/lib/styles');
 const outDir = join(root, 'dist/css');
 
 mkdirSync(outDir, { recursive: true });
+
+// index.css is nothing but a header comment and the ordered @import list.
+const index = readFileSync(join(stylesDir, 'index.css'), 'utf8');
+const layers = [...index.matchAll(/@import\s+['"]\.\/([^'"]+)['"]\s*;/g)].map((m) => m[1]);
+if (!layers.length) throw new Error('No @import lines found in src/lib/styles/index.css');
+const flat = layers
+	.map((file) => `/* ${file} */\n${readFileSync(join(stylesDir, file), 'utf8').trim()}\n`)
+	.join('\n');
 
 const version = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).version;
 const banner = (min) =>
 	min
 		? `/*! @fractaldesign/fractalsvelte-ui v${version} | MIT */\n`
-		: `/*!\n * @fractaldesign/fractalsvelte-ui v${version} — compiled component & theme tokens stylesheet.\n * Generated from src/lib/styles/*.sass.\n * MIT licensed. https://github.com/fractalmandala/fractalsvelte-ui\n */\n`;
+		: `/*!\n * @fractaldesign/fractalsvelte-ui v${version} — tokens, prop classes and component styles.\n * Generated from src/lib/styles/*.css.\n * MIT licensed. https://github.com/fractalmandala/fractalsvelte-ui\n */\n`;
+
+// Sass is used only as a CSS minifier here: the source is plain CSS.
+const minified = sass.compileString(flat, { syntax: 'css', style: 'compressed', sourceMap: false }).css;
 
 const targets = [
-	{ file: 'fractalsvelte-ui.css', style: 'expanded' },
-	{ file: 'fractalsvelte-ui.min.css', style: 'compressed' }
+	['fractalsvelte-ui.css', banner(false) + flat],
+	['fractalsvelte-ui.min.css', banner(true) + minified + '\n']
 ];
-
-const rows = [];
-for (const { file, style } of targets) {
-	const { css } = sass.compile(entry, { style, sourceMap: false });
-	const out = banner(style === 'compressed') + css + '\n';
-	writeFileSync(join(outDir, file), out, 'utf8');
-	rows.push([file, out.length, gzipSync(out).length]);
-}
+for (const [file, out] of targets) writeFileSync(join(outDir, file), out, 'utf8');
 
 writeFileSync(
 	join(outDir, '..', 'asset.d.ts'),
@@ -45,7 +49,7 @@ writeFileSync(
 );
 
 const kb = (n) => `${(n / 1024).toFixed(1)} KB`;
-console.log('✔ CSS distribution built:');
-for (const [file, raw, gz] of rows) {
-	console.log(`    dist/css/${file.padEnd(26)} ${kb(raw).padStart(9)}   ${kb(gz).padStart(8)} gzipped`);
+console.log(`✔ CSS distribution built from ${layers.length} layers:`);
+for (const [file, out] of targets) {
+	console.log(`    dist/css/${file.padEnd(26)} ${kb(out.length).padStart(9)}   ${kb(gzipSync(out).length).padStart(8)} gzipped`);
 }

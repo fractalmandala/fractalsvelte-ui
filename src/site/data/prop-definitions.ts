@@ -1,26 +1,54 @@
 export const propDefinitions: Record<string, string> = {
-	'variant': 'Variant defines the aesthetic finish and looks of the component. To activate, use `variant` in the component class, and add 1 of the variant types.',
-	'size': 'Size defines component heights primarily, along with padding and min-widths at larger sizes. To activate, use `size` in the component class, and add 1 of the size types.',
-	'shape': 'Shape defines the roundedness of the component, ie - border radius. Shape types range from no border-radius - set at 0px, to fully rounded - set at 9999px. To activate, use `shape` in the component class, and add 1 of the size types.',
-	'shadow': 'Shadow defines the component box shadow, with two kinds. The `shad-` prefix assigns a static box shadow to the component, the `shad-hover-` prefix assigns a box shadow which goes away on hover. Use only one of these, not both. To activate, use `shadow` in the component class, and add 1 of the shadow types.',
+	'variant': 'Variant defines the aesthetic finish and looks of the component. Each value is a class of the same name.',
+	'size': 'Size defines component heights primarily, along with padding and min-widths at larger sizes. Each value is a class of the same name.',
+	'shape': 'Shape defines the roundedness of the component, ie - border radius. Shape types range from no border-radius - set at 0px, to fully rounded - set at 9999px. Each value is a class of the same name.',
+	'shadow': 'Shadow defines the component box shadow, with two kinds. The `shad-` prefix assigns a static box shadow to the component, the `shad-hover-` prefix assigns a box shadow which goes away on hover. Use only one of these, not both. Each value is a class of the same name.',
 	'textsize': 'Components do not lock any text size, leaving it an open prop for the user to determine. The default size components usually ship with is `text-md` or `text-bs`. To edit it, simply use 1 of the text size types in the component class.',
-	'pad': 'Pad does not need any activation class, and the pad types can be used in any component class directly to set padding.',
-	'padding': 'Pad does not need any activation class, and the pad types can be used in any component class directly to set padding.',
+	'pad': 'Padding classes for the inside of the component: one or more spacing classes, such as `pad-md` or `px-lg py-sm`.',
+	'padding': 'Padding classes for the inside of the component: one or more spacing classes, such as `pad-md` or `px-lg py-sm`.',
 	'iconVariant': 'Visual style for icon controls (`primary`, `secondary`, `themed`, `outline`, `ghost`, `link`).',
-	'surface': 'The Surfaces prop is for layers of background-colors on components. `bg-main` is the lightest background, `bg-surface` and `bg-panel` should be successively darker. `bg-sunken` and `bg-raised` should be distinct light/dark pairs. `bg-extra` is for whatever you like.',
+	'surface': 'The Surfaces prop is for layers of background-colors on components. `bg-main` is the page, `bg-surface` and `bg-panel` step successively away from it. `bg-overlay` is the opaque fill for anything that floats: menus, popovers, dialogs. `state-hover` and `state-selected` are translucent tints that sit on top of any of those. Each value is a class of the same name.',
 	'border': 'Border weight class (`border`, `border-subtle`, `border-strong`, `border-none`).',
 	'message': 'Status tone (`info`, `success`, `warning`, `danger`).',
 	'messageText': 'Status text color class (`text-info`, `text-success`, `text-warning`, `text-danger`).',
 	'tone': 'Status text color class (`text-info`, `text-success`, `text-warning`, `text-danger`).',
 	'textOnly': 'Drops the fill and uses the `variant` colour for the text and icon.',
 	'loading': 'Shows a loading state and makes the element inert.',
-	'disabled': 'Makes the element inert: disables a `<button>`; on a link, drops `href` and sets `aria-disabled`.',
+	'disabled': 'Makes the control inert: it cannot be focused or changed, and is shown dimmed.',
 	'href': 'Renders an `<a>` instead of a `<button>`.',
 	'class': 'Extra classes appended after the component\'s own.',
 	'children': 'Main content snippet.',
 	'leading': 'Content rendered before `children` (e.g. an icon).',
 	'trailing': 'Content rendered after `children`.',
 
+	'childtextsize': 'Text size of the secondary text inside the component, kept smaller than `textsize` so the two read as a pair.',
+	'contentClasses': 'Classes for the body of each open item, replacing its default padding and colour.',
+	'accept': 'File types the picker allows, as in the native `accept` attribute (e.g. `image/*,.pdf`).',
+	'autoplay': 'Starts playing as soon as it can. Browsers only allow this when `muted` is set.',
+	'muted': 'Starts with the sound off.',
+	'preload': 'How much to load before play: `auto`, `metadata` (duration and size only) or `none`.',
+	'barWidth': 'Width of each bar in pixels.',
+	'barGap': 'Space between bars in pixels.',
+	'progress': 'Playback position as a percentage, 0 to 100.',
+	'duration': 'Total length in seconds, shown as the end time under the waveform.',
+	'onseek': 'Called with the new position (0 to 100) when the user clicks or drags to seek.',
+	'columns': 'Column definitions: `key`, `label`, and optional `align` and `sortable`.',
+	'rowKey': 'The field that identifies each row; selection is stored as these values.',
+	'draggable': 'Lets the user drag the track with a pointer to move between slides.',
+	'index': 'Bindable index of the first visible slide.',
+	'fallback': 'Shown instead of the image when it has no `src` or fails to load.',
+	'for': 'The `id` of the control this label names; clicking the label focuses it.',
+	'hint': 'Secondary line under the label, such as accepted types and size limit.',
+	'minX': 'Lowest X value, at the left edge.',
+	'maxX': 'Highest X value, at the right edge.',
+	'minY': 'Lowest Y value, at the bottom edge.',
+	'maxY': 'Highest Y value, at the top edge.',
+	'stepX': 'Amount X changes per arrow-key press, and the grid it snaps to.',
+	'stepY': 'Amount Y changes per arrow-key press, and the grid it snaps to.',
+	'resetAfter': 'Milliseconds the copied state shows before the button returns to normal.',
+	'text': 'The text copied to the clipboard.',
+	'weight': 'Font weight class, from `weight-300` to `weight-800`.',
+	'icon': 'Icon shown with the content: a keyline icon, or a snippet for anything else.',
 	// Component-specific props
 	'action': 'Optional action snippet rendered inside the alert, banner, or toast.',
 	'actions': 'Action controls snippet rendered in the header or footer area.',
@@ -225,11 +253,14 @@ export const propDefinitions: Record<string, string> = {
 	'as': 'HTML tag name used to render the polymorphic text element.',
 	'mono': 'Applies monospace font family formatting to text.',
 	'truncate': 'Truncates overflowing text with an ellipsis on a single line.',
-	'weight': 'Font weight styling class (`Weight`).'
 };
 
+const SHARED = new Set(['variant', 'size', 'shape', 'shadow', 'textsize', 'childtextsize', 'surface', 'border', 'padding', 'pad']);
+
 export function definitionFor(prop: string, fallbackComment?: string | null): string {
-	return propDefinitions[prop] ?? propDefinitions[prop.toLowerCase()] ?? fallbackComment ?? '';
+	// The shared axes read the same everywhere; for anything else the component's own comment is the better description.
+	if (SHARED.has(prop.toLowerCase())) return propDefinitions[prop] ?? propDefinitions[prop.toLowerCase()] ?? fallbackComment ?? '';
+	return fallbackComment ?? propDefinitions[prop] ?? propDefinitions[prop.toLowerCase()] ?? '';
 }
 
 /** Definition text as HTML: escaped, with `backticked` bits wrapped in <em>. */

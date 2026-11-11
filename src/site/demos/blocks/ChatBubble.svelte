@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ChatBubble from '$lib/components/blocks/ChatBubble.svelte';
+	import { ChatBubble } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <ChatBubble message="Hi! How can I help?" />

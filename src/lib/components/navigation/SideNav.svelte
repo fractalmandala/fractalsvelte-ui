@@ -68,7 +68,7 @@
 	{#if entry.icon}<span class="row ycenter shrink-0 text-bs" aria-hidden="true">{@render entry.icon()}</span>{/if}
 	{#if !collapsed}
 		<span class="grow min0 truncate ta-l">{entry.label}</span>
-		{#if entry.badge !== undefined}<span class="chip bg-sunken text-secondary shrink-0">{entry.badge}</span>{/if}
+		{#if entry.badge !== undefined}<span class="px-sm mincurved text-xs state-hover text-secondary shrink-0">{entry.badge}</span>{/if}
 	{/if}
 {/snippet}
 
@@ -76,7 +76,7 @@
 	{#if header}<div class="row ycenter gap-sm px-sm">{@render header()}</div>{/if}
 	<div class="box gap-md grow min0">
 		{#each grouped as g (g.name ?? '')}
-			<!-- .nav-section is fractalstyler's vertical nav block (xs gap). -->
+			<!-- .nav-section is the stylesheet's vertical nav block (xs gap). -->
 			<div class="nav-section">
 				{#if g.name && !collapsed}<span class="nav-header text-muted tt-u ls-wide-lg">{g.name}</span>{/if}
 				<div role="list" class="box gap-xs">
@@ -89,7 +89,7 @@
 								<a
 									href={entry.disabled ? undefined : entry.href}
 									class="nav-link row ycenter gap-sm {collapsed ? 'xcenter' : ''} {active
-										? 'bg-sunken text-theme weight-500'
+										? 'state-hover text-theme weight-500'
 										: entry.disabled
 											? 'text-muted'
 											: 'text-secondary'}"
@@ -101,13 +101,10 @@
 									{@render linkBody(entry)}
 								</a>
 							{:else}
-								<!-- The active fill is a variant swap (ghost → secondary) and the ink
-								     sits on the inner row: button[data-variant] outranks .bg-* / .text-*. -->
+								<!-- The active fill is a variant swap (ghost to secondary); the ink sits on the inner row. -->
 								<button
 									type="button"
-									data-variant={active ? 'secondary' : 'ghost'}
-									data-shape="modern"
-									class="nav-link row ycenter py-sm px-sm wfull {collapsed ? 'xcenter' : 'xleft'}"
+									class="nav-link row ycenter py-sm px-sm wfull modern {active ? 'secondary' : 'ghost'} {collapsed ? 'xcenter' : 'xleft'}"
 									disabled={entry.disabled}
 									aria-current={active ? 'page' : undefined}
 									title={collapsed ? entry.label : undefined}

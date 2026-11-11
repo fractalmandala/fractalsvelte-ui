@@ -38,33 +38,16 @@
 </script>
 
 <span
-	class="status-badge inline-flex items-center gap-xs px-sm size shape {size} {shape} {textsize} {lite ? 'lite border' : isMessage ? `tint ${variant}` : `variant ${variant}`} {className}"
+	class="inline-flex row ycenter gap-xs px-sm weight-500 {size} {shape} {textsize} {lite ? 'border text-primary' : isMessage ? `tint ${variant}` : variant} {className}"
 	{...restProps}
 >
 	<Dot {variant} {animated} size={size === 'h-xs' || size === 'h-sm' ? 'sm' : 'md'} />
-	{#if children}
-		{@render children()}
-	{:else if label}
-		<span class="status-label font-medium">{label}</span>
-	{/if}
+	<!-- on a tint the label takes the message colour; a solid fill keeps its own ink -->
+	<span class={isMessage && !lite ? `text-${variant}` : ''}>
+		{#if children}
+			{@render children()}
+		{:else if label}
+			{label}
+		{/if}
+	</span>
 </span>
-
-<style>
-	.status-badge.lite {
-		background-color: transparent;
-		color: var(--text-primary);
-		border-color: var(--border);
-	}
-	.status-badge.tint.success {
-		color: var(--success);
-	}
-	.status-badge.tint.warning {
-		color: var(--warning-hover);
-	}
-	.status-badge.tint.danger {
-		color: var(--danger);
-	}
-	.status-badge.tint.info {
-		color: var(--info);
-	}
-</style>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ClickableCard from '$lib/components/layout/ClickableCard.svelte';
+	import { ClickableCard } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <ClickableCard href="#" title="Documentation" description="Read the guides." />

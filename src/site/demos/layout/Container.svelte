@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Container from '$lib/components/layout/Container.svelte';
+	import { Container } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <Container>

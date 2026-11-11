@@ -1,5 +1,5 @@
 <script lang="ts">
-	import BottomNav from '$lib/components/navigation/BottomNav.svelte';
+	import { BottomNav } from '@fractaldesign/fractalsvelte-ui';
 
 	const items = [
 		{ id: 'home', label: 'Home' },

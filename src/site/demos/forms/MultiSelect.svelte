@@ -1,5 +1,5 @@
 <script lang="ts">
-	import MultiSelect from '$lib/components/forms/MultiSelect.svelte';
+	import { MultiSelect } from '@fractaldesign/fractalsvelte-ui';
 
 	const frameworkOptions = [
 		{ value: 'svelte', label: 'Svelte' },

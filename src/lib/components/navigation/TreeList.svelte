@@ -17,8 +17,8 @@
 <script lang="ts">
 	import type { TextSize } from '$lib/types.js';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from '@fractaldesign/icons';
-	import { luChevronRight, luChevronDown } from '@fractaldesign/icons/lucide';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klChevronDown, klChevronRight } from '$lib/icons/keylinestroke.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		items?: TreeItem[];
@@ -93,8 +93,8 @@
 		>
 			<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions (keys live on the treeitem) -->
 			<div
-				class="row ycenter gap-xs px-xs py-xs radius-sm text-sm {selected
-					? 'bg-sunken text-theme weight-500'
+				class="row ycenter gap-xs px-xs py-xs mincurved text-sm {selected
+					? 'state-hover text-theme weight-500'
 					: node.disabled
 						? 'text-muted'
 						: 'text-primary'}"
@@ -103,9 +103,7 @@
 				{#if hasChildren}
 					<button
 						type="button"
-						data-variant="iconbox"
-						data-size="sm"
-						class="px-xs text-muted"
+						class="btn-icon inline-flex row xcenter ycenter ghost h-sm mincurved text-muted"
 						tabindex="-1"
 						aria-label={expanded ? 'Collapse' : 'Expand'}
 						onclick={(e) => {
@@ -113,7 +111,7 @@
 							toggle(node.id);
 						}}
 					>
-						<Icon icon={expanded ? luChevronDown : luChevronRight} />
+						<Icon icon={expanded ? klChevronDown : klChevronRight} />
 					</button>
 				{:else}
 					<span class="frame-1-1 h-sm shrink-0" aria-hidden="true"></span>

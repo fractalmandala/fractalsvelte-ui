@@ -36,7 +36,7 @@
 
 {#if href}
 <a href={inert ? undefined : href}
-	class="btn-icon-text wmax row xleft size shape {icon} {size} {shape} {className}"
+	class="btn-icon-text wmax row xleft {icon} {size} {shape} {className}"
 	aria-busy={loading || undefined}
 	aria-disabled={inert || undefined}
 	{...restProps as HTMLAnchorAttributes}
@@ -46,7 +46,7 @@
 </a>
 {:else}
 <button
-	class="btn-icon-text wmax row xleft size shape {icon} {shape} {size} {className}"
+	class="btn-icon-text wmax row xleft {icon} {shape} {size} {className}"
 	aria-label={label}
 	title={label}
 	disabled={Boolean(disabled || loading)}

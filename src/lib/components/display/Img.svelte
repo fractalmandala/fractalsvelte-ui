@@ -3,17 +3,21 @@
 <script lang="ts">
 	import type { HTMLImgAttributes } from 'svelte/elements';
 	import type { Snippet } from 'svelte';
-	import { Icon } from '@fractaldesign/icons';
-	import { luImage } from '@fractaldesign/icons/lucide';
-	import type { Shape, Shadow } from '$lib/types.js';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klImage } from '$lib/icons/keylinestroke.js';
+	import type { Shape, Shadow, Frame } from '$lib/types.js';
 
 	interface Props extends HTMLImgAttributes {
+		/** Text that describes the image, read by screen readers and shown in the fallback. */
 		alt?: string;
+		/** Image URL. Without one, or if it fails, the fallback shows. */
 		src?: string;
-		ratio?: string;
+		/** Aspect ratio, as one of the frame classes. */
+		ratio?: Frame;
 		fit?: 'cover' | 'contain' | 'fill' | 'scale-down';
 		shape?: Shape;
 		shadow?: Shadow;
+		/** `lazy` waits until the image is near the viewport; `eager` loads it straight away. */
 		loading?: 'lazy' | 'eager';
 		fallback?: Snippet;
 		class?: string;
@@ -38,8 +42,7 @@
 
 {#if failed || !src}
 	<div
-		class="img-fallback box xcenter ycenter text-secondary {shape} {shadow} {className}"
-		style:aspect-ratio={ratio}
+		class="box xcenter ycenter wfull pad-bs border-dashed state-hover text-secondary {ratio ?? ''} {shape} {shadow} {className}"
 		role="img"
 		aria-label={alt}
 	>
@@ -47,7 +50,7 @@
 			{@render fallback()}
 		{:else}
 			<div class="row ycenter gap-xs text-xs">
-				<Icon icon={luImage} />
+				<Icon icon={klImage} />
 				<span>{alt || 'Image unavailable'}</span>
 			</div>
 		{/if}
@@ -58,9 +61,7 @@
 		{src}
 		{alt}
 		{loading}
-		class="img-element shape {shape} {shadow} {className}"
-		style:aspect-ratio={ratio}
-		style:object-fit={fit}
+		class="{ratio ? `wfull ${ratio}` : ''} fit-{fit} {shape} {shadow} {className}"
 		onerror={(e) => {
 			failed = true;
 			onerror?.(e);
@@ -68,18 +69,3 @@
 	/>
 {/if}
 
-<style>
-	.img-element {
-		display: block;
-		max-width: 100%;
-		height: auto;
-	}
-
-	.img-fallback {
-		width: 100%;
-		min-height: 4rem;
-		border: 1px dashed var(--border-strong, #ccc);
-		background: var(--bg-sunken, #f4f4f4);
-		padding: 1rem;
-	}
-</style>

@@ -11,7 +11,8 @@ import {
 	Messages,
 	Weights,
 	Frames,
-	INTENTS
+	Spaces,
+	ChildTextSizes
 } from '$lib/types.js';
 
 export interface LivePropMeta {
@@ -41,6 +42,8 @@ export interface ComponentEntry {
 
 // Live raw component files using Vite's eager glob.
 // Re-evaluates instantly on HMR whenever any component in src/lib/components changes.
+import indexRaw from '$lib/components/index.ts?raw';
+
 const rawComponents = import.meta.glob<string>('$lib/components/**/*.svelte', {
 	query: '?raw',
 	import: 'default',
@@ -88,16 +91,51 @@ function parseProps(raw: string): { extendsList: string[]; props: LivePropMeta[]
 		}
 	}
 
-	const propsMatch = raw.match(/interface\s+Props(?:\s+extends\s+([^{]+))?\s*\{([\s\S]*?)\n\t*\}/);
-	if (!propsMatch) return { extendsList: [], props: [] };
+	// The Props interface body, found by matching braces so multi-line member types stay whole.
+	const head = raw.match(/interface\s+Props(?:\s+extends\s+([^{]+))?\s*\{/);
+	if (!head || head.index === undefined) return { extendsList: [], props: [] };
+	let open = 1;
+	let end = head.index + head[0].length;
+	while (end < raw.length && open > 0) {
+		if (raw[end] === '{') open++;
+		else if (raw[end] === '}') open--;
+		end++;
+	}
+	const propsMatch = [head[0], head[1], raw.slice(head.index + head[0].length, end - 1)] as const;
 
 	const extendsList = propsMatch[1] ? splitTopLevelCommas(propsMatch[1].trim()) : [];
-	const body = propsMatch[2];
 	const props: LivePropMeta[] = [];
 
-	const propRegex = /(?:(\/\*\*[\s\S]*?\*\/)\s*)?([a-zA-Z0-9_$]+)(\??)\s*:\s*([^;]+);/g;
-	let pm;
-	while ((pm = propRegex.exec(body)) !== null) {
+	// Split the interface body into its top-level members. Snippet parameter
+	// types like `Snippet<[{ item: X; isOpen: boolean }]>` hold semicolons of
+	// their own, so only a semicolon at depth 0 ends a member. `=>` is not a
+	// closing angle bracket.
+	const members: string[] = [];
+	let depth = 0;
+	let cur = '';
+	const body = propsMatch[2];
+	for (let i = 0; i < body.length; i++) {
+		const ch = body[i];
+		// comments are opaque: a semicolon or bracket inside one means nothing
+		if (ch === '/' && (body[i + 1] === '*' || body[i + 1] === '/')) {
+			const close = body[i + 1] === '*' ? body.indexOf('*/', i + 2) + 2 : body.indexOf('\n', i);
+			const stop = close > i ? close : body.length;
+			cur += body.slice(i, stop);
+			i = stop - 1;
+			continue;
+		}
+		if ('([{<'.includes(ch)) depth++;
+		else if (')]}'.includes(ch) || (ch === '>' && body[i - 1] !== '=')) depth--;
+		if (ch === ';' && depth === 0) {
+			members.push(cur);
+			cur = '';
+		} else cur += ch;
+	}
+
+	for (const member of members) {
+		const clean = member.replace(/^\s*\/\/[^\n]*\n/gm, '');
+		const pm = clean.match(/^\s*(\/\*\*[\s\S]*?\*\/)?\s*([a-zA-Z0-9_$]+)(\??)\s*:\s*([\s\S]+)$/);
+		if (!pm) continue;
 		const rawComment = pm[1];
 		let comment: string | null = null;
 		if (rawComment) {
@@ -110,9 +148,10 @@ function parseProps(raw: string): { extendsList: string[]; props: LivePropMeta[]
 		}
 		const name = pm[2];
 		const optional = Boolean(pm[3]);
-		const type = pm[4].trim();
+		const type = pm[4].replace(/\s+/g, ' ').trim();
 		const def = defaults[name] ?? null;
 
+		if (props.some((p) => p.name === name)) continue;
 		props.push({ name, type, optional, default: def, comment });
 	}
 
@@ -121,15 +160,14 @@ function parseProps(raw: string): { extendsList: string[]; props: LivePropMeta[]
 
 function parseComponents(): ComponentEntry[] {
 	const list: ComponentEntry[] = [];
+	for (const line of indexRaw.split('\n')) {
+		const exportMatch = line.match(/export\s*\{\s*default\s*as\s*(\w+)\s*\}\s*from\s*'\.\/([^']+)\.svelte';/);
+		if (!exportMatch) continue;
 
-	for (const [filepath, raw] of Object.entries(rawComponents)) {
-		const match = filepath.match(/components\/([^/]+)\/([^/]+)\.svelte$/);
-		if (!match) continue;
+		const [, name, relPath] = exportMatch;
+		const rawKey = `/src/lib/components/${relPath}.svelte`;
+		const raw = rawComponents[rawKey] ?? '';
 
-		const [, categoryDir, filename] = match;
-		const category = categoryDir.charAt(0).toUpperCase() + categoryDir.slice(1);
-		const name = filename;
-		const path = `${categoryDir}/${name}`;
 		const title = titleOf(name);
 		const description = describe(raw);
 		const { extendsList, props } = parseProps(raw);
@@ -137,8 +175,9 @@ function parseComponents(): ComponentEntry[] {
 		list.push({
 			name,
 			title,
-			path,
-			category,
+			path: relPath,
+			// the group is the folder the component lives in
+			category: relPath.split('/')[0],
 			description,
 			extendsList,
 			props,
@@ -163,6 +202,10 @@ export function getLiveComponentByPath(path: string): ComponentEntry | undefined
 // Canonical Prop Axes from src/lib/types.ts
 const CANONICAL_AXES: Record<string, readonly (string | number)[]> = {
 	variant: Variants,
+	gap: Spaces,
+	space: Spaces,
+	padding: ['pad-sm', 'pad-md', 'pad-lg', 'pad-xl'],
+	childtextsize: ChildTextSizes,
 	size: Sizes,
 	shape: Shapes,
 	shadow: Shadows,
@@ -176,8 +219,24 @@ const CANONICAL_AXES: Record<string, readonly (string | number)[]> = {
 	textsizes: TextSizes,
 	weight: Weights,
 	message: Messages,
-	intent: INTENTS,
 	frame: Frames
+};
+
+/** Canonical unions from src/lib/types.ts by type name, for spelling a prop's values out. */
+export const TYPE_VALUES: Record<string, readonly string[]> = {
+	Variant: Variants,
+	Space: Spaces,
+	Size: Sizes,
+	Shape: Shapes,
+	Shadow: Shadows,
+	Surface: Surfaces,
+	Border: Borders,
+	IconVariant: IconVariants,
+	Orientation: ORIENTATIONS,
+	TextSize: TextSizes,
+	Weight: Weights,
+	Message: Messages,
+	Frame: Frames
 };
 
 const SAMPLE_TEXT: Record<string, string> = {
@@ -195,10 +254,25 @@ const SAMPLE_TEXT: Record<string, string> = {
 	suffix: 'k',
 	shortcut: '⌘K',
 	counter: '12/50',
-	error: 'Something went wrong'
+	error: 'Something went wrong',
+	leading: '@',
+	trailing: '.com',
+	header: 'Custom header',
+	footer: 'Footer',
+	headerExtra: 'New',
+	legend: 'Account settings',
+	hint: 'PNG or JPG up to 10 MB',
+	content: 'Save changes',
+	emptyMessage: 'Nothing matches',
+	emptyText: 'Nothing matches',
+	filename: 'install.sh',
+	language: 'bash'
 };
 
-const CARDLIKE = new Set(['layout/Card', 'layout/ClickableCard', 'layout/SelectableCard']);
+const LAYER_SURFACES = ['bg-main', 'bg-surface', 'bg-panel', 'bg-overlay'];
+const capitalise = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
+
+const CARDLIKE = new Set(['core/Card', 'layout/Card', 'layout/ClickableCard', 'layout/SelectableCard']);
 
 function resolveTypeValues(typeStr: string | undefined, raw: string): readonly string[] | null {
 	if (!typeStr) return null;
@@ -209,7 +283,7 @@ function resolveTypeValues(typeStr: string | undefined, raw: string): readonly s
 	}
 	if (!/^[a-zA-Z0-9_$]+$/.test(trimmed)) return null;
 
-	const aliasMatch = raw.match(new RegExp(`type\\s+${trimmed}\\s*=\\s*([^;\\n]+)`));
+	const aliasMatch = raw.match(new RegExp(`type\\s+${trimmed}\\s*=\\s*([^;]+)`));
 	if (aliasMatch && aliasMatch[1]) {
 		const literals = [...aliasMatch[1].matchAll(/'([^']+)'/g)].map((x) => x[1]);
 		if (literals.length > 0) return literals;
@@ -225,15 +299,24 @@ export function getLiveExamplesForProp(
 	const entry = getLiveComponentByPath(compPath);
 	const raw = entry?.raw ?? '';
 
-	// 1. IconData prop (rendering an SVG icon glyph)
-	if (propMeta?.type?.includes('IconData')) {
-		return [{ label: 'icon', value: { $icon: 'luStar' } }];
+	// 1. Icon prop (rendering an SVG icon glyph)
+	if (propMeta?.type?.includes('IconNode')) {
+		return [
+			{ label: 'default icon', value: undefined },
+			{ label: 'custom icon', value: { $icon: 'klStar' } }
+		];
 	}
 
 	// 2. Custom local literal union (e.g. TabsVariant, Placement, etc.)
 	const customLiterals = resolveTypeValues(propMeta?.type, raw);
 	if (customLiterals && customLiterals.length > 0) {
 		return customLiterals.map((v) => ({ label: v, value: v }));
+	}
+
+	// 2b. A union of numbers, e.g. `2 | 3 | 4`
+	const numeric = propMeta?.type?.split('|').map((part) => part.trim()) ?? [];
+	if (numeric.length > 1 && numeric.every((part) => /^\d+$/.test(part))) {
+		return numeric.map((part) => ({ label: part, value: Number(part) }));
 	}
 
 	// 3. Canonical type axes from src/lib/types.ts
@@ -248,6 +331,12 @@ export function getLiveExamplesForProp(
 		if (CARDLIKE.has(compPath) && propName === 'shape') {
 			list = list.filter((v) => v !== 'round');
 		}
+		// A surface preview shows the page layers; control fills and state tints
+		// only appear when the component itself defaults to one.
+		if (lower === 'surface') {
+			const own = propMeta?.default?.replace(/['"]/g, '');
+			list = list.filter((v) => LAYER_SURFACES.includes(String(v)) || v === own);
+		}
 		return list.map((v) => ({ label: String(v), value: v }));
 	}
 
@@ -259,15 +348,21 @@ export function getLiveExamplesForProp(
 		];
 	}
 
-	// 5. Snippets
+	// 5. Snippets: shown without, then with
 	if (propMeta?.type?.includes('Snippet')) {
-		return [{ label: 'snippet', value: { $snippet: SAMPLE_TEXT[propName] ?? 'Sample' } }];
+		return [
+			{ label: `no ${propName}`, value: undefined },
+			{ label: `with ${propName}`, value: { $snippet: SAMPLE_TEXT[propName] ?? capitalise(propName) } }
+		];
 	}
 
 	// 6. Strings and Numbers
 	if (propMeta?.type === 'string') {
 		const sampleVal = SAMPLE_TEXT[propName] ?? 'Sample';
-		return [{ label: sampleVal, value: sampleVal }];
+		return [
+			{ label: `no ${propName}`, value: undefined },
+			{ label: `with ${propName}`, value: sampleVal }
+		];
 	}
 	if (propMeta?.type === 'number') {
 		const num = Number(propMeta.default) || 1;
@@ -277,5 +372,6 @@ export function getLiveExamplesForProp(
 		];
 	}
 
-	return [{ label: 'sample', value: { $base: propName } }];
+	// Nothing to vary: the row is left out rather than showing one unexplained sample.
+	return [];
 }

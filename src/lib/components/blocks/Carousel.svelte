@@ -3,16 +3,21 @@
 <script lang="ts" generics="T">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { Snippet } from 'svelte';
-	import { Icon } from '@fractaldesign/icons';
-	import { luChevronLeft, luChevronRight } from '@fractaldesign/icons/lucide';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import IconButton from '../actions/IconButton.svelte';
+	import { klChevronLeft, klChevronRight } from '$lib/icons/keylinestroke.js';
 	import type { Shape, Shadow, TextSize } from '$lib/types.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
+		/** One entry per slide, passed to the `slide` snippet. */
 		items?: T[];
 		slide?: Snippet<[T, number]>;
+		/** Accessible name for the carousel region. */
 		label?: string;
 		index?: number;
+		/** How many slides are visible at once. */
 		perView?: number;
+		/** Space between slides, as a CSS length such as `1rem`. */
 		gap?: string;
 		draggable?: boolean;
 		shape?: Shape;
@@ -118,15 +123,11 @@
 	}
 </script>
 
-<section
-	class="carousel-root box gap-sm {shape} {shadow} {textsize} {className}"
-	aria-label={label}
-	onkeydown={onKeyDown}
-	{...restProps}
->
+<section class="relative box gap-sm wfull {shape} {shadow} {textsize} {className}" aria-label={label} onkeydown={onKeyDown} {...restProps}>
+	<!-- .reel is the scroll-snapping row; .carousel-track adds drag-to-scroll on top of it. -->
 	<div
 		bind:this={track}
-		class="carousel-track {isDragging ? 'is-dragging' : ''} {draggable ? 'is-draggable' : ''}"
+		class="reel carousel-track {isDragging ? 'is-dragging' : ''} {draggable ? 'is-draggable' : ''}"
 		style:column-gap={gap}
 		onscroll={onScroll}
 		onpointerdown={onPointerDown}
@@ -138,14 +139,11 @@
 		aria-label="{label} slides"
 	>
 		{#each items as item, i (i)}
-			<div
-				class="carousel-slide"
-				style:flex="0 0 calc((100% - ({gap} * {perView - 1})) / {perView})"
-			>
+			<div class="min0" style:flex="0 0 calc((100% - ({gap} * {perView - 1})) / {perView})">
 				{#if slide}
 					{@render slide(item, i)}
 				{:else}
-					<div class="pad-md bg-sunken radius-md text-center">Slide {i + 1}</div>
+					<div class="pad-md state-hover modern ta-c">Slide {i + 1}</div>
 				{/if}
 			</div>
 		{/each}
@@ -153,116 +151,24 @@
 
 	<div class="row ycenter xbetween pt-xs">
 		<div class="row ycenter gap-xs">
-			{#each { length: maxIndex + 1 }, i}
+			{#each { length: maxIndex + 1 }, i (i)}
 				<button
 					type="button"
-					class="dot-btn {index === i ? 'active' : ''}"
+					class="btn-icon h-xs round {index === i ? 'themed' : 'secondary'}"
 					aria-label="Go to slide {i + 1}"
+					aria-current={index === i ? 'true' : undefined}
 					onclick={() => goTo(i)}
 				></button>
 			{/each}
 		</div>
-
 		<div class="row ycenter gap-xs">
-			<button
-				type="button"
-				class="nav-btn"
-				disabled={index <= 0}
-				aria-label="Previous slide"
-				onclick={() => goTo(index - 1)}
-			>
-				<Icon icon={luChevronLeft} />
-			</button>
-			<button
-				type="button"
-				class="nav-btn"
-				disabled={index >= maxIndex}
-				aria-label="Next slide"
-				onclick={() => goTo(index + 1)}
-			>
-				<Icon icon={luChevronRight} />
-			</button>
+			<IconButton variant="outline" size="h-bs" label="Previous slide" disabled={index <= 0} onclick={() => goTo(index - 1)}>
+				<Icon icon={klChevronLeft} />
+			</IconButton>
+			<IconButton variant="outline" size="h-bs" label="Next slide" disabled={index >= maxIndex} onclick={() => goTo(index + 1)}>
+				<Icon icon={klChevronRight} />
+			</IconButton>
 		</div>
 	</div>
 </section>
 
-<style>
-	.carousel-root {
-		position: relative;
-		width: 100%;
-	}
-
-	.carousel-track {
-		display: flex;
-		overflow-x: auto;
-		scroll-snap-type: x mandatory;
-		scrollbar-width: none;
-		-webkit-overflow-scrolling: touch;
-		touch-action: pan-y pinch-zoom;
-		user-select: none;
-		-webkit-user-select: none;
-	}
-
-	.carousel-track.is-draggable {
-		cursor: grab;
-	}
-
-	.carousel-track.is-dragging {
-		cursor: grabbing;
-		scroll-snap-type: none;
-		scroll-behavior: auto;
-	}
-
-	.carousel-track.is-dragging :global(*) {
-		pointer-events: none;
-		user-select: none;
-	}
-
-	.carousel-track::-webkit-scrollbar {
-		display: none;
-	}
-
-	.carousel-slide {
-		scroll-snap-align: start;
-		min-width: 0;
-	}
-
-	.dot-btn {
-		width: 8px;
-		height: 8px;
-		border-radius: 9999px;
-		background: var(--border-strong, #ccc);
-		border: none;
-		padding: 0;
-		cursor: pointer;
-		transition: background 150ms ease, width 150ms ease;
-	}
-
-	.dot-btn.active {
-		width: 20px;
-		background: var(--theme-color, #22c55e);
-	}
-
-	.nav-btn {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 28px;
-		height: 28px;
-		border-radius: var(--radius-sm, 4px);
-		border: 1px solid var(--border, #e5e7eb);
-		background: var(--bg-surface, #fff);
-		color: var(--text-primary, #111);
-		cursor: pointer;
-		padding: 0;
-	}
-
-	.nav-btn:hover:not(:disabled) {
-		background: var(--bg-sunken, #f4f4f4);
-	}
-
-	.nav-btn:disabled {
-		opacity: 0.35;
-		cursor: not-allowed;
-	}
-</style>

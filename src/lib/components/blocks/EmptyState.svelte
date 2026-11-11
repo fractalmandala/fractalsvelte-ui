@@ -3,9 +3,9 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { Snippet } from 'svelte';
-	import { Icon } from '@fractaldesign/icons';
-	import { luInbox } from '@fractaldesign/icons/lucide';
-	import type { Surface, Border, Shape, Shadow, Pad, TextSize } from '$lib/types.js';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klInbox } from '$lib/icons/keylinestroke.js';
+	import type { Surface, Border, Shape, Shadow, TextSize } from '$lib/types.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		title?: string;
@@ -14,7 +14,8 @@
 		border?: Border;
 		shape?: Shape;
 		shadow?: Shadow;
-		padding?: Pad;
+		/** Padding classes, e.g. `pad-md` or `px-lg py-sm`. */
+		padding?: string;
 		textsize?: TextSize;
 		icon?: Snippet;
 		actions?: Snippet;
@@ -26,7 +27,7 @@
 		title = 'No items',
 		description,
 		surface = 'bg-surface',
-		border = 'border',
+		border = 'border-dashed',
 		shape = 'modern',
 		shadow = 'shad-none',
 		padding = 'pad-xl',
@@ -40,59 +41,30 @@
 </script>
 
 <div
-	class="empty-state box xcenter ycenter text-center {surface} {border} {shape} {shadow} {padding} {textsize} {className}"
+	class="box xcenter ycenter gap-md wfull {surface} {border} {shape} {shadow} {padding} {textsize} {className}"
 	{...restProps}
 >
-	<div class="icon-circle row xcenter ycenter" aria-hidden="true">
+	<div class="btn-icon inline-flex row xcenter ycenter h-xl round state-hover text-theme" aria-hidden="true">
 		{#if icon}
 			{@render icon()}
 		{:else}
-			<Icon icon={luInbox} />
+			<Icon icon={klInbox} size={22} />
 		{/if}
 	</div>
-
-	<h4 class="empty-title font-medium text-primary m0">{title}</h4>
-
-	{#if description}
-		<p class="empty-desc text-secondary text-sm m0">{description}</p>
-	{/if}
-
+	<div class="box xcenter gap-xs">
+		<h4 class="text-lg weight-500 lh13 text-primary">{title}</h4>
+		{#if description}
+			<p class="text-sm lh15 text-secondary">{description}</p>
+		{/if}
+	</div>
 	{#if children}
-		<div class="empty-content text-secondary text-sm">
+		<div class="text-sm text-secondary">
 			{@render children()}
 		</div>
 	{/if}
-
 	{#if actions}
-		<div class="empty-actions row ycenter gap-sm pt-xs">
+		<div class="row ycenter gap-sm pt-xs">
 			{@render actions()}
 		</div>
 	{/if}
 </div>
-
-<style>
-	.empty-state {
-		width: 100%;
-		border-style: dashed;
-		gap: 0.75rem;
-	}
-
-	.icon-circle {
-		width: 3.25rem;
-		height: 3.25rem;
-		border-radius: var(--radius-full, 9999px);
-		background: var(--bg-sunken, #f4f4f4);
-		color: var(--theme-color, #22c55e);
-		font-size: 1.5rem;
-	}
-
-	.empty-title {
-		font-size: 1.0625rem;
-		line-height: 1.3;
-	}
-
-	.empty-desc {
-		max-width: 24rem;
-		line-height: 1.5;
-	}
-</style>

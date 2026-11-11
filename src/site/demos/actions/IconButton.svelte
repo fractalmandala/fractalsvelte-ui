@@ -1,9 +1,8 @@
 <script lang="ts">
-	import IconButton from '$lib/components/actions/IconButton.svelte';
-	import { Icon } from '@fractaldesign/icons';
-	import { luSettings } from '@fractaldesign/icons/lucide';
+	import { IconButton, Icon } from '@fractaldesign/fractalsvelte-ui';
+	import { klSettings } from '@fractaldesign/fractalsvelte-ui/icons/keylinestroke';
 </script>
 
 <IconButton label="Settings">
-	<Icon icon={luSettings} />
+	<Icon icon={klSettings} />
 </IconButton>

@@ -4,8 +4,8 @@
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 	import type { IconVariant, Size, Shape, Shadow } from '$lib/types.js';
 	import IconButton from '$lib/components/actions/IconButton.svelte';
-	import Copy from '$lib/icons/copy.svelte';
-	import Check from '$lib/icons/check.svelte';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klCheck, klCopy } from '$lib/icons/keylinestroke.js';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'type'> {
 		text: string;
@@ -26,7 +26,7 @@
 		iconVariant,
 		variant,
 		size = 'h-md',
-		shape = 'rect',
+		shape = 'modern',
 		shadow = 'shad-none',
 		class: className = '',
 		...restProps
@@ -58,8 +58,8 @@
 	{...restProps}
 >
 	{#if copied}
-		<Check />
+		<Icon icon={klCheck} />
 	{:else}
-		<Copy />
+		<Icon icon={klCopy} />
 	{/if}
 </IconButton>

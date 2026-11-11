@@ -111,12 +111,12 @@
 	}
 </script>
 
-<div class="box gap-xs {direction === 'vertical' ? 'xcenter' : ''} {textsize} {className}" style:min-width={direction === 'vertical' ? undefined : '14em'} {...restProps}>
+<div class="box gap-xs {direction === 'vertical' ? 'xcenter' : ''} {direction === 'vertical' ? '' : 'track-min'} {textsize} {className}" {...restProps}>
 	{#if label || showValues}
 		<div class="row ycenter xbetween gap-sm">
 			{#if label}<span id="{uid}-label" class="text-sm weight-500 text-secondary">{label}</span>{/if}
 			{#if showValues}
-				<span class="chip tabular-nums bg-sunken text-secondary">{formatValue(minVal)} – {formatValue(maxVal)}</span>
+				<span class="px-sm mincurved text-xs tabular-nums state-hover text-secondary">{formatValue(minVal)} – {formatValue(maxVal)}</span>
 			{/if}
 		</div>
 	{/if}
@@ -125,9 +125,7 @@
 		bind:this={trackEl}
 		bind:clientWidth={width}
 		bind:clientHeight={height}
-		class="relative {direction === 'vertical' ? '' : 'wfull'}"
-		style:height={direction === 'vertical' ? '10em' : `var(--height-${size.slice(2)})`}
-		style:width={direction === 'vertical' ? `var(--height-${size.slice(2)})` : undefined}
+		class="relative touch-none {size} {direction === 'vertical' ? 'track-v' : 'wfull'}"
 		role="group"
 		aria-labelledby={label ? `${uid}-label` : undefined}
 		{onpointerdown}

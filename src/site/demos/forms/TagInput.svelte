@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TagInput from '$lib/components/forms/TagInput.svelte';
+	import { TagInput } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <TagInput label="Tags" />

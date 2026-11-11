@@ -1,5 +1,5 @@
 <script lang="ts">
-	import FlowCanvas from '$lib/components/blocks/FlowCanvas.svelte';
+	import { FlowCanvas } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <FlowCanvas />

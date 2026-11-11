@@ -3,8 +3,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon, type IconData } from '@fractaldesign/icons';
-	import { luInfo, luCircleCheck, luTriangleAlert, luCircleX, luX } from '@fractaldesign/icons/lucide';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import type { IconNode } from '$lib/icons/types.js';
+	import { klCircleCheck, klCircleX, klInfo, klTriangleAlert, klX } from '$lib/icons/keylinestroke.js';
 	import type { Message, MessageText, Size, Shape, TextSize } from '$lib/types.js';
 	import IconButton from '../actions/IconButton.svelte';
 
@@ -19,8 +20,8 @@
 		shape?: Shape;
 		dismissible?: boolean;
 		onclose?: () => void;
-		/** An icon from @fractaldesign/icons; defaults to one per tone */
-		icon?: IconData;
+		/** An icon from $lib/icons/keylinestroke or keylinefill; defaults to one per tone */
+		icon?: IconNode;
 		textsize?: TextSize;
 		class?: string;
 		action?: Snippet;
@@ -42,7 +43,7 @@
 		...restProps
 	}: Props = $props();
 
-	const ICONS: Record<Message, IconData> = { info: luInfo, success: luCircleCheck, warning: luTriangleAlert, danger: luCircleX };
+	const ICONS: Record<Message, IconNode> = { info: klInfo, success: klCircleCheck, warning: klTriangleAlert, danger: klCircleX };
 	const tone = $derived<Message>(messageText ? (messageText.replace('text-', '') as Message) : message);
 	const toneText = $derived(messageText ?? `text-${message}`);
 	let closed = $state(false);
@@ -56,7 +57,7 @@
 {#if !closed}
 	<aside
 		aria-label="Announcement"
-		class="banner tint row ycenter xbetween gap-md wfull {shape === 'rect' ? 'bb' : 'border'} shape {shape} {size} {messageText ? 'bg-panel' : message} {textsize} {className}"
+		class="banner tint row ycenter xbetween gap-md wfull {shape === 'rect' ? 'bb' : 'border'} {shape} {size} {messageText ? 'bg-panel' : message} {textsize} {className}"
 		{...restProps}
 	>
 		<div class="row ycenter gap-sm min0">
@@ -67,7 +68,7 @@
 			{@render action?.()}
 			{#if dismissible}
 				<IconButton icon="ghost" size="h-sm" label="Dismiss banner" class="text-muted" onclick={dismiss}>
-					<Icon icon={luX} />
+					<Icon icon={klX} />
 				</IconButton>
 			{/if}
 		</div>

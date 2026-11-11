@@ -46,83 +46,127 @@
 	}: Props = $props();
 
 	const isVertical = $derived(orientation === 'vertical');
-	const fillPercent = $derived(((value - min) / (max - min)) * 100);
 
-	function handleInput(e: Event & { currentTarget: HTMLInputElement }) {
-		value = Number(e.currentTarget.value);
+	// The fader is drawn as SVG in the chassis's own pixel box, measured with
+	// bind:clientWidth, so nothing writes a CSS position. Vertical faders draw
+	// the same geometry rotated, with the minimum at the bottom.
+	const THUMB = 24;
+	const MARGIN = 4;
+
+	let width = $state(0);
+	let height = $state(0);
+	let chassisEl: HTMLDivElement | null = $state(null);
+	let dragging = false;
+
+	const fraction = $derived(max <= min ? 0 : (Math.max(min, Math.min(max, value)) - min) / (max - min));
+	const long = $derived(isVertical ? height : width);
+	const thick = $derived(isVertical ? width : height);
+	const travel = $derived(Math.max(0, long - THUMB - MARGIN * 2));
+	const start = MARGIN + THUMB / 2;
+	const centre = $derived(start + fraction * travel);
+	const thumbAcross = $derived(Math.max(8, thick - 8));
+	const marks = $derived(Array.from({ length: Math.max(0, thumbMarks) }, (_, i) => centre + (i - (thumbMarks - 1) / 2) * 4));
+
+	function set(next: number) {
+		const raw = min + Math.round((next - min) / step) * step;
+		const decimals = (step.toString().split('.')[1] || '').length;
+		const rounded = Number(Math.max(min, Math.min(max, raw)).toFixed(decimals));
+		if (rounded === value) return;
+		value = rounded;
 		onchange?.(value);
+	}
+
+	function fromPointer(e: PointerEvent) {
+		if (!chassisEl || disabled) return;
+		const rect = chassisEl.getBoundingClientRect();
+		const len = isVertical ? rect.height : rect.width;
+		const pos = isVertical ? rect.bottom - e.clientY : e.clientX - rect.left;
+		const ratio = Math.max(0, Math.min(1, (pos - start) / Math.max(1, len - THUMB - MARGIN * 2)));
+		set(min + ratio * (max - min));
+	}
+
+	function onpointerdown(e: PointerEvent) {
+		if (disabled) return;
+		dragging = true;
+		(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+		fromPointer(e);
+	}
+
+	function onkeydown(e: KeyboardEvent) {
+		if (disabled) return;
+		const map: Record<string, number> = {
+			ArrowRight: value + step,
+			ArrowUp: value + step,
+			ArrowLeft: value - step,
+			ArrowDown: value - step,
+			PageUp: value + step * 10,
+			PageDown: value - step * 10,
+			Home: min,
+			End: max
+		};
+		if (!(e.key in map)) return;
+		e.preventDefault();
+		set(map[e.key]);
 	}
 </script>
 
-<div class="fader-root inline-flex flex-col items-center gap-xs {textsize} {className}" {...restProps}>
+<div class="box gap-xs {isVertical ? 'xcenter' : ''} {isVertical ? '' : 'track-min'} {textsize} {className}" {...restProps}>
 	{#if label || showValue}
-		<div class="row xbetween ycenter w-full text-xs">
-			{#if label}
-				<span class="font-medium text-secondary">{label}</span>
-			{/if}
-			{#if showValue}
-				<span class="font-mono text-muted">{value}</span>
-			{/if}
+		<div class="row ycenter xbetween gap-sm text-xs">
+			{#if label}<span class="weight-500 text-secondary">{label}</span>{/if}
+			{#if showValue}<span class="font-mono tabular-nums text-muted">{value}</span>{/if}
 		</div>
 	{/if}
-
 	<div
-		class="fader-chassis relative inline-flex items-center justify-center select-none {isVertical ? 'h-48 w-12' : 'h-12 w-48'} {surface} {border} {shape} {shadow} {disabled ? 'opacity-50 pointer-events-none' : ''}"
+		bind:this={chassisEl}
+		bind:clientWidth={width}
+		bind:clientHeight={height}
+		class="relative touch-none focus-theme {size} {isVertical ? 'track-v' : 'wfull'} {surface} {border} {shape} {shadow}"
+		role="slider"
+		tabindex={disabled ? -1 : 0}
+		aria-orientation={orientation}
+		aria-valuemin={min}
+		aria-valuemax={max}
+		aria-valuenow={value}
+		aria-label={label ?? 'Level fader'}
+		aria-disabled={disabled || undefined}
+		{onpointerdown}
+		onpointermove={(e) => dragging && fromPointer(e)}
+		onpointerup={() => (dragging = false)}
+		onpointercancel={() => (dragging = false)}
+		{onkeydown}
 	>
-		<!-- Center Slot / Track Groove -->
-		<div
-			class="fader-groove absolute rounded-full bg-sunken {isVertical ? 'w-1.5 h-40' : 'h-1.5 w-40'}"
-			style="box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);"
-		>
-			<!-- Active level fill -->
-			{#if isVertical}
-				<div
-					class="absolute bottom-0 left-0 right-0 rounded-full"
-					style="height: {fillPercent}%; background-color: var(--theme-color); opacity: 0.8;"
-				></div>
-			{:else}
-				<div
-					class="absolute left-0 top-0 bottom-0 rounded-full"
-					style="width: {fillPercent}%; background-color: var(--theme-color); opacity: 0.8;"
-				></div>
-			{/if}
-		</div>
-
-		<!-- Physical Tactile Thumb -->
-		<div
-			class="fader-thumb absolute pointer-events-none flex items-center justify-center bg-button shadow-md rounded-sm"
-			style="{isVertical
-				? `bottom: calc(${fillPercent}% - 12px); width: 34px; height: 24px;`
-				: `left: calc(${fillPercent}% - 12px); width: 24px; height: 34px;`} border: 1px solid var(--border-strong);"
-		>
-			<!-- Center groove marks on thumb -->
-			<div class="flex {isVertical ? 'flex-col gap-1' : 'flex-row gap-1'}">
-				{#each Array(thumbMarks) as _, i}
-					<div
-						class="{isVertical ? 'w-4 h-[1.5px]' : 'w-[1.5px] h-4'} bg-white opacity-40 rounded-full"
-					></div>
-				{/each}
-			</div>
-		</div>
-
-		<!-- Native input overlay for flawless interaction and accessibility -->
-		<input
-			type="range"
-			{min}
-			{max}
-			{step}
-			{value}
-			{disabled}
-			aria-label={label ?? 'Level Fader'}
-			class="fader-input absolute inset-0 w-full h-full opacity-0 cursor-pointer {isVertical ? 'cursor-ns-resize' : 'cursor-ew-resize'}"
-			style="{isVertical ? 'writing-mode: vertical-lr; direction: rtl;' : ''}"
-			oninput={handleInput}
-		/>
+		{#if width > 0 && height > 0}
+			<svg class="absolute full {disabled ? 'text-muted' : 'text-theme'}" viewBox="0 0 {width} {height}" aria-hidden="true">
+				<g transform={isVertical ? `translate(0 ${height}) rotate(-90)` : undefined}>
+					<!-- groove, then the level filled along it -->
+					<rect x={start} y={thick / 2 - 3} width={travel} height="6" rx="3" class="text-muted" fill="currentColor" opacity="0.35" />
+					<rect x={start} y={thick / 2 - 3} width={fraction * travel} height="6" rx="3" fill="currentColor" />
+					<!-- thumb with its grip marks -->
+					<rect
+						x={centre - THUMB / 2}
+						y={(thick - thumbAcross) / 2}
+						width={THUMB}
+						height={thumbAcross}
+						rx="3"
+						class={disabled ? 'text-muted' : 'text-primary'}
+						fill="currentColor"
+					/>
+					{#each marks as x, i (i)}
+						<line
+							x1={x}
+							x2={x}
+							y1={(thick - thumbAcross) / 2 + 5}
+							y2={(thick + thumbAcross) / 2 - 5}
+							class="text-inverse"
+							stroke="currentColor"
+							stroke-width="1.5"
+							stroke-linecap="round"
+							opacity="0.6"
+						/>
+					{/each}
+				</g>
+			</svg>
+		{/if}
 	</div>
 </div>
-
-<style>
-	.fader-chassis {
-		background-color: var(--bg-panel);
-	}
-</style>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Stepper from '$lib/components/navigation/Stepper.svelte';
+	import { Stepper } from '@fractaldesign/fractalsvelte-ui';
 
 	const steps = [{ label: 'Account' }, { label: 'Profile' }, { label: 'Review' }];
 </script>

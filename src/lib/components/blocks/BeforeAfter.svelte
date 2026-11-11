@@ -1,7 +1,7 @@
 <!-- @component A slider that wipes between a before and an after image. -->
 
 <script lang="ts">
-	import type { TextSize } from '$lib/types.js';
+	import type { TextSize, Shape } from '$lib/types.js';
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	type Ratio = '16/9' | '9/16' | '4/3' | '3/4' | '3/2' | '2/3' | '1/1';
@@ -16,6 +16,7 @@
 		beforeSrc?: string;
 		afterSrc?: string;
 		ratio?: Ratio;
+		shape?: Shape;
 		textsize?: TextSize;
 		class?: string;
 		/** HTML panes: shown one at a time behind a Before / After switch */
@@ -30,6 +31,7 @@
 		beforeSrc,
 		afterSrc,
 		ratio = '16/9',
+		shape = 'modern',
 		textsize = 'text-md',
 		class: className = '',
 		before,
@@ -68,7 +70,7 @@
 	     width follows the position, so the comparison is pure SVG geometry. -->
 	<div
 		bind:clientWidth={width}
-		class="box wfull radius-md border {textsize} {className}"
+		class="box wfull border {shape} {textsize} {className}"
 		role="slider"
 		tabindex="0"
 		aria-label="{beforeLabel} / {afterLabel} comparison"
@@ -118,7 +120,7 @@
 				]}
 			/>
 		</div>
-		<div class="box border radius-md scroll-x" aria-live="polite">
+		<div class="box border scroll-x {shape}" aria-live="polite">
 			{#if shown === 'before'}{@render before?.()}{:else}{@render after?.()}{/if}
 		</div>
 	</div>

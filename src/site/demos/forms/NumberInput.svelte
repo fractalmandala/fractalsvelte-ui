@@ -1,5 +1,5 @@
 <script lang="ts">
-	import NumberInput from '$lib/components/forms/NumberInput.svelte';
+	import { NumberInput } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <NumberInput label="Quantity" />

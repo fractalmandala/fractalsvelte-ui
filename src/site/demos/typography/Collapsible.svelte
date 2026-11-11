@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Collapsible from '$lib/components/typography/Collapsible.svelte';
+	import { Collapsible } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <Collapsible title="Details">

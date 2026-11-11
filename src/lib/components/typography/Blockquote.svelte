@@ -3,16 +3,17 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon, type IconData } from '@fractaldesign/icons';
-	import { luQuote } from '@fractaldesign/icons/lucide';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import type { IconNode } from '$lib/icons/types.js';
+	import { klQuote } from '$lib/icons/keylinestroke.js';
 	import type { Border, ThemeColor, TextSize } from '$lib/types.js';
 
 	interface Props extends HTMLAttributes<HTMLQuoteElement> {
 		quote?: string;
 		author?: string;
 		citation?: string;
-		/** An icon from @fractaldesign/icons, or false for none */
-		icon?: IconData | false;
+		/** An icon from $lib/icons/keylinestroke or keylinefill, or false for none */
+		icon?: IconNode | false;
 		/** Colour of the icon */
 		accent?: ThemeColor;
 		/** Left rule colour */
@@ -27,7 +28,7 @@
 		quote,
 		author,
 		citation,
-		icon = luQuote,
+		icon = klQuote,
 		accent = 'theme-color',
 		border = 'border-strong',
 		textsize = 'text-md',
@@ -36,11 +37,15 @@
 		authorSnippet,
 		...restProps
 	}: Props = $props();
+
+	// The rule down the left edge, in the weight the border prop asks for.
+	const LINE: Record<string, string> = { border: 'bl', 'border-strong': 'bl-str', 'border-subtle': 'bl-sub', 'border-dashed': 'bl', 'border-none': '' };
+	const ACCENT: Record<string, string> = { 'theme-color': 'text-theme', 'theme-color-up': 'text-theme-up', 'theme-color-down': 'text-theme-down' };
 </script>
 
-<blockquote class="row ytop gap-md pl-md py-xs {textsize} {className}" style:border-left="2px solid var(--{border})" {...restProps}>
+<blockquote class="row ytop gap-md pl-md py-xs {LINE[border] ?? 'bl'} {textsize} {className}" {...restProps}>
 	{#if icon}
-		<span class="row shrink-0 text-xl" style:color="var(--{accent})" aria-hidden="true"><Icon {icon} /></span>
+		<span class="row shrink-0 text-xl {ACCENT[accent]}" aria-hidden="true"><Icon {icon} /></span>
 	{/if}
 	<div class="box gap-sm min0">
 		{#if quote}<p class="text-body-lg text-primary">{quote}</p>{/if}

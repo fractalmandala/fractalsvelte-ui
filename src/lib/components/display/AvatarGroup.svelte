@@ -27,6 +27,7 @@
 		surface?: Surface;
 		/** Spacing between avatars: `overlap` stacks them, `touch` sets them edge to edge, `xs`…`lg` add a growing gap. */
 		gap?: AvatarGroupGap;
+		/** Lay the avatars out in a row or a column. */
 		direction?: 'horizontal' | 'vertical';
 		textsize?: TextSize;
 		class?: string;
@@ -40,7 +41,7 @@
 		excess = 0,
 		size = 'h-lg',
 		shape = 'circle',
-		surface = 'bg-sunken',
+		surface = 'state-hover',
 		gap = 'overlap',
 		direction = 'horizontal',
 		textsize = 'text-md',
@@ -56,7 +57,7 @@
 
 <div
 	class="avatar-group {direction === 'vertical' ? 'box' : 'row'} ycenter {shape} gap-{gap} {textsize} {className}"
-	style:--avatar-size="var(--height-{size.replace('h-', '')})"
+	style:--avatar-size="var(--h-{size.replace('h-', '')})"
 	role="group"
 	{...restProps}
 >

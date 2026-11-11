@@ -1,5 +1,5 @@
 <script lang="ts">
-	import RotaryDial from '$lib/components/forms/RotaryDial.svelte';
+	import { RotaryDial } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <RotaryDial label="Volume" />

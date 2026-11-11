@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CopyButton from '$lib/components/actions/CopyButton.svelte';
+	import { CopyButton } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <CopyButton text="pnpm add @fractaldesign/fractalsvelte-ui" />

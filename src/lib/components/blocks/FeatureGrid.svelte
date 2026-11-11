@@ -1,14 +1,14 @@
 <!-- @component A grid of features, each with icon, title and description. -->
 
 <script lang="ts" module>
-	import type { IconData } from '@fractaldesign/icons';
+	import type { IconNode } from '$lib/icons/types.js';
 
 	export interface FeatureItem {
 		title: string;
 		description: string;
 		badge?: string;
-		/** An icon from @fractaldesign/icons */
-		icon?: IconData;
+		/** An icon from $lib/icons/keylinestroke or keylinefill */
+		icon?: IconNode;
 	}
 </script>
 
@@ -16,7 +16,7 @@
 	import type { TextSize } from '$lib/types.js';
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon as Iconbox } from '@fractaldesign/icons';
+	import Iconbox from '$lib/components/core/Icon.svelte';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		/** Responsive grid steps: 2 is 1 → 2, 3 is 1 → 3, 4 is 1 → 2 → 4 */
@@ -36,15 +36,15 @@
 <div class="grid-{columns} ystretch gap-md {textsize} {className}" {...restProps}>
 	{#each items as item (item.title)}
 		<!-- One left edge: icon, title and description stack from the same x. -->
-		<div class="card box xleft ytop gap-sm ta-l shape curved pad-lg bg-panel {bordered ? 'border' : 'border-none'}">
+		<div class="card box xleft ytop gap-sm ta-l curved pad-lg bg-panel {bordered ? 'border' : 'border-none'}">
 			{#if item.icon || item.badge}
 				<div class="row ycenter xbetween gap-sm wfull">
 					{#if item.icon}
-						<span class="row ycenter xcenter shrink-0 pad-sm bg-sunken radius-md text-theme text-lg" aria-hidden="true">
+						<span class="row ycenter xcenter shrink-0 pad-sm state-hover modern text-theme text-lg" aria-hidden="true">
 							<Iconbox icon={item.icon} />
 						</span>
 					{/if}
-					{#if item.badge}<span class="chip bg-sunken text-secondary">{item.badge}</span>{/if}
+					{#if item.badge}<span class="px-sm mincurved text-xs state-hover text-secondary">{item.badge}</span>{/if}
 				</div>
 			{/if}
 			<h3 class="card-title">{item.title}</h3>

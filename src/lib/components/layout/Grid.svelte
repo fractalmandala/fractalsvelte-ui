@@ -3,16 +3,15 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { Snippet } from 'svelte';
-	import type { Pad, TextSize } from '$lib/types.js';
+	import type { Space, TextSize } from '$lib/types.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Fixed number of equal-width columns. Omit for responsive auto-fit. */
-		cols?: number;
-		/** Minimum column track width for auto-fit, e.g. '14rem' or '250px'. */
-		min?: string;
-		/** Grid gap spacing unit (number * 0.25rem) or explicit CSS string. */
-		gap?: number | string;
-		padding?: Pad;
+		/** Columns at full width; they fold down on smaller screens. Omit to fit as many cards as the width allows. */
+		cols?: 1 | 2 | 3 | 4 | 6;
+		/** Space between cells, from the spacing scale. */
+		gap?: Space;
+		/** Padding classes, e.g. `pad-md` or `px-lg py-sm`. */
+		padding?: string;
 		textsize?: TextSize;
 		class?: string;
 		children?: Snippet;
@@ -20,8 +19,7 @@
 
 	let {
 		cols,
-		min = '14rem',
-		gap = 4,
+		gap = 'bs',
 		padding,
 		textsize = 'text-md',
 		class: className = '',
@@ -29,27 +27,12 @@
 		...restProps
 	}: Props = $props();
 
-	const computedGap = $derived(typeof gap === 'number' ? `${gap * 0.25}rem` : gap);
-	const templateCols = $derived(
-		cols
-			? `repeat(${cols}, minmax(0, 1fr))`
-			: `repeat(auto-fit, minmax(min(${min}, 100%), 1fr))`
-	);
 </script>
 
 <div
-	class="grid-container {padding ?? ''} {textsize} {className}"
-	style:grid-template-columns={templateCols}
-	style:gap={computedGap}
+	class="wfull gap-{gap} {cols ? `grid-${cols}` : 'card-grid'} {padding ?? ''} {textsize} {className}"
 	{...restProps}
 >
 	{@render children?.()}
 </div>
 
-<style>
-	.grid-container {
-		display: grid;
-		width: 100%;
-		box-sizing: border-box;
-	}
-</style>

@@ -3,11 +3,11 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
-	import { Icon } from '@fractaldesign/icons';
-	import { luMinus, luPlus } from '@fractaldesign/icons/lucide';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klMinus, klPlus } from '$lib/icons/keylinestroke.js';
 	import IconButton from '../actions/IconButton.svelte';
 	import type { Surface, Size, Shape, Shadow, TextSize } from '$lib/types.js';
-	import { getFieldLook } from './field-context';
+	import { getFieldLook } from './field-context.js';
 
 	interface Props extends Omit<HTMLInputAttributes, 'size'> {
 		value?: number;
@@ -97,7 +97,7 @@
 
 <div class="box gap-xs {textsize} {className}">
 	{#if label}<label for={inputId} class="text-xs weight-500 text-secondary">{label}</label>{/if}
-	<div class="row ycenter gap-xs px-xs border size shape {surface} {size} {shape} {shadow} {invalid ? 'is-invalid' : ''}">
+	<div class="field row ycenter gap-xs px-xs border {surface} {size} {shape} {shadow} {invalid ? 'is-invalid' : ''}">
 		{#if leading}
 			<span class="row ycenter shrink-0 pl-xs text-muted" aria-hidden="true">{@render leading()}</span>
 		{/if}
@@ -112,7 +112,7 @@
 				onpointerup={stopStepping}
 				onpointerleave={stopStepping}
 			>
-				<Icon icon={luMinus} />
+				<Icon icon={klMinus} />
 			</IconButton>
 		{/if}
 		<input
@@ -124,8 +124,7 @@
 			{step}
 			{disabled}
 			{readonly}
-			class="input grow min0 hfull ta-c tabular-nums border-none {textsize}"
-			style:background="transparent"
+			class="input grow min0 hfull ta-c tabular-nums border-none bg-none {textsize}"
 			{onchange}
 			onkeydown={(e) => {
 				if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
@@ -148,7 +147,7 @@
 				onpointerup={stopStepping}
 				onpointerleave={stopStepping}
 			>
-				<Icon icon={luPlus} />
+				<Icon icon={klPlus} />
 			</IconButton>
 		{/if}
 		{#if trailing}

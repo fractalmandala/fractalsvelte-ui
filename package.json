@@ -1,7 +1,7 @@
 {
 	"name": "@fractaldesign/fractalsvelte-ui",
-	"version": "1.1.0",
-	"description": "Massive, modern, token-driven Svelte 5 runes component library for SvelteKit. Zero Tailwind. Scoped, beautiful, performant.",
+	"version": "1.2.0",
+	"description": "Svelte 5 component library styled by one class-and-token stylesheet: every prop value is a class you can read. No Tailwind, no runtime CSS-in-JS.",
 	"homepage": "https://fractalsvelte.dev/fractalsvelte-ui",
 	"type": "module",
 	"license": "MIT",
@@ -21,7 +21,8 @@
 		"components",
 		"ui",
 		"design-system",
-		"design-tokens"
+		"design-tokens",
+		"css"
 	],
 	"scripts": {
 		"dev": "vite dev",
@@ -29,8 +30,9 @@
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"css": "node scripts/build-css.mjs",
-		"package": "svelte-package && node scripts/build-css.mjs",
-		"prepack": "svelte-kit sync && svelte-package && node scripts/build-css.mjs && publint",
+		"icons": "node scripts/build-icons.mjs",
+		"package": "node scripts/build-icons.mjs && svelte-package && node scripts/build-css.mjs",
+		"prepack": "node scripts/build-icons.mjs && svelte-kit sync && svelte-package && node scripts/build-css.mjs && publint",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"docs:components": "node scripts/component-docs.mjs"
@@ -41,8 +43,7 @@
 		"!dist/**/*.spec.*"
 	],
 	"sideEffects": [
-		"**/*.css",
-		"**/*.sass"
+		"**/*.css"
 	],
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -66,27 +67,28 @@
 		},
 		"./styles": {
 			"types": "./dist/asset.d.ts",
-			"default": "./dist/styles/index.sass"
+			"default": "./dist/styles/index.css"
+		},
+		"./icons": {
+			"types": "./dist/icons/index.d.ts",
+			"svelte": "./dist/icons/index.js",
+			"default": "./dist/icons/index.js"
+		},
+		"./icons/keylinestroke": {
+			"types": "./dist/icons/keylinestroke.d.ts",
+			"svelte": "./dist/icons/keylinestroke.js",
+			"default": "./dist/icons/keylinestroke.js"
+		},
+		"./icons/keylinefill": {
+			"types": "./dist/icons/keylinefill.d.ts",
+			"svelte": "./dist/icons/keylinefill.js",
+			"default": "./dist/icons/keylinefill.js"
 		},
 		"./styles/*": "./dist/styles/*",
-		"./tokens.css": {
-			"types": "./dist/asset.d.ts",
-			"default": "./dist/styles/tokens.css"
-		},
 		"./package.json": "./package.json"
 	},
-	"dependencies": {
-		"@fractaldesign/icons": "^0.1.0"
-	},
 	"peerDependencies": {
-		"@fractaldesign/fractalstyler": "^1.5.0",
-		"sass": "^1.102.0",
 		"svelte": "^5.0.0"
-	},
-	"peerDependenciesMeta": {
-		"sass": {
-			"optional": true
-		}
 	},
 	"publishConfig": {
 		"access": "public"
@@ -97,7 +99,6 @@
 		]
 	},
 	"devDependencies": {
-		"@fractaldesign/fractalstyler": "file:/Users/amrit/fractaldesign/packages/fractalstyler",
 		"@fractaldesign/pop-svelte": "^0.3.1",
 		"@sveltejs/adapter-auto": "^8.0.0",
 		"@sveltejs/kit": "^3.0.0",
@@ -112,9 +113,5 @@
 		"svelte-check": "^4.6.0",
 		"typescript": "^6.0.3",
 		"vite": "^8.3.0"
-	},
-	"imports": {
-		"#lib": "./src/lib/index.ts",
-		"#lib/*": "./src/lib/*"
 	}
 }

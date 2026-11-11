@@ -3,7 +3,7 @@
 <script lang="ts">
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
 	import type { Surface, Shape, Shadow, TextSize } from '$lib/types.js';
-	import { getFieldLook } from './field-context';
+	import { getFieldLook } from './field-context.js';
 
 	interface Props extends HTMLTextareaAttributes {
 		value?: string;
@@ -78,8 +78,7 @@
 		{readonly}
 		aria-invalid={invalid || undefined}
 		aria-describedby={errorMessage ? `${textareaId}-error` : helperText ? `${textareaId}-helper` : undefined}
-		class="input wfull py-sm px-sm lh15 {textsize} border shape {surface} {shape} {shadow} {invalid ? 'is-invalid' : ''}"
-		style:height="auto"
+		class="input wfull py-sm px-sm lh15 {textsize} border {surface} {shape} {shadow} {invalid ? 'is-invalid' : ''}"
 		{...restProps}
 	></textarea>
 	<div class="row ytop xbetween gap-sm">

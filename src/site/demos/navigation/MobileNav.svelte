@@ -1,6 +1,5 @@
 <script lang="ts">
-	import MobileNav from '$lib/components/navigation/MobileNav.svelte';
-	import Button from '$lib/components/actions/Button.svelte';
+	import { MobileNav, Button } from '@fractaldesign/fractalsvelte-ui';
 
 	let open = $state(false);
 </script>

@@ -62,6 +62,11 @@
 	const pctX = $derived(((value.x - minX) / (maxX - minX)) * 100);
 	const pctY = $derived((1 - (value.y - minY) / (maxY - minY)) * 100);
 
+	let width = $state(0);
+	let height = $state(0);
+	const px = $derived((pctX / 100) * width);
+	const py = $derived((pctY / 100) * height);
+
 	function updateFromPointer(clientX: number, clientY: number) {
 		if (!padEl || disabled) return;
 		const rect = padEl.getBoundingClientRect();
@@ -141,63 +146,50 @@
 
 <div class="box gap-xs {textsize} {className}">
 	{#if label || showValues}
-		<div class="row xbetween ycenter text-xs">
-			{#if label}
-				<span class="font-medium text-secondary">{label}</span>
-			{/if}
-			{#if showValues}
-				<span class="font-mono text-muted">X: {value.x} · Y: {value.y}</span>
-			{/if}
+		<div class="row ycenter xbetween gap-sm text-xs">
+			{#if label}<span class="weight-500 text-secondary">{label}</span>{/if}
+			{#if showValues}<span class="font-mono tabular-nums text-muted">X: {value.x} · Y: {value.y}</span>{/if}
 		</div>
 	{/if}
 
+	<!-- The pad is drawn as SVG in its own pixel box, measured with
+	     bind:clientWidth, so nothing writes a CSS position. -->
 	<div
 		bind:this={padEl}
+		bind:clientWidth={width}
+		bind:clientHeight={height}
 		role="slider"
 		tabindex={disabled ? -1 : 0}
-		aria-label={label ?? '2D Position Pad'}
+		aria-label={label ?? '2D position pad'}
 		aria-valuemin={minX}
 		aria-valuemax={maxX}
 		aria-valuenow={value.x}
-		aria-disabled={disabled}
-		class="xypad-surface relative w-full h-44 overflow-hidden touch-none select-none cursor-crosshair shape {shape} {surface} {border} {shadow} {disabled ? 'opacity-50 cursor-not-allowed' : ''}"
+		aria-valuetext="X {value.x}, Y {value.y}"
+		aria-disabled={disabled || undefined}
+		class="wfull frame-16-9 touch-none focus-theme {shape} {surface} {border} {shadow}"
 		onpointerdown={handlePointerDown}
 		onpointermove={handlePointerMove}
 		onpointerup={handlePointerUp}
+		onpointercancel={handlePointerUp}
 		onkeydown={handleKeyDown}
 		{...restProps}
 	>
-		<!-- Grid lines -->
-		<div class="absolute inset-0 pointer-events-none opacity-20">
-			<div class="absolute left-1/4 top-0 bottom-0 border-r border-current"></div>
-			<div class="absolute left-1/2 top-0 bottom-0 border-r border-current"></div>
-			<div class="absolute left-3/4 top-0 bottom-0 border-r border-current"></div>
-			<div class="absolute top-1/4 left-0 right-0 border-b border-current"></div>
-			<div class="absolute top-1/2 left-0 right-0 border-b border-current"></div>
-			<div class="absolute top-3/4 left-0 right-0 border-b border-current"></div>
-		</div>
-
-		<!-- Crosshair lines following puck -->
-		<div
-			class="absolute top-0 bottom-0 pointer-events-none border-r border-dashed border-primary opacity-40"
-			style="left: {pctX}%;"
-		></div>
-		<div
-			class="absolute left-0 right-0 pointer-events-none border-b border-dashed border-primary opacity-40"
-			style="top: {pctY}%;"
-		></div>
-
-		<!-- Draggable Puck -->
-		<div
-			class="absolute w-5 h-5 -ml-2.5 -mt-2.5 rounded-full pointer-events-none shadow-md transition-transform"
-			style="left: {pctX}%; top: {pctY}%; background-color: var(--theme-color); border: 2px solid var(--white-fixed); transform: scale({isDragging ? 1.25 : 1});"
-		></div>
+		{#if width > 0 && height > 0}
+			<svg viewBox="0 0 {width} {height}" class="text-muted" aria-hidden="true">
+				<!-- quarter grid -->
+				{#each [0.25, 0.5, 0.75] as q (q)}
+					<line x1={width * q} x2={width * q} y1="0" y2={height} stroke="currentColor" opacity="0.25" />
+					<line x1="0" x2={width} y1={height * q} y2={height * q} stroke="currentColor" opacity="0.25" />
+				{/each}
+				<!-- crosshair through the puck -->
+				<g class="text-secondary" stroke="currentColor" stroke-dasharray="4 4" opacity="0.6">
+					<line x1={px} x2={px} y1="0" y2={height} />
+					<line x1="0" x2={width} y1={py} y2={py} />
+				</g>
+				<!-- puck -->
+				<circle cx={px} cy={py} r={isDragging ? 11 : 9} class={disabled ? 'text-muted' : 'text-theme'} fill="currentColor" />
+				<circle cx={px} cy={py} r={isDragging ? 11 : 9} class="text-white" fill="none" stroke="currentColor" stroke-width="2" />
+			</svg>
+		{/if}
 	</div>
 </div>
-
-<style>
-	.xypad-surface:focus-visible {
-		outline: 2px solid var(--theme-color);
-		outline-offset: 2px;
-	}
-</style>

@@ -7,8 +7,10 @@
 
 	interface Props extends Omit<HTMLTableAttributes, 'border'> {
 		columns?: Column<T>[];
+		/** The records to show, one object per row. */
 		rows?: T[];
 		caption?: string;
+		/** Shades every other row. */
 		striped?: boolean;
 		surface?: Surface;
 		border?: Border;
@@ -63,10 +65,10 @@
 	}
 </script>
 
-<div class="table-container {surface} {border} {shape} {shadow} {textsize}">
-	<table class="table-element {striped ? 'striped' : ''} {className}" {...restProps}>
+<div class="wfull scroll-x {surface} {border} {shape} {shadow} {textsize}">
+	<table class="data-table {striped ? 'striped' : ''} {className}" {...restProps}>
 		{#if caption}
-			<caption class="text-secondary text-sm font-medium">{caption}</caption>
+			<caption class="text-secondary text-sm weight-500">{caption}</caption>
 		{/if}
 
 		{#if children}
@@ -77,17 +79,17 @@
 					{#each columns as c (c.key)}
 						<th
 							scope="col"
-							style:text-align={c.align ?? 'left'}
+							class="{c.align === 'right' ? 'ta-r' : c.align === 'center' ? 'ta-c' : ''}"
 							aria-sort={sortKey === c.key ? (dir === 1 ? 'ascending' : 'descending') : undefined}
 						>
 							{#if c.sortable}
 								<button
 									type="button"
-									class="sort-btn row ycenter gap-xs"
+									class="row ycenter gap-xs pad-none border-none bg-none text-xs weight-600 tt-u"
 									onclick={() => toggleSort(c.key)}
 								>
 									<span>{c.label}</span>
-									<span class="sort-indicator text-xs" aria-hidden="true">
+									<span class="text-xs text-muted" aria-hidden="true">
 										{sortKey === c.key ? (dir === 1 ? '↑' : '↓') : '↕'}
 									</span>
 								</button>
@@ -102,7 +104,7 @@
 				{#each sorted as r, i (i)}
 					<tr>
 						{#each columns as c (c.key)}
-							<td style:text-align={c.align ?? 'left'}>
+							<td class="{c.align === 'right' ? 'ta-r' : c.align === 'center' ? 'ta-c' : ''}">
 								{#if cell}
 									{@render cell(r, c)}
 								{:else}
@@ -113,7 +115,7 @@
 					</tr>
 				{:else}
 					<tr>
-						<td colspan={columns.length || 1} class="empty-cell text-center text-secondary">
+						<td colspan={columns.length || 1} class="data-table-empty text-secondary">
 							{#if empty}
 								{@render empty()}
 							{:else}
@@ -127,70 +129,3 @@
 	</table>
 </div>
 
-<style>
-	.table-container {
-		width: 100%;
-		overflow-x: auto;
-	}
-
-	.table-element {
-		width: 100%;
-		border-collapse: collapse;
-		font-size: 0.875rem;
-		color: var(--text-primary, #111);
-	}
-
-	caption {
-		caption-side: top;
-		text-align: left;
-		padding: 0.75rem 1rem 0.25rem;
-	}
-
-	th {
-		padding: 0.625rem 1rem;
-		font-size: 0.75rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-		color: var(--text-secondary, #6b7280);
-		border-bottom: 1px solid var(--border, #e5e7eb);
-		background: var(--bg-sunken, #f4f4f4);
-		white-space: nowrap;
-	}
-
-	.sort-btn {
-		background: none;
-		border: none;
-		padding: 0;
-		cursor: pointer;
-		font: inherit;
-		color: inherit;
-		text-transform: inherit;
-		letter-spacing: inherit;
-	}
-
-	.sort-indicator {
-		opacity: 0.6;
-	}
-
-	td {
-		padding: 0.625rem 1rem;
-		border-bottom: 1px solid var(--border, #e5e7eb);
-	}
-
-	tbody tr:last-child td {
-		border-bottom: none;
-	}
-
-	tbody tr:hover td {
-		background: var(--state-surface, rgba(0, 0, 0, 0.02));
-	}
-
-	.striped tbody tr:nth-child(even) td {
-		background: var(--bg-sunken, #f9fafb);
-	}
-
-	.empty-cell {
-		padding: 2.5rem 1rem;
-	}
-</style>

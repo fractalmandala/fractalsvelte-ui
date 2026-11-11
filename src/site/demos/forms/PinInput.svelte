@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PinInput from '$lib/components/forms/PinInput.svelte';
+	import { PinInput } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <PinInput label="Verification code" />

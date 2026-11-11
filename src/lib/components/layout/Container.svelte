@@ -16,7 +16,7 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 
 	/**
-	 * fractalstyler's page measures: .content-section in its narrow modes
+	 * the stylesheet's page measures: .content-section in its narrow modes
 	 * (640 / 720px, responsive padding) and .prose (the 65ch reading measure).
 	 */
 

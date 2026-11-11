@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SplitPane from '$lib/components/layout/SplitPane.svelte';
+	import { SplitPane } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <SplitPane>

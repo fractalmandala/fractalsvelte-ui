@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ToastStack from '$lib/components/overlays/ToastStack.svelte';
+	import { ToastStack } from '@fractaldesign/fractalsvelte-ui';
 	import type { ToastItem } from '$lib/components/overlays/ToastStack.svelte';
 
 	let toasts = $state<ToastItem[]>([

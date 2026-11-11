@@ -1,5 +1,5 @@
 <script lang="ts">
-	import AppShell from '$lib/components/navigation/AppShell.svelte';
+	import { AppShell } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <AppShell>

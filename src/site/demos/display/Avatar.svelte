@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Avatar from '$lib/components/display/Avatar.svelte';
+	import { Avatar } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <Avatar initials="AP" />

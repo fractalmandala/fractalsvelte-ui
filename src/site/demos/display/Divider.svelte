@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Divider from '$lib/components/display/Divider.svelte';
+	import { Divider } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <div class="box gap-md wfull">

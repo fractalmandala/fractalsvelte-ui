@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Canvas from '$lib/components/blocks/Canvas.svelte';
+	import { Canvas } from '@fractaldesign/fractalsvelte-ui';
 
 	function draw(ctx: CanvasRenderingContext2D, size: { width: number; height: number }) {
 		ctx.clearRect(0, 0, size.width, size.height);
@@ -10,4 +10,4 @@
 	}
 </script>
 
-<Canvas {draw} ratio="16 / 9" label="Interactive drawing canvas" />
+<Canvas {draw} ratio="frame-16-9" label="Interactive drawing canvas" />

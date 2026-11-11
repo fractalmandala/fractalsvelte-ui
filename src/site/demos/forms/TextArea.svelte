@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TextArea from '$lib/components/forms/TextArea.svelte';
+	import { TextArea } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <TextArea label="Message" />

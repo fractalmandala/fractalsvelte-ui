@@ -3,13 +3,13 @@
 <script lang="ts">
 	import type { HTMLCanvasAttributes } from 'svelte/elements';
 	import type { Snippet } from 'svelte';
-	import type { Surface, Border, Shape, Shadow } from '$lib/types.js';
+	import type { Surface, Border, Shape, Shadow, Frame } from '$lib/types.js';
 
 	interface Props extends HTMLCanvasAttributes {
 		/** Canvas 2D render callback invoked on mount and resize with device pixel ratio scaling. */
 		draw?: (ctx: CanvasRenderingContext2D, size: { width: number; height: number }) => void;
-		/** Aspect ratio string, e.g. '16 / 9' or '2 / 1'. */
-		ratio?: string;
+		/** Aspect ratio, as one of the frame classes. */
+		ratio?: Frame;
 		label?: string;
 		surface?: Surface;
 		border?: Border;
@@ -21,7 +21,7 @@
 
 	let {
 		draw,
-		ratio = '2 / 1',
+		ratio = 'frame-16-9',
 		label,
 		surface = 'bg-surface',
 		border = 'border',
@@ -60,15 +60,7 @@
 	bind:this={el}
 	role={label ? 'img' : undefined}
 	aria-label={label}
-	class="canvas-box {surface} {border} {shape} {shadow} {className}"
-	style:aspect-ratio={ratio}
+	class="block wfull {ratio} {surface} {border} {shape} {shadow} {className}"
 	{...restProps}
 >{@render children?.()}</canvas>
 
-<style>
-	.canvas-box {
-		display: block;
-		width: 100%;
-		max-width: 100%;
-	}
-</style>

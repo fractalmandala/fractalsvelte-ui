@@ -96,11 +96,11 @@
 	}
 </script>
 
-<div class="box gap-xs {direction === 'vertical' ? 'xcenter' : ''} {textsize} {className}" style:min-width={direction === 'vertical' ? undefined : '14em'} {...restProps}>
+<div class="box gap-xs {direction === 'vertical' ? 'xcenter' : ''} {direction === 'vertical' ? '' : 'track-min'} {textsize} {className}" {...restProps}>
 	{#if label || showValue}
 		<div class="row ycenter xbetween gap-sm">
 			{#if label}<span class="text-sm weight-500 text-secondary">{label}</span>{/if}
-			{#if showValue}<span class="chip tabular-nums bg-sunken text-secondary">{formatValue(value)}</span>{/if}
+			{#if showValue}<span class="px-sm mincurved text-xs tabular-nums state-hover text-secondary">{formatValue(value)}</span>{/if}
 		</div>
 	{/if}
 	{#if description}<span class="text-body-sm text-muted">{description}</span>{/if}
@@ -109,9 +109,7 @@
 		bind:clientWidth={width}
 		bind:clientHeight={height}
 		id={sliderId}
-		class="relative {direction === 'vertical' ? '' : 'wfull'}"
-		style:height={direction === 'vertical' ? '10em' : `var(--height-${size.slice(2)})`}
-		style:width={direction === 'vertical' ? `var(--height-${size.slice(2)})` : undefined}
+		class="relative touch-none {size} {direction === 'vertical' ? 'track-v' : 'wfull'}"
 		aria-orientation={direction}
 		role="slider"
 		tabindex={disabled ? -1 : 0}

@@ -2,15 +2,18 @@
 
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from '@fractaldesign/icons';
-	import { luChevronDown, luCheck, luX } from '@fractaldesign/icons/lucide';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import Tag from '../display/Tag.svelte';
+	import { klCheck, klChevronDown } from '$lib/icons/keylinestroke.js';
 	import type { SelectOption, Variant, Size, Shape, Shadow, TextSize } from '$lib/types.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		options: SelectOption[];
+		/** Bindable list of the selected option values. */
 		value?: (string | number)[];
 		placeholder?: string;
 		label?: string;
+		/** Most options that can be selected at once. */
 		max?: number;
 		disabled?: boolean;
 		variant?: Variant;
@@ -29,7 +32,7 @@
 		max,
 		disabled = false,
 		variant = 'outline',
-		size = 'h-md',
+		size = 'h-lg',
 		shape = 'modern',
 		shadow = 'shad-none',
 		textsize = 'text-md',
@@ -104,195 +107,77 @@
 	});
 </script>
 
-<div
-	bind:this={root}
-	class="multiselect-root box gap-xs {textsize} {className}"
-	{...restProps}
->
+<div bind:this={root} class="box gap-xs {textsize} {className}" {...restProps}>
 	{#if label}
-		<label for={inputId} class="multiselect-label font-medium text-xs text-secondary">
-			{label}
-		</label>
+		<label for={inputId} class="text-xs weight-500 text-secondary">{label}</label>
 	{/if}
-
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<!-- svelte-ignore a11y_no_static_element_interactions -->
-	<div
-		class="multiselect-box row ycenter wrap gap-xs variant {variant} size {size} shape {shape} {shadow} {disabled ? 'is-disabled' : ''}"
-		onclick={() => {
-			if (!disabled) {
-				open = true;
-				inputEl?.focus();
-			}
-		}}
-	>
-		{#each selectedOptions as opt (opt.value)}
-			<span class="chip-item row ycenter gap-xs text-xs font-medium shape {shape}">
-				<span>{opt.label}</span>
-				{#if !disabled}
-					<button
-						type="button"
-						class="chip-close-btn"
-						aria-label="Remove {opt.label}"
-						onclick={(e) => {
-							e.stopPropagation();
-							removeValue(opt.value);
-						}}
-					>
-						<Icon icon={luX} />
-					</button>
-				{/if}
-			</span>
-		{/each}
-
-		<input
-			bind:this={inputEl}
-			id={inputId}
-			type="text"
-			role="combobox"
-			aria-expanded={open}
-			aria-controls="multi-dropdown-list"
-			{disabled}
-			placeholder={selectedOptions.length === 0 ? placeholder : ''}
-			bind:value={query}
-			class="multiselect-input grow min0"
-			onfocus={() => {
-				if (!disabled) open = true;
+	<!-- The panel is .absolute with no offsets, so it sits at its static
+	     position: directly under the field, full width via .wfull. -->
+	<div class="relative">
+		<!-- svelte-ignore a11y_click_events_have_key_events (the input inside takes the keys) -->
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
+		<div
+			class="field row ycenter wrap gap-xs px-sm py-xs hgrow {variant} {size} {shape} {shadow}"
+			onclick={() => {
+				if (!disabled) {
+					open = true;
+					inputEl?.focus();
+				}
 			}}
-			onkeydown={onKeyDown}
-		/>
-
-		<span class="chevron-icon text-secondary" aria-hidden="true">
-			<Icon icon={luChevronDown} />
-		</span>
-	</div>
-
-	{#if open}
-		<ul
-			id="multi-dropdown-list"
-			role="listbox"
-			class="multiselect-dropdown box shadow-lg shape {shape}"
-			tabindex="-1"
 		>
-			<!-- svelte-ignore a11y_click_events_have_key_events -->
-			{#each filtered as opt, i (opt.value)}
-				{@const isSelected = value.includes(opt.value)}
-				<li
-					role="option"
-					id="multi-opt-{i}"
-					aria-selected={isSelected}
-					aria-disabled={opt.disabled || (isFull && !isSelected)}
-					class="multiselect-option row ycenter xbetween {i === active ? 'active' : ''} {isSelected ? 'selected' : ''} {opt.disabled || (isFull && !isSelected) ? 'disabled' : ''}"
-					onclick={() => toggleOption(opt)}
-					onmouseenter={() => (active = i)}
-				>
-					<span class="option-label text-primary">{opt.label}</span>
-					{#if isSelected}
-						<span class="check-icon text-theme" aria-hidden="true">
-							<Icon icon={luCheck} />
-						</span>
-					{/if}
-				</li>
-			{:else}
-				<li class="empty-item text-secondary text-sm text-center">
-					No options match
-				</li>
+			{#each selectedOptions as opt (opt.value)}
+				<Tag removable={!disabled} removeLabel="Remove {opt.label}" onremove={() => removeValue(opt.value)}>{opt.label}</Tag>
 			{/each}
-		</ul>
-	{/if}
+			<input
+				bind:this={inputEl}
+				id={inputId}
+				type="text"
+				role="combobox"
+				aria-expanded={open}
+				aria-controls="{inputId}-listbox"
+				aria-activedescendant={open && filtered[active] ? `${inputId}-opt-${active}` : undefined}
+				aria-autocomplete="list"
+				{disabled}
+				placeholder={selectedOptions.length === 0 ? placeholder : ''}
+				bind:value={query}
+				class="input grow min0 px-xs border-none bg-none"
+				onfocus={() => {
+					if (!disabled) open = true;
+				}}
+				onkeydown={onKeyDown}
+			/>
+			<Icon icon={klChevronDown} class="text-muted" />
+		</div>
+		{#if open}
+			<ul
+				id="{inputId}-listbox"
+				role="listbox"
+				aria-multiselectable="true"
+				tabindex="-1"
+				class="absolute wfull z-raised box gap-xs pad-xs mt-xs scroll-menu bg-overlay border shad-md {shape}"
+			>
+				<!-- svelte-ignore a11y_click_events_have_key_events (keys are handled on the input) -->
+				{#each filtered as opt, i (opt.value)}
+					{@const isSelected = value.includes(opt.value)}
+					{@const blocked = opt.disabled || (isFull && !isSelected)}
+					<li
+						role="option"
+						id="{inputId}-opt-{i}"
+						aria-selected={isSelected}
+						aria-disabled={blocked || undefined}
+						class="row ycenter xbetween gap-sm px-sm py-xs mincurved text-sm {i === active
+							? 'state-hover'
+							: ''} {blocked ? 'text-muted' : isSelected ? 'pointer text-theme weight-600' : 'pointer text-primary'}"
+						onclick={() => toggleOption(opt)}
+						onpointerenter={() => !blocked && (active = i)}
+					>
+						<span class="truncate">{opt.label}</span>
+						{#if isSelected}<Icon icon={klCheck} />{/if}
+					</li>
+				{:else}
+					<li class="pad-bs text-sm text-muted ta-c">No options match</li>
+				{/each}
+			</ul>
+		{/if}
+	</div>
 </div>
-
-<style>
-	.multiselect-root {
-		position: relative;
-		width: 100%;
-	}
-
-	.multiselect-box {
-		width: 100%;
-		min-height: 2.25rem;
-		padding: 0.25rem 0.625rem;
-		cursor: text;
-		box-sizing: border-box;
-	}
-
-	.multiselect-box.is-disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
-
-	.chip-item {
-		padding: 0.125rem 0.375rem;
-		background: var(--bg-sunken, #f0f0f0);
-		color: var(--text-primary, #111);
-	}
-
-	.chip-close-btn {
-		background: none;
-		border: none;
-		padding: 0;
-		cursor: pointer;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--text-secondary, #666);
-	}
-
-	.chip-close-btn:hover {
-		color: var(--danger, #ef4444);
-	}
-
-	.multiselect-input {
-		border: none;
-		background: none;
-		outline: none;
-		font: inherit;
-		min-width: 4rem;
-		padding: 0;
-	}
-
-	.chevron-icon {
-		margin-left: auto;
-		pointer-events: none;
-		font-size: 0.875rem;
-	}
-
-	.multiselect-dropdown {
-		position: absolute;
-		top: calc(100% + 4px);
-		left: 0;
-		right: 0;
-		z-index: 50;
-		max-height: 14rem;
-		overflow-y: auto;
-		background: var(--bg-surface, #ffffff);
-		border: 1px solid var(--border, #e5e7eb);
-		list-style: none;
-		margin: 0;
-		padding: 0.25rem;
-	}
-
-	.multiselect-option {
-		padding: 0.5rem 0.75rem;
-		border-radius: var(--radius-sm, 4px);
-		cursor: pointer;
-		font-size: 0.875rem;
-	}
-
-	.multiselect-option.active {
-		background: var(--state-surface, #f4f4f4);
-	}
-
-	.multiselect-option.selected {
-		font-weight: 600;
-	}
-
-	.multiselect-option.disabled {
-		opacity: 0.4;
-		cursor: not-allowed;
-	}
-
-	.empty-item {
-		padding: 1rem;
-	}
-</style>

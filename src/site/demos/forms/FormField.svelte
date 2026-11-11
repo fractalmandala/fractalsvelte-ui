@@ -1,6 +1,5 @@
 <script lang="ts">
-	import FormField from '$lib/components/forms/FormField.svelte';
-	import Input from '$lib/components/forms/Input.svelte';
+	import { FormField, Input } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <FormField label="Email" id="email" helperText="We never share it.">

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TreeList from '$lib/components/navigation/TreeList.svelte';
+	import { TreeList } from '@fractaldesign/fractalsvelte-ui';
 
 	const items = [
 		{

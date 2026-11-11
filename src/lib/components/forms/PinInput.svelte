@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Size, TextSize } from '$lib/types.js';
+	import type { Size, TextSize, Shape } from '$lib/types.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		value?: string;
@@ -14,6 +14,7 @@
 		error?: boolean | string;
 		disabled?: boolean;
 		size?: Size;
+		shape?: Shape;
 		autofocus?: boolean;
 		textsize?: TextSize;
 		class?: string;
@@ -29,6 +30,7 @@
 		error,
 		disabled = false,
 		size = 'h-lg',
+		shape = 'modern',
 		autofocus = false,
 		textsize = 'text-md',
 		class: className = '',
@@ -113,8 +115,7 @@
 				{disabled}
 				aria-label="Digit {index + 1} of {length}"
 				aria-invalid={error ? true : undefined}
-				class="frame-1-1 ta-c tabular-nums weight-600 radius-sm bg-input border-strong size {size} {error ? 'is-invalid text-danger' : 'text-primary'}"
-				style:padding="0"
+				class="btn-icon ta-c tabular-nums weight-600 bg-input border-strong {size} {shape} {error ? 'is-invalid text-danger' : 'text-primary'}"
 				oninput={(e) => onInput(index, e)}
 				onkeydown={(e) => onKeydown(index, e)}
 				onfocus={(e) => (e.currentTarget as HTMLInputElement).select()}

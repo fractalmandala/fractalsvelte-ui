@@ -3,7 +3,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes, HTMLButtonAttributes, HTMLAnchorAttributes } from 'svelte/elements';
-	import type { Size, Surface, Border, Shape, Pad, Shadow, TextSize } from '$lib/types.js';
+	import type { Size, Surface, Border, Shape, Shadow, TextSize } from '$lib/types.js';
 
 	interface Props extends HTMLButtonAttributes {
 		/** Renders an anchor instead of a button */
@@ -15,7 +15,8 @@
 		surface?: Surface;
 		border?: Border;
 		shadow?: Shadow;
-		padding?: Pad;
+		/** Padding classes, e.g. `pad-md` or `px-lg py-sm`. */
+		padding?: string;
 		/** Card corners; cards take no pill shape. */
 		shape?: Exclude<Shape, 'round'>;
 		title?: string;
@@ -57,12 +58,12 @@
 	const hasHeader = $derived(Boolean(header || title || description || headerExtra));
 	// .card-clickable strengthens the border on hover; .link-parent turns the title theme-coloured.
 	const shell = $derived(
-		`card card-sized card-clickable link-parent box xleft ytop gap-md ta-l wfull shape ${size} ${shape} ${padding} ${surface} ${border} ${shadow} ${disabled ? 'disabled' : ''} ${textsize} ${className}`
+		`card card-sized card-clickable link-parent box xleft ytop gap-md ta-l wfull ${size} ${shape} ${padding} ${surface} ${border} ${shadow} ${disabled ? 'disabled' : ''} ${textsize} ${className}`
 	);
 </script>
 
 {#snippet body()}
-	{#if media}<div class="box wfull radius-sm scroll-x">{@render media()}</div>{/if}
+	{#if media}<div class="box wfull overflow-hidden {shape}">{@render media()}</div>{/if}
 	{#if hasHeader}
 		{#if header}
 			{@render header()}

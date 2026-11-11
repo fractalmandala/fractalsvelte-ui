@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SideNav from '$lib/components/navigation/SideNav.svelte';
+	import { SideNav } from '@fractaldesign/fractalsvelte-ui';
 
 	const items = [
 		{ id: 'dashboard', label: 'Dashboard' },

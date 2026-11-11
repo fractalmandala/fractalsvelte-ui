@@ -1,26 +1,29 @@
 import { liveComponents } from '$site/doc/live-components';
 export const prerender = true;
 
+// Groups are the folders of src/lib/components, in the order they read best.
 const CATEGORY_ORDER = [
+	'core',
 	'actions',
-	'blocks',
-	'display',
 	'forms',
+	'display',
 	'layout',
 	'navigation',
 	'overlays',
-	'typography'
+	'typography',
+	'blocks'
 ] as const;
 
 const CATEGORY_LABEL: Record<string, string> = {
+	core: 'Core',
 	actions: 'Actions',
-	blocks: 'Blocks',
-	display: 'Display',
 	forms: 'Forms',
+	display: 'Display',
 	layout: 'Layout',
 	navigation: 'Navigation',
 	overlays: 'Overlays',
-	typography: 'Typography'
+	typography: 'Typography',
+	blocks: 'Blocks'
 };
 
 export function load() {
@@ -28,7 +31,7 @@ export function load() {
 		category,
 		label: CATEGORY_LABEL[category],
 		items: liveComponents
-			.filter((c) => c.category?.toLowerCase() === category)
+			.filter((c) => c.category === category)
 			.map((c) => ({
 				name: c.title,
 				description: c.description,

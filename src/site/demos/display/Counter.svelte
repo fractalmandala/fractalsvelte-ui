@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Counter from '$lib/components/display/Counter.svelte';
+	import { Counter } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <Counter value={1280} />

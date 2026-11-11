@@ -3,17 +3,6 @@
 	flex-direction: column
 	gap: var(--space-lg)
 
-.props-row
-	display: flex
-	flex-direction: row
-	flex-wrap: wrap
-	align-items: center
-	justify-content: center
-	gap: var(--space-bs)
-	border: 1px solid var(--border)
-	padding: var(--space-xl) var(--space-2xl)
-	min-height: 160px
-
 .compdocs
 	display: flex
 	flex-direction: column
@@ -39,7 +28,7 @@ a.nav-link
 	letter-spacing: 0.01rem
 	color: var(--text-secondary)
 	&:hover
-		background-color: var(--bg-raised)
+		background-color: var(--state-selected)
 
 .nav-section
 	display: flex
@@ -76,8 +65,17 @@ a.nav-link
 		border-bottom: 0
 	tbody tr:hover
 		background-color: var(--bg-surface)
-	td:nth-child(1), td:nth-child(2), td:nth-child(3)
+	th:nth-child(1)
+		width: 16%
+	th:nth-child(2)
+		width: 30%
+	th:nth-child(3)
+		width: 14%
+	td:nth-child(1), td:nth-child(3)
 		white-space: nowrap
+	.props-values
+		display: block
+		margin-top: var(--space-xs)
 	td:nth-child(4)
 		color: var(--text-secondary)
 	code
@@ -85,7 +83,7 @@ a.nav-link
 		font-size: var(--text-sm)
 		padding: 0.1rem 0.35rem
 		border-radius: var(--radius-sm)
-		background-color: var(--bg-raised)
+		background-color: var(--state-selected)
 		color: var(--text-primary)
 	td:nth-child(1) code
 		font-weight: 600
@@ -108,6 +106,10 @@ a.nav-link
 	min-height: 240px
 	border-radius: 6px
 	box-shadow: var(--shadow-sm)
+	text-align: start
+
+	> *
+		text-align: start
 
 .code-box
 	font-family: var(--font-mono)

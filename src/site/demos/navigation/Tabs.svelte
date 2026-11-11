@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Tabs from '$lib/components/navigation/Tabs.svelte';
+	import { Tabs } from '@fractaldesign/fractalsvelte-ui';
 
 	const tabs = [
 		{ id: 'overview', label: 'Overview' },

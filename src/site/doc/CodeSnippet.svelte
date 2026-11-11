@@ -2,8 +2,8 @@
 
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from '@fractaldesign/icons';
-	import { luCopy, luCheck } from '@fractaldesign/icons/lucide';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klCheck, klCopy } from '$lib/icons/keylinestroke';
 	import { parse, lang, getLanguageConfig, themeStyle, sveltekit, type Theme } from '../fractalpop';
 	import { render } from '../fractalpop/shared';
 
@@ -59,12 +59,29 @@
 
 	async function copy() {
 		try {
-			await navigator.clipboard.writeText(current);
-			copied = true;
+			if (navigator?.clipboard?.writeText) {
+				await navigator.clipboard.writeText(current);
+				copied = true;
+			} else {
+				throw new Error('Clipboard API unavailable');
+			}
+		} catch {
+			try {
+				const textArea = document.createElement('textarea');
+				textArea.value = current;
+				textArea.style.position = 'fixed';
+				textArea.style.opacity = '0';
+				document.body.appendChild(textArea);
+				textArea.focus();
+				textArea.select();
+				document.execCommand('copy');
+				document.body.removeChild(textArea);
+				copied = true;
+			} catch {}
+		}
+		if (copied) {
 			clearTimeout(timer);
 			timer = setTimeout(() => (copied = false), resetAfter);
-		} catch (err) {
-			console.error('Failed to copy to clipboard', err);
 		}
 	}
 
@@ -76,7 +93,7 @@
 	}
 </script>
 
-<div class="box code-box min radius-sm {className}" {...restProps}>
+<div class="box code-box mincurved radius-sm {className}" {...restProps}>
 	<div class="row ycenter xbetween gap-sm px-md py-xs">
 		<div class="row ycenter gap-sm min0">
 			{#if tabbed}
@@ -87,7 +104,7 @@
 							type="button"
 							id="{uid}-tab-{t.id}"
 							role="tab"
-							class="variant size shape {active ? 'ghost' : 'secondary'} h-md min"
+							class="{active ? 'ghost' : 'secondary'} h-md mincurved"
 							aria-selected={active}
 							aria-controls="{uid}-panel"
 							tabindex={active ? 0 : -1}
@@ -103,15 +120,15 @@
 		</div>
 		<button
 			type="button"
-			class="btn-icon size shape icon ghost h-bs rect"
+			class="btn-icon icon ghost h-bs rect"
 			aria-label={copied ? 'Copied' : 'Copy code'}
 			title={copied ? 'Copied' : 'Copy code'}
 			onclick={copy}
 		>
 			{#if copied}
-				<Icon icon={luCheck} class="text-success" />
+				<Icon icon={klCheck} class="text-success" />
 			{:else}
-				<Icon icon={luCopy} />
+				<Icon icon={klCopy} />
 			{/if}
 		</button>
 	</div>

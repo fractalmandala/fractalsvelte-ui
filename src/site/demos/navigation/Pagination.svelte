@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Pagination from '$lib/components/navigation/Pagination.svelte';
+	import { Pagination } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <Pagination totalPages={10} />

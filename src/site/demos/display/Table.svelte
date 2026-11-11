@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Table from '$lib/components/display/Table.svelte';
-	import type { Column } from '$lib/types.js';
+	import { Table } from '@fractaldesign/fractalsvelte-ui';
+	import type { Column } from '@fractaldesign/fractalsvelte-ui';
 
 	const columns: Column[] = [
 		{ key: 'project', label: 'Project', sortable: true },

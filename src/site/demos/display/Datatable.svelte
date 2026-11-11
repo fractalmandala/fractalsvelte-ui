@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Datatable from '$lib/components/display/Datatable.svelte';
-	import type { Column } from '$lib/types.js';
+	import { Datatable } from '@fractaldesign/fractalsvelte-ui';
+	import type { Column } from '@fractaldesign/fractalsvelte-ui';
 
 	interface User {
 		id: number;

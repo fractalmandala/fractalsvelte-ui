@@ -17,10 +17,13 @@
 		size?: Size;
 		shape?: Shape;
 		shadow?: Shadow;
+		/** Shows the button as busy and makes it inert. */
 		loading?: boolean;
+		/** Disables the button; on a link, drops `href` and sets `aria-disabled`. */
 		disabled?: boolean | null;
 		class?: string;
 		children?: Snippet;
+		/** Renders an `<a>` instead of a `<button>`. */
 		href?: string;
 	}
 
@@ -41,12 +44,14 @@
 	}: Props = $props();
 
 	const inert = $derived(Boolean(disabled || loading));
-	const currentVariant = $derived(iconVariant ?? variant ?? icon ?? 'themed');
+	const currentVariant = $derived(iconVariant ?? variant ?? icon ?? 'primary');
 </script>
 
 {#if href}
 <a href={inert ? undefined : href}
-	class="btn-icon size shape {currentVariant} {size} {shape} {shadow} {className}"
+	class="btn-icon {currentVariant} {size} {shape} {shadow} {className}"
+	aria-label={label}
+	title={label}
 	aria-busy={loading || undefined}
 	aria-disabled={inert || undefined}
 	{...restProps as HTMLAnchorAttributes}
@@ -55,7 +60,7 @@
 </a>
 {:else}
 <button
-	class="btn-icon size shape {currentVariant} {size} {shape} {shadow} {className}"
+	class="btn-icon {currentVariant} {size} {shape} {shadow} {className}"
 	aria-label={label}
 	title={label}
 	disabled={Boolean(disabled || loading)}

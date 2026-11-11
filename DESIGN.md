@@ -134,7 +134,7 @@ For cards, use `card-title` on title text and `card-desc` on description text. P
 
 ## Scaling, Tokens
 
-`/Users/amrit/fractaldesign/packages/fractalstyler/` is the source of truth for all styling.
+`src/lib/styles/` is the source of truth for all styling: the fractalstyler layers live in this package now.
 
 ### Color
 (tokens filled here with sample values. comes in light and dark pairs)
@@ -142,38 +142,38 @@ For cards, use `card-title` on title text and `card-desc` on description text. P
 ```sass
 	--white-fixed: #FFFFFF
 	--black-fixed: #18181B
-	--bg: #F8F9FA
-	--bg-surface: #FFFFFF
-	--bg-panel: #FFFFFF
-	--bg-sunken: #F0F1F3
-	--bg-raised: #FFFFFF
-	--bg-extra: #EAECEF
-	--bg-input: #F0F1F3
-	--bg-button: #ECEEF1
-	--text-primary: #18181B
-	--text-secondary: #6B7280
-	--text-muted: #9CA3AF
+	--bg: #FFFFFF
+	--bg-surface: #F4F4F4
+	--bg-panel: #EEEEEE
+	--bg-overlay: #FFFFFF
+	--bg-input: #F4F4F4
+	--bg-button: #161616
+	--bg-button-hover: #2A2A2A
+	--bg-button-active: #0B0B0B
+	--bg-button-secondary: #EAEAEA
+	--bg-button-secondary-hover: #DEDEDE
+	--bg-button-secondary-active: #D2D2D2
+	--text-primary: #0B0B0B
+	--text-secondary: #484848
+	--text-muted: #828282
 	--text-inverse: #FFFFFF
-	--state-surface: #F4F4F6
-	--state-hover: #ECEEF1
-	--state-selected: #E2E4E8
-	--border: #E5E7EB
-	--border-subtle: #F0F1F3
-	--border-strong: #D1D5DB
-	--theme-color: #22c55e
-	--theme-color-alt: #00df89
-	--theme-color-sub: #10b981
-	--accent-orange: #FF7A00
-	--accent-green: #10B981
-	--success: #10B981
-	--success-hover: #059669
-	--warning: #FFD000
-	--warning-hover: #E5B800
-	--danger: #EF4444
-	--danger-hover: #DC2626
-	--info: #3B82F6
-	--info-hover: #2563EB
-	--ring: rgba(255, 208, 0, 0.4)
+	--state-hover: rgb(0 0 0 / 0.06)
+	--state-selected: rgb(0 0 0 / 0.1)
+	--border: #DEDEDE
+	--border-subtle: #EEEEEE
+	--border-strong: #AEAEAE
+	--theme-color: oklch(0.50 0.750 130)
+	--theme-color-up: oklch(0.75 0.750 130)
+	--theme-color-down: oklch(0.40 0.750 130)
+	--success: oklch(0.65 0.200 138)
+	--success-hover: oklch(0.55 0.200 138)
+	--warning: oklch(0.85 0.180 92)
+	--warning-hover: oklch(0.80 0.180 92)
+	--danger: oklch(0.60 0.250 25)
+	--danger-hover: oklch(0.50 0.250 25)
+	--info: oklch(0.50 0.220 260)
+	--info-hover: oklch(0.40 0.220 260)
+	--ring: color-mix(in oklch, var(--theme-color) 45%, transparent)
 ```
 
 ### Text

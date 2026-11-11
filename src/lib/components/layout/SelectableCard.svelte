@@ -3,7 +3,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Size, Surface, Border, Shape, Pad, Shadow, TextSize } from '$lib/types.js';
+	import type { Size, Surface, Border, Shape, Shadow, TextSize } from '$lib/types.js';
 
 	export type SelectableCardType = 'checkbox' | 'radio';
 	export type IndicatorPosition = 'right' | 'left';
@@ -20,7 +20,8 @@
 		/** Border when not selected; selected cards always use border-strong. */
 		border?: Border;
 		shadow?: Shadow;
-		padding?: Pad;
+		/** Padding classes, e.g. `pad-md` or `px-lg py-sm`. */
+		padding?: string;
 		/** Card corners; cards take no pill shape. */
 		shape?: Exclude<Shape, 'round'>;
 		title?: string;
@@ -90,7 +91,7 @@
 	tabindex={disabled ? -1 : 0}
 	data-value={value}
 	data-name={name}
-	class="card card-sized card-clickable row ytop gap-sm shape {size} {shape} {padding} {surface} {shadow} {selected ? 'border-strong' : border} {disabled ? 'disabled text-muted' : ''} {textsize} {className}"
+	class="card card-sized card-clickable row ytop gap-sm {size} {shape} {padding} {surface} {shadow} {selected ? 'border-strong' : border} {disabled ? 'disabled text-muted' : ''} {textsize} {className}"
 	onclick={toggle}
 	onkeydown={(e) => {
 		if (e.key === ' ' || e.key === 'Enter') {

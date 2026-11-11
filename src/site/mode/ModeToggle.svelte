@@ -40,7 +40,7 @@
 	gap: 8px
 	padding: 4px
 	height: 22px
-	background: var(--bg-raised, #F4F4F5)
+	background: var(--state-selected, #F4F4F5)
 	border: 1px solid var(--border-strong)
 	border-radius: var(--radius-full, 9999px)
 	span

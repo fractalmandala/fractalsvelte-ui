@@ -5,11 +5,13 @@
 	import type { Size, Surface, Border, Shape, Shadow, TextSize, Variant, Message } from '$lib/types.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
+		/** Bar heights from 0 to 1, one per bar. */
 		peaks?: number[];
 		progress?: number;
 		duration?: number;
 		barWidth?: number;
 		barGap?: number;
+		/** Lets the user click or drag to seek, which fires `onseek`. */
 		interactive?: boolean;
 		variant?: Variant | Message;
 		surface?: Surface;
@@ -48,6 +50,8 @@
 	}: Props = $props();
 
 	let containerEl: HTMLDivElement | undefined = $state();
+	let width = $state(0);
+	let height = $state(0);
 	let isDragging = $state(false);
 
 	function formatTime(seconds: number): string {
@@ -87,57 +91,52 @@
 </script>
 
 <div class="box gap-xs {textsize} {className}">
+	<!-- The bars are drawn as SVG in the container's own pixel box, measured
+	     with bind:clientWidth, so nothing writes a CSS position. -->
 	<div
 		bind:this={containerEl}
+		bind:clientWidth={width}
+		bind:clientHeight={height}
 		role="slider"
 		tabindex={interactive ? 0 : -1}
-		aria-label="Audio Waveform"
+		aria-label="Audio waveform"
 		aria-valuemin={0}
 		aria-valuemax={100}
 		aria-valuenow={progress}
-		class="waveform-container relative flex items-center h-20 px-md gap-0.5 select-none touch-none shape {shape} {surface} {border} {shadow} {interactive ? 'cursor-pointer' : ''}"
+		class="relative wfull h-3xl touch-none focus-theme {shape} {surface} {border} {shadow} {interactive ? 'pointer' : ''}"
 		onpointerdown={handlePointerDown}
 		onpointermove={handlePointerMove}
 		onpointerup={handlePointerUp}
 		{...restProps}
 	>
-		<!-- Bars -->
-		<div class="flex items-center justify-between w-full h-full gap-1">
-			{#each peaks as peak, i}
-				{@const barProgress = (i / peaks.length) * 100}
-				{@const isPlayed = barProgress <= progress}
-				<div
-					class="waveform-bar rounded-full transition-colors duration-150"
-					style="
-						width: {barWidth}px;
-						height: {Math.max(12, Math.round(peak * 100))}%;
-						background-color: {isPlayed ? 'var(--theme-color)' : 'var(--border-strong)'};
-						opacity: {isPlayed ? 1 : 0.45};
-					"
-				></div>
-			{/each}
-		</div>
-
-		<!-- Scrubber Line -->
-		{#if interactive}
-			<div
-				class="absolute top-2 bottom-2 w-0.5 pointer-events-none rounded-full"
-				style="left: calc({progress}%); background-color: var(--theme-color); box-shadow: 0 0 6px var(--theme-color);"
-			></div>
+		{#if width > 0 && height > 0}
+			{@const slot = width / peaks.length}
+			<svg class="absolute full text-theme" viewBox="0 0 {width} {height}" aria-hidden="true">
+				{#each peaks as peak, i (i)}
+					{@const played = (i / peaks.length) * 100 <= progress}
+					{@const h = Math.max(0.12, Math.min(1, peak)) * (height - 16)}
+					<rect
+						x={i * slot + (slot - barWidth) / 2}
+						y={(height - h) / 2}
+						width={barWidth}
+						height={h}
+						rx={barWidth / 2}
+						class={played ? '' : 'text-muted'}
+						fill="currentColor"
+						opacity={played ? 1 : 0.45}
+					/>
+				{/each}
+				{#if interactive}
+					<line x1={(progress / 100) * width} x2={(progress / 100) * width} y1="6" y2={height - 6} stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+				{/if}
+			</svg>
 		{/if}
 	</div>
 
 	{#if duration}
-		<div class="row xbetween text-xs text-secondary font-mono px-xs">
+		<div class="row xbetween text-xs text-secondary font-mono tabular-nums px-xs">
 			<span>{formatTime((progress / 100) * duration)}</span>
 			<span>{formatTime(duration)}</span>
 		</div>
 	{/if}
 </div>
-
-<style>
-	.waveform-container:focus-visible {
-		outline: 2px solid var(--theme-color);
-		outline-offset: 2px;
-	}
-</style>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Stamp from '$lib/components/display/Stamp.svelte';
+	import { Stamp } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <div class="row ycenter wrap gap-md">

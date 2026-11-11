@@ -38,7 +38,7 @@
 	}: Props = $props();
 </script>
 
-<!-- fractalstyler's .app-shell canon, verbatim: header, main (rails + section), footer. -->
+<!-- the stylesheet's .app-shell canon, verbatim: header, main (rails + section), footer. -->
 <div class="app-shell bg-main {sidebarOpen ? 'open' : ''} {textsize} {className}" {...restProps}>
 	{#if header}
 		<header class="app-header {clamped ? 'clamped' : ''} gap-md bb bg-surface">

@@ -27,64 +27,31 @@
 	}: Props = $props();
 
 	const hasLabel = $derived(Boolean(label || children));
+
+	// The line is one edge of an otherwise empty box, in the weight the border prop asks for.
+	const LINE: Record<string, string> = {
+		border: 'bt',
+		'border-strong': 'bt-str',
+		'border-subtle': 'bt-sub',
+		'border-dashed': 'bt',
+		'border-none': ''
+	};
 </script>
 
-<div
-	role="separator"
-	aria-orientation={vertical ? 'vertical' : 'horizontal'}
-	class="divider-root {vertical ? 'vertical' : 'horizontal'} {hasLabel ? 'has-label' : ''} {border} {textsize} {className}"
-	{...restProps}
->
-	{#if hasLabel && !vertical}
-		<span class="divider-text text-secondary font-medium">
+{#if vertical}
+	<div role="separator" aria-orientation="vertical" class="hfull mx-sm {LINE[border].replace('bt', 'bl')} {className}" {...restProps}></div>
+{:else if hasLabel}
+	<div role="separator" aria-orientation="horizontal" class="row ycenter gap-md wfull my-sm {textsize} {className}" {...restProps}>
+		<span class="grow {LINE[border]}"></span>
+		<span class="shrink-0 text-xs weight-500 tt-u ls-wide-xl text-secondary">
 			{#if children}
 				{@render children()}
 			{:else}
 				{label}
 			{/if}
 		</span>
-	{/if}
-</div>
-
-<style>
-	.divider-root.horizontal {
-		width: 100%;
-		height: 1px;
-		background: var(--border, #e5e7eb);
-		border: none;
-		margin: 0.5rem 0;
-	}
-
-	.divider-root.vertical {
-		width: 1px;
-		height: 100%;
-		min-height: 1rem;
-		align-self: stretch;
-		background: var(--border, #e5e7eb);
-		border: none;
-		margin: 0 0.5rem;
-	}
-
-	.divider-root.has-label {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		height: auto;
-		background: transparent;
-	}
-
-	.divider-root.has-label::before,
-	.divider-root.has-label::after {
-		content: '';
-		flex: 1;
-		height: 1px;
-		background: var(--border, #e5e7eb);
-	}
-
-	.divider-text {
-		font-size: 0.75rem;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		white-space: nowrap;
-	}
-</style>
+		<span class="grow {LINE[border]}"></span>
+	</div>
+{:else}
+	<div role="separator" aria-orientation="horizontal" class="wfull my-sm {LINE[border]} {className}" {...restProps}></div>
+{/if}

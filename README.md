@@ -1,394 +1,283 @@
 # @fractaldesign/fractalsvelte-ui
 
-Production-ready Svelte 5 UI component library built on [`@fractaldesign/fractalstyler`](https://www.npmjs.com/package/@fractaldesign/fractalstyler) and [`@fractaldesign/icons`](https://www.npmjs.com/package/@fractaldesign/icons).
+A Svelte 5 component library styled by a single stylesheet of classes and tokens. Every prop that changes a component's look takes a class name, so `<Button variant="outline" size="h-lg" shape="round">` renders `class="button outline h-lg round"`. What you pass is what you can read in the markup, and what you can restyle in one place.
 
-- **npm**: [@fractaldesign/fractalsvelte-ui](https://www.npmjs.com/package/@fractaldesign/fractalsvelte-ui)
-- **GitHub**: [fractalmandala/fractalsvelte-ui](https://github.com/fractalmandala/fractalsvelte-ui)
+- **99 components** in nine groups, written with runes (`$props`, `$state`, `$derived`, `$bindable`, snippets).
+- **One plain-CSS stylesheet**, about 13 KB gzipped. No Tailwind, no Sass, no CSS-in-JS, no per-component style blocks.
+- **Light and dark themes** from one attribute on `<html>`, with every colour a token you can set.
+- **2,000 icons** in two tree-shakeable packs.
+- **No runtime dependencies** beyond Svelte.
 
----
-
-## Features
-
-- **98 Svelte 5 Components** across 8 categories (Actions, Forms, Display, Layout, Navigation, Overlays, Typography, and Blocks).
-- **Runes-First Architecture** — Built natively with `$props()`, `$state()`, `$derived()`, `$bindable()`, and `{#snippet}`.
-- **Shared Prop Axes** — Every component shares a strict, predictable vocabulary for `variant`, `size`, `shape`, `shadow`, `textsize`, `padding`, `surface`, `border`, and `message`.
-- **Flexible Styling** — Import pre-compiled CSS (`~5 KB` gzipped) or compose directly with SASS alongside `@fractaldesign/fractalstyler`.
-- **Built-in Dark & Light Mode** — Semantic CSS custom properties switch automatically via `data-mode="light"` / `data-mode="dark"` on `<html>`.
-- **Zero-Runtime Type Vocabulary** — Exported const tuples and TypeScript union types via `@fractaldesign/fractalsvelte-ui/types`.
-
----
-
-## Installation
-
-Install `@fractaldesign/fractalsvelte-ui` alongside its peer dependency `@fractaldesign/fractalstyler`:
+## Install
 
 ```bash
-pnpm add @fractaldesign/fractalsvelte-ui @fractaldesign/fractalstyler
-# or
-npm install @fractaldesign/fractalsvelte-ui @fractaldesign/fractalstyler
+pnpm add @fractaldesign/fractalsvelte-ui
 ```
 
-> `@fractaldesign/icons` is included as a direct dependency and installed automatically.
+The only peer dependency is `svelte` 5.
 
-### Peer Dependencies
+## Set up
 
-| Package | Version | Required |
-|---|---|---|
-| `svelte` | `^5.0.0` | Yes |
-| `@fractaldesign/fractalstyler` | `^1.5.0` | Yes |
-| `sass` | `^1.70.0` | Optional (only when importing `/styles` SASS sources) |
-
----
-
-## Stylesheet Setup
-
-Import the stylesheets once in your root layout (e.g. `src/routes/+layout.svelte`). You can use either **compiled CSS** (no SASS required) or **SASS sources**.
-
-### Option 1: Pre-Compiled CSS (Recommended)
+Import the stylesheet once, in your root layout:
 
 ```svelte
+<!-- src/routes/+layout.svelte -->
 <script lang="ts">
-	import '@fractaldesign/fractalstyler/css';
 	import '@fractaldesign/fractalsvelte-ui/css';
-
 	let { children } = $props();
 </script>
 
 {@render children()}
 ```
 
-For minified stylesheets in production:
-
-```ts
-import '@fractaldesign/fractalstyler/css/min';
-import '@fractaldesign/fractalsvelte-ui/css/min';
-```
-
-### Option 2: SASS
-
-If your project uses `sass`, import both libraries in your global stylesheet (e.g. `src/app.sass`):
-
-```sass
-@use '@fractaldesign/fractalstyler/styles' as *
-@use '@fractaldesign/fractalsvelte-ui/styles' as *
-```
-
-### Package Exports Reference
-
-| Subpath | Description |
-|---|---|
-| `@fractaldesign/fractalsvelte-ui` | All 73 Svelte 5 components + TypeScript types |
-| `@fractaldesign/fractalsvelte-ui/types` | Canonical prop tuples (`Variants`, `Sizes`, `Shapes`, etc.) & union types |
-| `@fractaldesign/fractalsvelte-ui/css` | Pre-compiled CSS (`tokens.css` + `globals.sass` + `components.sass`) |
-| `@fractaldesign/fractalsvelte-ui/css/min` | Minified pre-compiled CSS |
-| `@fractaldesign/fractalsvelte-ui/styles` | SASS entry point (`index.sass`) |
-| `@fractaldesign/fractalsvelte-ui/styles/*` | Individual stylesheet assets (`globals.sass`, `components.sass`, `tokens.css`) |
-| `@fractaldesign/fractalsvelte-ui/tokens.css` | Standalone CSS custom property tokens only |
-
-### Theme Mode (`light` / `dark`)
-
-Tokens respond to the `data-mode` attribute on the root `<html>` element (`"light"` by default, `"dark"` when `[data-mode="dark"]` is set):
+Set the theme on the root element. `light` is the default; switch by changing the attribute:
 
 ```html
-<html lang="en" data-mode="dark">
+<html lang="en" data-mode="light">
 ```
 
 ```ts
-// Toggle dynamically in browser
-document.documentElement.setAttribute('data-mode', isDark ? 'dark' : 'light');
+document.documentElement.dataset.mode = dark ? 'dark' : 'light';
 ```
 
----
-
-## Quick Start
-
-Import components directly from `@fractaldesign/fractalsvelte-ui`:
+## Use
 
 ```svelte
 <script lang="ts">
-	import {
-		Button,
-		Input,
-		Select,
-		Switch,
-		Card,
-		Badge,
-		Dialog
-	} from '@fractaldesign/fractalsvelte-ui';
+	import { Button, Input, Card, Badge, Icon } from '@fractaldesign/fractalsvelte-ui';
+	import { klArrowRight } from '@fractaldesign/fractalsvelte-ui/icons/keylinestroke';
 
-	let name = $state('');
-	let role = $state('developer');
-	let notifications = $state(true);
-	let dialogOpen = $state(false);
-
-	const roles = [
-		{ value: 'developer', label: 'Developer' },
-		{ value: 'designer', label: 'Designer' },
-		{ value: 'product', label: 'Product Manager' }
-	];
+	let email = $state('');
 </script>
 
-<Card surface="bg-raised" padding="pad-lg" shape="curved" shadow="shad-sm" gap={4}>
-	<div class="row between middle">
-		<h3>Profile Settings</h3>
-		<Badge variant="themed" shape="round">Pro</Badge>
-	</div>
-
-	<Input
-		label="Full Name"
-		placeholder="Ada Lovelace"
-		bind:value={name}
-		variant="outline"
-		size="h-md"
-		shape="modern"
-	/>
-
-	<Select
-		label="Role"
-		options={roles}
-		bind:value={role}
-		variant="outline"
-		size="h-md"
-		shape="modern"
-	/>
-
-	<Switch label="Enable email notifications" bind:checked={notifications} />
-
-	<div class="row end gap-2">
-		<Button variant="ghost" onclick={() => (dialogOpen = true)}>Preview</Button>
-		<Button variant="themed" shadow="shad-sm">Save Changes</Button>
-	</div>
+<Card title="Join the beta" description="We will email you when it opens.">
+	<Input label="Email" type="email" bind:value={email} />
+	{#snippet footer()}
+		<Badge message="info">Limited seats</Badge>
+		<Button variant="themed" shape="round">
+			Request access
+			{#snippet trailing()}<Icon icon={klArrowRight} />{/snippet}
+		</Button>
+	{/snippet}
 </Card>
-
-<Dialog bind:open={dialogOpen} title="Profile Preview" description="Confirm your profile details.">
-	<p>Name: {name || '—'} ({role})</p>
-</Dialog>
 ```
 
----
+## The props language
 
-## Core Prop Axes & Type Vocabulary
+The shared props take the names of classes in the stylesheet. Their values are exported as tuples and union types from the package root and from `@fractaldesign/fractalsvelte-ui/types`.
 
-Every component in `@fractaldesign/fractalsvelte-ui` draws its visual and structural props from a single canonical source of truth in `@fractaldesign/fractalsvelte-ui/types`.
+| Prop | Type | Values | What it sets |
+|---|---|---|---|
+| `variant` | `Variant` | `primary` `secondary` `themed` `outline` `ghost` `link` | Fill, border and text colour |
+| `size` | `Size` | `h-xs` `h-sm` `h-md` `h-bs` `h-lg` `h-xl` | Control height, 12 to 40px. `h-xs` and `h-sm` are for icon buttons and compact controls |
+| `shape` | `Shape` | `rect` `mincurved` `modern` `curved` `round` | Corner radius, from square to pill |
+| `shadow` | `Shadow` | `shad-none` `shad-sm` … `shad-2xl`, `shad-hover-sm` … `shad-hover-2xl` | Elevation. The `shad-hover-` set lifts until hovered |
+| `textsize` | `TextSize` | `text-xs` … `text-5xl` | Text size. Components never lock it |
+| `surface` | `Surface` | `bg-main` `bg-surface` `bg-panel` `bg-overlay` `state-hover` `state-selected` `bg-button` `bg-input` | Background layer |
+| `border` | `Border` | `border` `border-subtle` `border-strong` `border-dashed` `border-none`, and the bottom-edge `bb` set | Border weight |
+| `message` | `Message` | `info` `success` `warning` `danger` | Status tone |
+| `padding` | `string` | Any padding classes, such as `pad-md` or `px-lg py-sm` | Inside spacing |
+
+Anything else goes through `class`, which every component accepts and appends to its own classes.
+
+## Theming
+
+Colours are tokens under `[data-mode='light']` and `[data-mode='dark']` in `styles/colors-themes.css`. Override any of them after the stylesheet:
+
+```css
+[data-mode='light'] {
+	--theme-color: oklch(0.55 0.2 260);
+	--bg-button: oklch(0.25 0.02 260);
+}
+```
+
+Filled variants pick their text colour from their fill: white on a dark fill, near-black on a light one. To force a colour instead, set the matching override token: `--on-button`, `--on-button-secondary`, `--on-theme`, `--on-info`, `--on-success`, `--on-warning`, `--on-danger`.
+
+## Icons
 
 ```ts
-import {
-	Variants,
-	Sizes,
-	Shapes,
-	Pads,
-	Shadows,
-	TextSizes,
-	Surfaces,
-	Borders,
-	ThemeColors,
-	Messages,
-	MessageTexts,
-	Frames,
-	type Variant,
-	type Icon,
-	type Size,
-	type Shape,
-	type Pad,
-	type Shadow,
-	type TextSize,
-	type Surface,
-	type Border,
-	type ThemeColor,
-	type Message,
-	type MessageText,
-	type Frame,
-	type Orientation
-} from '@fractaldesign/fractalsvelte-ui';
+import { Icon } from '@fractaldesign/fractalsvelte-ui';
+import { klSearch } from '@fractaldesign/fractalsvelte-ui/icons/keylinestroke'; // 1,000 stroke icons, kl*
+import { klfSearch } from '@fractaldesign/fractalsvelte-ui/icons/keylinefill'; // 1,000 fill icons, klf*
 ```
 
-### Shared Prop Reference
+```svelte
+<Icon icon={klSearch} size={20} label="Search" />
+```
 
-| Prop | Type | Allowed Values | Default | Description |
-|---|---|---|---|---|
-| `variant` | `Variant` | `'primary' \| 'secondary' \| 'themed' \| 'outline' \| 'ghost' \| 'link'` | `'primary'` / `'outline'` | Interactive visual treatment (buttons, inputs, badges, tabs, nav) |
-| `icon` | `Icon` | `'primary' \| 'secondary' \| 'themed' \| 'outline' \| 'ghost' \| 'link'` | `'ghost'` / `'primary'` | 1:1 square icon-container styling (`IconButton`, `CloseButton`, `CopyButton`) |
-| `size` | `Size` | `'h-xs' \| 'h-sm' \| 'h-md' \| 'h-bs' \| 'h-lg' \| 'h-xl'` | `'h-md'` | Fixed height scale (`24px`, `30px`, `36px`, `42px`, `48px`, `56px`) |
-| `shape` | `Shape` | `'rect' \| 'min' \| 'modern' \| 'curved' \| 'round'` | `'modern'` | Corner radius (`0px`, `4px`, `8px`, `12px`, `9999px`) |
-| `padding` / `pad` | `Pad` | `'pad-xs' \| 'pad-sm' \| 'pad-md' \| 'pad-bs' \| 'pad-lg' \| 'pad-xl'` | `'pad-md'` | Internal container spacing (`4px` to `32px`) |
-| `shadow` | `Shadow` | `'shad-none' \| 'shad-xs' \| 'shad-sm' \| 'shad-md' \| 'shad-bs' \| 'shad-lg' \| 'shad-xl' \| 'shad-2xl' \| 'shad-3xl' \| 'shad-rim' \| 'shad-hover-*'` | `'shad-none'` | Elevation and hover shadow tokens |
-| `textsize` | `TextSize` | `'text-xs' \| 'text-sm' \| 'text-md' \| 'text-bs' \| 'text-lg' \| 'text-xl' \| 'text-2xl' \| 'text-3xl' \| 'text-4xl' \| 'text-5xl'` | `'text-md'` | Typography size scale across all text-bearing components |
-| `surface` | `Surface` | `'bg-main' \| 'bg-surface' \| 'bg-panel' \| 'bg-sunken' \| 'bg-raised' \| 'bg-extra' \| 'state-surface' \| 'state-hover' \| 'state-selected' \| 'bg-button' \| 'bg-input'` | `'bg-raised'` / `'bg-surface'` | Background surface token for containers, overlays, and cards |
-| `border` | `Border` | `'border' \| 'border-subtle' \| 'border-strong' \| 'border-none'` | `'border'` | Border weight and visibility |
-| `message` | `Message` | `'info' \| 'success' \| 'warning' \| 'danger'` | `'info'` | Status background + border + text color (`Alert`, `Banner`, `Toast`) |
-| `messageText` | `MessageText` | `'text-info' \| 'text-success' \| 'text-warning' \| 'text-danger'` | — | Status text color (`FormField` validation messages) |
-| `ratio` | `Frame` | `'frame-1-1' \| 'frame-4-3' \| 'frame-3-2' \| 'frame-16-9' \| 'frame-21-9' \| 'frame-3-4' \| 'frame-9-16'` | `'frame-16-9'` | Aspect ratio frame (`AspectRatio`) |
+Without `label` the icon is decorative and hidden from screen readers.
 
-### Activation vs. Direct Classes
+## Entry points
 
-Under the hood, components compose two categories of CSS classes:
-1. **Compound Activation Classes** (`.variant`, `.icon`, `.size`, `.shape`) — Pair an activation class with its modifier value (e.g. `class="variant primary size h-md shape modern"`).
-2. **Direct Utility Classes** (`Pad`, `Shadow`, `TextSize`, `Surface`, `Border`, `Message`, `MessageText`, `Frame`) — Applied directly as standalone classes (e.g. `class="bg-raised border pad-md shad-sm text-md"`).
+| Import | Contents |
+|---|---|
+| `@fractaldesign/fractalsvelte-ui` | All components and the prop types |
+| `@fractaldesign/fractalsvelte-ui/types` | The prop tuples and union types only |
+| `@fractaldesign/fractalsvelte-ui/css` | The whole stylesheet as one file |
+| `@fractaldesign/fractalsvelte-ui/css/min` | The same, minified |
+| `@fractaldesign/fractalsvelte-ui/styles` | `index.css`, which imports every layer in order |
+| `@fractaldesign/fractalsvelte-ui/styles/*` | Single layers, such as `colors-themes.css` |
+| `@fractaldesign/fractalsvelte-ui/icons` | Both icon packs and the `IconNode` type |
+| `@fractaldesign/fractalsvelte-ui/icons/keylinestroke` | Stroke icons only |
+| `@fractaldesign/fractalsvelte-ui/icons/keylinefill` | Fill icons only |
 
----
+## Components
 
-## Component Catalog (98 Components)
+### Core (25)
 
-### 1. Actions (4)
+| Component | What it is |
+|---|---|
+| `Accordion` | A list of collapsible sections, one or several open at once. |
+| `Alert` | An inline message box: tinted by `message`, or plain with coloured text and icon via `messageText`. |
+| `AlertDialog` | A modal that asks the user to confirm or cancel an action. |
+| `AspectRatio` | A box that holds a fixed aspect ratio, with media children filling it. |
+| `Button` | A button, or a link styled as one when given `href`. |
+| `Card` | A content card with optional media, title, description, header and footer. |
+| `Checkbox` | A checkbox with label, description and error text, supporting an indeterminate state. |
+| `CodeBlock` | A block of code with filename, line numbers and a copy button. |
+| `Combobox` | Searchable combobox input with dropdown suggestions, keyboard navigation, and custom empty state. |
+| `CommandPalette` | A searchable command menu opened with ⌘ / Ctrl and a key. |
+| `ContextMenu` | A menu that opens on right-click inside a region. |
+| `Dialog` | A modal dialog with title, description, body and footer. |
+| `Drawer` | A panel that slides in from a screen edge. |
+| `DropdownMenu` | A menu of actions that opens from a trigger. |
+| `Icon` | An SVG icon from the keyline packs, sized in pixels or by a size token. |
+| `Input` | A text input with label, helper or error text, leading and trailing slots, and a clear button. |
+| `Label` | An accessible form label with required indicator and optional description text. |
+| `Modal` | The native `<dialog>` shell shared by Dialog, AlertDialog, Drawer, MobileNav and CommandPalette. |
+| `Popover` | A floating panel that opens from a trigger. |
+| `Radio` | A single radio button with label and description. |
+| `RadioGroup` | A labelled group of radio buttons built from an `options` list. |
+| `Select` | A select menu, native or as a filterable listbox, with option groups. |
+| `Switch` | An on/off toggle switch with label and description. |
+| `Toast` | A single notification with title, description, tone, action and auto-dismiss. |
+| `Tooltip` | A small text hint shown on hover or focus. |
 
-| Component | Description | Key Props |
-|---|---|---|
-| `Button` | Standard action trigger with variant, size, shape, shadow, and loading state. | `variant`, `size`, `shape`, `shadow`, `textsize`, `loading`, `disabled`, `onclick` |
-| `IconButton` | Square 1:1 icon action button with required accessible `ariaLabel`. | `ariaLabel`, `icon`, `size`, `shape`, `shadow`, `textsize`, `disabled`, `onclick` |
-| `CloseButton` | Dismiss button rendering an `X` icon (`@fractaldesign/icons`). | `icon`, `size`, `shape`, `shadow`, `textsize`, `ariaLabel`, `onclick` |
-| `CopyButton` | Clipboard copy trigger with automatic check-mark feedback state. | `value`, `timeout`, `icon`, `size`, `shape`, `shadow`, `textsize` |
+### Actions (3)
 
-### 2. Forms (24)
+| Component | What it is |
+|---|---|
+| `CloseButton` | A dismiss button with an X icon for closing panels, dialogs and dismissible items. |
+| `CopyButton` | Clipboard copy trigger with automatic check-mark feedback state. |
+| `IconButton` | A square button holding only an icon, named for screen readers by `label`. |
 
-| Component | Description | Key Props |
-|---|---|---|
-| `Input` | Single-line text field with optional label, hint, error, and prefix/suffix snippets. | `bind:value`, `type`, `variant`, `size`, `shape`, `shadow`, `textsize`, `label`, `error`, `prefix`, `suffix` |
-| `SearchInput` | Search field with leading search icon and quick-clear button. | `bind:value`, `variant`, `size`, `shape`, `shadow`, `textsize`, `onclear` |
-| `Combobox` | Searchable combobox input with dropdown suggestions, keyboard navigation, and custom empty state. | `options`, `bind:value`, `placeholder`, `emptyText`, `variant`, `size`, `shape`, `shadow`, `textsize`, `onchoose` |
-| `MultiSelect` | Multi-value selection input with chips, search filtering, and keyboard navigation. | `options`, `bind:value`, `placeholder`, `max`, `variant`, `size`, `shape`, `shadow`, `textsize` |
-| `NumberInput` | Numeric stepper input with decrement/increment buttons and min/max clamping. | `bind:value`, `min`, `max`, `step`, `variant`, `size`, `shape`, `shadow`, `textsize` |
-| `PinInput` | Multi-character OTP / verification code input with auto-advance and paste support. | `bind:value`, `length`, `mask`, `variant`, `size`, `shape`, `shadow`, `textsize`, `oncomplete` |
-| `TextArea` | Multi-line text input with optional character counter and label/error wrapper. | `bind:value`, `rows`, `maxlength`, `showCount`, `variant`, `shape`, `shadow`, `textsize`, `label`, `error` |
-| `Select` | Custom dropdown selector with keyboard navigation and outside-click handling. | `options`, `bind:value`, `placeholder`, `variant`, `size`, `shape`, `shadow`, `textsize`, `label`, `error` |
-| `Checkbox` | Accessible checkbox control with checked, indeterminate, and label support. | `bind:checked`, `indeterminate`, `label`, `shape`, `shadow`, `textsize`, `disabled` |
-| `Radio` | Single radio button option. | `name`, `value`, `bind:group`, `label`, `shadow`, `textsize`, `disabled` |
-| `RadioGroup` | Grouped radio options with horizontal or vertical layout. | `options`, `bind:value`, `name`, `label`, `orientation`, `shadow`, `textsize` |
-| `Switch` | Animated toggle switch for boolean states. | `bind:checked`, `label`, `shape`, `shadow`, `textsize`, `disabled` |
-| `Slider` | Single-thumb range slider with fill bar and optional value readout. | `bind:value`, `min`, `max`, `step`, `label`, `showValue`, `shape`, `shadow`, `textsize` |
-| `RangeSlider` | Dual-thumb range slider for selecting `[min, max]` intervals. | `bind:low`, `bind:high`, `min`, `max`, `step`, `label`, `showValues`, `shape`, `shadow`, `textsize` |
-| `SliderTrack` | Low-level visual track primitive with customizable fill percentage and thumb. | `percent`, `shape`, `shadow`, `disabled`, `children` |
-| `RotaryDial` | Drag-interactive circular rotary knob with SVG arc indicator. | `bind:value`, `min`, `max`, `step`, `diameter`, `label`, `shadow`, `textsize` |
-| `ColorPicker` | Swatch preset picker + native color input with hex readout. | `bind:value`, `swatches`, `label`, `shape`, `shadow`, `textsize` |
-| `TagInput` | Multi-tag chip input supporting `Enter`/comma creation and `Backspace` removal. | `bind:tags`, `placeholder`, `maxTags`, `variant`, `shape`, `shadow`, `textsize`, `label` |
-| `FileUpload` | Drag-and-drop file upload dropzone with file picker, multiple selection, and removable file list. | `bind:files`, `label`, `hint`, `accept`, `maxSize`, `multiple`, `shape`, `shadow`, `textsize`, `onfiles` |
-| `Fieldset` | HTML fieldset container with styled legend, borders, padding, and disabled cascade. | `legend`, `disabled`, `surface`, `border`, `shape`, `padding`, `shadow`, `textsize` |
-| `FormField` | Label, required marker, hint, and status message wrapper for custom controls. | `label`, `htmlFor`, `hint`, `error`, `messageText`, `required`, `textsize` |
-| `Label` | Accessible form label primitive with optional required indicator and description text. | `for`, `required`, `description`, `size`, `textsize`, `children` |
-| `Fader` | Studio level fader with tactile grooved thumb marks and vertical/horizontal orientation. | `bind:value`, `min`, `max`, `step`, `orientation`, `thumbMarks`, `showValue`, `surface`, `shape` |
-| `XYPad` | Interactive 2D coordinate pad with crosshair guides, draggable puck, and value readout. | `bind:value`, `minX`, `maxX`, `minY`, `maxY`, `stepX`, `stepY`, `showValues`, `surface`, `shape` |
+### Forms (16)
 
-### 3. Display (22)
+| Component | What it is |
+|---|---|
+| `ColorPicker` | A colour input with optional hex field and preset swatches. |
+| `Fader` | A studio audio level fader with tactile grooved thumb marks and vertical/horizontal orientation. |
+| `Fieldset` | HTML fieldset container with styled legend, borders, padding, and disabled cascade. |
+| `FileUpload` | Drag-and-drop file upload dropzone with file picker, multiple selection, and removable file list. |
+| `FormField` | A wrapper that gives any form control a label, helper text, error and counter, and hands its variant, surface, size, shape and shadow to the Input or Select inside. |
+| `MultiSelect` | Multi-value selection input with chips, search filtering, and keyboard navigation. |
+| `NumberInput` | A numeric input with min, max, step and optional − / + stepper buttons. |
+| `PinInput` | A row of single-character boxes for entering a PIN or one-time code. |
+| `RangeSlider` | A two-thumb slider for choosing a min and max value. |
+| `RotaryDial` | A knob-style dial that sets a value by dragging or arrow keys. |
+| `SearchInput` | A search field with clear button, loading spinner and optional ⌘K shortcut. |
+| `Slider` | A single-thumb slider for choosing a value in a range. |
+| `SliderTrack` | Shared SVG track and thumb renderer for Slider and RangeSlider. |
+| `TagInput` | A text field that turns entries into removable tags. |
+| `TextArea` | A multi-line text input with optional auto-resize and character count. |
+| `XYPad` | A 2D interactive XY control pad with crosshair guide, draggable puck, and value readout. |
 
-| Component | Description | Key Props |
-|---|---|---|
-| `Badge` | Compact inline status pill or label. | `variant`, `size`, `shape`, `shadow`, `textsize` |
-| `Tag` | Categorization chip with optional dismiss button. | `variant`, `size`, `shape`, `shadow`, `textsize`, `removable`, `onremove` |
-| `Counter` | Numeric notification count pill with `max` overflow formatting (e.g. `99+`). | `count`, `max`, `variant`, `shape`, `shadow`, `textsize` |
-| `Dot` | Status indicator dot with pulsing ripple animation and tone variants. | `variant`, `size`, `animated`, `textsize` |
-| `Status` | Status pill pairing an indicator dot and label with subtle or tinted style. | `variant`, `size`, `shape`, `lite`, `animated`, `label`, `textsize` |
-| `Stamp` | Prominent square/circular icon tile for metrics, dashboard stats, or card corners. | `variant`, `size`, `shape`, `position`, `icon`, `textsize` |
-| `Ribbon` | Corner ribbon banner for cards and containers with bookmark styling. | `position`, `variant`, `bookmark`, `textsize` |
-| `Kbd` | Styled keyboard shortcut keycap (`⌘K`, `Esc`). | `keys`, `shape`, `shadow`, `textsize` |
-| `Avatar` | User avatar with image, automatic initials fallback, and status indicator dot. | `src`, `alt`, `name`, `size`, `shape`, `shadow`, `textsize`, `status` |
-| `AvatarGroup` | Overlapping stack of avatars with automatic `+N` overflow badge. | `avatars`, `max`, `size`, `shape`, `shadow`, `textsize` |
-| `Alert` | Contextual status callout with semantic icon, title, and optional dismiss button. | `message`, `title`, `shape`, `padding`, `shadow`, `textsize`, `dismissible`, `ondismiss` |
-| `Banner` | Full-width announcement or status strip with action and dismiss slots. | `message`, `surface`, `border`, `shape`, `padding`, `shadow`, `textsize`, `dismissible`, `action` |
-| `Progress` | Horizontal progress bar with determinate percentage or indeterminate animation. | `value`, `max`, `label`, `showValue`, `indeterminate`, `shape`, `shadow`, `textsize`, `color` |
-| `Meter` | Threshold-aware scalar gauge (optimal, suboptimal, critical coloring). | `value`, `min`, `max`, `low`, `high`, `optimum`, `label`, `showValue`, `shape`, `shadow`, `textsize` |
-| `Bar` | Proportional data bar for inline metrics and leaderboards. | `value`, `max`, `label`, `formatValue`, `color`, `shape`, `shadow`, `textsize` |
-| `Spinner` | Animated SVG loading indicator. | `size`, `color`, `label` |
-| `AspectRatio` | Responsive aspect-ratio frame container (`1:1`, `16:9`, `4:3`, etc.). | `ratio`, `shape`, `surface`, `border`, `shadow` |
-| `Divider` | Horizontal or vertical divider separator rule with optional centered label. | `label`, `vertical`, `border`, `textsize` |
-| `Img` | Enhanced image component with aspect ratio, object-fit, fallback snippet, and shape. | `src`, `alt`, `ratio`, `fit`, `shape`, `shadow`, `loading`, `fallback` |
-| `Skeleton` | Animated shimmer placeholder for loading states with line count, dimensions, and shape. | `width`, `height`, `circle`, `lines`, `shape` |
-| `Table` | Responsive data table supporting declarative columns and rows sorting or compound children. | `columns`, `rows`, `caption`, `striped`, `surface`, `border`, `shape`, `shadow`, `textsize`, `cell`, `empty` |
-| `Datatable` | Rich data table with search filtering, sortable column headers, row selection checkboxes, and pagination. | `columns`, `rows`, `rowKey`, `caption`, `searchable`, `pageSize`, `selectable`, `selected`, `striped`, `surface`, `shape` |
+### Display (20)
 
-### 4. Layout (7)
+| Component | What it is |
+|---|---|
+| `Avatar` | A user image, or initials fallback, with optional status dot. |
+| `AvatarGroup` | A row or column of avatars, overlapping or spaced apart, with a "+N" chip for hidden members. |
+| `Badge` | A small label for status or counts, with optional leading dot. |
+| `Banner` | A full-width notice strip: tinted by `message`, or plain with coloured text and icon via `messageText`. |
+| `Bar` | Shared SVG track bar for Progress and Meter with optional stripes, animation, and markers. |
+| `Counter` | A number that counts up to `value`, with prefix, suffix and decimals. |
+| `Datatable` | Rich data table with search filtering, sortable column headers, row selection checkboxes, pagination, and custom cell snippets. |
+| `Divider` | Horizontal or vertical divider separator rule with optional centered label. |
+| `Dot` | A compact status dot indicator with optional pulsing animation and status variants. |
+| `Img` | Enhanced image component with aspect ratio, object-fit, fallback snippet, and shape. |
+| `Kbd` | A keyboard key, as an icon button or a static keycap for showing shortcuts. |
+| `Meter` | A gauge bar for a value in a known range, coloured by low, high and optimum zones. |
+| `Progress` | A progress bar, determinate or indeterminate, with optional value label. |
+| `Ribbon` | A corner ribbon banner for cards and containers, with bookmark styling and variant themes. |
+| `Skeleton` | Animated shimmer placeholder for loading states with line count, dimensions, and shape. |
+| `Spinner` | A spinning loading indicator sized to the surrounding text. |
+| `Stamp` | An icon or metric tile stamp with square aspect ratio, rounded corners, and status variants. |
+| `Status` | A status pill or badge with an integrated indicator dot and label. |
+| `Table` | Responsive data table supporting declarative columns and rows sorting or compound children. |
+| `Tag` | A label chip, optionally removable, filled with or coloured by a surface, theme or message colour. |
 
-| Component | Description | Key Props |
-|---|---|---|
-| `Container` | Centered layout wrapper with max-width, surface, border, padding, and shadow. | `surface`, `border`, `padding`, `shape`, `shadow`, `textsize`, `maxWidth`, `centered` |
-| `Card` | Structured surface container with optional `header` and `footer` snippets. | `surface`, `border`, `padding`, `shape`, `shadow`, `textsize`, `gap`, `header`, `footer` |
-| `ClickableCard` | Interactive `<button>` or `<a>` card with hover feedback and focus ring. | `href`, `surface`, `border`, `padding`, `shape`, `shadow`, `textsize`, `disabled`, `onclick` |
-| `SelectableCard` | Toggleable selection card with check indicator for single/multi-choice grids. | `bind:selected`, `surface`, `border`, `padding`, `shape`, `shadow`, `textsize`, `onchange` |
-| `SplitPane` | Resizable two-panel split container (horizontal or vertical) with drag divider. | `orientation`, `bind:ratio`, `minRatio`, `maxRatio`, `surface`, `border`, `shape`, `shadow`, `first`, `second` |
-| `Grid` | Responsive CSS Grid container with explicit columns or auto-fit/auto-fill minmax tracks. | `cols`, `min`, `gap`, `padding`, `textsize` |
-| `Stack` | Flexible linear stack layout container with direction, gap, alignment, and wrap options. | `direction`, `gap`, `align`, `justify`, `wrap`, `padding`, `textsize` |
+### Layout (6)
 
-### 5. Navigation (12)
+| Component | What it is |
+|---|---|
+| `ClickableCard` | A card that acts as a button, or a link when given `href`. |
+| `Container` | A centred wrapper that caps content at a maximum width. |
+| `Grid` | Responsive CSS Grid container with explicit columns or auto-fit/auto-fill minmax tracks. |
+| `SelectableCard` | A card that works as a checkbox or radio option. |
+| `SplitPane` | Two panes side by side or stacked, where either can be collapsed. |
+| `Stack` | Flexible linear stack layout container with direction, gap, alignment, and wrap options. |
 
-| Component | Description | Key Props |
-|---|---|---|
-| `AppShell` | Full-viewport application frame with header, sidebar, main content, and footer regions. | `surface`, `border`, `textsize`, `sidebarWidth`, `header`, `sidebar`, `footer` |
-| `Header` | Top application bar with brand, navigation, and action slots. | `surface`, `border`, `padding`, `shadow`, `textsize`, `sticky`, `brand`, `nav`, `actions` |
-| `TopNav` | Horizontal navigation link bar with active item highlighting. | `items`, `bind:activeId`, `variant`, `size`, `shape`, `shadow`, `textsize`, `onselect` |
-| `SideNav` | Vertical sidebar navigation supporting grouped sections, badges, and icons. | `items`, `groups`, `bind:activeId`, `variant`, `size`, `shape`, `shadow`, `textsize`, `onselect` |
-| `BottomNav` | Mobile/compact bottom bar with icon + label destinations. | `items`, `bind:activeId`, `surface`, `border`, `shape`, `shadow`, `textsize`, `onselect` |
-| `MobileNav` | Responsive slide-out navigation drawer with backdrop and close button. | `bind:open`, `items`, `bind:activeId`, `title`, `surface`, `border`, `padding`, `shadow`, `textsize`, `footer` |
-| `Tabs` | Tabbed interface with horizontal/vertical orientation and panel content rendering. | `tabs`, `bind:activeTab`, `variant`, `size`, `shape`, `shadow`, `textsize`, `orientation`, `panel` |
-| `SegmentedControl` | Single-select segmented pill/button switcher. | `options`, `bind:value`, `size`, `shape`, `shadow`, `textsize`, `onchange` |
-| `Breadcrumb` | Hierarchical path trail with custom separator and active current-page state. | `items`, `separator`, `textsize`, `onnavigate` |
-| `Pagination` | Page navigation bar with previous/next buttons and smart ellipsis truncation. | `bind:currentPage`, `totalPages`, `siblingCount`, `variant`, `size`, `shape`, `shadow`, `textsize` |
-| `Stepper` | Multi-step workflow progress indicator (completed, current, upcoming). | `steps`, `bind:currentStep`, `orientation`, `clickable`, `shape`, `shadow`, `textsize` |
-| `TreeList` | Recursive hierarchical tree view with expand/collapse and node selection. | `nodes`, `bind:selectedId`, `bind:expandedIds`, `shape`, `shadow`, `textsize`, `onselect` |
+### Navigation (12)
 
-### 6. Overlays (13)
+| Component | What it is |
+|---|---|
+| `AppShell` | A page layout with header, sidebar, aside, main area and footer. |
+| `BottomNav` | A bottom tab bar for mobile navigation. |
+| `Breadcrumb` | A trail of links to the current page, collapsing the middle when long. |
+| `Header` | A top bar with brand, centre and actions slots, optionally sticky. |
+| `MobileNav` | A slide-in navigation panel for small screens. |
+| `Pagination` | Page number buttons with previous and next controls. |
+| `SegmentedControl` | A row of joined buttons for picking one of a few options. |
+| `SideNav` | A vertical navigation list with groups, badges and an icon-only mode. |
+| `Stepper` | A step-by-step progress indicator for multi-step flows. |
+| `Tabs` | A tab bar that switches between panels of content. |
+| `TopNav` | A horizontal navigation bar of links. |
+| `TreeList` | A nested, expandable tree of items. |
 
-| Component | Description | Key Props |
-|---|---|---|
-| `Modal` | Centered backdrop overlay with Escape key and backdrop-click dismissal. | `bind:open`, `surface`, `border`, `padding`, `shape`, `shadow`, `textsize`, `maxWidth`, `onclose` |
-| `Dialog` | Structured modal with title, description, body content, and footer actions. | `bind:open`, `title`, `description`, `surface`, `border`, `padding`, `shape`, `shadow`, `textsize`, `footer` |
-| `AlertDialog` | Confirmation dialog for destructive or critical actions with confirm/cancel buttons. | `bind:open`, `title`, `description`, `confirmLabel`, `cancelLabel`, `destructive`, `onconfirm`, `oncancel` |
-| `Drawer` | Slide-in edge panel (`left`, `right`, `top`, `bottom`) with header and footer slots. | `bind:open`, `placement`, `title`, `size`, `surface`, `border`, `padding`, `shadow`, `textsize`, `footer` |
-| `Popover` | Floating content panel anchored to a trigger snippet with outside-click closing. | `bind:open`, `placement`, `surface`, `border`, `padding`, `shape`, `shadow`, `textsize`, `trigger` |
-| `Tooltip` | Hover/focus contextual label anchored to a trigger element. | `text`, `placement`, `shape`, `shadow`, `textsize`, `children` |
-| `Anchor` | Low-level relative positioning wrapper for floating panels (`top`, `bottom`, `left`, `right`). | `open`, `placement`, `align`, `offset`, `trigger`, `content` |
-| `MenuList` | Keyboard-accessible vertical action list with shortcuts, dividers, and danger states. | `items`, `surface`, `border`, `padding`, `shape`, `shadow`, `textsize`, `onselect` |
-| `DropdownMenu` | Trigger-anchored dropdown menu combining `Anchor` and `MenuList`. | `items`, `bind:open`, `placement`, `align`, `surface`, `border`, `shape`, `shadow`, `textsize`, `trigger`, `onselect` |
-| `ContextMenu` | Right-click (`contextmenu`) floating menu positioned at cursor coordinates. | `items`, `surface`, `border`, `shape`, `shadow`, `textsize`, `onselect`, `children` |
-| `CommandPalette` | Searchable `⌘K` command modal with grouped actions and arrow-key navigation. | `bind:open`, `items`, `placeholder`, `surface`, `border`, `shape`, `shadow`, `textsize`, `onselect` |
-| `Toast` | Notification card with status coloring, title, description, and dismiss button. | `message`, `title`, `description`, `shape`, `padding`, `shadow`, `textsize`, `dismissible`, `ondismiss` |
-| `ToastStack` | Fixed-viewport container for rendering a stack of active toasts. | `toasts`, `placement`, `shape`, `shadow`, `textsize`, `ondismiss` |
+### Overlays (3)
 
-### 7. Typography & Disclosure (7)
+| Component | What it is |
+|---|---|
+| `Anchor` | Positions a floating panel next to its trigger; used by Popover, Tooltip and menus. |
+| `MenuList` | Shared keyboard-navigable menu list for DropdownMenu and ContextMenu. |
+| `ToastStack` | A stack of toasts placed in a screen corner or inline. |
 
-| Component | Description | Key Props |
-|---|---|---|
-| `Accordion` | Vertically stacked expandable panels supporting single or multiple open items. | `items`, `bind:openIds`, `multiple`, `surface`, `border`, `shape`, `shadow`, `textsize` |
-| `Collapsible` | Single-section expand/collapse disclosure container. | `bind:open`, `title`, `surface`, `border`, `padding`, `shape`, `shadow`, `textsize`, `trigger` |
-| `Heading` | Polymorphic heading element with semantic level, text size scale, tracking, and weight. | `level`, `size`, `textsize`, `weight`, `children` |
-| `Text` | Polymorphic typography primitive supporting semantic tags, tone colors, weights, and truncation. | `as`, `tone`, `textsize`, `weight`, `mono`, `truncate`, `children` |
-| `Blockquote` | Styled quotation block with accent left border, author, and citation metadata. | `cite`, `author`, `surface`, `padding`, `shape`, `shadow`, `textsize` |
-| `Code` | Inline monospace code span. | `shape`, `shadow`, `textsize`, `children` |
-| `CodeBlock` | Multi-line code viewer with language header, optional line numbers, and `CopyButton`. | `code`, `language`, `filename`, `showLineNumbers`, `copyable`, `surface`, `border`, `shape`, `shadow`, `textsize` |
+### Typography (5)
 
-### 8. Blocks (9)
+| Component | What it is |
+|---|---|
+| `Blockquote` | A quotation with author and citation. |
+| `Code` | Inline code text. |
+| `Collapsible` | A single section that expands and collapses under a header. |
+| `Heading` | Polymorphic heading element with semantic level, text size scale, tracking, and weight. |
+| `Text` | Polymorphic typography primitive supporting semantic tags, tone colors, weights, and truncation. |
 
-| Component | Description | Key Props |
-|---|---|---|
-| `FeatureGrid` | Responsive multi-column feature showcase grid with icons, titles, and badges. | `features`, `columns`, `surface`, `border`, `padding`, `shape`, `shadow`, `textsize` |
-| `ChatBubble` | Conversational message bubble with sender, timestamp, status, and alignment. | `sender`, `timestamp`, `align`, `variant`, `shape`, `padding`, `shadow`, `textsize`, `avatar`, `status` |
-| `BeforeAfter` | Interactive split-screen comparison slider with mouse and touch drag handle. | `beforeLabel`, `afterLabel`, `bind:position`, `shape`, `border`, `shadow`, `textsize`, `before`, `after` |
-| `FlowCanvas` | Node-and-edge diagram canvas with draggable nodes and smooth Bezier SVG connectors. | `bind:nodes`, `edges`, `height`, `surface`, `border`, `shape`, `shadow`, `textsize`, `onnodeselect` |
-| `Waveform` | Interactive audio waveform visualizer and scrubber with progress fill and seek support. | `peaks`, `bind:progress`, `duration`, `barWidth`, `interactive`, `surface`, `border`, `shape` |
-| `Video` | Styled media card with video player, title, caption, aspect ratio, poster, and tokenized frame. | `src`, `poster`, `title`, `caption`, `controls`, `ratio`, `surface`, `border`, `shape`, `shadow` |
-| `Canvas` | High-DPI auto-resizing HTML5 canvas container with draw callback and aspect ratio. | `draw`, `ratio`, `label`, `surface`, `border`, `shape`, `shadow` |
-| `Carousel` | Responsive draggable and swipeable carousel slider with slide snippet, next/prev arrow buttons, and indicator dots. | `items`, `slide`, `index`, `perView`, `gap`, `draggable`, `shape`, `shadow`, `textsize` |
-| `EmptyState` | Zero-state placeholder illustration with title, description, and action button slot. | `title`, `description`, `surface`, `border`, `shape`, `shadow`, `padding`, `textsize`, `icon`, `actions` |
+### Blocks (9)
 
----
+| Component | What it is |
+|---|---|
+| `BeforeAfter` | A slider that wipes between a before and an after image. |
+| `Canvas` | High-DPI auto-resizing HTML5 canvas container with draw callback and aspect ratio. |
+| `Carousel` | Responsive draggable and swipeable carousel slider with slide snippet, next/prev arrow buttons, and indicator dots. |
+| `ChatBubble` | A chat message bubble with avatar, timestamp and status. |
+| `EmptyState` | Zero-state placeholder illustration with title, description, and action button slot. |
+| `FeatureGrid` | A grid of features, each with icon, title and description. |
+| `FlowCanvas` | A pannable, zoomable grid canvas for node diagrams. |
+| `Video` | Styled media card with video player, title, caption, aspect ratio, poster, and tokenized frame. |
+| `Waveform` | An interactive audio waveform visualizer and scrubber with progress fill and seek support. |
 
-## Development & Documentation Scripts
-
-Inside the repository (`packages/fractalsvelte-ui`):
+## Develop
 
 ```bash
-# Start the interactive component explorer & documentation site
-pnpm dev
-
-# Regenerate component metadata (src/site/doc/data/{components,props}.json)
-pnpm docs:components
-
-# Run svelte-check & TypeScript validation
-pnpm check
-
-# Build the library (dist/) + compiled CSS (dist/css/) + run publint
-pnpm prepack
+pnpm install
+pnpm dev        # docs site
+pnpm check      # type check
+pnpm package    # build dist/: icons, svelte-package, the CSS bundle
 ```
 
----
+Each component has a documentation page at `/components/<name>`, with a live demo, a preview of each key prop and the full props table.
 
 ## License
 
-MIT © [Fractal Design](https://github.com/fractalmandala/fractalsvelte-ui)
+MIT

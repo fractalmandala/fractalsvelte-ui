@@ -2,10 +2,8 @@
 	import { page } from '$app/state';
  	import { browser, dev } from '$app/env';
 	import type { Snippet } from 'svelte';
-	import '@fractaldesign/fractalstyler/css'
-	import '$lib/styles/globals.sass'
+	import '$lib/styles/index.css'
 	import '$site/styles/comps-documentation.sass'
-	import '$lib/styles/components.sass'
 	import { modeScript, mode } from '$site/mode/mode.svelte.js'
 	import ModeToggle from '$site/mode/ModeToggle.svelte';
   import {
@@ -71,7 +69,7 @@
   <Agentation {...playgroundAnnotationProps} />
 {/if}
 <div class="app-shell bg-main">
-	<header class="app-header xbetween ycenter row">
+	<header class="app-header bg-main xbetween ycenter row">
 		<a class="logo-link row ycenter gap-bs" href="/">
 			{#if dark}
 			<img src="/images/fractalsvelte-l.png" alt="logotype" class="logotype"/>

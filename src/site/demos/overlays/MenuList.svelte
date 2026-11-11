@@ -1,5 +1,5 @@
 <script lang="ts">
-	import MenuList from '$lib/components/overlays/MenuList.svelte';
+	import { MenuList } from '@fractaldesign/fractalsvelte-ui';
 
 	const items = [
 		{ id: 'edit', label: 'Edit', shortcut: '⌘E' },

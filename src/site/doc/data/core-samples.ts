@@ -1,71 +1,148 @@
-// Self-contained sample content for component previews, per component (path under
-// lib/components). Markers: { $snippet: 'text' } renders text;
-// { $html: '...' } renders sample markup; { $icon: 'luName' } a lucide icon.
+// Sample content for component previews, one entry per component, keyed by its
+// path under lib/components ("core/Button").
+// Markers: { $snippet: 'text' } renders text; { $html: '...' } renders sample
+// markup; { $icon: 'klName' } a keyline icon.
 export const coreSamples: Record<string, Record<string, unknown>> = {
-	'actions/Button': { children: { $snippet: 'Save' } },
+	// ---- core
+	'core/Accordion': {
+		value: 'what',
+		items: [
+			{ id: 'what', title: 'What is it?', content: 'A Svelte 5 component library styled by its own class language.' },
+			{ id: 'free', title: 'Is it free?', content: 'Yes. It is MIT licensed.' },
+			{ id: 'themes', title: 'Can I theme it?', content: 'Every colour is a token you can set per mode.' }
+		]
+	},
+	'core/Alert': { title: 'Saved', description: 'Your changes have been saved.' },
+	'core/AlertDialog': {
+		title: 'Delete project?',
+		description: 'This permanently deletes the Atlas project, its 24 files and all comments.',
+		confirmText: 'Delete project'
+	},
+	'core/AspectRatio': {},
+	'core/Button': { children: { $snippet: 'Save' } },
+	'core/Card': {
+		title: 'Project',
+		description: 'Last updated today.',
+		children: { $snippet: 'Three tasks remaining.' }
+	},
+	'core/Checkbox': { label: 'Accept terms', checked: true },
+	'core/CodeBlock': {
+		filename: 'install.sh',
+		language: 'bash',
+		code: 'pnpm add @fractaldesign/fractalsvelte-ui'
+	},
+	'core/Combobox': {
+		placeholder: 'Choose framework…',
+		options: [
+			{ value: 'svelte', label: 'Svelte' },
+			{ value: 'vue', label: 'Vue' },
+			{ value: 'react', label: 'React' }
+		]
+	},
+	'core/CommandPalette': {
+		groups: [
+			{
+				category: 'Actions',
+				items: [
+					{ id: 'new', label: 'New file', shortcut: '⌘N' },
+					{ id: 'open', label: 'Open file', shortcut: '⌘O' }
+				]
+			}
+		]
+	},
+	'core/ContextMenu': {
+		items: [
+			{ id: 'copy', label: 'Copy' },
+			{ id: 'paste', label: 'Paste' },
+			{ id: 'delete', label: 'Delete', danger: true }
+		],
+		children: {
+			$html: '<div class="pad-lg border-dashed modern text-sm text-secondary">Right-click here</div>'
+		}
+	},
+	'core/Dialog': {
+		title: 'Edit profile',
+		description: 'Update how others see you across the workspace.',
+		children: { $snippet: 'Changes apply to every project you belong to.' }
+	},
+	'core/Drawer': {
+		title: 'Filters',
+		description: 'Narrow down the project list.',
+		children: { $snippet: 'Pick the projects you want to see.' }
+	},
+	'core/DropdownMenu': {
+		items: [{ label: 'Edit' }, { label: 'Duplicate' }, { separator: true }, { label: 'Delete', danger: true }]
+	},
+	'core/Icon': { icon: { $icon: 'klStar' } },
+	'core/Input': { label: 'Name', placeholder: 'Asha Rao' },
+	'core/Label': { children: { $snippet: 'Email address' } },
+	'core/Modal': {
+		children: {
+			$html: '<div class="box gap-sm pad-lg"><h3 class="page-heading-bs">Modal</h3><p class="text-body-sm text-secondary">Content sits on the modal panel. Press Escape to close.</p></div>'
+		}
+	},
+	'core/Popover': { children: { $snippet: 'Popover content' } },
+	'core/Radio': { name: 'plan', value: 'pro', label: 'Pro', checked: true },
+	'core/RadioGroup': {
+		label: 'Plan',
+		value: 'pro',
+		options: [
+			{ value: 'free', label: 'Free' },
+			{ value: 'pro', label: 'Pro' },
+			{ value: 'team', label: 'Team' }
+		]
+	},
+	'core/Select': {
+		label: 'Country',
+		value: 'in',
+		options: [
+			{ value: 'in', label: 'India' },
+			{ value: 'uk', label: 'United Kingdom' },
+			{ value: 'us', label: 'United States' }
+		]
+	},
+	'core/Switch': { label: 'Notifications', checked: true },
+	'core/Toast': { title: 'Saved', description: 'Your changes have been saved.', duration: 0 },
+	'core/Tooltip': {
+		content: 'Save changes',
+		children: { $html: '<span class="button inline-flex outline h-bs mincurved text-sm">Hover me</span>' }
+	},
+
+	// ---- actions
 	'actions/CloseButton': { label: 'Close' },
 	'actions/CopyButton': { text: 'pnpm add @fractaldesign/fractalsvelte-ui' },
-	'actions/IconButton': { label: 'Settings' },
-	'blocks/BeforeAfter': {
-		beforeSrc: 'https://picsum.photos/id/10/800/450?grayscale',
-		afterSrc: 'https://picsum.photos/id/10/800/450'
+	'actions/IconButton': { label: 'Favourite' },
+
+	// ---- forms
+	'forms/ColorPicker': { label: 'Colour' },
+	'forms/Fader': { value: 65, label: 'Master' },
+	'forms/Fieldset': {
+		legend: 'Account settings',
+		children: { $html: '<p class="text-body-sm text-secondary">Manage your profile and workspace preferences.</p>' }
 	},
-	'blocks/ChatBubble': { message: 'Hi! How can I help?' },
-	'blocks/FeatureGrid': {
-		items: [
-			{ title: 'Fast', description: 'Built on Svelte 5.', icon: { $icon: 'luZap' } },
-			{ title: 'Accessible', description: 'Keyboard and screen reader friendly.', icon: { $icon: 'luAccessibility' } },
-			{ title: 'Themeable', description: 'Light and dark modes.', icon: { $icon: 'luPalette' } }
+	'forms/FileUpload': { label: 'Click to browse or drag files here', hint: 'PNG, JPG or PDF up to 10 MB' },
+	'forms/FormField': { label: 'Country', helperText: 'Where you live.' },
+	'forms/MultiSelect': {
+		placeholder: 'Choose skills…',
+		value: ['svelte'],
+		options: [
+			{ value: 'svelte', label: 'Svelte' },
+			{ value: 'design', label: 'Design' },
+			{ value: 'motion', label: 'Motion' }
 		]
 	},
-	'blocks/Audio': {
-		title: 'Ambient Echoes',
-		caption: 'Soundscape Studio',
-		src: 'https://cdn.freesound.org/previews/612/612095_5674468-lq.mp3'
-	},
-	'blocks/AudioTrack': {
-		trackNumber: 1,
-		title: 'Solaris Resonance',
-		artist: 'Fractal Sound Lab',
-		album: 'Modular Harmonics',
-		duration: 245,
-		active: true
-	},
-	'blocks/AudioTrackList': {
-		tracks: [
-			{ id: 1, title: 'Solaris Resonance', artist: 'Fractal Sound Lab', album: 'Modular Harmonics', duration: '4:05' },
-			{ id: 2, title: 'Prism Horizon', artist: 'Aura', album: 'Modular Harmonics', duration: '3:22' },
-			{ id: 3, title: 'Kinetic Waves', artist: 'Vector One', album: 'Modular Harmonics', duration: '5:10' }
-		]
-	},
-	'blocks/Canvas': {
-		ratio: '16/9',
-		label: 'Interactive Canvas'
-	},
-	'blocks/Carousel': {
-		items: ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4']
-	},
-	'blocks/EmptyState': {
-		title: 'No documents yet',
-		description: 'Create a new document to get started.'
-	},
-	'blocks/FlowCanvas': {
-		nodes: [
-			{ id: '1', x: 20, y: 30, label: 'Start' },
-			{ id: '2', x: 180, y: 30, label: 'Process' }
-		]
-	},
-	'blocks/Video': {
-		title: 'Product Tour',
-		caption: 'Overview of features',
-		poster: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?w=600&auto=format&fit=crop&q=80'
-	},
-	'blocks/Waveform': {
-		peaks: [0.2, 0.5, 0.8, 0.4, 0.7, 0.9, 0.6, 0.3, 0.8, 0.5],
-		progress: 40,
-		duration: 180
-	},
-	'display/Alert': { title: 'Saved', description: 'Your changes have been saved.' },
+	'forms/NumberInput': { label: 'Quantity', value: 2 },
+	'forms/PinInput': { label: 'Verification code', value: '12' },
+	'forms/RangeSlider': { label: 'Price', minVal: 20, maxVal: 80 },
+	'forms/RotaryDial': { label: 'Gain', value: 40 },
+	'forms/SearchInput': { placeholder: 'Search documentation…' },
+	'forms/Slider': { label: 'Volume', value: 60 },
+	'forms/SliderTrack': { width: 180, height: 24, values: [0.45] },
+	'forms/TagInput': { label: 'Tags', tags: ['svelte', 'css'] },
+	'forms/TextArea': { label: 'Message', placeholder: 'Write a few lines…' },
+	'forms/XYPad': { value: { x: 60, y: 40 }, label: 'Filter' },
+
+	// ---- display
 	'display/Avatar': { initials: 'AP' },
 	'display/AvatarGroup': {
 		max: 3,
@@ -82,168 +159,74 @@ export const coreSamples: Record<string, Record<string, unknown>> = {
 	'display/Banner': { children: { $snippet: 'A new version is available.' } },
 	'display/Bar': { fraction: 0.65 },
 	'display/Counter': { value: 1280 },
+	'display/Datatable': {
+		caption: 'Projects',
+		rowKey: 'project',
+		columns: [
+			{ key: 'project', label: 'Project', sortable: true },
+			{ key: 'status', label: 'Status' },
+			{ key: 'version', label: 'Version', align: 'right' }
+		],
+		rows: [
+			{ project: 'Atlas', status: 'Published', version: '1.5.0' },
+			{ project: 'Borealis', status: 'Draft', version: '0.9.2' },
+			{ project: 'Cygnus', status: 'Archived', version: '2.1.4' }
+		]
+	},
+	'display/Divider': { label: 'OR' },
+	'display/Dot': {},
+	'display/Img': { src: 'https://picsum.photos/id/29/400/300', alt: 'Mountain ridge' },
 	'display/Kbd': { label: 'Keyboard shortcuts', children: { $snippet: 'K' } },
 	'display/Meter': { label: 'Storage', value: 64 },
 	'display/Progress': { label: 'Uploading', value: 60 },
-	'display/Ribbon': {
-		children: { $snippet: 'PRO' }
-	},
-	'display/Skeleton': {
-		lines: 3,
-		width: '100%'
-	},
+	'display/Ribbon': { children: { $snippet: 'New' } },
+	'display/Skeleton': { lines: 3 },
 	'display/Spinner': {
 		label: 'Loading…'
 	},
-	'display/Stamp': {
-		children: { $snippet: '★' }
-	},
+	'display/Stamp': { children: { $snippet: '7' } },
 	'display/Status': {
 		label: 'Operational',
 		variant: 'success'
 	},
 	'display/Table': {
+		caption: 'Projects',
 		columns: [
-			{ key: 'id', label: 'ID' },
-			{ key: 'status', label: 'Status' }
+			{ key: 'project', label: 'Project', sortable: true },
+			{ key: 'status', label: 'Status' },
+			{ key: 'version', label: 'Version', align: 'right' }
 		],
 		rows: [
-			{ id: 'INV-01', status: 'Paid' },
-			{ id: 'INV-02', status: 'Pending' }
+			{ project: 'Atlas', status: 'Published', version: '1.5.0' },
+			{ project: 'Borealis', status: 'Draft', version: '0.9.2' },
+			{ project: 'Cygnus', status: 'Archived', version: '2.1.4' }
 		]
 	},
 	'display/Tag': { children: { $snippet: 'Design' } },
-	'display/AspectRatio': {
-		ratio: '16/9'
-	},
-	'display/Datatable': {
-		columns: [
-			{ key: 'name', label: 'Name' },
-			{ key: 'role', label: 'Role' }
-		],
-		rows: [
-			{ id: 1, name: 'Alice', role: 'Engineer' },
-			{ id: 2, name: 'Bob', role: 'Designer' }
-		]
-	},
-	'display/Divider': {
-		label: 'OR'
-	},
-	'display/Dot': {
-		variant: 'success'
-	},
-	'display/Img': {
-		src: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=300&auto=format&fit=crop&q=80',
-		alt: 'Sample Artwork',
-		ratio: '1/1'
-	},
-	'forms/Checkbox': { label: 'Accept terms' },
-	'forms/ColorPicker': { label: 'Colour' },
-	'forms/Combobox': {
-		placeholder: 'Choose framework…',
-		options: [
-			{ value: 'svelte', label: 'Svelte' },
-			{ value: 'vue', label: 'Vue' },
-			{ value: 'react', label: 'React' }
-		]
-	},
-	'forms/Fader': {
-		value: 65,
-		label: 'Master (dB)'
-	},
-	'forms/Fieldset': {
-		legend: 'Account Settings',
-		children: {
-			$html: '<div class="text-xs text-secondary">Manage your profile and workspace preferences.</div>'
-		}
-	},
-	'forms/FileUpload': {
-		label: 'Upload Assets',
-		hint: 'PNG, JPG up to 10MB'
-	},
-	'forms/FormField': { label: 'Country', id: 'email', helperText: 'Where you live.' },
-	'forms/Input': { label: 'Name' },
-	'forms/Label': {
-		children: { $snippet: 'Email address' },
-		description: 'We will not share your email.'
-	},
-	'forms/MultiSelect': {
-		placeholder: 'Choose skills…',
-		options: [
-			{ value: 'svelte', label: 'Svelte' },
-			{ value: 'design', label: 'Design' },
-			{ value: 'motion', label: 'Motion' }
-		],
-		value: ['svelte']
-	},
-	'forms/NumberInput': { label: 'Quantity' },
-	'forms/PinInput': { label: 'Verification code' },
-	'forms/Radio': { name: 'plan', value: 'pro', label: 'Pro' },
-	'forms/RadioGroup': {
-		label: 'Plan',
-		options: [
-			{ value: 'free', label: 'Free' },
-			{ value: 'pro', label: 'Pro' },
-			{ value: 'team', label: 'Team' }
-		]
-	},
-	'forms/RangeSlider': { label: 'Price' },
-	'forms/RotaryDial': { label: 'Volume' },
-	'forms/SearchInput': { placeholder: 'Search…' },
-	'forms/Select': {
-		label: 'Country',
-		options: [
-			{ value: 'in', label: 'India' },
-			{ value: 'uk', label: 'United Kingdom' },
-			{ value: 'us', label: 'United States' }
-		]
-	},
-	'forms/Slider': { label: 'Volume' },
-	'forms/SliderTrack': { width: 180, height: 24, values: [0.45] },
-	'forms/Switch': {
-		label: 'Notifications',
-		description: 'Email me when someone mentions me.',
-		checked: true
-	},
-	'forms/TagInput': { label: 'Tags' },
-	'forms/TextArea': { label: 'Message' },
-	'forms/XYPad': {
-		value: { x: 60, y: 40 },
-		label: 'Filter Resonance'
-	},
-	'layout/Card': {
-		title: 'Project',
-		description: 'Last updated today.',
-		children: { $snippet: 'Three tasks remaining.' }
-	},
+
+	// ---- layout
 	'layout/ClickableCard': { href: '#', title: 'Documentation', description: 'Read the guides.' },
 	'layout/Container': { children: { $snippet: 'Page content' } },
+	'layout/Grid': { cols: 3, children: { $html: '<div class="contents"><div class="pad-sm modern bg-panel text-xs ta-c font-mono">1</div><div class="pad-sm modern bg-panel text-xs ta-c font-mono">2</div><div class="pad-sm modern bg-panel text-xs ta-c font-mono">3</div><div class="pad-sm modern bg-panel text-xs ta-c font-mono">4</div><div class="pad-sm modern bg-panel text-xs ta-c font-mono">5</div><div class="pad-sm modern bg-panel text-xs ta-c font-mono">6</div></div>' } },
 	'layout/SelectableCard': {
 		title: 'Pro plan',
 		description: 'For growing teams.',
-		selected: true
+		selected: false
 	},
 	'layout/SplitPane': {
-		paneA: { $snippet: 'Left pane' },
-		paneB: { $snippet: 'Right pane' }
+		paneA: { $html: '<div class="pad-md text-sm text-secondary">Pane A</div>' },
+		paneB: { $html: '<div class="pad-md text-sm text-secondary">Pane B</div>' }
 	},
-	'layout/Grid': {
-		cols: 3,
-		children: {
-			$html: '<div class="card bg-panel border radius-sm p-sm text-xs ta-c font-mono">1</div><div class="card bg-panel border radius-sm p-sm text-xs ta-c font-mono">2</div><div class="card bg-panel border radius-sm p-sm text-xs ta-c font-mono">3</div>'
-		}
-	},
-	'layout/Stack': {
-		children: {
-			$html: '<div class="card bg-panel border radius-sm px-md py-xs text-xs">First</div><div class="card bg-panel border radius-sm px-md py-xs text-xs">Second</div><div class="card bg-panel border radius-sm px-md py-xs text-xs">Third</div>'
-		}
-	},
+	'layout/Stack': { children: { $html: '<div class="contents"><div class="pad-sm modern bg-panel text-xs ta-c font-mono">First</div><div class="pad-sm modern bg-panel text-xs ta-c font-mono">Second</div><div class="pad-sm modern bg-panel text-xs ta-c font-mono">Third</div></div>' } },
+
+	// ---- navigation
 	'navigation/AppShell': {
 		header: { $snippet: 'App' },
 		sidebar: { $snippet: 'Menu' },
 		children: { $snippet: 'Main content' }
 	},
 	'navigation/BottomNav': {
+		activeId: 'home',
 		items: [
 			{ id: 'home', label: 'Home' },
 			{ id: 'search', label: 'Search' },
@@ -266,6 +249,7 @@ export const coreSamples: Record<string, Record<string, unknown>> = {
 	},
 	'navigation/Pagination': { totalPages: 10 },
 	'navigation/SegmentedControl': {
+		value: 'week',
 		options: [
 			{ value: 'day', label: 'Day' },
 			{ value: 'week', label: 'Week' },
@@ -279,22 +263,21 @@ export const coreSamples: Record<string, Record<string, unknown>> = {
 			{ id: 'settings', label: 'Settings' }
 		]
 	},
-	'navigation/Stepper': {
-		steps: [{ label: 'Account' }, { label: 'Profile' }, { label: 'Review' }]
-	},
+	'navigation/Stepper': { currentStep: 1, steps: [{ label: 'Account' }, { label: 'Profile' }, { label: 'Review' }] },
 	'navigation/Tabs': {
+		activeTab: 'overview',
 		tabs: [
 			{ id: 'overview', label: 'Overview' },
-			{ id: 'activity', label: 'Activity' },
+			{ id: 'activity', label: 'Activity', badge: 3 },
 			{ id: 'settings', label: 'Settings' }
-		],
-		children: { $snippet: 'Tab content' }
+		]
 	},
 	'navigation/TopNav': {
+		activeId: 'docs',
 		items: [
-			{ label: 'Home', href: '#' },
-			{ label: 'Docs', href: '#' },
-			{ label: 'Blog', href: '#' }
+			{ id: 'home', label: 'Home', href: '#' },
+			{ id: 'docs', label: 'Docs', href: '#' },
+			{ id: 'blog', label: 'Blog', href: '#' }
 		]
 	},
 	'navigation/TreeList': {
@@ -310,99 +293,69 @@ export const coreSamples: Record<string, Record<string, unknown>> = {
 			{ id: 'pkg', label: 'package.json' }
 		]
 	},
-	'overlays/AlertDialog': {
-		title: 'Delete project?',
-		description: 'This permanently deletes the Atlas project, its 24 files and all comments.',
-		confirmText: 'Delete project'
-	},
+
+	// ---- overlays
 	'overlays/Anchor': {
 		open: true,
-		trigger: { $html: '<span class="btn variant size shape outline h-sm min">Trigger</span>' },
-		panel: {
-			$html: '<div class="card bg-panel border radius-sm shadow-sm pad-sm text-xs nowrap">Panel</div>'
-		}
-	},
-	'overlays/CommandPalette': {
-		groups: [
-			{
-				category: 'Actions',
-				items: [
-					{ id: 'new', label: 'New file' },
-					{ id: 'open', label: 'Open file' }
-				]
-			}
-		]
-	},
-	'overlays/ContextMenu': {
-		items: [
-			{ id: 'copy', label: 'Copy' },
-			{ id: 'paste', label: 'Paste' },
-			{ id: 'delete', label: 'Delete' }
-		]
-	},
-	'overlays/Dialog': {
-		title: 'Edit profile',
-		description: 'Update how others see you across the workspace.'
-	},
-	'overlays/Drawer': {
-		title: 'Filters',
-		description: 'Narrow down the project list.'
-	},
-	'overlays/DropdownMenu': {
-		items: [
-			{ label: 'Edit', icon: { $icon: 'luPencil' }, shortcut: '⌘E' },
-			{ label: 'Duplicate', icon: { $icon: 'luCopy' }, shortcut: '⌘D' },
-			{ separator: true },
-			{ label: 'Delete', icon: { $icon: 'luTrash2' }, danger: true }
-		]
+		trigger: { $html: '<span class="button inline-flex outline h-bs mincurved text-sm">Trigger</span>' },
+		panel: { $html: '<div class="pad-sm modern bg-overlay border shad-sm text-xs">Panel</div>' }
 	},
 	'overlays/MenuList': {
-		items: [
-			{ id: 'edit', label: 'Edit', shortcut: '⌘E' },
-			{ id: 'duplicate', label: 'Duplicate', shortcut: '⌘D' },
-			{ separator: true },
-			{ id: 'delete', label: 'Delete', danger: true }
-		],
+		label: 'Actions',
 		autofocus: false,
 		onselect: () => {},
-		onclose: () => {}
+		onclose: () => {},
+		items: [{ label: 'Edit', shortcut: '⌘E' }, { label: 'Duplicate' }, { separator: true }, { label: 'Delete', danger: true }]
 	},
-	'overlays/Modal': {
-		children: { $snippet: 'Modal content' }
-	},
-	'overlays/Popover': {
-		children: { $snippet: 'Popover content' }
-	},
-	'overlays/Toast': {
-		title: 'Saved',
-		description: 'Your changes have been saved.',
-		messageText: 'text-success',
-		duration: 0
-	},
-	'overlays/ToastStack': { position: 'inline' },
-	'overlays/Tooltip': { content: 'Save changes' },
-	'typography/Accordion': {
-		items: [
-			{ id: 'one', title: 'What is it?', content: 'A component library.' },
-			{ id: 'two', title: 'Is it free?', content: 'Yes.' }
-		]
-	},
+	'overlays/ToastStack': {},
+
+	// ---- typography
 	'typography/Blockquote': {
 		quote: 'Simplicity is the ultimate sophistication.',
 		author: 'Leonardo da Vinci'
 	},
 	'typography/Code': { children: { $snippet: 'pnpm install' } },
-	'typography/CodeBlock': {
-		filename: 'install.sh',
-		language: 'bash',
-		code: 'pnpm add @fractaldesign/fractalsvelte-ui',
-		showLineNumbers: true
+	'typography/Collapsible': {
+		title: 'Details',
+		children: { $snippet: 'Hidden content reveals smoothly when expanded.' }
 	},
-	'typography/Collapsible': { title: 'Details' },
 	'typography/Heading': {
-		children: { $snippet: 'Design Systems' }
+		children: { $snippet: 'Heading' }
 	},
 	'typography/Text': {
 		children: { $snippet: 'Building resilient user interfaces.' }
+	},
+
+	// ---- blocks
+	'blocks/BeforeAfter': {
+		beforeSrc: 'https://picsum.photos/id/10/800/450?grayscale',
+		afterSrc: 'https://picsum.photos/id/10/800/450'
+	},
+	'blocks/Canvas': { label: 'Canvas' },
+	'blocks/Carousel': {
+		items: ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4']
+	},
+	'blocks/ChatBubble': { message: 'Hi! How can I help?' },
+	'blocks/EmptyState': {
+		title: 'No documents yet',
+		description: 'Create a new document to get started.'
+	},
+	'blocks/FeatureGrid': {
+		items: [
+			{ title: 'Tokens', description: 'Every colour and size is a variable.', badge: 'Core' },
+			{ title: 'Classes', description: 'Props are class names you can read.' },
+			{ title: 'Runes', description: 'Built on Svelte 5 from the start.' }
+		]
+	},
+	'blocks/FlowCanvas': {},
+	'blocks/Video': {
+		title: 'Product Tour',
+		caption: 'Overview of features',
+		poster: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"><rect width="600" height="400" fill="%23222"/><text x="50%" y="50%" fill="%23fff" font-family="sans-serif" font-size="24" text-anchor="middle">Product Tour</text></svg>'
+	},
+	'blocks/Waveform': {
+		peaks: [0.2, 0.5, 0.8, 0.4, 0.7, 0.9, 0.6, 0.3, 0.8, 0.5],
+		progress: 40,
+		duration: 180
 	}
 };

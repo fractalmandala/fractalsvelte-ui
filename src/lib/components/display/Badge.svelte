@@ -3,10 +3,10 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Variant, Message, Size, Shape, TextSize } from '$lib/types.js';
+	import type { Message, Size, Shape, TextSize } from '$lib/types.js';
 
 	interface Props extends HTMLAttributes<HTMLSpanElement> {
-		variant?: Variant | Message;
+		message?: Message;
 		size?: Size;
 		shape?: Shape;
 		/** Leading status dot */
@@ -17,18 +17,18 @@
 	}
 
 	let {
-		variant = 'secondary',
-		size = 'h-sm',
-		shape = 'round',
+		message = 'success',
+		size = 'h-md',
+		shape = 'modern',
 		dot = false,
-		textsize = 'text-md',
+		textsize = 'text-sm',
 		class: className = '',
 		children,
 		...restProps
 	}: Props = $props();
 </script>
 
-<span class="badge row ycenter gap-xs shrink-0 variant size shape {variant} {size} {shape} {textsize} {className}" {...restProps}>
+<span class="badge row ycenter gap-xs shrink-0 msg {message} {size} {shape} {textsize} {className}" {...restProps}>
 	{#if dot}
 		<svg width="0.6em" height="0.6em" viewBox="0 0 8 8" aria-hidden="true" class="shrink-0">
 			<circle cx="4" cy="4" r="4" fill="currentColor" />

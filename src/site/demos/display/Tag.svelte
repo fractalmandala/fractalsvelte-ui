@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Tag from '$lib/components/display/Tag.svelte';
+	import { Tag } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <Tag>Design</Tag>

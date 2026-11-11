@@ -3,7 +3,7 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { Surface, Size, Shape, Shadow, TextSize } from '$lib/types.js';
-	import { getFieldLook } from './field-context';
+	import { getFieldLook } from './field-context.js';
 	import Tag from '../display/Tag.svelte';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onchange'> {
@@ -67,17 +67,16 @@
 	}
 </script>
 
-<div class="box gap-xs {textsize} {className}" style:min-width="16em" {...restProps}>
+<div class="box gap-xs {textsize} {className}" {...restProps}>
 	{#if label}<label class="text-xs weight-500 text-secondary" for={uid}>{label}</label>{/if}
-	<div class="row ycenter wrap gap-xs px-xs border shape {surface} {shape} {shadow} {invalid ? 'is-invalid' : ''}" style:min-height="var(--height-{size.slice(2)})">
+	<div class="field row ycenter wrap gap-xs px-xs py-xs border hgrow {surface} {size} {shape} {shadow} {invalid ? 'is-invalid' : ''}">
 		{#each tags as tag, index (tag)}
 			<Tag removable={!disabled} removeLabel="Remove tag {tag}" onremove={() => removeTag(index)}>{tag}</Tag>
 		{/each}
 		<input
 			id={uid}
 			type="text"
-			class="input grow min0 border-none {textsize}"
-			style:background="transparent"
+			class="input grow min0 border-none bg-none {textsize}"
 			bind:value={inputValue}
 			{onkeydown}
 			onblur={() => addTag(inputValue)}

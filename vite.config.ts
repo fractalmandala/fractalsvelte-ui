@@ -17,6 +17,11 @@ export default defineConfig({
 		sveltekit({
 			alias: {
 				$lib: 'src/lib',
+				// demos import the package by its published name, exactly as a user would
+				'@fractaldesign/fractalsvelte-ui/icons/keylinestroke': 'src/lib/icons/keylinestroke.ts',
+				'@fractaldesign/fractalsvelte-ui/icons/keylinefill': 'src/lib/icons/keylinefill.ts',
+				'@fractaldesign/fractalsvelte-ui/icons': 'src/lib/icons/index.ts',
+				'@fractaldesign/fractalsvelte-ui': 'src/lib/index.ts',
 				'#lib': 'src/lib'
 			},
 			compilerOptions: {
@@ -25,7 +30,8 @@ export default defineConfig({
 			},
 			adapter: adapter(),
 			prerender: {
-				handleHttpError: 'warn'
+				handleHttpError: 'warn',
+				handleMissingId: 'warn'
 			},
 			extensions: ['.svelte', '.md'],
 			preprocess: [vitePreprocess(), mdsvex({ extensions: ['.md'] })]

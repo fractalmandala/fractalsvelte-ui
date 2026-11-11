@@ -3,10 +3,10 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
-	import { Icon } from '@fractaldesign/icons';
-	import { luSearch } from '@fractaldesign/icons/lucide';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klSearch } from '$lib/icons/keylinestroke.js';
 	import type { Surface, Size, Shape, Shadow, TextSize } from '$lib/types.js';
-	import { getFieldLook } from './field-context';
+	import { getFieldLook } from './field-context.js';
 	import Spinner from '../display/Spinner.svelte';
 	import Kbd from '../display/Kbd.svelte';
 	import CloseButton from '../actions/CloseButton.svelte';
@@ -72,9 +72,9 @@
 	});
 </script>
 
-<div class="row ycenter gap-xs px-xs border size shape {surface} {size} {shape} {shadow} {invalid ? 'is-invalid' : ''} {textsize} {className}">
+<div class="field row ycenter gap-xs px-xs border {surface} {size} {shape} {shadow} {invalid ? 'is-invalid' : ''} {textsize} {className}">
 	<span class="row ycenter shrink-0 pl-xs text-muted" aria-hidden="true">
-		{#if leading}{@render leading()}{:else}<Icon icon={luSearch} />{/if}
+		{#if leading}{@render leading()}{:else}<Icon icon={klSearch} />{/if}
 	</span>
 	<input
 		bind:this={inputEl}
@@ -84,8 +84,7 @@
 		{placeholder}
 		{disabled}
 		aria-label={restProps['aria-label'] ?? placeholder}
-		class="input grow min0 hfull border-none"
-		style:background="transparent"
+		class="input grow min0 hfull border-none bg-none"
 		{...restProps}
 	/>
 	{#if loading}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Meter from '$lib/components/display/Meter.svelte';
+	import { Meter } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <Meter value={64} label="Storage" />

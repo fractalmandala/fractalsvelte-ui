@@ -1,5 +1,5 @@
 <script lang="ts">
-	import RangeSlider from '$lib/components/forms/RangeSlider.svelte';
+	import { RangeSlider } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <RangeSlider label="Price" />

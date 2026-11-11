@@ -13,7 +13,7 @@
 
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Size, TextSize } from '$lib/types.js';
+	import type { Size, TextSize, Shape } from '$lib/types.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		options?: SegmentedOption[];
@@ -22,6 +22,7 @@
 		disabled?: boolean;
 		/** Submits the value with a form */
 		name?: string;
+		shape?: Shape;
 		textsize?: TextSize;
 		class?: string;
 		option?: Snippet<[{ option: SegmentedOption; selected: boolean }]>;
@@ -30,9 +31,10 @@
 	let {
 		options = [],
 		value = $bindable(''),
-		size = 'h-md',
+		size = 'h-lg',
 		disabled = false,
 		name = '',
+		shape = 'modern',
 		textsize = 'text-md',
 		class: className = '',
 		option,
@@ -61,11 +63,11 @@
 	}
 </script>
 
-<!-- The canonical fractalstyler segmented control: the selected segment is the
+<!-- The canonical the stylesheet segmented control: the selected segment is the
      one painted primary, the rest stay ghost. -->
 <div
 	bind:this={containerEl}
-	class="row ycenter shrink-0 pad-xs gap-xs bg-raised border radius-sm {textsize} {className}"
+	class="row ycenter shrink-0 pad-xs gap-xs state-selected border {shape} {textsize} {className}"
 	role="radiogroup"
 	aria-disabled={disabled || undefined}
 	{...restProps}
@@ -76,7 +78,7 @@
 		<button
 			type="button"
 			role="radio"
-			class="gap-xs variant size shape modern {selected ? 'primary' : 'ghost'} {size}"
+			class="gap-xs modern {selected ? 'primary' : 'ghost'} {size}"
 			data-value={opt.value}
 			aria-checked={selected}
 			tabindex={selected ? 0 : -1}

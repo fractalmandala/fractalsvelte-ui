@@ -3,7 +3,7 @@
 <script lang="ts">
 	import type { HTMLFieldsetAttributes } from 'svelte/elements';
 	import type { Snippet } from 'svelte';
-	import type { Surface, Border, Shape, Pad, Shadow, TextSize } from '$lib/types.js';
+	import type { Surface, Border, Shape, Shadow, TextSize } from '$lib/types.js';
 
 	interface Props extends HTMLFieldsetAttributes {
 		legend?: string;
@@ -11,7 +11,8 @@
 		surface?: Surface;
 		border?: Border;
 		shape?: Shape;
-		padding?: Pad;
+		/** Padding classes, e.g. `pad-md` or `px-lg py-sm`. */
+		padding?: string;
 		shadow?: Shadow;
 		textsize?: TextSize;
 		class?: string;
@@ -35,32 +36,14 @@
 
 <fieldset
 	{disabled}
-	class="fieldset-root box gap-sm {surface} {border} {shape} {padding} {shadow} {textsize} {className}"
+	class="box gap-sm wfull {surface} {border} {shape} {padding} {shadow} {textsize} {className}"
 	{...restProps}
 >
 	{#if legend}
-		<legend class="legend-text font-medium text-xs text-secondary px-xs">
+		<legend class="px-sm weight-500 text-xs text-secondary tt-u ls-wide-xl">
 			{legend}
 		</legend>
 	{/if}
 	{@render children?.()}
 </fieldset>
 
-<style>
-	.fieldset-root {
-		margin: 0;
-		width: 100%;
-		border: 1px solid var(--border, #e5e7eb);
-	}
-
-	.fieldset-root:disabled {
-		opacity: 0.6;
-		cursor: not-allowed;
-	}
-
-	.legend-text {
-		padding: 0 0.5rem;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-</style>

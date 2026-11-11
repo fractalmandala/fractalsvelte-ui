@@ -25,7 +25,7 @@
 	}: Props = $props();
 </script>
 
-<!-- The rotation is SVG (SMIL), not CSS: fractalstyler ships no spin keyframes. -->
+<!-- The rotation is SVG (SMIL), so it runs without any stylesheet keyframes. -->
 <svg
 	xmlns="http://www.w3.org/2000/svg"
 	viewBox="0 0 24 24"

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Bar from '$lib/components/display/Bar.svelte';
+	import { Bar } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <Bar fraction={0.65} />

@@ -3,26 +3,32 @@
 <script lang="ts">
 	import type { HTMLVideoAttributes } from 'svelte/elements';
 	import type { Snippet } from 'svelte';
-	import { Icon } from '@fractaldesign/icons';
-	import { luVideo } from '@fractaldesign/icons/lucide';
-	import type { Surface, Border, Shape, Shadow, Pad, TextSize } from '$lib/types.js';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klVideo } from '$lib/icons/keylinestroke.js';
+	import type { Surface, Border, Shape, Shadow, TextSize, Frame } from '$lib/types.js';
 
 	interface Props extends HTMLVideoAttributes {
+		/** Video file URL. */
 		src?: string;
 		poster?: string;
+		/** Heading shown above the video. */
 		title?: string;
+		/** Line under the title. */
 		caption?: string;
+		/** Shows the browser's playback controls. */
 		controls?: boolean;
 		autoplay?: boolean;
 		muted?: boolean;
 		loop?: boolean;
-		ratio?: string;
+		/** Aspect ratio, as one of the frame classes. */
+		ratio?: Frame;
 		preload?: 'auto' | 'metadata' | 'none';
 		surface?: Surface;
 		border?: Border;
 		shape?: Shape;
 		shadow?: Shadow;
-		padding?: Pad;
+		/** Padding classes, e.g. `pad-md` or `px-lg py-sm`. */
+		padding?: string;
 		textsize?: TextSize;
 		class?: string;
 		children?: Snippet;
@@ -37,7 +43,7 @@
 		autoplay = false,
 		muted = false,
 		loop = false,
-		ratio = '16 / 9',
+		ratio = 'frame-16-9',
 		preload = 'metadata',
 		surface = 'bg-surface',
 		border = 'border',
@@ -51,20 +57,19 @@
 	}: Props = $props();
 </script>
 
-<figure
-	class="video-card box gap-sm {surface} {border} {shape} {shadow} {padding} {textsize} {className}"
->
+<figure class="box gap-sm wfull {surface} {border} {shape} {shadow} {padding} {textsize} {className}">
 	{#if title || caption}
 		<figcaption class="row ycenter gap-sm">
-			<span class="icon-wrap row ycenter xcenter text-secondary" aria-hidden="true">
-				<Icon icon={luVideo} />
+			<span class="btn-icon inline-flex row xcenter ycenter h-lg mincurved state-hover text-secondary" aria-hidden="true">
+				<Icon icon={klVideo} />
 			</span>
-			<div class="box gap-none grow min0">
-				{#if title}<span class="video-title text-primary font-medium">{title}</span>{/if}
-				{#if caption}<span class="video-caption text-secondary text-xs">{caption}</span>{/if}
+			<div class="box grow min0">
+				{#if title}<span class="text-sm lh12 weight-500 text-primary">{title}</span>{/if}
+				{#if caption}<span class="text-xs lh12 text-secondary">{caption}</span>{/if}
 			</div>
 		</figcaption>
 	{/if}
+
 	<video
 		{...restProps}
 		{src}
@@ -74,42 +79,10 @@
 		{muted}
 		{loop}
 		{preload}
-		class="video-element wfull {shape}"
-		style:aspect-ratio={ratio}
+		class="block wfull fit-cover bg-black {ratio} {shape}"
 		aria-label={restProps['aria-label'] ?? title}
 	>
 		{@render children?.()}
 	</video>
 </figure>
 
-<style>
-	.video-card {
-		margin: 0;
-		width: 100%;
-	}
-
-	.icon-wrap {
-		width: 2rem;
-		height: 2rem;
-		border-radius: var(--radius-sm, 4px);
-		background: var(--bg-sunken, #f4f4f4);
-		flex-shrink: 0;
-	}
-
-	.video-title {
-		font-size: 0.875rem;
-		line-height: 1.25;
-	}
-
-	.video-caption {
-		font-size: 0.75rem;
-		line-height: 1.25;
-	}
-
-	.video-element {
-		display: block;
-		object-fit: cover;
-		background: #000;
-		outline: none;
-	}
-</style>

@@ -14,14 +14,14 @@
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import Toast from './Toast.svelte';
+	import Toast from '../core/Toast.svelte';
 
 	/**
 	 * top-left — floats in the top layer (a manual [popover]) at the top-left
 	 *            corner, inset by margins.
 	 * inline   — a plain stack wherever you place it.
 	 *
-	 * The other corners need right/bottom offsets or auto margins; fractalstyler
+	 * The other corners need right/bottom offsets or auto margins; the stylesheet
 	 * has neither, and its `* { margin: 0 }` reset removes the browser's own
 	 * centring margins on [popover], so the top-left corner is the only one a
 	 * popover can be pinned to with its classes.
@@ -70,7 +70,7 @@
 {:else}
 	<!-- Inline styles clear the popover's default canvas fill and border; display
 	     classes stay on the inner stack so it can still hide. -->
-	<div bind:this={stackEl} popover="manual" aria-live="polite" class="ml-md mt-md pad-xs text-primary border-none {textsize} {className}" style:background="transparent">
+	<div bind:this={stackEl} popover="manual" aria-live="polite" class="ml-md mt-md pad-xs text-primary border-none bg-none {textsize} {className}">
 		{@render stack()}
 	</div>
 {/if}

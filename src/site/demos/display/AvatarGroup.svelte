@@ -1,5 +1,5 @@
 <script lang="ts">
-	import AvatarGroup from '$lib/components/display/AvatarGroup.svelte';
+	import { AvatarGroup } from '@fractaldesign/fractalsvelte-ui';
 
 	const avatars = [
 		{ initials: 'AL', status: 'online' as const },

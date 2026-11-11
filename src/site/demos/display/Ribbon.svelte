@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Ribbon from '$lib/components/display/Ribbon.svelte';
-	import Card from '$lib/components/layout/Card.svelte';
+	import { Ribbon, Card } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <div class="relative w-64">

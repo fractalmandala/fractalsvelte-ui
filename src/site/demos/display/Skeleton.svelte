@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Skeleton from '$lib/components/display/Skeleton.svelte';
+	import { Skeleton } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <div class="row ycenter gap-md wfull">

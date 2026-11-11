@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SearchInput from '$lib/components/forms/SearchInput.svelte';
+	import { SearchInput } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <SearchInput />

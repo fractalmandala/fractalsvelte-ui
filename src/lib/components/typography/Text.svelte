@@ -56,25 +56,9 @@
 
 <svelte:element
 	this={as}
-	class="text-element {toneMap[tone]} {textsize} {weight ?? ''} {mono ? 'font-mono' : ''} {truncate ? 'truncate' : ''} {className}"
+	class="lh16 {toneMap[tone]} {textsize} {weight ?? ''} {mono ? 'font-mono' : ''} {truncate ? 'truncate' : ''} {className}"
 	{...restProps}
 >
 	{@render children?.()}
 </svelte:element>
 
-<style>
-	.text-element {
-		margin: 0;
-		line-height: 1.6;
-	}
-
-	.font-mono {
-		font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-	}
-
-	.truncate {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-</style>

@@ -27,12 +27,12 @@
 	}: Props = $props();
 
 	const defaultSizeMap: Record<number, string> = {
-		1: 'text-4xl font-extrabold',
-		2: 'text-3xl font-bold',
-		3: 'text-2xl font-bold',
-		4: 'text-xl font-semibold',
-		5: 'text-lg font-semibold',
-		6: 'text-md font-medium text-secondary uppercase'
+		1: 'text-4xl weight-800',
+		2: 'text-3xl weight-700',
+		3: 'text-2xl weight-700',
+		4: 'text-xl weight-600',
+		5: 'text-lg weight-600',
+		6: 'text-md weight-500 text-secondary tt-u'
 	};
 
 	const visualLevel = $derived(size ?? level);
@@ -41,17 +41,9 @@
 
 <svelte:element
 	this={`h${level}`}
-	class="heading-element {sizeClass} {weight ?? ''} {className}"
+	class="text-primary lh12 {sizeClass} {weight ?? ''} {className}"
 	{...restProps}
 >
 	{@render children?.()}
 </svelte:element>
 
-<style>
-	.heading-element {
-		margin: 0;
-		color: var(--text-primary, #111);
-		line-height: 1.25;
-		letter-spacing: -0.02em;
-	}
-</style>

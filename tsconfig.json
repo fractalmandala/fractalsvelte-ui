@@ -7,6 +7,10 @@
 			"$lib/*": ["./src/lib/*"],
 			"#lib": ["./src/lib"],
 			"#lib/*": ["./src/lib/*"],
+			"@fractaldesign/fractalsvelte-ui": ["./src/lib/index.ts"],
+			"@fractaldesign/fractalsvelte-ui/icons": ["./src/lib/icons/index.ts"],
+			"@fractaldesign/fractalsvelte-ui/icons/keylinestroke": ["./src/lib/icons/keylinestroke.ts"],
+			"@fractaldesign/fractalsvelte-ui/icons/keylinefill": ["./src/lib/icons/keylinefill.ts"],
 			"$site": ["./src/site"],
 			"$site/*": ["./src/site/*"]
 		}

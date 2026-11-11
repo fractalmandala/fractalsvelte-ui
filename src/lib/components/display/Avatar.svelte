@@ -41,7 +41,7 @@
 	let imgError = $state(false);
 	const uid = $props.id();
 
-	// fractalstyler has no avatar: the whole thing is one SVG, square by its
+	// the stylesheet has no avatar: the whole thing is one SVG, square by its
 	// viewBox, sized by a control-height class, inked by text-* classes.
 	const STATUS_CLASSES: Record<AvatarStatus, string> = {
 		online: 'text-success',

@@ -2,10 +2,10 @@
 
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from '@fractaldesign/icons';
-	import { luCheck } from '@fractaldesign/icons/lucide';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klCheck } from '$lib/icons/keylinestroke.js';
 	import type { Surface, Size, Shape, TextSize } from '$lib/types.js';
-	import Input from './Input.svelte';
+	import Input from '../core/Input.svelte';
 	import IconButton from '../actions/IconButton.svelte';
 
 	export type ColorFormat = 'hex' | 'rgb' | 'hsl';
@@ -123,9 +123,7 @@
 			bind:value
 			{disabled}
 			aria-label="Pick colour"
-			class="shrink-0 frame-1-1 size shape {size} {shape} border-strong bg-surface"
-			style:width="var(--height-{size.slice(2)})"
-			style:padding="0"
+			class="btn-icon {size} {shape} border-strong bg-surface"
 		/>
 		{#if showInput}
 			<Input
@@ -166,7 +164,7 @@
 			{/each}
 		</div>
 		{#if presets.some(isSelected)}
-			<span class="row ycenter gap-xs text-sm text-muted"><Icon icon={luCheck} /> {display(value)}</span>
+			<span class="row ycenter gap-xs text-sm text-muted"><Icon icon={klCheck} /> {display(value)}</span>
 		{/if}
 	{/if}
 	{#if errorMessage}<p class="text-body-sm text-danger" role="alert">{errorMessage}</p>{/if}

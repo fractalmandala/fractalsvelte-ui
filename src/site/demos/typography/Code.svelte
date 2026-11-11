@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Code from '$lib/components/typography/Code.svelte';
+	import { Code } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <Code>pnpm install</Code>

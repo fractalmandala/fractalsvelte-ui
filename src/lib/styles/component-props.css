@@ -1,0 +1,160 @@
+/* Ink on filled variants.
+ * Each fill picks its own text colour: white on a dark fill, near-black on a
+ * light one, computed from the fill token, so a theme only has to set the fill.
+ * To force a colour instead, set the matching override token in the theme:
+ *   --on-button, --on-button-secondary, --on-theme,
+ *   --on-info, --on-success, --on-warning, --on-danger
+ * Browsers without relative colour syntax use the fixed fallback in each rule.
+ */
+.primary {
+  background-color: var(--bg-button);
+  border: 1px solid var(--bg-button);
+  color: var(--on-button, var(--text-inverse));
+}
+.primary:hover {
+  background-color: var(--bg-button-hover);
+  border: 1px solid var(--bg-button-hover);
+}
+.primary.selected {
+  background-color: var(--bg-button-active);
+  border: 1px solid var(--bg-button-active);
+}
+
+.secondary {
+  background-color: var(--bg-button-secondary);
+  border: 1px solid var(--bg-button-secondary);
+  color: var(--on-button-secondary, var(--text-primary));
+}
+.secondary:hover {
+  background-color: var(--bg-button-secondary-hover);
+  border: 1px solid var(--bg-button-secondary-hover);
+}
+.secondary.selected {
+  background-color: var(--bg-button-secondary-active);
+  border: 1px solid var(--bg-button-secondary-active);
+}
+
+.themed {
+  background-color: var(--theme-color);
+  border: 1px solid var(--theme-color);
+  color: var(--on-theme, var(--white-fixed));
+}
+.themed:hover {
+  background-color: var(--theme-color-down);
+  border: 1px solid var(--theme-color-down);
+}
+.themed.selected {
+  background-color: var(--theme-color-down);
+  border: 1px solid var(--theme-color-down);
+}
+
+.outline {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+}
+.outline:hover {
+  color: var(--theme-color);
+  border: 1px solid var(--theme-color);
+}
+.outline.selected {
+  color: var(--text-primary);
+  background-color: var(--state-selected);
+  border: 1px solid var(--border-strong);
+}
+
+.ghost {
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: var(--text-primary);
+}
+.ghost:hover {
+  background-color: var(--state-hover);
+}
+.ghost.selected {
+  background-color: var(--state-selected);
+}
+
+.link {
+  background-color: transparent;
+  border: 1px solid transparent;
+  text-decoration: none;
+  text-decoration-color: var(--theme-color);
+  color: var(--theme-color);
+}
+.link:hover {
+  text-decoration: underline;
+  color: var(--theme-color);
+}
+
+
+.info {
+  background-color: var(--info);
+  border: 1px solid var(--info);
+  color: var(--on-info, var(--white-fixed));
+}
+
+.success {
+  background-color: var(--success);
+  border: 1px solid var(--success);
+  color: var(--on-success, var(--white-fixed));
+}
+
+.warning {
+  background-color: var(--warning);
+  border: 1px solid var(--warning);
+  color: var(--on-warning, var(--white-fixed));
+}
+
+.danger {
+  background-color: var(--danger);
+  border: 1px solid var(--danger);
+  color: var(--on-danger, var(--white-fixed));
+}
+.danger:hover {
+  background-color: var(--danger-hover);
+  border: 1px solid var(--danger-hover);
+}
+
+.msg.info { background-color: var(--info-00); border: 1px solid var(--info-25); color: var(--info-100); }
+.msg.success { background-color: var(--success-00); border: 1px solid var(--success-25); color: var(--success-100); }
+.msg.warning { background-color: var(--warning-00); border: 1px solid var(--warning-25); color: var(--warning-100); }
+.msg.danger { background-color: var(--danger-00); border: 1px solid var(--danger-25); color: var(--danger-100); }
+
+@supports (color: oklch(from red l c h)) {
+  .primary { color: var(--on-button, oklch(from var(--bg-button) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
+  .secondary { color: var(--on-button-secondary, oklch(from var(--bg-button-secondary) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
+  .themed { color: var(--on-theme, oklch(from var(--theme-color) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
+  .info, .variant-info { color: var(--on-info, oklch(from var(--info) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
+  .success, .variant-success { color: var(--on-success, oklch(from var(--success) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
+  .warning, .variant-warning { color: var(--on-warning, oklch(from var(--warning) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
+  .danger, .variant-danger { color: var(--on-danger, oklch(from var(--danger) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
+}
+
+.rect {
+  border-radius: 0;
+}
+
+.mincurved {
+  border-radius: var(--radius-sm, 3px);
+}
+
+.modern {
+  border-radius: var(--radius-md, 6px);
+}
+
+.curved {
+  border-radius: var(--radius-bs, 12px);
+}
+
+.round {
+  border-radius: var(--radius-full, 9999px);
+}
+
+/* With a size, the control keeps that size as its minimum height and grows with its content. */
+.hgrow.h-xs { height: auto; min-height: var(--h-xs); }
+.hgrow.h-sm { height: auto; min-height: var(--h-sm); }
+.hgrow.h-md { height: auto; min-height: var(--h-md); }
+.hgrow.h-bs { height: auto; min-height: var(--h-bs); }
+.hgrow.h-lg { height: auto; min-height: var(--h-lg); }
+.hgrow.h-xl { height: auto; min-height: var(--h-xl); }

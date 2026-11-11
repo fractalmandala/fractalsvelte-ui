@@ -5,7 +5,7 @@
  */
 
 // Types
-export * from './types';
+export * from './types.js';
 
 // Components
-export * from './components';
+export * from './components/index.js';

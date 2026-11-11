@@ -20,11 +20,11 @@
 	/*
 	 * Places a floating panel next to its trigger with no offset utilities.
 	 *
-	 * fractalstyler has .absolute but no top/left/inset classes. An absolutely
+	 * the stylesheet has .absolute but no top/left/inset classes. An absolutely
 	 * positioned child of a flex container, given no offsets, sits at its static
 	 * position — and the flexbox spec places it there as if it were the sole
 	 * flex item, honouring the container's justify/align. So a zero-size flex
-	 * "anchor" on one side of the trigger, aligned with fractalstyler's own
+	 * "anchor" on one side of the trigger, aligned with the stylesheet's own
 	 * .row/.box modifiers, parks the panel on that side and edge:
 	 *
 	 *   top:    anchor above the trigger, .row.ybot   → panel grows upward
@@ -84,7 +84,7 @@
 {/snippet}
 
 <!-- The outer .row makes the inner group shrink to the trigger. It is not
-     positioned on purpose: fractalstyler has no z-index utilities, and any
+     positioned on purpose: any
      positioned wrapper later in the page paints over earlier panels, so the
      anchor adds no positioned layers of its own. -->
 <div class="row {className}">

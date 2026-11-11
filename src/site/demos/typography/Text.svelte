@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Text from '$lib/components/typography/Text.svelte';
+	import { Text } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <Text tone="secondary">

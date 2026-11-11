@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Slider from '$lib/components/forms/Slider.svelte';
+	import { Slider } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <Slider label="Volume" />

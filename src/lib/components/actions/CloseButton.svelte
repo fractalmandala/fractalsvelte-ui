@@ -4,7 +4,8 @@
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 	import type { IconVariant, Size, Shape, Shadow } from '$lib/types.js';
 	import IconButton from '$lib/components/actions/IconButton.svelte';
-	import Close from '$lib/icons/close.svelte';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klX } from '$lib/icons/keylinestroke.js';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'type'> {
 		label?: string;
@@ -23,7 +24,7 @@
 		iconVariant,
 		variant,
 		size = 'h-md',
-		shape = 'rect',
+		shape = 'modern',
 		shadow = 'shad-none',
 		class: className = '',
 		...restProps
@@ -33,5 +34,5 @@
 </script>
 
 <IconButton {label} iconVariant={currentVariant} {size} {shape} {shadow} class={className} {...restProps}>
-	<Close />
+	<Icon icon={klX} />
 </IconButton>

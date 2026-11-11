@@ -1,6 +1,5 @@
 <script lang="ts">
-	import EmptyState from '$lib/components/blocks/EmptyState.svelte';
-	import Button from '$lib/components/actions/Button.svelte';
+	import { EmptyState, Button } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <EmptyState

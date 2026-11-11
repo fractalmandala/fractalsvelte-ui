@@ -10,7 +10,7 @@
 
 <script lang="ts">
 	// Shared track for Progress and Meter. Geometry is SVG attributes, colour is
-	// fractalstyler ink (currentColor), so the fill never needs a CSS width.
+	// the stylesheet ink (currentColor), so the fill never needs a CSS width.
 	import type { MessageText, Size } from '$lib/types.js';
 
 	interface Props {

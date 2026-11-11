@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Fieldset from '$lib/components/forms/Fieldset.svelte';
-	import Input from '$lib/components/forms/Input.svelte';
+	import { Fieldset, Input } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <Fieldset legend="Account Credentials">

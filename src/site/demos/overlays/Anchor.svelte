@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Anchor from '$lib/components/overlays/Anchor.svelte';
-	import Button from '$lib/components/actions/Button.svelte';
+	import { Anchor, Button } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <Anchor open>

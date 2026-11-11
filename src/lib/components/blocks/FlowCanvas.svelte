@@ -1,11 +1,11 @@
 <!-- @component A pannable, zoomable grid canvas for node diagrams. -->
 
 <script lang="ts">
-	import type { TextSize } from '$lib/types.js';
+	import type { TextSize, Shape } from '$lib/types.js';
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { Icon } from '@fractaldesign/icons';
-	import { luPlus, luMinus, luRotateCcw } from '@fractaldesign/icons/lucide';
+	import Icon from '$lib/components/core/Icon.svelte';
+	import { klMinus, klPlus, klRotateCcw } from '$lib/icons/keylinestroke.js';
 	import IconButton from '../actions/IconButton.svelte';
 	type Ratio = '16/9' | '9/16' | '4/3' | '3/4' | '3/2' | '2/3' | '1/1';
 
@@ -24,9 +24,11 @@
 		/** Size of the content plane, in canvas px */
 		planeWidth?: number;
 		planeHeight?: number;
+		shape?: Shape;
 		textsize?: TextSize;
 		class?: string;
 		children?: Snippet;
+		/** Snippet drawn over the canvas, such as zoom buttons. */
 		controls?: Snippet;
 	}
 
@@ -42,6 +44,7 @@
 		ratio = '16/9',
 		planeWidth = 1600,
 		planeHeight = 1000,
+		shape = 'modern',
 		textsize = 'text-md',
 		class: className = '',
 		children,
@@ -98,7 +101,7 @@
      which would include icons inside the nodes. -->
 <div
 	bind:clientWidth={width}
-	class="relative box ybot xright wfull bg-sunken border radius-md {textsize} {className}"
+	class="relative box ybot xright wfull state-hover border {shape} {textsize} {className}"
 	role="application"
 	aria-label="Flow canvas"
 	{onpointerdown}
@@ -134,19 +137,19 @@
 			</foreignObject>
 		</g>
 	</svg>
-	<div class="absolute ml-sm mb-sm mr-sm row ycenter gap-xs pad-xs bg-surface border shadow-md radius-md" data-flow-controls>
+	<div class="absolute ml-sm mb-sm mr-sm row ycenter gap-xs pad-xs bg-overlay border shad-md mincurved" data-flow-controls>
 		{#if controls}
 			{@render controls()}
 		{:else}
 			<IconButton icon="ghost" size="h-sm" label="Zoom out" onclick={() => zoomBy(-0.15)}>
-				<Icon icon={luMinus} />
+				<Icon icon={klMinus} />
 			</IconButton>
 			<span class="text-sm tabular-nums text-secondary">{String(Math.round(zoom * 100)).padStart(3, '\u2007')}%</span>
 			<IconButton icon="ghost" size="h-sm" label="Zoom in" onclick={() => zoomBy(0.15)}>
-				<Icon icon={luPlus} />
+				<Icon icon={klPlus} />
 			</IconButton>
 			<IconButton icon="ghost" size="h-sm" label="Reset view" onclick={reset}>
-				<Icon icon={luRotateCcw} />
+				<Icon icon={klRotateCcw} />
 			</IconButton>
 		{/if}
 	</div>

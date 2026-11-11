@@ -6,11 +6,17 @@ Fractalsvelte UI is a Sveltekit components library.
 
 - The components are those in `lib/components` ONLY. Any other files in other folders are not components.
 - The canonical props are at `types.ts` at `lib/types.ts`. Any other file is to be ignored. In case of conflicts or ambiguities `lib/types.ts` is the final word.
-- The canonical styling for all the canonical props are in `fscomponents.sass` at `lib/fscomponents.sass`.
-- The canonical list of tokens and their current default values is `fstokens.sass` at `lib/fstokens.sass`. In case of conflicts or ambiguities, `lib/fstokens.sass` is the final word. See section `## Tokens` below.
+- The canonical styling for all the canonical props is the CSS in `lib/styles/`, chiefly `component-props.css` (variant, shape, size) and `components.css` (component classes). Components are styled with these classes only: no `<style>` blocks, no inline styles, no hardcoded radius or height.
+- The canonical list of tokens and their current default values is the `:root` and `[data-mode]` blocks in `lib/styles/*.css` (`colors-themes.css`, `shapes-sizes.css`, `gaps-pads-margins.css`, `typography.css`). In case of conflicts or ambiguities, those files are the final word. See section `## Tokens` below.
 - `src/lib` should only contain components and any/all supporting files for them that should be accessible to the user. That is, it should only contain what is to be published in the package as part of fractalsvelte-ui. 
 	- `src/routes` is for preview pages, doc testing etc.
 	- everything else should be in `src/site`.
+- Use Bend!
+When using Bend:
+- run `bend guide` to learn it
+- use `LAWS.bend` to keep important rules
+- run `bend PROOF.bend` before committing
+- parallelize the code whenever possible
 
 > A component, its canonical props, styling, AND the setup for its documentation are ONE SINGLE UNIT. That is, a component is not complete till its documentation is also prepared, in the form of:
 1. Component file path
@@ -66,11 +72,11 @@ So, for all components that have `variant` listed in the `component-previews.ts`
 
 ```
 <div class="row wrap gap-bs ycenter">
-	<Component class="variant primary'>Primary</Component>
-	<Component class="variant secondary'>Secondary</Component>
-	<Component class="variant themed'>Themed</Component>
-	<Component class="variant outline'>Outline</Component>
-	<Component class="variant ghost'>Ghost</Component>
-	<Component class="variant link'>Link</Component>
+	<Component variant="primary">Primary</Component>
+	<Component variant="secondary">Secondary</Component>
+	<Component variant="themed">Themed</Component>
+	<Component variant="outline">Outline</Component>
+	<Component variant="ghost">Ghost</Component>
+	<Component variant="link">Link</Component>
 </div>
 ```

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Spinner from '$lib/components/display/Spinner.svelte';
+	import { Spinner } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <Spinner />
