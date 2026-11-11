@@ -8,6 +8,8 @@ A Svelte 5 component library styled by a single stylesheet of classes and tokens
 - **2,000 icons** in two tree-shakeable packs.
 - **No runtime dependencies** beyond Svelte.
 
+- [Githug](https://github.com/fractalmandala/fractalsvelte-ui) | [NPM](https://www.npmjs.com/package/@fractaldesign/fractalsvelte-ui)
+
 ## Install
 
 ```bash

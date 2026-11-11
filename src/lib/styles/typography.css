@@ -235,4 +235,4 @@
 
 .tabular-nums { font-variant-numeric: tabular-nums; }
 
-.page-header p em { font-style: normal; font-size: var(--text-md); background-color: var(--info-00); padding: 2px 4px; border: 1px solid var(--info-25); color: var(--info-100); border-radius: var(--radius-xs) }
+.page-header p em { font-style: normal; font-size: var(--text-md); background-color: var(--neutral-00); padding: 2px 4px; border: 1px solid var(--neutral-25); color: var(--neutral-100); border-radius: var(--radius-xs) }

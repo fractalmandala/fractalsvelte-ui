@@ -39,7 +39,17 @@
 	}: Props = $props();
 
 	// The rule down the left edge, in the weight the border prop asks for.
-	const LINE: Record<string, string> = { border: 'bl', 'border-strong': 'bl-str', 'border-subtle': 'bl-sub', 'border-dashed': 'bl', 'border-none': '' };
+	const LINE: Record<string, string> = {
+		border: 'bl',
+		'border-strong': 'bl-str',
+		'border-subtle': 'bl-sub',
+		'border-dashed': 'bl-dash',
+		'border-none': '',
+		bb: 'bl',
+		'bb-str': 'bl-str',
+		'bb-sub': 'bl-sub',
+		'bb-dash': 'bl-dash'
+	};
 	const ACCENT: Record<string, string> = { 'theme-color': 'text-theme', 'theme-color-up': 'text-theme-up', 'theme-color-down': 'text-theme-down' };
 </script>
 

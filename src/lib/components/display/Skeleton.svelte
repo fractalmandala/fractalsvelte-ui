@@ -34,11 +34,16 @@
 	{...restProps}
 >
 	{#each { length: lines }, i (i)}
-		<div
-			class="state-selected anim-pulse {circle ? 'round' : shape}"
-			style:width={lines > 1 && i === lines - 1 && !circle ? '60%' : width}
-			style:height={circle ? width : height}
-		></div>
+		{#if circle}
+			<!-- A circle is square by its frame class; a full-width default would make it a page-wide disc, so it falls back to 3rem. -->
+			<div class="state-selected anim-pulse round frame-1-1" style:width={width === '100%' ? '3rem' : width}></div>
+		{:else}
+			<div
+				class="state-selected anim-pulse {shape}"
+				style:width={lines > 1 && i === lines - 1 ? '60%' : width}
+				style:height={height}
+			></div>
+		{/if}
 	{/each}
 </div>
 

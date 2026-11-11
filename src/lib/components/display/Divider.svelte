@@ -33,8 +33,12 @@
 		border: 'bt',
 		'border-strong': 'bt-str',
 		'border-subtle': 'bt-sub',
-		'border-dashed': 'bt',
-		'border-none': ''
+		'border-dashed': 'bt-dash',
+		'border-none': '',
+		bb: 'bt',
+		'bb-str': 'bt-str',
+		'bb-sub': 'bt-sub',
+		'bb-dash': 'bt-dash'
 	};
 </script>
 

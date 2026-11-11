@@ -135,3 +135,5 @@
 .overflow-hidden { overflow: hidden; }
 .overflow-visible { overflow: visible; }
 .isolate { isolation: isolate; }
+
+.flex-shrink { flex-shrink: 1 }

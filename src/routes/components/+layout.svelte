@@ -93,7 +93,6 @@
 	</section>
 </section>
 <aside class="sidebar-right px-lg py-lg">
-	
 	<div class="box gap-md">
 			<IconTextButton label={copied ? 'Copied' : 'Copy this Page'} shape="mincurved" icon="secondary" size="h-md" onclick={copyPage}>
 		copy

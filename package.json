@@ -1,6 +1,6 @@
 {
 	"name": "@fractaldesign/fractalsvelte-ui",
-	"version": "1.3.0",
+	"version": "1.4.0",
 	"description": "Svelte 5 component library styled by one class-and-token stylesheet: every prop value is a class you can read. No Tailwind, no runtime CSS-in-JS.",
 	"homepage": "https://fractalsvelte.dev/fractalsvelte-ui",
 	"type": "module",
