@@ -1,0 +1,13 @@
+/* Motion kit A — glare, blur channel, drag cursors. */
+
+/* Highlight that follows --px/--py percentages written by tilt({ glare: true }). */
+.glare {
+	background-image: radial-gradient(circle at var(--px, 50%) var(--py, 50%), color-mix(in oklab, var(--white-fixed) 42%, transparent) 0%, transparent 58%);
+}
+
+/* Entrance blur. JavaScript writes --blur as a unitless px amount. */
+.blur-in { filter: blur(calc(var(--blur, 0) * 1px)); }
+
+/* Drag affordances. */
+.grab { cursor: grab; }
+.grabbing { cursor: grabbing; }

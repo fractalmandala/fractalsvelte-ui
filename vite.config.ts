@@ -1,51 +1,22 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-static';
 import { sveltekit } from '@sveltejs/kit/vite';
-import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { defineConfig } from 'vite';
-import { mdsvex } from 'mdsvex';
-import { fileURLToPath } from 'node:url';
-
-const site = fileURLToPath(new URL('./src/site', import.meta.url));
 
 export default defineConfig({
-	resolve: {
-		alias: {
-			$site: site
-		}
-	},
 	plugins: [
 		sveltekit({
-			alias: {
-				$lib: 'src/lib',
-				// demos import the package by its published name, exactly as a user would
-				'@fractaldesign/fractalsvelte-ui/icons/keylinestroke': 'src/lib/icons/keylinestroke.ts',
-				'@fractaldesign/fractalsvelte-ui/icons/keylinefill': 'src/lib/icons/keylinefill.ts',
-				'@fractaldesign/fractalsvelte-ui/icons': 'src/lib/icons/index.ts',
-				'@fractaldesign/fractalsvelte-ui': 'src/lib/index.ts',
-				'#lib': 'src/lib'
-			},
 			compilerOptions: {
 				runes: ({ filename }) =>
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
-			adapter: adapter(),
-			prerender: {
-				handleHttpError: 'warn',
-				handleMissingId: 'warn'
-			},
-			extensions: ['.svelte', '.md'],
-			preprocess: [vitePreprocess(), mdsvex({ extensions: ['.md'] })]
+			adapter: adapter({ fallback: '404.html' }),
+			// Examples and docs import the library exactly as a consumer would.
+			alias: {
+				'@fractaldesign/fractalsvelte-ui/motion': 'src/lib/motion/index.ts',
+				'@fractaldesign/fractalsvelte-ui/theme': 'src/lib/theme/index.ts',
+				'@fractaldesign/fractalsvelte-ui/styles': 'src/lib/styles/custom.css',
+				'@fractaldesign/fractalsvelte-ui': 'src/lib/index.ts'
+			}
 		})
-	],
-	ssr: {
-		noExternal: ['@fractaldesign/pop-svelte']
-	},
-	optimizeDeps: {
-		exclude: ['@fractaldesign/pop-svelte']
-	},
-	server: {
-		fs: {
-			allow: ['..']
-		}
-	}
+	]
 });

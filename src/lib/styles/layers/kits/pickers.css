@@ -1,0 +1,45 @@
+/* Pickers — a grid of day cells and the surfaces of a colour picker.
+ * --vx / --vy place a free thumb (0–1); --angle is a hue in degrees;
+ * --color is any CSS colour, --color-solid the same colour fully opaque. */
+:root { --vx: 0; --vy: 0; --angle: 0; --color: transparent; --color-solid: transparent; }
+
+/* A week: seven equal columns. */
+.grid-7 { display: grid; grid-template-columns: repeat(7, minmax(var(--h-lg), 1fr)); }
+
+/* A square, centred, pressable cell — a day in a month, a swatch in a palette. */
+.cell { display: grid; place-items: center; aspect-ratio: 1; width: 100%; padding: 0; border: 1px solid transparent; border-radius: var(--radius-md); background-color: transparent; font: inherit; cursor: pointer; outline: none; transition: background-color var(--motionin1), color var(--motionin1), border-color var(--motionin1), scale calc(var(--spring-ms) * var(--motion-scale)) var(--spring); }
+.cell:hover { background-color: var(--state-hover); }
+.cell:active { scale: 0.92; }
+.cell:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; position: relative; z-index: 1; }
+.cell.outside { color: var(--text-muted); }
+.cell.today { color: var(--theme-color); font-weight: 600; }
+.cell.in-range { border-radius: 0; background-color: color-mix(in oklab, var(--theme-color) 14%, transparent); }
+.cell.in-range.preview { background-color: color-mix(in oklab, var(--theme-color) 8%, transparent); border-block-color: color-mix(in oklab, var(--theme-color) 40%, transparent); border-style: dashed none; }
+.cell.selected { background-color: var(--theme-color); color: var(--on-theme, var(--white-fixed)); font-weight: 600; }
+.cell.selected.range-start { border-radius: var(--radius-md) 0 0 var(--radius-md); }
+.cell.selected.range-end { border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+.cell.selected.range-start.range-end { border-radius: var(--radius-md); }
+.cell[aria-disabled='true'] { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
+.cell[aria-disabled='true']:hover { background-color: transparent; }
+
+/* A thumb that moves on both axes. */
+.thumb.free { top: calc(var(--vy, 0) * 100%); left: calc(var(--vx, 0) * 100%); }
+
+/* Transparency, shown as a chequerboard under a colour. */
+.chequer { background-image: repeating-conic-gradient(var(--border-strong) 0 25%, var(--bg-overlay) 0 50%); background-size: 0.5rem 0.5rem; }
+.swatch { background-image: linear-gradient(var(--color, transparent), var(--color, transparent)), repeating-conic-gradient(var(--border-strong) 0 25%, var(--bg-overlay) 0 50%); background-size: 100% 100%, 0.5rem 0.5rem; box-shadow: inset 0 0 0 1px var(--border); }
+.swatch.selected { box-shadow: inset 0 0 0 1px var(--border), 0 0 0 2px var(--bg-overlay), 0 0 0 calc(2px + 0.125rem) var(--theme-color); }
+
+/* Colour surfaces. A plane is saturation (x) by value (y) at --angle; a spectrum is every hue;
+ * a fade runs from transparent to --color-solid. */
+.plane { background-image: linear-gradient(to top, oklch(0 0 0), transparent), linear-gradient(to right, oklch(1 0 0), hsl(calc(var(--angle, 0) * 1deg) 100% 50%)); }
+.spectrum { background-image: linear-gradient(to right, hsl(0 100% 50%), hsl(60 100% 50%), hsl(120 100% 50%), hsl(180 100% 50%), hsl(240 100% 50%), hsl(300 100% 50%), hsl(360 100% 50%)); }
+.fade { background-image: linear-gradient(to right, transparent, var(--color-solid, transparent)), repeating-conic-gradient(var(--border-strong) 0 25%, var(--bg-overlay) 0 50%); background-size: 100% 100%, 0.5rem 0.5rem; }
+
+
+/* A typable unit inside a date or time field — a day, an hour, a period. */
+.segment { display: inline-block; min-width: calc(var(--ch, 2) * 1ch); padding-inline: 0.125rem; border-radius: var(--radius-sm); text-align: center; font-variant-numeric: tabular-nums; caret-color: transparent; outline: none; cursor: default; user-select: none; }
+.segment:focus { background-color: var(--theme-color); color: var(--on-theme, var(--white-fixed)); }
+.segment.empty { color: var(--text-muted); }
+.segment:focus.empty { color: var(--on-theme, var(--white-fixed)); }
+.segment[aria-disabled='true'] { cursor: not-allowed; }

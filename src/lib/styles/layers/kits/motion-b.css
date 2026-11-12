@@ -1,0 +1,59 @@
+/* motion (b) — marquee, ticker, text, typewriter, parallax, scroll progress, transitions, lists. */
+
+/* An endless strip. Each .marquee-group is one copy of the content and slides by
+ * its own length plus the gap, so copies tile seamlessly. JS sets --duration (s). */
+.marquee { display: flex; overflow: hidden; gap: var(--gap, var(--space-lg)); }
+.marquee-group { display: flex; flex: none; align-items: center; gap: var(--gap, var(--space-lg)); min-width: 100%; animation: marquee-x calc(var(--duration, 20) * 1s * var(--motion-scale)) linear infinite; }
+.marquee.vertical { flex-direction: column; }
+.marquee.vertical .marquee-group { flex-direction: column; min-width: 0; min-height: 100%; animation-name: marquee-y; }
+.marquee.reverse .marquee-group { animation-direction: reverse; }
+.marquee.pausable:hover .marquee-group, .marquee.pausable:focus-within .marquee-group { animation-play-state: paused; }
+.marquee.fade { mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent); }
+.marquee.vertical.fade { mask-image: linear-gradient(180deg, transparent, black 12%, black 88%, transparent); }
+.marquee.still .marquee-group { animation: none; flex-wrap: wrap; min-width: 0; flex: 1 1 auto; }
+@keyframes marquee-x { to { translate: calc(-100% - var(--gap, var(--space-lg))) 0; } }
+@keyframes marquee-y { to { translate: 0 calc(-100% - var(--gap, var(--space-lg))); } }
+@media (prefers-reduced-motion: reduce) {
+	.marquee-group { animation: none; }
+}
+
+/* A rolling digit: .slot clips one line, .slot-reel stacks 0–9 and moves by --digit. */
+.slot { display: inline-block; height: 1lh; overflow: clip; vertical-align: bottom; }
+.slot-reel { display: flex; flex-direction: column; translate: 0 calc(var(--digit, 0) * -10%); }
+
+/* Holds .anim-in children at their first frame until the class is removed. */
+.held .anim-in { animation-play-state: paused; }
+
+/* A text cursor in the current ink. */
+.cursor { display: inline-block; width: 0.09em; height: 1em; margin-inline-start: 0.08em; vertical-align: -0.12em; background-color: currentColor; border-radius: var(--radius-xs); }
+
+/* Scroll-driven parallax where the platform supports it: --speed scales the travel. */
+@keyframes parallax-y { from { translate: 0 calc((50vh + 50%) * var(--speed, 0.2) * var(--motion-scale) * -1); } to { translate: 0 calc((50vh + 50%) * var(--speed, 0.2) * var(--motion-scale)); } }
+@keyframes parallax-x { from { translate: calc((50vw + 50%) * var(--speed, 0.2) * var(--motion-scale) * -1) 0; } to { translate: calc((50vw + 50%) * var(--speed, 0.2) * var(--motion-scale)) 0; } }
+@supports (animation-timeline: view()) {
+	.parallax-view { animation: parallax-y linear both; animation-timeline: view(); animation-range: cover; }
+	.parallax-view.axis-x { animation-name: parallax-x; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.parallax-view { animation: none; }
+}
+
+/* Progress along the x axis by scale, not width: compositor-only. */
+.fill.scaled { left: 0; width: 100%; scale: var(--value, 0) 1; transform-origin: left; }
+.track.hairline { height: 0.1875rem; }
+.edge-top { position: fixed; inset: 0 0 auto 0; z-index: var(--z-toast); }
+.edge-bottom { position: fixed; inset: auto 0 0 0; z-index: var(--z-toast); }
+
+/* Tones re-point the accent, so .fill, .ring and .text-theme follow. */
+.tone-neutral { --theme-color: var(--text-secondary); }
+.tone-info { --theme-color: var(--info); }
+.tone-success { --theme-color: var(--success); }
+.tone-warning { --theme-color: var(--warning); }
+.tone-danger { --theme-color: var(--danger); }
+
+/* Children share one grid cell: an outgoing and an incoming view overlap. */
+.stacked { display: grid; }
+.stacked > * { grid-area: 1 / 1; }
+
+/* An item on its way out, lifted from the flow at its last box (JS writes --ox --oy --ow). */
+.leaving { position: absolute; top: calc(var(--oy, 0) * 1px); left: calc(var(--ox, 0) * 1px); width: calc(var(--ow, 0) * 1px); margin: 0; pointer-events: none; }

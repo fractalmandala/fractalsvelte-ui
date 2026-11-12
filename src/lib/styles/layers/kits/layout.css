@@ -1,0 +1,55 @@
+/* layout kit — primitives the system leaves open. */
+
+/* A resizable pane: --pane is its share (a percent, written by the group) and
+ * flex turns shares into sizes. .settle springs it when it is not being dragged. */
+.pane { flex: var(--pane, 1) 1 0; min-width: 0; min-height: 0; overflow: hidden; }
+.pane.settle { transition: flex-grow calc(var(--spring-ms) * var(--motion-scale)) var(--spring); }
+
+/* The draggable hairline between panes, with a wide invisible hit area. */
+.splitter { position: relative; flex: none; display: flex; align-items: center; justify-content: center; inline-size: 1px; background-color: var(--border-subtle); cursor: col-resize; outline: none; transition: background-color var(--motionin1), box-shadow var(--motionin1); }
+.splitter::before { content: ''; position: absolute; inset-block: 0; inset-inline: calc(var(--space-sm) * -1); }
+.splitter[aria-orientation='horizontal'] { inline-size: auto; block-size: 1px; cursor: row-resize; }
+.splitter[aria-orientation='horizontal']::before { inset-block: calc(var(--space-sm) * -1); inset-inline: 0; }
+.splitter:hover { background-color: var(--border-strong); }
+.splitter:focus-visible, .splitter.active { background-color: var(--theme-color); box-shadow: 0 0 0 1px var(--theme-color); }
+
+/* Bento: track count, row height and gap from --cols, --row-h, --gap.
+ * Children span with --cspan / --rspan. A narrow container collapses to one column. */
+.bento { display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); grid-auto-rows: var(--row-h, 8rem); gap: var(--gap, var(--space-md)); container-type: inline-size; }
+.bento > .span { grid-column: span var(--cspan, 1); grid-row: span var(--rspan, 1); min-width: 0; min-height: 0; }
+@container (max-width: 28rem) {
+	.bento { grid-template-columns: minmax(0, 1fr); }
+	.bento > .span { grid-column: auto; grid-row: auto; }
+}
+
+/* Masonry: native CSS grid masonry when supported; .packed is the JS fallback. */
+.masonry { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: var(--gap, var(--space-md)); }
+@supports (grid-template-rows: masonry) {
+	.masonry { grid-template-rows: masonry; }
+}
+.masonry.packed { position: relative; height: calc(var(--extent, 0) * 1px); }
+.masonry.packed > .placed { position: absolute; top: 0; inset-inline-start: 0; width: calc((100% - (var(--cols, 3) - 1) * var(--gap, 0px)) / var(--cols, 3)); translate: calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px); }
+
+/* Edge fades on a scroller: JS writes --fade-* to the fade length, or 0 when that edge is reached. */
+.fade-y { mask-image: linear-gradient(to bottom, transparent, black var(--fade-top, 0px), black calc(100% - var(--fade-bottom, 0px)), transparent); }
+.fade-x { mask-image: linear-gradient(to right, transparent, black var(--fade-left, 0px), black calc(100% - var(--fade-right, 0px)), transparent); }
+.fade-y.fade-x { mask-image: linear-gradient(to bottom, transparent, black var(--fade-top, 0px), black calc(100% - var(--fade-bottom, 0px)), transparent), linear-gradient(to right, transparent, black var(--fade-left, 0px), black calc(100% - var(--fade-right, 0px)), transparent); mask-composite: intersect; -webkit-mask-composite: destination-in; }
+
+/* A thin scrollbar that appears only on hover or keyboard focus. */
+.scroll-hover { scrollbar-width: none; }
+.scroll-hover:is(:hover, :focus-visible) { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+
+/* Completes the measure-based max-height ladder. */
+.max-h-2xl { max-height: var(--measure-2xl); }
+
+/* Sticky offset: combine with .sticky. */
+.pin-top { top: var(--offset, 0px); }
+.pin-bottom { bottom: var(--offset, 0px); }
+
+/* A 1px probe for IntersectionObserver, sitting on the sticky edge. */
+.sentinel { height: 1px; margin: 0; padding: 0; overflow: hidden; pointer-events: none; }
+.sentinel.start { margin-bottom: -1px; }
+.sentinel.end { margin-top: -1px; }
+
+/* Centres a measure-width container in its parent. */
+.centered { margin-inline: auto; }

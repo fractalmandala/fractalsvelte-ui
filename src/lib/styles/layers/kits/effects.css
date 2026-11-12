@@ -1,0 +1,68 @@
+/* Effects kit: light, glass and pattern primitives shared across the premium surfaces. */
+
+@property --angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+
+@keyframes spin-angle { to { --angle: 360deg; } }
+@keyframes drift { 50% { translate: 8% -6%; } }
+@keyframes drift-alt { 50% { translate: -10% 8%; rotate: -8deg; } }
+
+/* Pointer-following radial light. --px/--py are unitless fractions from pointer(). */
+.light { position: relative; isolation: isolate; overflow: hidden; contain: paint; --light-color: var(--theme-color); }
+.light-theme { --light-color: var(--theme-color); }
+.light-neutral { --light-color: var(--white-fixed); }
+.light::before, .light::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(circle at calc(var(--px, 0.5) * 100%) calc(var(--py, 0.5) * 100%), color-mix(in oklab, var(--light-color) calc(var(--light-intensity, 0.35) * 100%), transparent), transparent var(--light-size, 40%)); }
+.light::before { z-index: -1; }
+.light::after { z-index: 1; padding: 1px; mask: linear-gradient(white 0 0) content-box, linear-gradient(white 0 0); mask-composite: exclude; -webkit-mask: linear-gradient(white 0 0) content-box, linear-gradient(white 0 0); -webkit-mask-composite: xor; }
+
+/* Conic gradient border, shared by glow-card and border-beam. Rotates via registered --angle. */
+.ring-grad { position: relative; isolation: isolate; }
+.ring-grad::before { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: inherit; padding: 1px; pointer-events: none; background: conic-gradient(from var(--angle, 0deg), var(--ring-grad)); mask: linear-gradient(white 0 0) content-box, linear-gradient(white 0 0); mask-composite: exclude; -webkit-mask: linear-gradient(white 0 0) content-box, linear-gradient(white 0 0); -webkit-mask-composite: xor; }
+.ring-theme { --ring-grad: var(--theme-color), transparent 25%, var(--theme-color-up) 50%, transparent 75%, var(--theme-color); }
+.ring-rainbow { --ring-grad: oklch(0.7 var(--chroma) var(--hue)), oklch(0.7 var(--chroma) calc(var(--hue) + 60)), oklch(0.7 var(--chroma) calc(var(--hue) + 120)), oklch(0.7 var(--chroma) calc(var(--hue) + 180)), oklch(0.7 var(--chroma) calc(var(--hue) + 240)), oklch(0.7 var(--chroma) calc(var(--hue) + 300)), oklch(0.7 var(--chroma) var(--hue)); }
+.ring-subtle { --ring-grad: color-mix(in oklab, var(--theme-color) 45%, transparent), transparent 30%, color-mix(in oklab, var(--theme-color-up) 40%, transparent) 55%, transparent; }
+.ring-beam { --ring-grad: transparent, var(--theme-color) var(--beam-size, 8%), transparent calc(var(--beam-size, 8%) * 2); }
+.halo { box-shadow: 0 0 1.75rem -0.5rem color-mix(in oklab, var(--theme-color) 50%, transparent); }
+.spin { animation: spin-angle calc(var(--spin, 8) * 1s * var(--motion-scale)) linear infinite; animation-delay: calc(var(--spin-delay, 0) * 1s); }
+.spin.reverse { animation-direction: reverse; }
+.spin-hover { animation-play-state: paused; }
+.spin-hover:hover, .spin-hover:focus-within { animation-play-state: running; will-change: --angle; }
+
+/* Drifting blurred colour fields, hues offset from --hue. */
+.aurora { position: relative; isolation: isolate; overflow: hidden; contain: paint; }
+.aurora::before, .aurora::after { content: ''; position: absolute; inset: -40%; z-index: -1; pointer-events: none; filter: blur(4rem); opacity: var(--aurora-intensity, 0.45); will-change: translate; }
+.aurora::before { background: radial-gradient(ellipse at 20% 30%, oklch(0.72 var(--chroma) calc(var(--hue) + 20)) 0%, transparent 55%), radial-gradient(ellipse at 80% 20%, oklch(0.7 var(--chroma) calc(var(--hue) - 45)) 0%, transparent 50%); animation: drift calc(var(--aurora, 18) * 1s * var(--motion-scale)) ease-in-out infinite alternate; }
+.aurora::after { background: radial-gradient(ellipse at 70% 80%, oklch(0.68 var(--chroma) calc(var(--hue) + 85)) 0%, transparent 55%), radial-gradient(ellipse at 15% 70%, oklch(0.7 var(--chroma) calc(var(--hue) - 80)) 0%, transparent 50%); animation: drift-alt calc(var(--aurora, 18) * 1.25 * 1s * var(--motion-scale)) ease-in-out infinite alternate; }
+
+/* Pure CSS repeating patterns with an optional fade mask. */
+.pattern { --pattern-size: 1.25rem; --pattern-tone: color-mix(in oklab, var(--text-muted) 35%, transparent); position: absolute; inset: 0; pointer-events: none; background-size: var(--pattern-size) var(--pattern-size); }
+.pattern-grid { background-image: linear-gradient(var(--pattern-tone) 1px, transparent 1px), linear-gradient(90deg, var(--pattern-tone) 1px, transparent 1px); }
+.pattern-dots { background-image: radial-gradient(circle, var(--pattern-tone) 1px, transparent 1.25px); }
+.pattern-lines { background-image: linear-gradient(var(--pattern-tone) 1px, transparent 1px); }
+.pattern-cross { background-image: linear-gradient(var(--pattern-tone) 1px, transparent 1px), linear-gradient(90deg, var(--pattern-tone) 1px, transparent 1px), linear-gradient(45deg, transparent calc(50% - 1px), var(--pattern-tone) calc(50% - 1px), var(--pattern-tone) calc(50% + 1px), transparent calc(50% + 1px)); background-size: var(--pattern-size) var(--pattern-size), var(--pattern-size) var(--pattern-size), calc(var(--pattern-size) * 2) calc(var(--pattern-size) * 2); }
+.mask-radial { mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%); -webkit-mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%); }
+.mask-top { mask-image: linear-gradient(to bottom, black 20%, transparent 85%); -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 85%); }
+.mask-bottom { mask-image: linear-gradient(to top, black 20%, transparent 85%); -webkit-mask-image: linear-gradient(to top, black 20%, transparent 85%); }
+.mask-edges { mask-image: linear-gradient(to right, transparent, black 18%, black 82%, transparent), linear-gradient(to bottom, transparent, black 18%, black 82%, transparent); mask-composite: intersect; -webkit-mask-image: linear-gradient(to right, transparent, black 18%, black 82%, transparent), linear-gradient(to bottom, transparent, black 18%, black 82%, transparent); -webkit-mask-composite: destination-in; }
+
+/* Text fill: shimmer sweep and theme-derived gradients. */
+.ink { background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+.ink::selection, .ink *::selection { color: var(--text-primary); -webkit-text-fill-color: var(--text-primary); background-color: var(--state-selected); }
+.ink-shimmer { background-image: linear-gradient(100deg, var(--text-muted) 0%, var(--text-muted) calc(50% - var(--shimmer-spread, 12%)), var(--text-primary) 50%, var(--text-muted) calc(50% + var(--shimmer-spread, 12%)), var(--text-muted) 100%); background-size: 200% 100%; animation: shimmer calc(var(--shimmer-ms, 1.8) * 1s * var(--motion-scale)) linear infinite; }
+.ink-theme { background-image: linear-gradient(90deg, var(--theme-color), var(--theme-color-up)); }
+.ink-aurora { background-image: linear-gradient(90deg, oklch(0.65 var(--chroma) var(--hue)), oklch(0.72 var(--chroma) calc(var(--hue) + 70)), oklch(0.65 var(--chroma) calc(var(--hue) + 140))); }
+.ink-sunset { background-image: linear-gradient(90deg, oklch(0.7 var(--chroma) calc(var(--hue) + 40)), oklch(0.64 var(--chroma) calc(var(--hue) - 8)), oklch(0.6 var(--chroma) calc(var(--hue) - 45))); }
+.ink-mono { background-image: linear-gradient(90deg, var(--text-primary), var(--text-secondary)); }
+.ink-flow { background-size: 200% 100%; animation: shimmer calc(var(--shimmer-ms, 8) * 1s * var(--motion-scale)) linear infinite; }
+
+/* Theme-tinted frosted glass, building on .glass. */
+.tinted { background-color: color-mix(in oklab, var(--theme-color) 10%, color-mix(in oklab, var(--bg-overlay) var(--glass-alpha), transparent)); }
+
+/* Film grain from layered repeating gradients — not a noise texture. */
+.grain { position: absolute; inset: 0; pointer-events: none; opacity: var(--grain-opacity, 0.18); mix-blend-mode: var(--grain-blend, overlay); background-image: repeating-linear-gradient(0deg, var(--text-primary) 0 1px, transparent 1px 2px), repeating-linear-gradient(90deg, var(--text-primary) 0 1px, transparent 1px 2px), repeating-linear-gradient(37deg, var(--text-primary) 0 1px, transparent 1px 3px); background-size: 0.22rem 0.22rem, 0.28rem 0.28rem, 0.18rem 0.18rem; contain: paint; }
+
+@media (prefers-reduced-motion: reduce) {
+	.spin, .spin-hover, .aurora::before, .aurora::after, .ink-shimmer, .ink-flow { animation: none; will-change: auto; }
+	.ink-shimmer { color: var(--text-muted); -webkit-text-fill-color: var(--text-muted); background-image: none; }
+}
+[data-motion='off'] .spin, [data-motion='off'] .spin-hover, [data-motion='off'] .aurora::before, [data-motion='off'] .aurora::after, [data-motion='off'] .ink-shimmer, [data-motion='off'] .ink-flow { animation: none; will-change: auto; }
+[data-motion='off'] .ink-shimmer { color: var(--text-muted); -webkit-text-fill-color: var(--text-muted); background-image: none; }

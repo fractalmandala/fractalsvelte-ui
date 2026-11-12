@@ -1,0 +1,39 @@
+/* Overlays: the top layer, anchored. Native <dialog> and the Popover API do
+ * the stacking, focus and dismissal; CSS anchor positioning does the placement. */
+:where(.floating, .dialog, .layer) { border: none; padding: 0; margin: 0; background: transparent; color: inherit; overflow: visible; }
+
+/* The anchor names itself through --anchor; the floating element points at it.
+ * Both get the same value from the anchor() / floating() attachments. */
+.anchor { anchor-name: var(--anchor); }
+.floating { position: fixed; position-anchor: var(--anchor); inset: auto; max-height: calc(100dvh - var(--space-lg)); position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline; }
+.floating.at-top { position-area: top; margin-bottom: var(--offset); transform-origin: bottom; }
+.floating.at-top-start { position-area: top span-right; margin-bottom: var(--offset); transform-origin: bottom left; }
+.floating.at-top-end { position-area: top span-left; margin-bottom: var(--offset); transform-origin: bottom right; }
+.floating.at-bottom { position-area: bottom; margin-top: var(--offset); transform-origin: top; }
+.floating.at-bottom-start { position-area: bottom span-right; margin-top: var(--offset); transform-origin: top left; }
+.floating.at-bottom-end { position-area: bottom span-left; margin-top: var(--offset); transform-origin: top right; }
+.floating.at-left { position-area: left; margin-right: var(--offset); transform-origin: right; }
+.floating.at-right { position-area: right; margin-left: var(--offset); transform-origin: left; }
+.floating.match-anchor { min-width: anchor-size(width); }
+
+/* A modal surface: <dialog class="dialog pop …">. */
+.dialog { margin: auto; max-width: calc(100vw - var(--space-xl)); max-height: calc(100dvh - var(--space-xl)); }
+.dialog::backdrop { background-color: var(--scrim); backdrop-filter: blur(0.25rem); opacity: 0; transition: opacity calc(var(--speed3) * var(--motion-scale)) var(--transout2), overlay calc(var(--speed3) * var(--motion-scale)) allow-discrete, display calc(var(--speed3) * var(--motion-scale)) allow-discrete; }
+.dialog[open]::backdrop { opacity: 1; }
+@starting-style { .dialog[open]::backdrop { opacity: 0; } }
+
+/* An edge-docked dialog: <dialog class="dialog sheet at-right pop enter-edge-right">. */
+.dialog.sheet { margin: 0; max-width: 100vw; max-height: 100dvh; }
+.dialog.sheet.at-right { inset: 0 0 0 auto; height: 100dvh; }
+.dialog.sheet.at-left { inset: 0 auto 0 0; height: 100dvh; }
+.dialog.sheet.at-top { inset: 0 0 auto 0; width: 100vw; }
+.dialog.sheet.at-bottom { inset: auto 0 0 0; width: 100vw; }
+
+/* A free top-layer region (toasts): <div popover="manual" class="layer …">. */
+.layer { position: fixed; inset: auto; }
+.layer.at-top { top: var(--space-bs); left: 50%; translate: -50% 0; }
+.layer.at-top-start { top: var(--space-bs); left: var(--space-bs); }
+.layer.at-top-end { top: var(--space-bs); right: var(--space-bs); }
+.layer.at-bottom { bottom: var(--space-bs); left: 50%; translate: -50% 0; }
+.layer.at-bottom-start { bottom: var(--space-bs); left: var(--space-bs); }
+.layer.at-bottom-end { bottom: var(--space-bs); right: var(--space-bs); }

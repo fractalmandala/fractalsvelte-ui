@@ -1,0 +1,65 @@
+/* Display kit: avatar, interactive surfaces, bleed, code, timeline. */
+
+/* Avatar: a sized, hued tile. --avatar-size comes from .avatar-<size>, --avatar-hue from vars(). */
+.avatar { --avatar-size: var(--h-xl); position: relative; display: inline-grid; place-items: center; flex: none; width: var(--avatar-size); height: var(--avatar-size); font-size: calc(var(--avatar-size) * 0.38); font-weight: 600; line-height: 1; user-select: none; box-shadow: 0 0 0 2px var(--avatar-ring, transparent); }
+:where(.avatar) { background-color: color-mix(in oklab, oklch(0.7 0.13 var(--avatar-hue, 268)) 20%, var(--bg-panel)); color: color-mix(in oklab, oklch(0.62 0.16 var(--avatar-hue, 268)) 70%, var(--text-primary)); }
+.avatar::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--text-primary) 10%, transparent); pointer-events: none; }
+.avatar > img { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: inherit; }
+.avatar-xs { --avatar-size: var(--h-bs); }
+.avatar-sm { --avatar-size: var(--h-lg); }
+.avatar-md { --avatar-size: var(--h-xl); }
+.avatar-lg { --avatar-size: var(--h-2xl); }
+.avatar-xl { --avatar-size: var(--h-3xl); }
+.avatar.circle { border-radius: var(--radius-full); }
+.avatar.rounded { border-radius: 12%; }
+.avatar.square { border-radius: 0; }
+.avatar-status { position: absolute; right: 4%; bottom: 4%; font-size: calc(var(--avatar-size) * 0.5); box-shadow: 0 0 0 2px var(--avatar-ring, var(--bg-surface)); }
+.avatar-group.gap-overlap.row { --avatar-ring: var(--bg-surface); }
+.avatar-group.gap-overlap > .avatar { box-shadow: 0 0 0 2px var(--avatar-ring); }
+.avatar-group.gap-overlap.row.spread > * + * { margin-inline-start: calc(var(--avatar-size) * (var(--spread, 0) * 0.35 - 0.25)); }
+
+/* A surface that answers the pointer and the keyboard. */
+.interactive { cursor: pointer; outline: none; transition: border-color var(--motionin1), background-color var(--motionin1); }
+.interactive:hover { border-color: var(--border-strong); }
+.interactive.bg-none:hover { background-color: var(--state-hover); }
+.interactive:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+/* Media that runs to the edge of a padded parent that sets --pad. */
+.bleed { margin-inline: calc(var(--pad, 0rem) * -1); }
+.bleed:first-child { margin-top: calc(var(--pad, 0rem) * -1); }
+.bleed:last-child { margin-bottom: calc(var(--pad, 0rem) * -1); }
+
+/* Height ladder for scrolling regions, on the measure tokens. */
+.max-h-xs { max-height: var(--measure-xs); }
+.max-h-sm { max-height: var(--measure-sm); }
+.max-h-md { max-height: var(--measure-md); }
+.max-h-lg { max-height: var(--measure-lg); }
+.max-h-xl { max-height: var(--measure-xl); }
+
+/* Code: one flex line per source line; gutter numbers come from a counter. */
+.code { counter-reset: line; margin: 0; font-family: var(--font-mono); font-size: var(--text-sm); line-height: 1.65; tab-size: 2; }
+.code-line { display: flex; min-height: 1lh; padding-inline: var(--space-bs); }
+.code-line > span { flex: 1 1 0%; min-width: 0; white-space: pre; }
+.code.soft-wrap .code-line > span { white-space: pre-wrap; overflow-wrap: anywhere; }
+.code.numbered .code-line::before { counter-increment: line; content: counter(line); flex: none; width: 3ch; margin-right: var(--space-bs); text-align: right; color: var(--text-muted); user-select: none; font-variant-numeric: tabular-nums; }
+.code-line.marked { background-color: color-mix(in oklab, var(--theme-color) 12%, transparent); box-shadow: inset 2px 0 0 var(--theme-color); }
+
+/* Stacked rows separated by a hairline. */
+.divided > * + * { padding-top: var(--space-sm); border-top: 1px solid var(--border-subtle); }
+
+
+/* Description list: flush native spacing; a term/definition row that aligns terms. */
+.pairs { margin: 0; }
+.pairs dd { margin-inline-start: 0; }
+.pair-row { display: grid; grid-template-columns: max-content 1fr; column-gap: var(--space-lg); align-items: start; }
+/* Timeline: a rail of markers joined by a connector; .alternate swings bodies to both sides. */
+.timeline { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+.timeline-item { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--space-bs); padding-bottom: var(--space-lg); }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-rail { display: flex; flex-direction: column; align-items: center; }
+.timeline-rail::after { content: ''; flex: 1 1 0%; width: 1px; margin-block: var(--space-xs); background-color: var(--border); }
+.timeline-item:last-child .timeline-rail::after { display: none; }
+.timeline.alternate .timeline-item { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+.timeline.alternate .timeline-rail { grid-column: 2; grid-row: 1; }
+.timeline.alternate .timeline-item:nth-child(odd) > .timeline-body { grid-column: 1; grid-row: 1; align-items: flex-end; text-align: right; }
+.timeline.alternate .timeline-item:nth-child(even) > .timeline-body { grid-column: 3; grid-row: 1; }

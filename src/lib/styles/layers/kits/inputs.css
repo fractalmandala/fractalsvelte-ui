@@ -1,0 +1,29 @@
+/* inputs kit — primitives for framed text entry. A .field frame draws focus for the control inside it. */
+.field .bare::placeholder, .field .bare::-webkit-input-placeholder { color: var(--text-muted); opacity: 1; }
+.field .bare:disabled { cursor: not-allowed; }
+.field .bare::-webkit-search-cancel-button { display: none; }
+.field .bare::-webkit-search-decoration { display: none; }
+
+/* A quiet fill that appears under the pointer; a framed control gives it up while it has focus. */
+.hover-fill:hover { background-color: var(--state-hover); }
+.field.hover-fill:focus-within { background-color: transparent; }
+
+/* A text area that grows with its text, from --rows to --max-rows lines. Where the
+ * browser has no field-sizing, JavaScript writes the content height to --fit. */
+.autosize { field-sizing: content; min-height: calc(var(--rows, 3) * 1lh); max-height: calc(var(--max-rows, 1000) * 1lh); overflow-y: auto; }
+@supports not (field-sizing: content) {
+	.autosize { height: calc(var(--fit, 0) * 1px); }
+}
+.resize-none { resize: none; }
+.resize-y { resize: vertical; }
+.resize-x { resize: horizontal; }
+.resize-both { resize: both; }
+
+/* A row of equal square cells (a PIN, a code). --cells is the count, --cell the side. */
+.cells { display: inline-grid; grid-template-columns: repeat(var(--cells, 6), var(--cell, 3rem)); grid-auto-rows: var(--cell, 3rem); gap: var(--space-sm); }
+
+/* A slim track for meters. */
+.track.thin { height: 0.25rem; }
+
+/* A surface under a dragged payload. */
+.drag-over { border-color: var(--theme-color); background-color: color-mix(in oklab, var(--theme-color) 8%, transparent); }

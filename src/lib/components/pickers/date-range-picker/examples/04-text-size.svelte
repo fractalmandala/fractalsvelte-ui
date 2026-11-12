@@ -1,0 +1,14 @@
+<!-- @example Text size :: The text scale can be set independently of the field height. -->
+<script lang="ts">
+	import { DateRangePicker, type DateRange } from '@fractaldesign/fractalsvelte-ui';
+
+	const period: DateRange = { start: '2026-11-01', end: '2026-11-12' };
+</script>
+
+<div class="box gap-sm measure-sm">
+	<DateRangePicker size="lg" textSize="xs" value={period} aria-label="Extra-small type" />
+	<DateRangePicker size="lg" textSize="sm" value={period} aria-label="Small type" />
+	<DateRangePicker size="lg" textSize="md" value={period} aria-label="Medium type" />
+	<DateRangePicker size="lg" textSize="lg" value={period} aria-label="Large type" />
+	<DateRangePicker size="lg" textSize="xl" value={period} aria-label="Extra-large type" />
+</div>

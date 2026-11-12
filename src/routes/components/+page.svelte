@@ -1,32 +1,63 @@
 <script lang="ts">
-	let { data } = $props();
+	import { Icon } from '@fractaldesign/icons';
+	import { luSearch } from '@fractaldesign/icons/lucide';
+	import DocPage from '../../docs-site/DocPage.svelte';
+	import { components, kitGroups } from '../../docs-site/registry.js';
+
+	const groups = kitGroups();
+	const total = components().length;
+	let query = $state('');
+
+	const q = $derived(query.trim().toLowerCase());
+	const filtered = $derived(
+		groups
+			.map((g) => ({
+				...g,
+				shown: g.components.filter((c) => !q || `${c.name} ${c.slug} ${c.summary} ${g.kit.title}`.toLowerCase().includes(q))
+			}))
+			.filter((g) => !q || g.shown.length > 0)
+	);
+	const matches = $derived(filtered.reduce((n, g) => n + g.shown.length, 0));
+	const toc = groups.map((g) => ({ id: g.kit.id, label: g.kit.title }));
 </script>
 
-<svelte:head>
-	<title>Components — fractalsvelte ui</title>
-</svelte:head>
+<DocPage
+	title="Components"
+	eyebrow="Library"
+	lead="Every component in fractalsvelte-ui, by kit. Each page is generated from its folder: live examples, source, and API tables extracted from the code."
+	{toc}
+>
+	{#snippet meta()}
+		<label class="field row ycenter gap-sm border radius-md bg-input px-md h-xl mt-md measure-md">
+			<Icon icon={luSearch} class="text-muted shrink-0" />
+			<span class="sr-only">Filter components</span>
+			<input class="bare grow text-md" type="search" placeholder="Filter {total} components…" bind:value={query} />
+		</label>
+		{#if q}<p class="text-sm text-muted tabular-nums" aria-live="polite">{matches} {matches === 1 ? 'match' : 'matches'}</p>{/if}
+	{/snippet}
 
-<header class="page-header">
-	<h1 class="page-title">Components</h1>
-	<p class="page-desc text-secondary lh16">
-		All components in fractalsvelte-ui, grouped as they are in the library.
-	</p>
-</header>
-
-<article class="compdocs">
-	{#each data.groups as group (group.category)}
-		<section class="page-section">
-			<h2 class="page-heading-xl">{group.label}</h2>
-			<div class="grid-3 gap-bs">
-				{#each group.items as item (item.slug)}
-					<a href={item.slug} class="card bg-surface pad-bs modern box gap-sm">
-						<span class="card-title weight-600 text-primary">{item.name}</span>
-						{#if item.description}
-							<span class="card-desc text-body-sm text-secondary">{item.description}</span>
-						{/if}
-					</a>
-				{/each}
+	{#each filtered as g (g.kit.id)}
+		<section class="box gap-md" aria-labelledby={g.kit.id}>
+			<div class="box gap-xs">
+				<h2 id={g.kit.id} class="page-heading-lg anchored row ycenter gap-sm">
+					{g.kit.title}<span class="tag soft text-xs tabular-nums">{g.components.length}</span>
+				</h2>
+				<p class="text-md text-secondary">{g.kit.description}</p>
 			</div>
+			{#if g.shown.length}
+				<div class="card-grid gap-sm">
+					{#each g.shown as c (c.href)}
+						<a href={c.href} class="link-parent box gap-xs border radius-bs bg-surface pad-bs lift">
+							<span class="link-title text-md weight-600">{c.name}</span>
+							<span class="text-sm text-secondary clamp-2">{c.summary || 'Documentation in progress.'}</span>
+						</a>
+					{/each}
+				</div>
+			{:else}
+				<p class="text-sm text-muted border-dashed radius-bs pad-bs">This kit is being built.</p>
+			{/if}
 		</section>
+	{:else}
+		<p class="text-md text-secondary">No component matches “{query}”.</p>
 	{/each}
-</article>
+</DocPage>

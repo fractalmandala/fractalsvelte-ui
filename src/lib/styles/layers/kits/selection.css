@@ -1,0 +1,34 @@
+/* Selection kit — primitives for checkable, draggable and rated controls. */
+
+/* A native input drawn by its parent: invisible, covering it, still the click and focus target. */
+.native { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.native:disabled { cursor: not-allowed; }
+*:has(> .native:focus-visible) { outline: 2px solid var(--theme-color); outline-offset: 2px; }
+
+/* A position or size that springs to its new value: a thumb or fill gliding to --value. */
+.glide { transition: left calc(var(--spring-ms) * var(--motion-scale)) var(--spring), bottom calc(var(--spring-ms) * var(--motion-scale)) var(--spring), width calc(var(--spring-ms) * var(--motion-scale)) var(--spring), height calc(var(--spring-ms) * var(--motion-scale)) var(--spring); }
+
+/* Em-based bars: thickness follows the text size, so one size class scales the whole control. */
+.slim { height: 0.5em; }
+.track-v.slim { width: 0.5em; height: 10em; }
+.pill { height: 1.5em; aspect-ratio: 2; }
+.grip { height: 1.25em; }
+
+/* A thumb inset inside a 2:1 pill track, travelling edge to edge with --value. It follows a checked input sibling. */
+.native:checked ~ .thumb { --value: 1; }
+.snug { height: calc(100% - 0.25em); left: calc(25% + var(--value, 0) * 50%); }
+
+/* A value bubble that rises from its thumb on hover, focus or drag. */
+.bubble { position: absolute; bottom: calc(100% + 0.75em); left: 50%; translate: -50% 0.25em; scale: 0.9; opacity: 0; padding: 0.15em 0.6em; white-space: nowrap; pointer-events: none; transition: opacity var(--speed3) var(--transout2), translate calc(var(--spring-ms) * var(--motion-scale)) var(--spring), scale calc(var(--spring-ms) * var(--motion-scale)) var(--spring); }
+.vertical .bubble { bottom: 50%; left: calc(100% + 0.75em); translate: -0.25em 50%; }
+.thumb:hover > .bubble, .thumb:focus-visible > .bubble, .thumb[data-active] > .bubble { opacity: 1; translate: -50% 0; scale: 1; }
+.vertical .thumb:hover > .bubble, .vertical .thumb:focus-visible > .bubble, .vertical .thumb[data-active] > .bubble { translate: 0 50%; }
+
+/* A box that reveals only the first --value of its width, for partly filled icons. */
+.clip { position: absolute; inset-block: 0; left: 0; width: calc(var(--value, 0) * 100%); display: flex; overflow: hidden; }
+
+/* A mark on a track at --value, with an optional label beside it. */
+.tick { position: absolute; top: 50%; left: calc(var(--value, 0) * 100%); translate: -50% -50%; width: 0.25em; aspect-ratio: 1; border-radius: var(--radius-full); background-color: var(--border-strong); pointer-events: none; }
+.vertical .tick { top: auto; left: 50%; bottom: calc(var(--value, 0) * 100%); translate: -50% 50%; }
+.tick-label { position: absolute; top: 1.75em; left: 50%; translate: -50% 0; white-space: nowrap; }
+.vertical .tick-label { top: 50%; left: 1.75em; translate: 0 -50%; }

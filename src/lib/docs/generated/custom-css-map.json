@@ -1,0 +1,117 @@
+[
+	{
+		"file": "00-tokens.css",
+		"start": 4,
+		"lines": 58
+	},
+	{
+		"file": "01-springs.css",
+		"start": 64,
+		"lines": 14
+	},
+	{
+		"file": "10-motion.css",
+		"start": 80,
+		"lines": 80
+	},
+	{
+		"file": "20-surface.css",
+		"start": 162,
+		"lines": 41
+	},
+	{
+		"file": "30-overlay.css",
+		"start": 205,
+		"lines": 39
+	},
+	{
+		"file": "40-controls.css",
+		"start": 246,
+		"lines": 30
+	},
+	{
+		"file": "60-themes.css",
+		"start": 278,
+		"lines": 85
+	},
+	{
+		"file": "90-docs.css",
+		"start": 365,
+		"lines": 48
+	},
+	{
+		"file": "kits/actions.css",
+		"start": 415,
+		"lines": 14
+	},
+	{
+		"file": "kits/data.css",
+		"start": 431,
+		"lines": 43
+	},
+	{
+		"file": "kits/display.css",
+		"start": 476,
+		"lines": 65
+	},
+	{
+		"file": "kits/effects.css",
+		"start": 543,
+		"lines": 68
+	},
+	{
+		"file": "kits/feedback.css",
+		"start": 613,
+		"lines": 60
+	},
+	{
+		"file": "kits/inputs.css",
+		"start": 675,
+		"lines": 29
+	},
+	{
+		"file": "kits/layout.css",
+		"start": 706,
+		"lines": 55
+	},
+	{
+		"file": "kits/motion-b.css",
+		"start": 763,
+		"lines": 59
+	},
+	{
+		"file": "kits/motion.css",
+		"start": 824,
+		"lines": 13
+	},
+	{
+		"file": "kits/navigation.css",
+		"start": 839,
+		"lines": 40
+	},
+	{
+		"file": "kits/overlays.css",
+		"start": 881,
+		"lines": 35
+	},
+	{
+		"file": "kits/pickers.css",
+		"start": 918,
+		"lines": 45
+	},
+	{
+		"file": "kits/primitives.css",
+		"start": 965,
+		"lines": 11
+	},
+	{
+		"file": "kits/selection.css",
+		"start": 978,
+		"lines": 34
+	},
+	{
+		"file": "kits/theme.css",
+		"start": 1014,
+		"lines": 43
+	}
+]

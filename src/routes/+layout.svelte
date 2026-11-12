@@ -1,96 +1,36 @@
 <script lang="ts">
-	import { page } from '$app/state';
- 	import { browser, dev } from '$app/env';
+	import '@fractaldesign/fractalstyler/styles';
+	import '@fractaldesign/fractalsvelte-ui/styles';
 	import type { Snippet } from 'svelte';
-	import '$lib/styles/index.css'
-	import '$site/styles/comps-documentation.sass'
-	import { modeScript, mode } from '$site/mode/mode.svelte.js'
-	import ModeToggle from '$site/mode/ModeToggle.svelte';
-  import {
-    Agentation,
-    type AnnotationProps,
-    type KeyBindings
-  } from 'sv-agentation';
+	import { onNavigate } from '$app/navigation';
+	import { initTheme, themeInitScript } from '@fractaldesign/fractalsvelte-ui/theme';
+	import { setupViewTransitions } from '@fractaldesign/fractalsvelte-ui/motion';
+	import SiteHeader from '../docs-site/SiteHeader.svelte';
+	import { shell } from '../docs-site/shell.svelte.js';
 
 	interface Props {
-		children?: Snippet;
-		headerSnippet?: Snippet;
+		children: Snippet;
 	}
 
-	let { children, headerSnippet }: Props = $props();
-	const store = mode();
-	const dark = $derived(store.resolved === 'dark');
-	const categories = [
-		{ id: 'actions', name: 'Actions & Buttons', icon: '⚡' },
-		{ id: 'forms', name: 'Forms & Inputs', icon: '📝' },
-		{ id: 'display', name: 'Data Display', icon: '📊' },
-		{ id: 'layout', name: 'Layout & Bento', icon: '📐' },
-		{ id: 'navigation', name: 'Navigation & Shells', icon: '🧭' },
-		{ id: 'overlays', name: 'Overlays & Dialogs', icon: '🪟' },
-		{ id: 'typography', name: 'Typography & Code', icon: '✍️' },
-		{ id: 'motion', name: 'Motion & Animations', icon: '✨' },
-		{ id: 'blocks', name: 'UI Blocks & Diagrams', icon: '🧩' }
-	];
-  const keyBindings: KeyBindings = {
-    // Defaults:
-    // inspect: 'i',
-    // copy: 'c',
-    // reset: 'r',
-    // open: 'o',
-    // delete: 'd',
-    // cancel: 'esc',
-    // submit: 'enter',
-    inspect: 'Alt+I',
-    reset: 'Alt+R',
-    open: 'Alt+O',
-    delete: 'Alt+D',
-		copy: 'c',
-		cancel: 'esc',
-  };
+	let { children }: Props = $props();
 
-  let playgroundAnnotationProps: AnnotationProps = {
-    toolbarPosition: 'bottom-right',
-    outputMode: 'forensic',
-    pauseAnimations: true,
-    clearOnCopy: false,
-    includeComponentContext: true,
-    includeComputedStyles: true,
-		keyBindings
-  };
+	initTheme({ defaults: { mode: 'dark' } });
+	setupViewTransitions(onNavigate, {
+		type: (nav) => (nav.type === 'popstate' && (nav.delta ?? 0) < 0 ? 'slide-back' : 'fade')
+	});
 
+	const bootScript = `<script>${themeInitScript()}</` + 'script>';
 </script>
 
 <svelte:head>
-	<!-- eslint-disable-next-line svelte/no-at-html-tags -- modeScript() returns static, self-contained code -->
-	{@html `<script>${modeScript({ attribute: 'data-mode' })}<\x2fscript>`}
+	<!-- applies the stored mode and theme before first paint -->
+	{@html bootScript}
 </svelte:head>
 
-{#if browser && dev}
-  <Agentation {...playgroundAnnotationProps} />
-{/if}
-<div class="app-shell bg-main">
-	<header class="app-header bg-main xbetween ycenter row">
-		<a class="logo-link row ycenter gap-bs" href="/">
-			{#if dark}
-			<img src="/images/fractalsvelte-l.png" alt="logotype" class="logotype"/>
-			{:else}
-			<img src="/images/fractalsvelte-d.png" alt="logotype" class="logotype"/>
-			{/if}
-		</a>
-		<div class="row ycenter gap-bs grow">
-			{@render headerSnippet?.()}
-		</div>
-		<nav class="header-nav ycenter row gap-bs">
-			<a href="/">link</a>
-			<a href="/finalcomps">finalcomps</a>
-			<a href="/components">components</a>
-			<ModeToggle/>
-		</nav>
-	</header>
-	<main class="app-main">
-		{@render children?.()}
-	</main>
-	<footer class="app-footer">
-		<span class="text-xs">2026</span>
-	</footer>
+<div class={['app-shell', shell.open && 'open']}>
+	<a href="#main" class="sr-only">Skip to content</a>
+	<SiteHeader />
+	<div id="main" class="box grow">
+		{@render children()}
+	</div>
 </div>

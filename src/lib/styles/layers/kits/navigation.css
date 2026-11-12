@@ -1,0 +1,40 @@
+/* navigation kit — primitives composition cannot express. */
+
+/* A hairline form of the sliding indicator: along the end edge, or the start
+ * edge in a column. JavaScript still springs --ix/--iw or --iy/--ih. */
+.indicator.rule { top: auto; bottom: 0; height: 2px; background-color: var(--theme-color); }
+.column > .indicator.rule, .vertical > .indicator.rule { top: 0; bottom: auto; left: 0; width: 2px; height: calc(var(--ih, 0) * 1px); }
+
+/* A width that springs between two states: a sidebar, an icon-only rail. */
+.rail { width: 16rem; min-width: 16rem; overflow: hidden; }
+.rail.collapsed { width: 3.5rem; min-width: 3.5rem; }
+
+/* Scale from a named edge — a dock item grows "up" or "out". */
+.origin-bot { transform-origin: bottom center; }
+.origin-top { transform-origin: top center; }
+.origin-left { transform-origin: center left; }
+.origin-right { transform-origin: center right; }
+
+/* A hover label that sits outside its relatively positioned owner. */
+.hint { position: absolute; z-index: var(--z-raised); padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-md); background-color: var(--bg-overlay); color: var(--text-primary); box-shadow: var(--shadow-md); font-size: var(--text-sm); line-height: 1.2; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity calc(var(--spring-ms) * var(--motion-scale)) var(--spring), translate calc(var(--spring-ms) * var(--motion-scale)) var(--spring); }
+.relative:is(:hover, :focus-visible, :focus-within) > .hint { opacity: 1; }
+.hint-top { bottom: 100%; left: 50%; translate: -50% var(--space-xs); margin-bottom: var(--space-xs); }
+.relative:is(:hover, :focus-visible, :focus-within) > .hint-top { translate: -50% 0; }
+.hint-bottom { top: 100%; left: 50%; translate: -50% calc(var(--space-xs) * -1); margin-top: var(--space-xs); }
+.relative:is(:hover, :focus-visible, :focus-within) > .hint-bottom { translate: -50% 0; }
+.hint-right { left: 100%; top: 50%; translate: calc(var(--space-xs) * -1) -50%; margin-left: var(--space-xs); }
+.relative:is(:hover, :focus-visible, :focus-within) > .hint-right { translate: 0 -50%; }
+.hint-left { right: 100%; top: 50%; translate: var(--space-xs) -50%; margin-right: var(--space-xs); }
+.relative:is(:hover, :focus-visible, :focus-within) > .hint-left { translate: 0 -50%; }
+
+/* A hairline connector: thickness is 2px, length comes from flex. */
+.connector { height: 2px; }
+.column > .connector, .vertical > .connector, .connector.vertical { width: 2px; height: auto; }
+
+/* A scroller capped by --max-height, for a local page preview. */
+.cap { max-height: var(--max-height, 24rem); }
+
+/* A surface that springs its box to --vw / --vh (unitless px). */
+.viewport { width: calc(var(--vw, 0) * 1px); height: calc(var(--vh, 0) * 1px); overflow: hidden; }
+.viewport > * { position: absolute; top: 0; left: 0; visibility: hidden; pointer-events: none; }
+.viewport > *[data-active] { visibility: visible; pointer-events: auto; }

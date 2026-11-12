@@ -1,11 +1,89 @@
 {
 	"name": "@fractaldesign/fractalsvelte-ui",
-	"version": "1.4.0",
-	"description": "Svelte 5 component library styled by one class-and-token stylesheet: every prop value is a class you can read. No Tailwind, no runtime CSS-in-JS.",
-	"homepage": "https://fractalsvelte.dev/fractalsvelte-ui",
-	"type": "module",
+	"version": "1.5.0",
+	"description": "A complete SvelteKit component super-library: component kits, spring physics, motion, view transitions and parametric themes — styled only with fractalstyler.",
 	"license": "MIT",
 	"author": "Fractalmandala",
+	"keywords": [
+		"svelte",
+		"svelte5",
+		"sveltekit",
+		"components",
+		"ui",
+		"design-system",
+		"spring",
+		"motion",
+		"view-transitions",
+		"fractalstyler"
+	],
+	"files": [
+		"dist",
+		"!dist/**/*.test.*",
+		"!dist/**/*.spec.*",
+		"!dist/**/examples/**"
+	],
+	"type": "module",
+	"sideEffects": [
+		"**/*.css"
+	],
+	"types": "./dist/index.d.ts",
+	"svelte": "./dist/index.js",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"svelte": "./dist/index.js",
+			"default": "./dist/index.js"
+		},
+		"./motion": {
+			"types": "./dist/motion/index.d.ts",
+			"svelte": "./dist/motion/index.js",
+			"default": "./dist/motion/index.js"
+		},
+		"./theme": {
+			"types": "./dist/theme/index.d.ts",
+			"svelte": "./dist/theme/index.js",
+			"default": "./dist/theme/index.js"
+		},
+		"./styles": "./dist/styles/custom.css",
+		"./package.json": "./package.json"
+	},
+	"scripts": {
+		"dev": "node scripts/gen.ts && vite dev",
+		"gen": "node scripts/gen.ts",
+		"gate": "node scripts/gate.ts",
+		"verify": "node scripts/verify.ts",
+		"lint": "node node_modules/@fractaldesign/fractalstyler/lint/cli.ts .",
+		"build": "node scripts/gen.ts && vite build && pnpm run prepack",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"prepack": "svelte-kit sync && svelte-package && publint",
+		"check": "node scripts/gen.ts && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && pnpm run lint && node scripts/gate.ts",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+	},
+	"peerDependencies": {
+		"@fractaldesign/fractalstyler": "^1.6.0",
+		"svelte": "^5.40.0"
+	},
+	"dependencies": {
+		"@fractaldesign/icons": "^0.1.0"
+	},
+	"devDependencies": {
+		"@fractaldesign/fractalstyler": "link:../fractalstyler",
+		"@sveltejs/adapter-static": "^4.0.1",
+		"@sveltejs/kit": "^3.0.0",
+		"@sveltejs/package": "^2.5.8",
+		"@sveltejs/vite-plugin-svelte": "^7.2.0",
+		"@types/node": "^26.6.6",
+		"publint": "^0.3.21",
+		"svelte": "^5.57.2",
+		"svelte-check": "^4.6.0",
+		"typescript": "^6.0.3",
+		"vite": "^8.3.0"
+	},
+	"engines": {
+		"node": ">=22.18"
+	},
+	"homepage": "https://fractalsvelte.dev/fractalsvelte-ui",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/fractalmandala/fractalsvelte-ui.git"
@@ -13,105 +91,7 @@
 	"bugs": {
 		"url": "https://github.com/fractalmandala/fractalsvelte-ui/issues"
 	},
-	"keywords": [
-		"svelte",
-		"svelte5",
-		"sveltekit",
-		"runes",
-		"components",
-		"ui",
-		"design-system",
-		"design-tokens",
-		"css"
-	],
-	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
-		"preview": "vite preview",
-		"prepare": "svelte-kit sync || echo ''",
-		"css": "node scripts/build-css.mjs",
-		"icons": "node scripts/build-icons.mjs",
-		"package": "node scripts/build-icons.mjs && svelte-package && node scripts/build-css.mjs",
-		"prepack": "node scripts/build-icons.mjs && svelte-kit sync && svelte-package && node scripts/build-css.mjs && publint",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"docs:components": "node scripts/component-docs.mjs"
-	},
-	"files": [
-		"dist",
-		"!dist/**/*.test.*",
-		"!dist/**/*.spec.*"
-	],
-	"sideEffects": [
-		"**/*.css"
-	],
-	"svelte": "./dist/index.js",
-	"types": "./dist/index.d.ts",
-	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"svelte": "./dist/index.js",
-			"default": "./dist/index.js"
-		},
-		"./types": {
-			"types": "./dist/types.d.ts",
-			"default": "./dist/types.js"
-		},
-		"./css": {
-			"types": "./dist/asset.d.ts",
-			"default": "./dist/css/fractalsvelte-ui.css"
-		},
-		"./css/min": {
-			"types": "./dist/asset.d.ts",
-			"default": "./dist/css/fractalsvelte-ui.min.css"
-		},
-		"./styles": {
-			"types": "./dist/asset.d.ts",
-			"default": "./dist/styles/index.css"
-		},
-		"./icons": {
-			"types": "./dist/icons/index.d.ts",
-			"svelte": "./dist/icons/index.js",
-			"default": "./dist/icons/index.js"
-		},
-		"./icons/keylinestroke": {
-			"types": "./dist/icons/keylinestroke.d.ts",
-			"svelte": "./dist/icons/keylinestroke.js",
-			"default": "./dist/icons/keylinestroke.js"
-		},
-		"./icons/keylinefill": {
-			"types": "./dist/icons/keylinefill.d.ts",
-			"svelte": "./dist/icons/keylinefill.js",
-			"default": "./dist/icons/keylinefill.js"
-		},
-		"./styles/*": "./dist/styles/*",
-		"./package.json": "./package.json"
-	},
-	"peerDependencies": {
-		"svelte": "^5.0.0"
-	},
 	"publishConfig": {
 		"access": "public"
-	},
-	"pnpm": {
-		"onlyBuiltDependencies": [
-			"@parcel/watcher"
-		]
-	},
-	"devDependencies": {
-		"@fractaldesign/pop-svelte": "^0.3.1",
-		"@sveltejs/adapter-auto": "^8.0.0",
-		"@sveltejs/kit": "^3.0.0",
-		"@sveltejs/package": "^2.5.8",
-		"@sveltejs/vite-plugin-svelte": "^7.2.0",
-		"@types/node": "^24.0.0",
-		"mdsvex": "^0.12.8",
-		"publint": "^0.3.21",
-		"sass": "^1.105.1",
-		"sv-agentation": "^0.4.0",
-		"svelte": "^5.57.1",
-		"svelte-check": "^4.6.0",
-		"typescript": "^6.0.3",
-		"vite": "^8.3.0"
 	}
 }
