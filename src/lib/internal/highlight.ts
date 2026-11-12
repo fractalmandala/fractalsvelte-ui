@@ -2,7 +2,7 @@
  * A small, dependency-free syntax highlighter for the docs: svelte, ts, css,
  * bash, json and html. It never drops or reorders characters — the token text
  * of every line, concatenated with newlines, is exactly the input. Token
- * classes (`tok-kw`, `tok-str`, …) live in the extension layer `90-docs.css`.
+ * classes (`tok-kw`, `tok-str`, …) live in the display kit stylesheet, next to `.code`.
  */
 
 export type HighlightLang = 'svelte' | 'ts' | 'css' | 'bash' | 'json' | 'html';

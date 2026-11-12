@@ -20,7 +20,7 @@
 		label,
 		orientation = 'horizontal',
 		attached = true,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -34,7 +34,7 @@
 	class={[
 		attached ? 'button-group' : vertical ? 'box gap-sm' : 'row wrap gap-sm',
 		attached && vertical && 'vertical',
-		klass
+		className
 	]}
 	{...rest}
 >

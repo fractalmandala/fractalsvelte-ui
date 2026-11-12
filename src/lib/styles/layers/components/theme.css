@@ -1,13 +1,14 @@
 /* theme kit — primitives for themed controls: a range rail, an orb, a segmented choice, an icon swap. */
 
 /* One spring for every state change below. */
-.swap > *, .choice::before, .orb, .orb::after, .rail .thumb, .rocker .thumb { transition-property: opacity, scale, rotate, translate; transition-duration: calc(var(--spring-ms) * var(--motion-scale)); transition-timing-function: var(--spring); }
+.swap > *, .choice::before, .orb, .orb::after, .range-rail .thumb, .rocker .thumb { transition-property: opacity, scale, rotate, translate; transition-duration: calc(var(--spring-ms) * var(--motion-scale)); transition-timing-function: var(--spring); }
 
-/* A slim rail under a native range input. The control sets --value (0..1). */
-.rail { width: 100%; height: 0.5rem; }
-.rail .thumb { height: 1.25rem; }
-.rail:has(.scrub:active) .thumb { scale: 1.15; }
-.rail:has(.scrub:focus-visible) .thumb, .rocker:focus-visible, .choice:focus-visible, .pick:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+/* A slim range rail under a native range input. The control sets --value (0..1). */
+.range-rail { width: 100%; height: 0.5rem; }
+.range-rail .thumb { height: 1.25rem; }
+.range-rail:has(.scrub:active) .thumb { scale: 1.15; }
+/* Invisible .scrub is the focus target: paint the system's focus ring on the thumb. */
+.range-rail:has(.scrub:focus-visible) .thumb { outline: 2px solid var(--ring); outline-offset: 1px; }
 /* The invisible native range laid over a rail: it keeps the platform's keyboard, touch and screen-reader behaviour. */
 .scrub { position: absolute; inset-inline: 0; top: 50%; translate: 0 -50%; width: 100%; height: 1.75rem; margin: 0; opacity: 0; cursor: pointer; }
 .scrub::-webkit-slider-thumb { -webkit-appearance: none; width: 0; height: 1.75rem; }

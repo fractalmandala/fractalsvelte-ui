@@ -205,7 +205,7 @@
 				aria-orientation={orientation}
 				aria-disabled={disabled || undefined}
 				data-active={pressed && active === i ? '' : undefined}
-				class={['thumb grip focus-ring', !dragging && 'glide', 'spring-bouncy', disabled ? 'disabled' : 'pointer']}
+				class={['thumb stout focus-ring', !dragging && 'glide', 'spring-bouncy', disabled ? 'disabled' : 'pointer']}
 				{@attach vars({ value: frac(v) })}
 				onkeydown={(e) => key(e, i)}
 			>

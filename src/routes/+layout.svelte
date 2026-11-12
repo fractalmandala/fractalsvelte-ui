@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '@fractaldesign/fractalstyler/styles';
 	import '@fractaldesign/fractalsvelte-ui/styles';
+	import '../docs-site/docs.css';
 	import type { Snippet } from 'svelte';
 	import { onNavigate } from '$app/navigation';
 	import { initTheme, themeInitScript } from '@fractaldesign/fractalsvelte-ui/theme';
@@ -28,9 +29,12 @@
 </svelte:head>
 
 <div class={['app-shell', shell.open && 'open']}>
-	<a href="#main" class="sr-only">Skip to content</a>
 	<SiteHeader />
-	<div id="main" class="box grow">
+	<main id="main" class="app-main">
 		{@render children()}
-	</div>
+	</main>
+	<footer class="app-footer">
+		<span>fractalsvelte-ui · MIT</span>
+		<span>Styled with fractalstyler</span>
+	</footer>
 </div>

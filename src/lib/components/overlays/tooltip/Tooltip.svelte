@@ -106,7 +106,7 @@
 	id={uid}
 	role="tooltip"
 	class={[
-		'floating pop spring-snappy glass border rim shad-md radius-md px-sm py-xs cap-xs pointer-none text-sm lh15 text-primary',
+		'floating pop spring-snappy glass border rim shad-md radius-md px-sm py-xs max-w-xs pointer-none text-sm lh15 text-primary',
 		placementClass[placement],
 		enterFrom[placement],
 		klass

@@ -5,6 +5,7 @@
 	import InstallTabs from '../docs-site/InstallTabs.svelte';
 	import ShowcaseCell from '../docs-site/ShowcaseCell.svelte';
 	import { components, kitGroups } from '../docs-site/registry.js';
+	import FullSection from '../docs-site/newcomps/FullSection.svelte'
 
 	const all = components();
 	const groups = kitGroups();
@@ -46,22 +47,17 @@
 	<meta name="description" content="Component kits, spring physics, view transitions and parametric themes for Svelte 5 and SvelteKit — styled only with fractalstyler." />
 </svelte:head>
 
-<main class="main-section box">
-	<!-- hero -->
-	<section class="hero-wash bb-sub">
-		<div class="content-section narrow-wide box xcenter gap-xl pt-3xl pb-3xl">
-			<a href="/docs" class="row ycenter gap-sm border radius-full px-md py-xs text-sm text-secondary bg-surface link-parent">
-				<span class="dot text-theme"></span>
-				<span>Svelte 5 · SvelteKit 3 · runes only</span>
-				<Icon icon={luArrowRight} class="text-muted" />
-			</a>
-			<h1 class="text-5xl weight-600 ls-tight-xl lh11 ink-fade measure-hero">The complete component library for SvelteKit.</h1>
-			<p class="text-body-lg text-secondary measure-lead">
-				Springs you can feel, view transitions between every page, and themes you turn like a dial — styled only with fractalstyler.
+<section class="main-section box">
+
+	<FullSection>
+			<span class="font-mono text-muted text-sm ls-wide-lg"><span class="text-theme"> [ </span> Svelte 5 | Sveltekit 3 | Runes <span class="text-theme"> ] </span></span>
+			<img class="hero-logo" src="/images/fractalsvelte-black.png" alt="logotype"/>
+			<p class="text-body-lg text-secondary prose-clamp">
+				Components, Motion, Transitions, Themes - Fractalsvelte UI is a stacked UI and components package, with no Tailwind or external dependencies.
 			</p>
 			<div class="row xcenter wrap gap-sm">
-				<a href="/docs/installation" class="button themed h-xl px-lg mincurved gap-sm weight-500">Get started <Icon icon={luArrowRight} /></a>
-				<a href="/components" class="button outline h-xl px-lg mincurved gap-sm weight-500"><Icon icon={luBookOpen} /> Browse components</a>
+				<a href="/docs/installation" class="button themed h-lg px-lg mincurved gap-sm"><span class="text-inverse">Get Started</span> </a>
+				<a href="/components" class="button outline h-lg px-lg mincurved gap-sm">Browse Components</a>
 			</div>
 			<dl class="grid-4 gap-lg pt-xl wfull measure-xl">
 				{#each stats as s (s.label)}
@@ -71,6 +67,11 @@
 					</div>
 				{/each}
 			</dl>
+	</FullSection>
+	<!-- hero -->
+	<section class="bb-sub">
+		<div class="content-section narrow-wide box xcenter gap-xl pt-3xl pb-3xl">
+
 		</div>
 	</section>
 
@@ -88,7 +89,7 @@
 				{/each}
 			</div>
 		{:else}
-			<div class="stage box xcenter ycenter gap-sm border-dashed radius-bs pad-2xl">
+			<div class="example-stage box xcenter ycenter gap-sm border-dashed radius-bs pad-2xl">
 				<Icon icon={luSparkles} class="text-muted" />
 				<p class="text-md text-secondary">The first kits are landing. Components appear here the moment their folder passes the gate.</p>
 			</div>
@@ -168,9 +169,4 @@
 			<CodeBlock code={importSnippet} lang="svelte" title="+layout.svelte" />
 		</div>
 	</section>
-
-	<footer class="content-section narrow-wide row xbetween ycenter wrap gap-md py-xl bt-sub text-sm text-muted">
-		<span>fractalsvelte-ui · MIT</span>
-		<span>Styled with fractalstyler</span>
-	</footer>
-</main>
+</section>

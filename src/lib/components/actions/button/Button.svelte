@@ -56,7 +56,7 @@
 		pressable = true,
 		disabled,
 		type = 'button',
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -69,7 +69,7 @@
 		shape,
 		block ? 'wfull' : 'inline-flex',
 		pressable && 'motion',
-		klass
+		className
 	]);
 	const spring = $derived(pressable ? press() : undefined);
 </script>

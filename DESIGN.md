@@ -34,13 +34,8 @@ premium bar — restrained, precise, quiet until touched.
 
 ## The extension layer
 
-| Layer | Adds |
-|:---|:---|
-| `00-tokens` | motion channels (`@property`), spring/motion scale, measure ladder |
-| `01-springs` | generated `--spring-*` `linear()` easings |
-| `10-motion` | `.motion` `.tilt` `.spring` `.pop` `.enter-*` `.anim-*` `.reveal`, view transitions |
-| `20-surface` | `.glass` `.rim` `.glow` `.soft` `.measure-*` and small layout primitives |
-| `30-overlay` | `.anchor` `.floating` `.dialog` `.sheet` `.layer` |
-| `40-controls` | `.bare` `.item` `.track` `.fill` `.thumb` `.ring` `.indicator` `.caret` |
-| `60-themes` | the parametric theme and the radius / density / motion axes |
-| `kits/*` | ≤ 90 lines per kit, for primitives composition cannot express |
+General primitives (tokens, springs, motion, surfaces, overlays, themes, shared
+control parts) live in fractalstyler. This package keeps only kit fragments —
+≤ 90 lines per kit, for primitives composition cannot express — at
+`src/lib/styles/layers/components/<kit>.css`. `components.css` is the import
+manifest; `pnpm gen` concatenates them into `custom.css`.

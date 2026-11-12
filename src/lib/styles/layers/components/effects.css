@@ -1,7 +1,5 @@
 /* Effects kit: light, glass and pattern primitives shared across the premium surfaces. */
 
-@property --angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
-
 @keyframes spin-angle { to { --angle: 360deg; } }
 @keyframes drift { 50% { translate: 8% -6%; } }
 @keyframes drift-alt { 50% { translate: -10% 8%; rotate: -8deg; } }

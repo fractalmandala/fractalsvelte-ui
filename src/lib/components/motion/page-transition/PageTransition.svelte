@@ -70,7 +70,7 @@
 
 {#if children}
 	{#if useKey}
-		<div class={['stacked', klass]} {...rest}>
+		<div class={['overlap', klass]} {...rest}>
 			{#key key}
 				<div in:enter out:exit>
 					{@render children()}

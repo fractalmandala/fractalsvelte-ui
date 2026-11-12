@@ -35,7 +35,7 @@
 </script>
 
 <a
-	class={[variants[variant], underline !== 'none' && `underline-${underline}`, klass]}
+	class={[variants[variant], underline !== 'none' && ['underline', underline], 'focus-ring', klass]}
 	{href}
 	target={external ? '_blank' : target}
 	rel={external ? 'noopener noreferrer' : rel}

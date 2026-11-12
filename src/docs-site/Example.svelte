@@ -57,7 +57,7 @@
 		</div>
 
 		{#if view === 'preview'}
-			<div class="stage box xcenter ycenter gap-md pad-xl">
+			<div class="example-stage box xcenter ycenter gap-md pad-xl">
 				{#if example.error}
 					<p class="row ycenter gap-sm text-sm text-danger"><Icon icon={luTriangleAlert} /> This example failed to load: {example.error}</p>
 				{:else if Demo && mounted}

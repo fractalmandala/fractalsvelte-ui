@@ -288,7 +288,7 @@
 				{#if expandable}
 					<button
 						type="button"
-						class={['bare focusable caret quarter spring spring-snappy', open && 'open']}
+						class={['bare focus-ring caret quarter spring spring-snappy', open && 'open']}
 						tabindex={-1}
 						disabled={item.disabled}
 						aria-label={open ? `Collapse ${item.label}` : `Expand ${item.label}`}

@@ -41,7 +41,7 @@
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -- a scrollable region must be keyboard-focusable -->
 <div
-	class={['scroll-xy scroll-thin wfull', framed && 'border modern bg-surface', label && 'focusable']}
+	class={['scroll-xy scroll-thin wfull', framed && 'border modern bg-surface', label && 'focus-ring']}
 	role={label ? 'region' : undefined}
 	aria-label={label}
 	tabindex={label ? 0 : undefined}

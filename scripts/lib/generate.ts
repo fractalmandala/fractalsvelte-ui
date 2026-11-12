@@ -32,7 +32,7 @@ export function stepStyles(layers: LayerBuild = buildLayers()): StepResult {
 	const a = writeAtomic(PATHS.customCss, layers.css);
 	const b = writeAtomic(PATHS.classesJson, stableJson(layers.classes));
 	writeAtomic(PATHS.cssMapJson, stableJson(layers.segments));
-	const kitCount = layers.files.filter((f) => f.name.startsWith('kits/')).length;
+	const kitCount = layers.files.filter((f) => f.name.startsWith('components/')).length;
 	return {
 		step: 'styles',
 		ok: true,

@@ -4,7 +4,7 @@
 </script>
 
 <div class="row gap-xl ytop">
-	<article id="studio-notes" class="scroll-y cap grow pad-bs box gap-lg">
+	<article id="studio-notes" class="scroll-y max-h grow pad-bs box gap-lg">
 		<h2 id="cameras" class="page-heading-bs">Cameras</h2>
 		<p class="text-body text-secondary">
 			The mid-format body lives on the left bench, with the 80 and the 150 in the drawer beneath

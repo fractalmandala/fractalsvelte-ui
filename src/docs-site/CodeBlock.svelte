@@ -51,5 +51,5 @@
 	{:else}
 		{@render copyButton('pin-tr')}
 	{/if}
-	<pre class={['code', tall && 'scroll-tall']}><code>{#each lines as line, i (i)}{#each line as t, j (j)}{#if t.cls}<span class={t.cls}>{t.text}</span>{:else}{t.text}{/if}{/each}{#if i < lines.length - 1}{'\n'}{/if}{/each}</code></pre>
+	<pre class={['code-block', tall && 'scroll-tall']}><code>{#each lines as line, i (i)}{#each line as t, j (j)}{#if t.cls}<span class={t.cls}>{t.text}</span>{:else}{t.text}{/if}{/each}{#if i < lines.length - 1}{'\n'}{/if}{/each}</code></pre>
 </div>

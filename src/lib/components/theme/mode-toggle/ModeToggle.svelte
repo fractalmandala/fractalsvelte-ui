@@ -99,7 +99,7 @@
 		role="switch"
 		aria-checked={dark}
 		aria-label={label}
-		class={['bare rocker track', textClass[size], klass]}
+		class={['bare rocker track focus-ring', textClass[size], klass]}
 		{@attach vars({ value: dark ? 1 : 0 })}
 		{...rest}
 		onclick={(event: MouseEvent) => change(resolved(!dark), event)}
@@ -124,7 +124,7 @@
 				role="radio"
 				aria-checked={on}
 				tabindex={on ? 0 : -1}
-				class="bare choice weight-500"
+				class="bare choice focus-ring weight-500"
 				onclick={(event) => change(option.mode, event)}
 			>
 				<Icon icon={option.icon} />

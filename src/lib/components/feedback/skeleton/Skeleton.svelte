@@ -42,7 +42,7 @@
 	<div class="motion box gap-sm" {@attach vars({ mo: 1 - fade.current })}>
 		{#each { length: count } as _, i (i)}
 			<div
-				class={['bone', variant === 'text' && 'text', variant === 'circle' && 'circle', motion]}
+				class={['bone', variant === 'text' && 'text', variant === 'circle' && 'round', motion]}
 				{@attach vars({ w: variant === 'text' && i === count - 1 && count > 1 ? '64%' : undefined })}
 			></div>
 		{/each}

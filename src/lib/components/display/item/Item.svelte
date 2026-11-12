@@ -56,7 +56,7 @@
 		itemPadClass[size],
 		shape,
 		surface[variant],
-		live && 'interactive',
+		live && 'interactive focus-ring',
 		href !== undefined && 'link-plain',
 		klass
 	]);

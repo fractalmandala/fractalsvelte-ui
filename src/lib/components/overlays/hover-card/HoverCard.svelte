@@ -126,7 +126,7 @@
 	popover="manual"
 	role="dialog"
 	class={[
-		'floating pop spring-snappy border rim shad-lg radius-lg pad-bs cap-sm wmin-xs',
+		'floating pop spring-snappy border rim shad-lg radius-lg pad-bs max-w-sm wmin-xs',
 		surfaceClass[surface],
 		placementClass[placement],
 		enterFrom[placement],

@@ -33,7 +33,7 @@
 </script>
 
 <article bind:this={host} class="box border radius-bs bg-surface overflow-hidden rim shad-sm lift">
-	<div class="stage box xcenter ycenter gap-md pad-lg grow">
+	<div class="example-stage box xcenter ycenter gap-md pad-lg grow">
 		{#if Demo}
 			<svelte:boundary>
 				<Demo />

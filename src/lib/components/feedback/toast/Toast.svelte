@@ -111,7 +111,7 @@
 		{/if}
 	</div>
 	{#if dismissible}
-		<button type="button" class="dismiss text-bs" aria-label="Dismiss" onclick={() => onDismiss?.()}>
+		<button type="button" class="dismiss focus-ring text-bs" aria-label="Dismiss" onclick={() => onDismiss?.()}>
 			<Icon icon={luX} />
 		</button>
 	{/if}

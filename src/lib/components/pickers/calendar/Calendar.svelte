@@ -320,7 +320,7 @@
 								type="button"
 								role="gridcell"
 								class={[
-									'cell',
+									'cell focus-ring',
 									cell.outside && 'outside',
 									cell.iso === todayIso && 'today',
 									on && 'selected',

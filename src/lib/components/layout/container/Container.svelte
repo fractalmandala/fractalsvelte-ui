@@ -25,7 +25,7 @@
 		padded = false,
 		center = false,
 		as: tag = 'div',
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -42,7 +42,7 @@
 
 <svelte:element
 	this={tag}
-	class={[measureClass[size], padded && 'pad-lg', center && 'centered', klass]}
+	class={[measureClass[size], padded && 'pad-lg', center && 'centered', className]}
 	{...rest}
 >
 	{@render children?.()}

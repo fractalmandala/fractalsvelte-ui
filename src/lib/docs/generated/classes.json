@@ -1,2077 +1,1363 @@
 [
 	{
 		"class": "active",
-		"file": "90-docs.css",
-		"selector": ".toc-link.active",
-		"declarations": "color: var(--theme-color); border-left-color: var(--theme-color)"
+		"file": "components/layout.css",
+		"selector": ".splitter:focus-visible, .splitter.active",
+		"declarations": "background-color: var(--theme-color); box-shadow: 0 0 0 1px var(--theme-color)"
+	},
+	{
+		"class": "alpha-fade",
+		"file": "components/pickers.css",
+		"selector": ".alpha-fade",
+		"declarations": "background-image: linear-gradient(to right, transparent, var(--color-solid, transparent)), repeating-conic-gradient(var(--border-strong) 0 25%, var(--bg-overlay) 0 50%); background-size: 100% 100%, 0.5rem 0.5rem"
 	},
 	{
 		"class": "alternate",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".timeline.alternate .timeline-item",
 		"declarations": "grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr)"
 	},
 	{
-		"class": "anchor",
-		"file": "30-overlay.css",
-		"selector": ".anchor",
-		"declarations": "anchor-name: var(--anchor)"
-	},
-	{
-		"class": "anchored",
-		"file": "90-docs.css",
-		"selector": ".anchored",
-		"declarations": "scroll-margin-top: calc(var(--header-height) + var(--space-lg))"
-	},
-	{
-		"class": "anim-blink",
-		"file": "10-motion.css",
-		"selector": ".anim-blink",
-		"declarations": "animation: blink 1s steps(1) infinite"
-	},
-	{
-		"class": "anim-float",
-		"file": "10-motion.css",
-		"selector": ".anim-float",
-		"declarations": "animation: float 4s ease-in-out infinite"
+		"class": "always",
+		"file": "components/actions.css",
+		"selector": ".underline.hover, .underline.always",
+		"declarations": "text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; text-decoration-color: transparent; transition: color var(--motionin1), text-decoration-color var(--motionin1)"
 	},
 	{
 		"class": "anim-in",
-		"file": "10-motion.css",
-		"selector": ".anim-in",
-		"declarations": "animation: anim-in calc(var(--spring-ms) * var(--motion-scale)) var(--spring) both; animation-delay: calc(var(--i, 0) * var(--stagger) * var(--motion-scale))"
-	},
-	{
-		"class": "anim-ping",
-		"file": "10-motion.css",
-		"selector": ".anim-ping",
-		"declarations": "animation: ping 1.4s var(--transout2) infinite"
-	},
-	{
-		"class": "anim-shake",
-		"file": "10-motion.css",
-		"selector": ".anim-shake",
-		"declarations": "animation: shake 0.4s var(--transout1)"
-	},
-	{
-		"class": "anim-shimmer",
-		"file": "10-motion.css",
-		"selector": ".anim-shimmer",
-		"declarations": "background-image: linear-gradient(100deg, transparent 30%, var(--state-hover) 50%, transparent 70%); background-size: 200% 100%; animation: shimmer 1.6s linear infinite"
-	},
-	{
-		"class": "anim-slide",
-		"file": "kits/feedback.css",
-		"selector": ".anim-slide",
-		"declarations": "animation: slide 1.4s var(--transout2) infinite"
-	},
-	{
-		"class": "anim-stretch",
-		"file": "kits/feedback.css",
-		"selector": ".anim-stretch",
-		"declarations": "animation: stretch 1.2s ease-in-out infinite; animation-delay: calc(var(--i, 0) * 0.15s)"
-	},
-	{
-		"class": "anim-wave",
-		"file": "kits/feedback.css",
-		"selector": ".anim-wave",
-		"declarations": "animation: wave 1.2s ease-in-out infinite; animation-delay: calc(var(--i, 0) * 0.15s)"
-	},
-	{
-		"class": "app-shell",
-		"file": "90-docs.css",
-		"selector": ".app-shell.open .sidebar-left",
-		"declarations": "top: var(--header-height); height: calc(100dvh - var(--header-height)); background-color: var(--bg); border-right: 1px solid var(--border)"
-	},
-	{
-		"class": "at-bottom",
-		"file": "30-overlay.css",
-		"selector": ".floating.at-bottom",
-		"declarations": "position-area: bottom; margin-top: var(--offset); transform-origin: top"
-	},
-	{
-		"class": "at-bottom-end",
-		"file": "30-overlay.css",
-		"selector": ".floating.at-bottom-end",
-		"declarations": "position-area: bottom span-left; margin-top: var(--offset); transform-origin: top right"
-	},
-	{
-		"class": "at-bottom-start",
-		"file": "30-overlay.css",
-		"selector": ".floating.at-bottom-start",
-		"declarations": "position-area: bottom span-right; margin-top: var(--offset); transform-origin: top left"
-	},
-	{
-		"class": "at-left",
-		"file": "30-overlay.css",
-		"selector": ".floating.at-left",
-		"declarations": "position-area: left; margin-right: var(--offset); transform-origin: right"
-	},
-	{
-		"class": "at-left-start",
-		"file": "kits/overlays.css",
-		"selector": ".floating.at-left-start",
-		"declarations": "position-area: left span-bottom; margin-right: var(--offset); transform-origin: top right"
-	},
-	{
-		"class": "at-pointer",
-		"file": "kits/overlays.css",
-		"selector": ".at-pointer",
-		"declarations": "position: fixed; left: calc(var(--px, 0) * 1px); top: calc(var(--py, 0) * 1px); width: 0; height: 0; pointer-events: none; anchor-name: var(--anchor)"
-	},
-	{
-		"class": "at-right",
-		"file": "30-overlay.css",
-		"selector": ".floating.at-right",
-		"declarations": "position-area: right; margin-left: var(--offset); transform-origin: left"
-	},
-	{
-		"class": "at-right-start",
-		"file": "kits/overlays.css",
-		"selector": ".floating.at-right-start",
-		"declarations": "position-area: right span-bottom; margin-left: var(--offset); transform-origin: top left"
-	},
-	{
-		"class": "at-top",
-		"file": "30-overlay.css",
-		"selector": ".floating.at-top",
-		"declarations": "position-area: top; margin-bottom: var(--offset); transform-origin: bottom"
-	},
-	{
-		"class": "at-top-end",
-		"file": "30-overlay.css",
-		"selector": ".floating.at-top-end",
-		"declarations": "position-area: top span-left; margin-bottom: var(--offset); transform-origin: bottom right"
-	},
-	{
-		"class": "at-top-start",
-		"file": "30-overlay.css",
-		"selector": ".floating.at-top-start",
-		"declarations": "position-area: top span-right; margin-bottom: var(--offset); transform-origin: bottom left"
+		"file": "components/motion.css",
+		"selector": ".held .anim-in",
+		"declarations": "animation-play-state: paused"
 	},
 	{
 		"class": "aurora",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".aurora",
 		"declarations": "position: relative; isolation: isolate; overflow: hidden; contain: paint"
 	},
 	{
 		"class": "autosize",
-		"file": "kits/inputs.css",
+		"file": "components/inputs.css",
 		"selector": ".autosize",
 		"declarations": "field-sizing: content; min-height: calc(var(--rows, 3) * 1lh); max-height: calc(var(--max-rows, 1000) * 1lh); overflow-y: auto"
 	},
 	{
 		"class": "avatar",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".avatar",
-		"declarations": "--avatar-size: var(--h-xl); position: relative; display: inline-grid; place-items: center; flex: none; width: var(--avatar-size); height: var(--avatar-size); font-size: calc(var(--avatar-size) * 0.38); font-weight: 600; line-height: 1; user-select: none; box-shadow: 0 0 0 2px var(--avatar-ring, transparent)"
+		"declarations": "--radius-avatar: 12%; --avatar-size: var(--h-xl); position: relative; display: inline-grid; place-items: center; flex: none; width: var(--avatar-size); height: var(--avatar-size); font-size: calc(var(--avatar-size) * 0.38); font-weight: 600; line-height: 1; user-select: none; box-shadow: 0 0 0 2px var(--avatar-ring, transparent)"
 	},
 	{
 		"class": "avatar-group",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".avatar-group.gap-overlap.row",
 		"declarations": "--avatar-ring: var(--bg-surface)"
 	},
 	{
 		"class": "avatar-lg",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".avatar-lg",
 		"declarations": "--avatar-size: var(--h-2xl)"
 	},
 	{
 		"class": "avatar-md",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".avatar-md",
 		"declarations": "--avatar-size: var(--h-xl)"
 	},
 	{
 		"class": "avatar-sm",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".avatar-sm",
 		"declarations": "--avatar-size: var(--h-lg)"
 	},
 	{
 		"class": "avatar-status",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".avatar-status",
 		"declarations": "position: absolute; right: 4%; bottom: 4%; font-size: calc(var(--avatar-size) * 0.5); box-shadow: 0 0 0 2px var(--avatar-ring, var(--bg-surface))"
 	},
 	{
 		"class": "avatar-xl",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".avatar-xl",
 		"declarations": "--avatar-size: var(--h-3xl)"
 	},
 	{
 		"class": "avatar-xs",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".avatar-xs",
 		"declarations": "--avatar-size: var(--h-bs)"
 	},
 	{
 		"class": "axis-x",
-		"file": "kits/motion-b.css",
+		"file": "components/motion.css",
 		"selector": ".parallax-view.axis-x",
 		"declarations": "animation-name: parallax-x"
 	},
 	{
 		"class": "bar",
-		"file": "kits/feedback.css",
+		"file": "components/feedback.css",
 		"selector": ".bar",
 		"declarations": "width: 0.22em; height: 1em; border-radius: var(--radius-full); background-color: currentColor"
 	},
 	{
 		"class": "bare",
-		"file": "40-controls.css",
-		"selector": ".bare",
-		"declarations": "appearance: none; -webkit-appearance: none; background: none; border: none; padding: 0; margin: 0; font: inherit; color: inherit; outline: none; min-width: 0"
+		"file": "components/inputs.css",
+		"selector": ".field .bare::placeholder, .field .bare::-webkit-input-placeholder",
+		"declarations": "color: var(--text-muted); opacity: 1"
 	},
 	{
 		"class": "bento",
-		"file": "kits/layout.css",
+		"file": "components/layout.css",
 		"selector": ".bento",
 		"declarations": "display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); grid-auto-rows: var(--row-h, 8rem); gap: var(--gap, var(--space-md)); container-type: inline-size"
 	},
 	{
 		"class": "bg-none",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".interactive.bg-none:hover",
 		"declarations": "background-color: var(--state-hover)"
 	},
 	{
 		"class": "bleed",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".bleed",
 		"declarations": "margin-inline: calc(var(--pad, 0rem) * -1)"
 	},
 	{
 		"class": "blur-in",
-		"file": "kits/motion.css",
+		"file": "components/motion.css",
 		"selector": ".blur-in",
 		"declarations": "filter: blur(calc(var(--blur, 0) * 1px))"
 	},
 	{
 		"class": "bone",
-		"file": "kits/feedback.css",
+		"file": "components/feedback.css",
 		"selector": ".bone",
 		"declarations": "width: var(--w, 100%); height: var(--h, 1em); border-radius: var(--radius-sm); background-color: var(--state-selected)"
 	},
 	{
 		"class": "bubble",
-		"file": "kits/selection.css",
+		"file": "components/selection.css",
 		"selector": ".bubble",
 		"declarations": "position: absolute; bottom: calc(100% + 0.75em); left: 50%; translate: -50% 0.25em; scale: 0.9; opacity: 0; padding: 0.15em 0.6em; white-space: nowrap; pointer-events: none; transition: opacity var(--speed3) var(--transout2), translate calc(var(--spring-ms) * var(--motion-scale)) var(--spring), scale calc(var(--spring-ms) * var(--motion-scale)) var(--spring)"
 	},
 	{
 		"class": "bullets",
-		"file": "kits/primitives.css",
+		"file": "components/primitives.css",
 		"selector": ".bullets",
 		"declarations": "list-style-type: disc; padding-inline-start: 1.25em"
 	},
 	{
 		"class": "button",
-		"file": "kits/actions.css",
+		"file": "components/actions.css",
 		"selector": ".button[aria-pressed='true']",
 		"declarations": "box-shadow: inset 0 0 0 1px color-mix(in oklab, currentColor 30%, transparent)"
 	},
 	{
-		"class": "cap",
-		"file": "kits/navigation.css",
-		"selector": ".cap",
-		"declarations": "max-height: var(--max-height, 24rem)"
-	},
-	{
-		"class": "cap-md",
-		"file": "kits/overlays.css",
-		"selector": ".cap-md",
-		"declarations": "max-width: var(--measure-md)"
-	},
-	{
-		"class": "cap-sm",
-		"file": "kits/overlays.css",
-		"selector": ".cap-sm",
-		"declarations": "max-width: var(--measure-sm)"
-	},
-	{
-		"class": "cap-xs",
-		"file": "kits/overlays.css",
-		"selector": ".cap-xs",
-		"declarations": "max-width: var(--measure-xs)"
-	},
-	{
-		"class": "caret",
-		"file": "40-controls.css",
-		"selector": ".caret",
-		"declarations": "flex: none; transition: rotate calc(var(--spring-ms) * var(--motion-scale)) var(--spring)"
-	},
-	{
 		"class": "cell",
-		"file": "kits/pickers.css",
+		"file": "components/pickers.css",
 		"selector": ".cell",
 		"declarations": "display: grid; place-items: center; aspect-ratio: 1; width: 100%; padding: 0; border: 1px solid transparent; border-radius: var(--radius-md); background-color: transparent; font: inherit; cursor: pointer; outline: none; transition: background-color var(--motionin1), color var(--motionin1), border-color var(--motionin1), scale calc(var(--spring-ms) * var(--motion-scale)) var(--spring)"
 	},
 	{
 		"class": "cells",
-		"file": "kits/inputs.css",
+		"file": "components/inputs.css",
 		"selector": ".cells",
 		"declarations": "display: inline-grid; grid-template-columns: repeat(var(--cells, 6), var(--cell, 3rem)); grid-auto-rows: var(--cell, 3rem); gap: var(--space-sm)"
 	},
 	{
 		"class": "centered",
-		"file": "kits/layout.css",
+		"file": "components/layout.css",
 		"selector": ".centered",
 		"declarations": "margin-inline: auto"
 	},
 	{
-		"class": "chequer",
-		"file": "kits/pickers.css",
-		"selector": ".chequer",
-		"declarations": "background-image: repeating-conic-gradient(var(--border-strong) 0 25%, var(--bg-overlay) 0 50%); background-size: 0.5rem 0.5rem"
-	},
-	{
 		"class": "choice",
-		"file": "kits/theme.css",
-		"selector": ".swap > *, .choice::before, .orb, .orb::after, .rail .thumb, .rocker .thumb",
+		"file": "components/theme.css",
+		"selector": ".swap > *, .choice::before, .orb, .orb::after, .range-rail .thumb, .rocker .thumb",
 		"declarations": "transition-property: opacity, scale, rotate, translate; transition-duration: calc(var(--spring-ms) * var(--motion-scale)); transition-timing-function: var(--spring)"
 	},
 	{
 		"class": "choice-group",
-		"file": "kits/theme.css",
+		"file": "components/theme.css",
 		"selector": ".choice-group",
 		"declarations": "display: inline-flex; align-items: stretch; gap: 2px; padding: 2px; border: 1px solid var(--border); border-radius: var(--radius-md); background-color: var(--bg-panel)"
 	},
 	{
-		"class": "circle",
-		"file": "kits/display.css",
-		"selector": ".avatar.circle",
-		"declarations": "border-radius: var(--radius-full)"
-	},
-	{
-		"class": "clamp-2",
-		"file": "20-surface.css",
-		"selector": ".clamp-2",
-		"declarations": "display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden"
-	},
-	{
-		"class": "clamp-3",
-		"file": "20-surface.css",
-		"selector": ".clamp-3",
-		"declarations": "display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden"
-	},
-	{
 		"class": "clip",
-		"file": "kits/selection.css",
+		"file": "components/selection.css",
 		"selector": ".clip",
 		"declarations": "position: absolute; inset-block: 0; left: 0; width: calc(var(--value, 0) * 100%); display: flex; overflow: hidden"
 	},
 	{
 		"class": "code",
-		"file": "90-docs.css",
+		"file": "components/display.css",
 		"selector": ".code",
-		"declarations": "display: block; margin: 0; padding: var(--space-bs) var(--space-lg); overflow-x: auto; font-family: var(--font-mono); font-size: var(--text-sm); line-height: 1.7; white-space: pre; tab-size: 2; color: var(--text-primary); scrollbar-width: thin"
-	},
-	{
-		"class": "code-chip",
-		"file": "90-docs.css",
-		"selector": ".code-chip",
-		"declarations": "display: inline; padding: 0.1em 0.4em; border-radius: var(--radius-sm); background-color: var(--state-selected); color: var(--text-primary); font-family: var(--font-mono); font-size: 0.86em; white-space: nowrap"
+		"declarations": "counter-reset: line; margin: 0; font-family: var(--font-mono); font-size: var(--text-sm); line-height: 1.65; tab-size: 2"
 	},
 	{
 		"class": "code-line",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".code-line",
 		"declarations": "display: flex; min-height: 1lh; padding-inline: var(--space-bs)"
 	},
 	{
 		"class": "collapse",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".data-table .flush:has(> .collapse:not(.open))",
 		"declarations": "border-bottom-color: transparent"
 	},
 	{
 		"class": "collapsed",
-		"file": "kits/navigation.css",
+		"file": "components/navigation.css",
 		"selector": ".rail.collapsed",
-		"declarations": "width: 3.5rem; min-width: 3.5rem"
+		"declarations": "width: var(--rail-width-collapsed); min-width: var(--rail-width-collapsed)"
 	},
 	{
 		"class": "column",
-		"file": "kits/navigation.css",
+		"file": "components/navigation.css",
 		"selector": ".column > .indicator.rule, .vertical > .indicator.rule",
 		"declarations": "top: 0; bottom: auto; left: 0; width: 2px; height: calc(var(--ih, 0) * 1px)"
 	},
 	{
 		"class": "connector",
-		"file": "kits/navigation.css",
+		"file": "components/navigation.css",
 		"selector": ".connector",
 		"declarations": "height: 2px"
 	},
 	{
-		"class": "cover",
-		"file": "20-surface.css",
-		"selector": ".cover",
-		"declarations": "position: absolute; inset: 0"
-	},
-	{
 		"class": "cursor",
-		"file": "kits/motion-b.css",
+		"file": "components/motion.css",
 		"selector": ".cursor",
 		"declarations": "display: inline-block; width: 0.09em; height: 1em; margin-inline-start: 0.08em; vertical-align: -0.12em; background-color: currentColor; border-radius: var(--radius-xs)"
 	},
 	{
 		"class": "danger",
-		"file": "20-surface.css",
-		"selector": ".soft, .soft.info, .soft.success, .soft.warning, .soft.danger",
-		"declarations": "background-color: color-mix(in oklab, var(--soft-ink) 14%, transparent); border: 1px solid transparent; color: color-mix(in oklab, var(--soft-ink) 72%, var(--text-primary))"
+		"file": "components/feedback.css",
+		"selector": ".msg.solid, .msg.solid.neutral, .msg.solid.info, .msg.solid.success, .msg.solid.warning, .msg.solid.danger",
+		"declarations": "background-color: var(--msg-ink); border: 1px solid var(--msg-ink); --ink-bg: var(--msg-ink)"
 	},
 	{
 		"class": "data-table",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".dense.data-table",
 		"declarations": "font-size: var(--text-sm)"
 	},
 	{
 		"class": "dense",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".dense.data-table",
 		"declarations": "font-size: var(--text-sm)"
 	},
 	{
 		"class": "dialog",
-		"file": "30-overlay.css",
-		"selector": ":where(.floating, .dialog, .layer)",
-		"declarations": "border: none; padding: 0; margin: 0; background: transparent; color: inherit; overflow: visible"
-	},
-	{
-		"class": "dim",
-		"file": "20-surface.css",
-		"selector": ".dim",
-		"declarations": "opacity: 0.5"
-	},
-	{
-		"class": "disabled",
-		"file": "40-controls.css",
-		"selector": ".item.disabled, .item:disabled, .item[aria-disabled='true']",
-		"declarations": "opacity: 0.5; pointer-events: none"
+		"file": "components/overlays.css",
+		"selector": ".dialog.sheet.motion[open]",
+		"declarations": "translate: calc(var(--mx, 0) * 1px) calc(var(--my, 0) * 1px)"
 	},
 	{
 		"class": "dismiss",
-		"file": "kits/feedback.css",
+		"file": "components/feedback.css",
 		"selector": ".dismiss",
 		"declarations": "display: inline-grid; place-items: center; flex: none; width: 1.75em; aspect-ratio: 1; padding: 0; border: none; border-radius: var(--radius-sm); background: transparent; color: inherit; font-size: inherit; opacity: 0.65; cursor: pointer; transition: opacity var(--motionin1), background-color var(--motionin1)"
 	},
 	{
 		"class": "divided",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".divided > * + *",
 		"declarations": "padding-top: var(--space-sm); border-top: 1px solid var(--border-subtle)"
 	},
 	{
-		"class": "dot",
-		"file": "20-surface.css",
-		"selector": ".dot",
-		"declarations": "flex: none; width: 0.5em; height: 0.5em; border-radius: var(--radius-full); background-color: currentColor"
-	},
-	{
 		"class": "drag-over",
-		"file": "kits/inputs.css",
+		"file": "components/inputs.css",
 		"selector": ".drag-over",
 		"declarations": "border-color: var(--theme-color); background-color: color-mix(in oklab, var(--theme-color) 8%, transparent)"
 	},
 	{
-		"class": "drawer-scrim",
-		"file": "90-docs.css",
-		"selector": ".drawer-scrim",
-		"declarations": "position: fixed; inset: var(--header-height) 0 0 0; background-color: var(--scrim)"
-	},
-	{
 		"class": "edge-bottom",
-		"file": "kits/motion-b.css",
+		"file": "components/motion.css",
 		"selector": ".edge-bottom",
 		"declarations": "position: fixed; inset: auto 0 0 0; z-index: var(--z-toast)"
 	},
 	{
 		"class": "edge-top",
-		"file": "kits/motion-b.css",
+		"file": "components/motion.css",
 		"selector": ".edge-top",
 		"declarations": "position: fixed; inset: 0 0 auto 0; z-index: var(--z-toast)"
 	},
 	{
 		"class": "empty",
-		"file": "kits/pickers.css",
+		"file": "components/pickers.css",
 		"selector": ".segment.empty",
 		"declarations": "color: var(--text-muted)"
 	},
 	{
 		"class": "end",
-		"file": "kits/layout.css",
+		"file": "components/layout.css",
 		"selector": ".sentinel.end",
 		"declarations": "margin-top: -1px"
 	},
 	{
-		"class": "enter-blur",
-		"file": "10-motion.css",
-		"selector": ".enter-blur",
-		"declarations": "--enter-blur: 0.5rem"
-	},
-	{
-		"class": "enter-down",
-		"file": "10-motion.css",
-		"selector": ".enter-down",
-		"declarations": "--enter-scale: 1; --enter-y: calc(var(--space-md) * -1)"
-	},
-	{
-		"class": "enter-edge-bottom",
-		"file": "10-motion.css",
-		"selector": ".enter-edge-bottom",
-		"declarations": "--enter-scale: 1; --enter-y: 100%"
-	},
-	{
-		"class": "enter-edge-left",
-		"file": "10-motion.css",
-		"selector": ".enter-edge-left",
-		"declarations": "--enter-scale: 1; --enter-x: -100%"
-	},
-	{
-		"class": "enter-edge-right",
-		"file": "10-motion.css",
-		"selector": ".enter-edge-right",
-		"declarations": "--enter-scale: 1; --enter-x: 100%"
-	},
-	{
-		"class": "enter-edge-top",
-		"file": "10-motion.css",
-		"selector": ".enter-edge-top",
-		"declarations": "--enter-scale: 1; --enter-y: -100%"
-	},
-	{
-		"class": "enter-fade",
-		"file": "10-motion.css",
-		"selector": ".enter-fade",
-		"declarations": "--enter-scale: 1; --enter-x: 0; --enter-y: 0"
-	},
-	{
-		"class": "enter-left",
-		"file": "10-motion.css",
-		"selector": ".enter-left",
-		"declarations": "--enter-scale: 1; --enter-x: var(--space-md)"
-	},
-	{
-		"class": "enter-right",
-		"file": "10-motion.css",
-		"selector": ".enter-right",
-		"declarations": "--enter-scale: 1; --enter-x: calc(var(--space-md) * -1)"
-	},
-	{
-		"class": "enter-scale",
-		"file": "10-motion.css",
-		"selector": ".enter-scale",
-		"declarations": "--enter-scale: 0.96; --enter-x: 0; --enter-y: 0"
-	},
-	{
-		"class": "enter-up",
-		"file": "10-motion.css",
-		"selector": ".enter-up",
-		"declarations": "--enter-scale: 1; --enter-y: var(--space-md)"
-	},
-	{
 		"class": "fade",
-		"file": "kits/motion-b.css",
+		"file": "components/motion.css",
 		"selector": ".marquee.fade",
 		"declarations": "mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent)"
 	},
 	{
 		"class": "fade-x",
-		"file": "kits/layout.css",
+		"file": "components/layout.css",
 		"selector": ".fade-x",
 		"declarations": "mask-image: linear-gradient(to right, transparent, black var(--fade-left, 0px), black calc(100% - var(--fade-right, 0px)), transparent)"
 	},
 	{
 		"class": "fade-y",
-		"file": "kits/layout.css",
+		"file": "components/layout.css",
 		"selector": ".fade-y",
 		"declarations": "mask-image: linear-gradient(to bottom, transparent, black var(--fade-top, 0px), black calc(100% - var(--fade-bottom, 0px)), transparent)"
 	},
 	{
 		"class": "field",
-		"file": "kits/inputs.css",
+		"file": "components/inputs.css",
 		"selector": ".field .bare::placeholder, .field .bare::-webkit-input-placeholder",
 		"declarations": "color: var(--text-muted); opacity: 1"
 	},
 	{
 		"class": "fill",
-		"file": "40-controls.css",
-		"selector": ".fill",
-		"declarations": "position: absolute; inset-block: 0; left: calc(var(--from, 0) * 100%); width: calc((var(--value, 0) - var(--from, 0)) * 100%); border-radius: inherit; background-color: var(--theme-color)"
-	},
-	{
-		"class": "floating",
-		"file": "30-overlay.css",
-		"selector": ":where(.floating, .dialog, .layer)",
-		"declarations": "border: none; padding: 0; margin: 0; background: transparent; color: inherit; overflow: visible"
+		"file": "components/motion.css",
+		"selector": ".fill.scaled",
+		"declarations": "left: 0; width: 100%; scale: var(--value, 0) 1; transform-origin: left"
 	},
 	{
 		"class": "flush",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".data-table .flush",
 		"declarations": "padding: 0"
 	},
 	{
-		"class": "focusable",
-		"file": "kits/data.css",
-		"selector": ".focusable:focus-visible",
-		"declarations": "outline: 2px solid var(--ring); outline-offset: 1px"
-	},
-	{
 		"class": "free",
-		"file": "kits/pickers.css",
+		"file": "components/pickers.css",
 		"selector": ".thumb.free",
 		"declarations": "top: calc(var(--vy, 0) * 100%); left: calc(var(--vx, 0) * 100%)"
 	},
 	{
 		"class": "from-top",
-		"file": "kits/feedback.css",
+		"file": "components/feedback.css",
 		"selector": ".pile.from-top",
 		"declarations": "--dir: 1; align-items: start"
 	},
 	{
-		"class": "fullscreen",
-		"file": "kits/overlays.css",
-		"selector": ".dialog.fullscreen",
-		"declarations": "width: 100%; height: 100%; max-width: none; max-height: none"
-	},
-	{
 		"class": "gap-overlap",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".avatar-group.gap-overlap.row",
 		"declarations": "--avatar-ring: var(--bg-surface)"
 	},
 	{
 		"class": "ghost",
-		"file": "kits/actions.css",
+		"file": "components/actions.css",
 		"selector": ".button[aria-pressed='true']:is(.ghost, .outline, .secondary, .link), .button[aria-pressed='true']:is(.ghost, .outline, .secondary, .link):hover",
 		"declarations": "background-color: var(--state-selected); color: var(--text-primary)"
 	},
 	{
 		"class": "glare",
-		"file": "kits/motion.css",
+		"file": "components/motion.css",
 		"selector": ".glare",
 		"declarations": "background-image: radial-gradient(circle at var(--px, 50%) var(--py, 50%), color-mix(in oklab, var(--white-fixed) 42%, transparent) 0%, transparent 58%)"
 	},
 	{
-		"class": "glass",
-		"file": "20-surface.css",
-		"selector": ".glass",
-		"declarations": "background-color: color-mix(in oklab, var(--bg-overlay) var(--glass-alpha), transparent); backdrop-filter: blur(var(--glass-blur)) saturate(1.6); -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.6)"
-	},
-	{
 		"class": "glide",
-		"file": "kits/selection.css",
+		"file": "components/selection.css",
 		"selector": ".glide",
 		"declarations": "transition: left calc(var(--spring-ms) * var(--motion-scale)) var(--spring), bottom calc(var(--spring-ms) * var(--motion-scale)) var(--spring), width calc(var(--spring-ms) * var(--motion-scale)) var(--spring), height calc(var(--spring-ms) * var(--motion-scale)) var(--spring)"
 	},
 	{
-		"class": "glow",
-		"file": "20-surface.css",
-		"selector": ".glow",
-		"declarations": "box-shadow: 0 0 0 1px color-mix(in oklab, var(--theme-color) 45%, transparent), 0 0 2rem -0.5rem var(--theme-color)"
-	},
-	{
 		"class": "grab",
-		"file": "kits/motion.css",
+		"file": "components/motion.css",
 		"selector": ".grab",
 		"declarations": "cursor: grab"
 	},
 	{
 		"class": "grabbing",
-		"file": "kits/motion.css",
+		"file": "components/motion.css",
 		"selector": ".grabbing",
 		"declarations": "cursor: grabbing"
 	},
 	{
 		"class": "grain",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".grain",
 		"declarations": "position: absolute; inset: 0; pointer-events: none; opacity: var(--grain-opacity, 0.18); mix-blend-mode: var(--grain-blend, overlay); background-image: repeating-linear-gradient(0deg, var(--text-primary) 0 1px, transparent 1px 2px), repeating-linear-gradient(90deg, var(--text-primary) 0 1px, transparent 1px 2px), repeating-linear-gradient(37deg, var(--text-primary) 0 1px, transparent 1px 3px); background-size: 0.22rem 0.22rem, 0.28rem 0.28rem, 0.18rem 0.18rem; contain: paint"
 	},
 	{
-		"class": "grid-7",
-		"file": "kits/pickers.css",
-		"selector": ".grid-7",
-		"declarations": "display: grid; grid-template-columns: repeat(7, minmax(var(--h-lg), 1fr))"
-	},
-	{
 		"class": "grip",
-		"file": "kits/overlays.css",
+		"file": "components/overlays.css",
 		"selector": ".grip",
 		"declarations": "flex: none; width: 2.5rem; height: 0.25rem; border-radius: var(--radius-full); background-color: var(--border-strong)"
 	},
 	{
 		"class": "hairline",
-		"file": "kits/motion-b.css",
+		"file": "components/motion.css",
 		"selector": ".track.hairline",
 		"declarations": "height: 0.1875rem"
 	},
 	{
 		"class": "halo",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".halo",
 		"declarations": "box-shadow: 0 0 1.75rem -0.5rem color-mix(in oklab, var(--theme-color) 50%, transparent)"
 	},
 	{
 		"class": "held",
-		"file": "kits/motion-b.css",
+		"file": "components/motion.css",
 		"selector": ".held .anim-in",
 		"declarations": "animation-play-state: paused"
 	},
 	{
-		"class": "hero-wash",
-		"file": "90-docs.css",
-		"selector": ".hero-wash",
-		"declarations": "background-image: radial-gradient(60% 55% at 50% 0%, color-mix(in oklab, var(--theme-color) 16%, transparent), transparent 72%)"
-	},
-	{
-		"class": "highlighted",
-		"file": "40-controls.css",
-		"selector": ".item:hover, .item:focus-visible, .item.highlighted",
-		"declarations": "background-color: var(--state-hover)"
-	},
-	{
 		"class": "hint",
-		"file": "kits/navigation.css",
+		"file": "components/navigation.css",
 		"selector": ".hint",
 		"declarations": "position: absolute; z-index: var(--z-raised); padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-md); background-color: var(--bg-overlay); color: var(--text-primary); box-shadow: var(--shadow-md); font-size: var(--text-sm); line-height: 1.2; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity calc(var(--spring-ms) * var(--motion-scale)) var(--spring), translate calc(var(--spring-ms) * var(--motion-scale)) var(--spring)"
 	},
 	{
-		"class": "hint-bottom",
-		"file": "kits/navigation.css",
-		"selector": ".hint-bottom",
-		"declarations": "top: 100%; left: 50%; translate: -50% calc(var(--space-xs) * -1); margin-top: var(--space-xs)"
-	},
-	{
-		"class": "hint-left",
-		"file": "kits/navigation.css",
-		"selector": ".hint-left",
-		"declarations": "right: 100%; top: 50%; translate: var(--space-xs) -50%; margin-right: var(--space-xs)"
-	},
-	{
 		"class": "hint-right",
-		"file": "kits/navigation.css",
+		"file": "components/navigation.css",
 		"selector": ".hint-right",
 		"declarations": "left: 100%; top: 50%; translate: calc(var(--space-xs) * -1) -50%; margin-left: var(--space-xs)"
 	},
 	{
 		"class": "hint-top",
-		"file": "kits/navigation.css",
+		"file": "components/navigation.css",
 		"selector": ".hint-top",
 		"declarations": "bottom: 100%; left: 50%; translate: -50% var(--space-xs); margin-bottom: var(--space-xs)"
 	},
 	{
+		"class": "hover",
+		"file": "components/actions.css",
+		"selector": ".underline.hover, .underline.always",
+		"declarations": "text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; text-decoration-color: transparent; transition: color var(--motionin1), text-decoration-color var(--motionin1)"
+	},
+	{
 		"class": "hover-fill",
-		"file": "kits/inputs.css",
+		"file": "components/inputs.css",
 		"selector": ".hover-fill:hover",
 		"declarations": "background-color: var(--state-hover)"
 	},
 	{
 		"class": "hue-track",
-		"file": "kits/theme.css",
+		"file": "components/theme.css",
 		"selector": ".hue-track",
 		"declarations": "background-image: linear-gradient(to right, oklch(0.7 0.17 0), oklch(0.7 0.17 60), oklch(0.7 0.17 120), oklch(0.7 0.17 180), oklch(0.7 0.17 240), oklch(0.7 0.17 300), oklch(0.7 0.17 360))"
 	},
 	{
-		"class": "in",
-		"file": "10-motion.css",
-		"selector": ".reveal.in",
-		"declarations": "opacity: 1; translate: 0 0; scale: 1"
-	},
-	{
 		"class": "in-range",
-		"file": "kits/pickers.css",
+		"file": "components/pickers.css",
 		"selector": ".cell.in-range",
 		"declarations": "border-radius: 0; background-color: color-mix(in oklab, var(--theme-color) 14%, transparent)"
 	},
 	{
 		"class": "indent",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".indent",
 		"declarations": "padding-left: calc(var(--level, 0) * var(--space-bs) + var(--space-sm))"
 	},
 	{
 		"class": "indicator",
-		"file": "40-controls.css",
-		"selector": ".indicator",
-		"declarations": "position: absolute; top: 0; left: 0; width: calc(var(--iw, 0) * 1px); height: calc(var(--ih, 0) * 1px); translate: calc(var(--ix, 0) * 1px) calc(var(--iy, 0) * 1px); pointer-events: none"
+		"file": "components/navigation.css",
+		"selector": ".indicator.rule",
+		"declarations": "top: auto; bottom: 0; height: 2px; background-color: var(--theme-color)"
 	},
 	{
 		"class": "info",
-		"file": "20-surface.css",
-		"selector": ".soft, .soft.info, .soft.success, .soft.warning, .soft.danger",
-		"declarations": "background-color: color-mix(in oklab, var(--soft-ink) 14%, transparent); border: 1px solid transparent; color: color-mix(in oklab, var(--soft-ink) 72%, var(--text-primary))"
+		"file": "components/feedback.css",
+		"selector": ".msg.solid, .msg.solid.neutral, .msg.solid.info, .msg.solid.success, .msg.solid.warning, .msg.solid.danger",
+		"declarations": "background-color: var(--msg-ink); border: 1px solid var(--msg-ink); --ink-bg: var(--msg-ink)"
 	},
 	{
 		"class": "ink",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".ink",
 		"declarations": "background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent"
 	},
 	{
 		"class": "ink-aurora",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".ink-aurora",
 		"declarations": "background-image: linear-gradient(90deg, oklch(0.65 var(--chroma) var(--hue)), oklch(0.72 var(--chroma) calc(var(--hue) + 70)), oklch(0.65 var(--chroma) calc(var(--hue) + 140)))"
 	},
 	{
-		"class": "ink-fade",
-		"file": "90-docs.css",
-		"selector": ".ink-fade",
-		"declarations": "background-image: linear-gradient(180deg, var(--text-primary) 30%, var(--text-secondary)); -webkit-background-clip: text; background-clip: text; color: transparent"
-	},
-	{
 		"class": "ink-flow",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".ink-flow",
 		"declarations": "background-size: 200% 100%; animation: shimmer calc(var(--shimmer-ms, 8) * 1s * var(--motion-scale)) linear infinite"
 	},
 	{
 		"class": "ink-mono",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".ink-mono",
 		"declarations": "background-image: linear-gradient(90deg, var(--text-primary), var(--text-secondary))"
 	},
 	{
 		"class": "ink-shimmer",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".ink-shimmer",
 		"declarations": "background-image: linear-gradient(100deg, var(--text-muted) 0%, var(--text-muted) calc(50% - var(--shimmer-spread, 12%)), var(--text-primary) 50%, var(--text-muted) calc(50% + var(--shimmer-spread, 12%)), var(--text-muted) 100%); background-size: 200% 100%; animation: shimmer calc(var(--shimmer-ms, 1.8) * 1s * var(--motion-scale)) linear infinite"
 	},
 	{
 		"class": "ink-sunset",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".ink-sunset",
 		"declarations": "background-image: linear-gradient(90deg, oklch(0.7 var(--chroma) calc(var(--hue) + 40)), oklch(0.64 var(--chroma) calc(var(--hue) - 8)), oklch(0.6 var(--chroma) calc(var(--hue) - 45)))"
 	},
 	{
 		"class": "ink-theme",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".ink-theme",
 		"declarations": "background-image: linear-gradient(90deg, var(--theme-color), var(--theme-color-up))"
 	},
 	{
 		"class": "interactive",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".interactive",
 		"declarations": "cursor: pointer; outline: none; transition: border-color var(--motionin1), background-color var(--motionin1)"
 	},
 	{
-		"class": "item",
-		"file": "40-controls.css",
-		"selector": ".item",
-		"declarations": "display: flex; align-items: center; justify-content: flex-start; gap: var(--space-sm); width: 100%; min-height: var(--h-lg); padding: var(--space-xs) var(--space-sm); border: none; border-radius: var(--radius-md); background-color: transparent; color: var(--text-primary); font-size: var(--text-md); text-align: left; cursor: pointer; user-select: none; outline: none; transition: background-color var(--motionin1), color var(--motionin1)"
-	},
-	{
-		"class": "kbd",
-		"file": "kits/primitives.css",
-		"selector": ".kbd",
-		"declarations": "display: inline-flex; align-items: center; justify-content: center; min-width: 1.75em; padding-inline: var(--space-xs); border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: var(--radius-sm); background-color: var(--bg-surface); color: var(--text-primary); font-family: var(--font-mono); font-weight: 500; line-height: 1; white-space: nowrap"
-	},
-	{
-		"class": "layer",
-		"file": "30-overlay.css",
-		"selector": ":where(.floating, .dialog, .layer)",
-		"declarations": "border: none; padding: 0; margin: 0; background: transparent; color: inherit; overflow: visible"
-	},
-	{
 		"class": "leaving",
-		"file": "kits/motion-b.css",
+		"file": "components/motion.css",
 		"selector": ".leaving",
 		"declarations": "position: absolute; top: calc(var(--oy, 0) * 1px); left: calc(var(--ox, 0) * 1px); width: calc(var(--ow, 0) * 1px); margin: 0; pointer-events: none"
 	},
 	{
-		"class": "lift",
-		"file": "10-motion.css",
-		"selector": ".lift",
-		"declarations": "transition: translate calc(var(--spring-ms) * var(--motion-scale)) var(--spring), box-shadow var(--motionout3)"
-	},
-	{
 		"class": "light",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".light",
 		"declarations": "position: relative; isolation: isolate; overflow: hidden; contain: paint; --light-color: var(--theme-color)"
 	},
 	{
 		"class": "light-neutral",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".light-neutral",
 		"declarations": "--light-color: var(--white-fixed)"
 	},
 	{
 		"class": "light-theme",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".light-theme",
 		"declarations": "--light-color: var(--theme-color)"
 	},
 	{
 		"class": "link",
-		"file": "kits/actions.css",
+		"file": "components/actions.css",
 		"selector": ".button[aria-pressed='true']:is(.ghost, .outline, .secondary, .link), .button[aria-pressed='true']:is(.ghost, .outline, .secondary, .link):hover",
 		"declarations": "background-color: var(--state-selected); color: var(--text-primary)"
 	},
 	{
-		"class": "link-plain",
-		"file": "kits/actions.css",
-		"selector": ".link-subtle:focus-visible, .link:focus-visible, .link-plain:focus-visible",
-		"declarations": "outline: 2px solid var(--ring); outline-offset: 2px; border-radius: var(--radius-xs)"
-	},
-	{
 		"class": "link-subtle",
-		"file": "kits/actions.css",
+		"file": "components/actions.css",
 		"selector": ".link-subtle",
 		"declarations": "color: var(--text-secondary); text-decoration: none; transition: color var(--motionin1), text-decoration-color var(--motionin1)"
 	},
 	{
 		"class": "marked",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".code-line.marked",
 		"declarations": "background-color: color-mix(in oklab, var(--theme-color) 12%, transparent); box-shadow: inset 2px 0 0 var(--theme-color)"
 	},
 	{
 		"class": "marquee",
-		"file": "kits/motion-b.css",
+		"file": "components/motion.css",
 		"selector": ".marquee",
 		"declarations": "display: flex; overflow: hidden; gap: var(--gap, var(--space-lg))"
 	},
 	{
 		"class": "marquee-group",
-		"file": "kits/motion-b.css",
+		"file": "components/motion.css",
 		"selector": ".marquee-group",
 		"declarations": "display: flex; flex: none; align-items: center; gap: var(--gap, var(--space-lg)); min-width: 100%; animation: marquee-x calc(var(--duration, 20) * 1s * var(--motion-scale)) linear infinite"
 	},
 	{
 		"class": "mask-bottom",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".mask-bottom",
 		"declarations": "mask-image: linear-gradient(to top, black 20%, transparent 85%); -webkit-mask-image: linear-gradient(to top, black 20%, transparent 85%)"
 	},
 	{
 		"class": "mask-edges",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".mask-edges",
 		"declarations": "mask-image: linear-gradient(to right, transparent, black 18%, black 82%, transparent), linear-gradient(to bottom, transparent, black 18%, black 82%, transparent); mask-composite: intersect; -webkit-mask-image: linear-gradient(to right, transparent, black 18%, black 82%, transparent), linear-gradient(to bottom, transparent, black 18%, black 82%, transparent); -webkit-mask-composite: destination-in"
 	},
 	{
 		"class": "mask-radial",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".mask-radial",
 		"declarations": "mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%); -webkit-mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%)"
 	},
 	{
 		"class": "mask-top",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".mask-top",
 		"declarations": "mask-image: linear-gradient(to bottom, black 20%, transparent 85%); -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 85%)"
 	},
 	{
 		"class": "masonry",
-		"file": "kits/layout.css",
+		"file": "components/layout.css",
 		"selector": ".masonry",
 		"declarations": "display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: var(--gap, var(--space-md))"
 	},
 	{
 		"class": "match-anchor",
-		"file": "30-overlay.css",
-		"selector": ".floating.match-anchor",
+		"file": "components/actions.css",
+		"selector": ".match-anchor",
 		"declarations": "min-width: anchor-size(width)"
 	},
 	{
-		"class": "max-h-2xl",
-		"file": "kits/layout.css",
-		"selector": ".max-h-2xl",
-		"declarations": "max-height: var(--measure-2xl)"
+		"class": "max-h",
+		"file": "components/navigation.css",
+		"selector": ".max-h",
+		"declarations": "max-height: var(--max-height, 24rem)"
 	},
 	{
-		"class": "max-h-lg",
-		"file": "kits/display.css",
-		"selector": ".max-h-lg",
-		"declarations": "max-height: var(--measure-lg)"
+		"class": "max-w-sm",
+		"file": "components/overlays.css",
+		"selector": ".max-w-sm",
+		"declarations": "max-width: var(--measure-sm)"
 	},
 	{
-		"class": "max-h-md",
-		"file": "kits/display.css",
-		"selector": ".max-h-md",
-		"declarations": "max-height: var(--measure-md)"
-	},
-	{
-		"class": "max-h-sm",
-		"file": "kits/display.css",
-		"selector": ".max-h-sm",
-		"declarations": "max-height: var(--measure-sm)"
-	},
-	{
-		"class": "max-h-xl",
-		"file": "kits/display.css",
-		"selector": ".max-h-xl",
-		"declarations": "max-height: var(--measure-xl)"
-	},
-	{
-		"class": "max-h-xs",
-		"file": "kits/display.css",
-		"selector": ".max-h-xs",
-		"declarations": "max-height: var(--measure-xs)"
-	},
-	{
-		"class": "measure-2xl",
-		"file": "20-surface.css",
-		"selector": ".measure-2xl",
-		"declarations": "width: 100%; max-width: var(--measure-2xl)"
-	},
-	{
-		"class": "measure-hero",
-		"file": "90-docs.css",
-		"selector": ".measure-hero",
-		"declarations": "max-width: 15ch"
-	},
-	{
-		"class": "measure-lead",
-		"file": "90-docs.css",
-		"selector": ".measure-lead",
-		"declarations": "max-width: 44ch"
-	},
-	{
-		"class": "measure-lg",
-		"file": "20-surface.css",
-		"selector": ".measure-lg",
-		"declarations": "width: 100%; max-width: var(--measure-lg)"
-	},
-	{
-		"class": "measure-md",
-		"file": "20-surface.css",
-		"selector": ".measure-md",
-		"declarations": "width: 100%; max-width: var(--measure-md)"
-	},
-	{
-		"class": "measure-sm",
-		"file": "20-surface.css",
-		"selector": ".measure-sm",
-		"declarations": "width: 100%; max-width: var(--measure-sm)"
-	},
-	{
-		"class": "measure-xl",
-		"file": "20-surface.css",
-		"selector": ".measure-xl",
-		"declarations": "width: 100%; max-width: var(--measure-xl)"
-	},
-	{
-		"class": "measure-xs",
-		"file": "20-surface.css",
-		"selector": ".measure-xs",
-		"declarations": "width: 100%; max-width: var(--measure-xs)"
+		"class": "max-w-xs",
+		"file": "components/overlays.css",
+		"selector": ".max-w-xs",
+		"declarations": "max-width: var(--measure-xs)"
 	},
 	{
 		"class": "motion",
-		"file": "10-motion.css",
-		"selector": ".motion",
-		"declarations": "translate: calc(var(--mx, 0) * 1px) calc(var(--my, 0) * 1px); scale: var(--ms, 1); rotate: calc(var(--mr, 0) * 1deg); opacity: var(--mo, 1)"
+		"file": "components/overlays.css",
+		"selector": ".dialog.sheet.motion[open]",
+		"declarations": "translate: calc(var(--mx, 0) * 1px) calc(var(--my, 0) * 1px)"
 	},
 	{
-		"class": "motion-none",
-		"file": "10-motion.css",
-		"selector": ".motion-none",
-		"declarations": "--mx: 0; --my: 0; --ms: 1; --mr: 0; --mo: 1; --rx: 0; --ry: 0"
-	},
-	{
-		"class": "msg-outline",
-		"file": "kits/feedback.css",
-		"selector": ".msg-outline, .msg-outline.neutral, .msg-outline.info, .msg-outline.success, .msg-outline.warning, .msg-outline.danger",
-		"declarations": "background-color: transparent; border: 1px solid var(--msg-edge, var(--border-strong)); color: var(--text-primary)"
-	},
-	{
-		"class": "msg-solid",
-		"file": "kits/feedback.css",
-		"selector": ".msg-solid, .msg-solid.neutral, .msg-solid.info, .msg-solid.success, .msg-solid.warning, .msg-solid.danger",
-		"declarations": "background-color: var(--msg-ink); border: 1px solid var(--msg-ink); color: var(--white-fixed)"
+		"class": "msg",
+		"file": "components/feedback.css",
+		"selector": ".msg.solid, .msg.solid.neutral, .msg.solid.info, .msg.solid.success, .msg.solid.warning, .msg.solid.danger",
+		"declarations": "background-color: var(--msg-ink); border: 1px solid var(--msg-ink); --ink-bg: var(--msg-ink)"
 	},
 	{
 		"class": "native",
-		"file": "kits/selection.css",
+		"file": "components/selection.css",
 		"selector": ".native",
 		"declarations": "position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer"
 	},
 	{
 		"class": "neutral",
-		"file": "kits/feedback.css",
-		"selector": ".msg-solid, .msg-solid.neutral, .msg-solid.info, .msg-solid.success, .msg-solid.warning, .msg-solid.danger",
-		"declarations": "background-color: var(--msg-ink); border: 1px solid var(--msg-ink); color: var(--white-fixed)"
+		"file": "components/feedback.css",
+		"selector": ".msg.solid, .msg.solid.neutral, .msg.solid.info, .msg.solid.success, .msg.solid.warning, .msg.solid.danger",
+		"declarations": "background-color: var(--msg-ink); border: 1px solid var(--msg-ink); --ink-bg: var(--msg-ink)"
 	},
 	{
 		"class": "numbered",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".code.numbered .code-line::before",
 		"declarations": "counter-increment: line; content: counter(line); flex: none; width: 3ch; margin-right: var(--space-bs); text-align: right; color: var(--text-muted); user-select: none; font-variant-numeric: tabular-nums"
 	},
 	{
 		"class": "numbers",
-		"file": "kits/primitives.css",
+		"file": "components/primitives.css",
 		"selector": ".numbers",
 		"declarations": "list-style-type: decimal; padding-inline-start: 1.25em"
 	},
 	{
 		"class": "open",
-		"file": "10-motion.css",
-		"selector": ".pop:popover-open, .pop[open], .pop.open",
-		"declarations": "opacity: 1; scale: 1; translate: 0 0; filter: none"
-	},
-	{
-		"class": "open-column",
-		"file": "kits/overlays.css",
-		"selector": ".open-column:is([open], :popover-open)",
-		"declarations": "display: flex; flex-direction: column"
+		"file": "components/data.css",
+		"selector": ".data-table .flush:has(> .collapse:not(.open))",
+		"declarations": "border-bottom-color: transparent"
 	},
 	{
 		"class": "orb",
-		"file": "kits/theme.css",
-		"selector": ".swap > *, .choice::before, .orb, .orb::after, .rail .thumb, .rocker .thumb",
+		"file": "components/theme.css",
+		"selector": ".swap > *, .choice::before, .orb, .orb::after, .range-rail .thumb, .rocker .thumb",
 		"declarations": "transition-property: opacity, scale, rotate, translate; transition-duration: calc(var(--spring-ms) * var(--motion-scale)); transition-timing-function: var(--spring)"
 	},
 	{
 		"class": "origin-bot",
-		"file": "kits/navigation.css",
+		"file": "components/navigation.css",
 		"selector": ".origin-bot",
 		"declarations": "transform-origin: bottom center"
 	},
 	{
 		"class": "origin-left",
-		"file": "kits/navigation.css",
+		"file": "components/navigation.css",
 		"selector": ".origin-left",
 		"declarations": "transform-origin: center left"
 	},
 	{
-		"class": "origin-right",
-		"file": "kits/navigation.css",
-		"selector": ".origin-right",
-		"declarations": "transform-origin: center right"
-	},
-	{
-		"class": "origin-top",
-		"file": "kits/navigation.css",
-		"selector": ".origin-top",
-		"declarations": "transform-origin: top center"
-	},
-	{
 		"class": "outline",
-		"file": "kits/actions.css",
+		"file": "components/actions.css",
 		"selector": ".button[aria-pressed='true']:is(.ghost, .outline, .secondary, .link), .button[aria-pressed='true']:is(.ghost, .outline, .secondary, .link):hover",
 		"declarations": "background-color: var(--state-selected); color: var(--text-primary)"
 	},
 	{
 		"class": "outside",
-		"file": "kits/pickers.css",
+		"file": "components/pickers.css",
 		"selector": ".cell.outside",
 		"declarations": "color: var(--text-muted)"
 	},
 	{
 		"class": "overlap",
-		"file": "kits/feedback.css",
+		"file": "components/feedback.css",
 		"selector": ".overlap",
 		"declarations": "display: grid"
 	},
 	{
 		"class": "packed",
-		"file": "kits/layout.css",
+		"file": "components/layout.css",
 		"selector": ".masonry.packed",
 		"declarations": "position: relative; height: calc(var(--extent, 0) * 1px)"
 	},
 	{
 		"class": "pair-row",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".pair-row",
 		"declarations": "display: grid; grid-template-columns: max-content 1fr; column-gap: var(--space-lg); align-items: start"
 	},
 	{
 		"class": "pairs",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".pairs",
 		"declarations": "margin: 0"
 	},
 	{
 		"class": "pane",
-		"file": "kits/layout.css",
+		"file": "components/layout.css",
 		"selector": ".pane",
 		"declarations": "flex: var(--pane, 1) 1 0; min-width: 0; min-height: 0; overflow: hidden"
 	},
 	{
 		"class": "parallax-view",
-		"file": "kits/motion-b.css",
+		"file": "components/motion.css",
 		"selector": ".parallax-view",
 		"declarations": "animation: parallax-y linear both; animation-timeline: view(); animation-range: cover"
 	},
 	{
 		"class": "pattern",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".pattern",
 		"declarations": "--pattern-size: 1.25rem; --pattern-tone: color-mix(in oklab, var(--text-muted) 35%, transparent); position: absolute; inset: 0; pointer-events: none; background-size: var(--pattern-size) var(--pattern-size)"
 	},
 	{
 		"class": "pattern-cross",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".pattern-cross",
 		"declarations": "background-image: linear-gradient(var(--pattern-tone) 1px, transparent 1px), linear-gradient(90deg, var(--pattern-tone) 1px, transparent 1px), linear-gradient(45deg, transparent calc(50% - 1px), var(--pattern-tone) calc(50% - 1px), var(--pattern-tone) calc(50% + 1px), transparent calc(50% + 1px)); background-size: var(--pattern-size) var(--pattern-size), var(--pattern-size) var(--pattern-size), calc(var(--pattern-size) * 2) calc(var(--pattern-size) * 2)"
 	},
 	{
 		"class": "pattern-dots",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".pattern-dots",
 		"declarations": "background-image: radial-gradient(circle, var(--pattern-tone) 1px, transparent 1.25px)"
 	},
 	{
 		"class": "pattern-grid",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".pattern-grid",
 		"declarations": "background-image: linear-gradient(var(--pattern-tone) 1px, transparent 1px), linear-gradient(90deg, var(--pattern-tone) 1px, transparent 1px)"
 	},
 	{
 		"class": "pattern-lines",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".pattern-lines",
 		"declarations": "background-image: linear-gradient(var(--pattern-tone) 1px, transparent 1px)"
 	},
 	{
 		"class": "pausable",
-		"file": "kits/motion-b.css",
+		"file": "components/motion.css",
 		"selector": ".marquee.pausable:hover .marquee-group, .marquee.pausable:focus-within .marquee-group",
 		"declarations": "animation-play-state: paused"
 	},
 	{
 		"class": "pick",
-		"file": "kits/theme.css",
-		"selector": ".rail:has(.scrub:focus-visible) .thumb, .rocker:focus-visible, .choice:focus-visible, .pick:focus-visible",
-		"declarations": "outline: 2px solid var(--ring); outline-offset: 2px"
+		"file": "components/theme.css",
+		"selector": ".pick",
+		"declarations": "cursor: pointer; border-radius: var(--radius-md)"
 	},
 	{
 		"class": "pile",
-		"file": "kits/feedback.css",
+		"file": "components/feedback.css",
 		"selector": ".pile",
 		"declarations": "--dir: -1; --peek: var(--space-md); --step: 0.05; position: relative; display: grid; grid-template-columns: minmax(0, 1fr); align-items: end"
 	},
 	{
 		"class": "pill",
-		"file": "kits/selection.css",
+		"file": "components/selection.css",
 		"selector": ".pill",
 		"declarations": "height: 1.5em; aspect-ratio: 2"
 	},
 	{
 		"class": "pin-bottom",
-		"file": "kits/layout.css",
+		"file": "components/layout.css",
 		"selector": ".pin-bottom",
 		"declarations": "bottom: var(--offset, 0px)"
 	},
 	{
 		"class": "pin-top",
-		"file": "kits/layout.css",
+		"file": "components/layout.css",
 		"selector": ".pin-top",
 		"declarations": "top: var(--offset, 0px)"
 	},
 	{
 		"class": "placed",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".stage > .placed",
 		"declarations": "position: absolute; inset-inline: 0; top: 0; translate: 0 calc(var(--y, 0) * 1px)"
 	},
 	{
 		"class": "plane",
-		"file": "kits/pickers.css",
+		"file": "components/pickers.css",
 		"selector": ".plane",
 		"declarations": "background-image: linear-gradient(to top, oklch(0 0 0), transparent), linear-gradient(to right, oklch(1 0 0), hsl(calc(var(--angle, 0) * 1deg) 100% 50%))"
 	},
 	{
-		"class": "pointer-auto",
-		"file": "20-surface.css",
-		"selector": ".pointer-auto",
-		"declarations": "pointer-events: auto"
-	},
-	{
-		"class": "pointer-none",
-		"file": "20-surface.css",
-		"selector": ".pointer-none",
-		"declarations": "pointer-events: none"
-	},
-	{
-		"class": "pop",
-		"file": "10-motion.css",
-		"selector": ".pop",
-		"declarations": "opacity: 0; scale: var(--enter-scale, 0.96); translate: var(--enter-x, 0) var(--enter-y, 0); filter: blur(var(--enter-blur, 0)); transition: opacity calc(var(--speed3) * var(--motion-scale)) var(--transout2), scale calc(var(--spring-ms) * var(--motion-scale)) var(--spring), translate calc(var(--spring-ms) * var(--motion-scale)) var(--spring), filter calc(var(--speed3) * var(--motion-scale)) var(--transout2), overlay calc(var(--speed3) * var(--motion-scale)) allow-discrete, display calc(var(--speed3) * var(--motion-scale)) allow-discrete"
-	},
-	{
-		"class": "press",
-		"file": "10-motion.css",
-		"selector": ".press",
-		"declarations": "transition: scale calc(var(--spring-ms) * var(--motion-scale)) var(--spring)"
-	},
-	{
 		"class": "preview",
-		"file": "kits/pickers.css",
+		"file": "components/pickers.css",
 		"selector": ".cell.in-range.preview",
 		"declarations": "background-color: color-mix(in oklab, var(--theme-color) 8%, transparent); border-block-color: color-mix(in oklab, var(--theme-color) 40%, transparent); border-style: dashed none"
 	},
 	{
-		"class": "quarter",
-		"file": "40-controls.css",
-		"selector": ".caret.quarter.open",
-		"declarations": "rotate: 90deg"
-	},
-	{
 		"class": "rail",
-		"file": "kits/navigation.css",
+		"file": "components/navigation.css",
 		"selector": ".rail",
-		"declarations": "width: 16rem; min-width: 16rem; overflow: hidden"
+		"declarations": "--rail-width: var(--sidebar-width-left); --rail-width-collapsed: var(--sidebar-width-collapsed); width: var(--rail-width); min-width: var(--rail-width); overflow: hidden"
 	},
 	{
 		"class": "ramp",
-		"file": "kits/theme.css",
+		"file": "components/theme.css",
 		"selector": ".ramp",
 		"declarations": "background-image: linear-gradient(to right, oklch(0.62 0 var(--hue)), oklch(0.62 var(--ramp-max, 0.3) var(--hue)))"
 	},
 	{
 		"class": "range-end",
-		"file": "kits/pickers.css",
+		"file": "components/pickers.css",
 		"selector": ".cell.selected.range-end",
 		"declarations": "border-radius: 0 var(--radius-md) var(--radius-md) 0"
 	},
 	{
+		"class": "range-rail",
+		"file": "components/theme.css",
+		"selector": ".swap > *, .choice::before, .orb, .orb::after, .range-rail .thumb, .rocker .thumb",
+		"declarations": "transition-property: opacity, scale, rotate, translate; transition-duration: calc(var(--spring-ms) * var(--motion-scale)); transition-timing-function: var(--spring)"
+	},
+	{
 		"class": "range-start",
-		"file": "kits/pickers.css",
+		"file": "components/pickers.css",
 		"selector": ".cell.selected.range-start",
 		"declarations": "border-radius: var(--radius-md) 0 0 var(--radius-md)"
 	},
 	{
 		"class": "reel",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".slides.reel",
 		"declarations": "gap: var(--gap, 0); scroll-behavior: smooth"
 	},
 	{
 		"class": "relative",
-		"file": "kits/navigation.css",
+		"file": "components/navigation.css",
 		"selector": ".relative:is(:hover, :focus-visible, :focus-within) > .hint",
 		"declarations": "opacity: 1"
 	},
 	{
 		"class": "resize-both",
-		"file": "kits/inputs.css",
+		"file": "components/inputs.css",
 		"selector": ".resize-both",
 		"declarations": "resize: both"
 	},
 	{
 		"class": "resize-none",
-		"file": "kits/inputs.css",
+		"file": "components/inputs.css",
 		"selector": ".resize-none",
 		"declarations": "resize: none"
 	},
 	{
 		"class": "resize-x",
-		"file": "kits/inputs.css",
+		"file": "components/inputs.css",
 		"selector": ".resize-x",
 		"declarations": "resize: horizontal"
 	},
 	{
 		"class": "resize-y",
-		"file": "kits/inputs.css",
+		"file": "components/inputs.css",
 		"selector": ".resize-y",
 		"declarations": "resize: vertical"
 	},
 	{
-		"class": "reveal",
-		"file": "10-motion.css",
-		"selector": ".reveal",
-		"declarations": "opacity: 0; translate: var(--enter-x, 0) var(--enter-y, var(--space-bs)); scale: var(--enter-scale, 1); transition: opacity calc(var(--speed3) * 2 * var(--motion-scale)) var(--transout2), translate calc(var(--spring-ms) * var(--motion-scale)) var(--spring), scale calc(var(--spring-ms) * var(--motion-scale)) var(--spring); transition-delay: calc(var(--i, 0) * var(--stagger) * var(--motion-scale))"
-	},
-	{
 		"class": "reverse",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".spin.reverse",
 		"declarations": "animation-direction: reverse"
 	},
 	{
-		"class": "rim",
-		"file": "20-surface.css",
-		"selector": ".rim",
-		"declarations": "box-shadow: var(--shadow-rim)"
-	},
-	{
-		"class": "ring",
-		"file": "40-controls.css",
-		"selector": ".ring",
-		"declarations": "flex: none; aspect-ratio: 1; border-radius: var(--radius-full); background: conic-gradient(var(--theme-color) calc(var(--value, 0) * 360deg), var(--state-selected) 0); mask: radial-gradient(farthest-side, transparent calc(100% - 0.3em), black calc(100% - 0.3em + 1px)); -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 0.3em), black calc(100% - 0.3em + 1px))"
-	},
-	{
 		"class": "ring-beam",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".ring-beam",
 		"declarations": "--ring-grad: transparent, var(--theme-color) var(--beam-size, 8%), transparent calc(var(--beam-size, 8%) * 2)"
 	},
 	{
 		"class": "ring-grad",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".ring-grad",
 		"declarations": "position: relative; isolation: isolate"
 	},
 	{
 		"class": "ring-rainbow",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".ring-rainbow",
 		"declarations": "--ring-grad: oklch(0.7 var(--chroma) var(--hue)), oklch(0.7 var(--chroma) calc(var(--hue) + 60)), oklch(0.7 var(--chroma) calc(var(--hue) + 120)), oklch(0.7 var(--chroma) calc(var(--hue) + 180)), oklch(0.7 var(--chroma) calc(var(--hue) + 240)), oklch(0.7 var(--chroma) calc(var(--hue) + 300)), oklch(0.7 var(--chroma) var(--hue))"
 	},
 	{
 		"class": "ring-subtle",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".ring-subtle",
 		"declarations": "--ring-grad: color-mix(in oklab, var(--theme-color) 45%, transparent), transparent 30%, color-mix(in oklab, var(--theme-color-up) 40%, transparent) 55%, transparent"
 	},
 	{
 		"class": "ring-theme",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".ring-theme",
 		"declarations": "--ring-grad: var(--theme-color), transparent 25%, var(--theme-color-up) 50%, transparent 75%, var(--theme-color)"
 	},
 	{
 		"class": "rocker",
-		"file": "kits/theme.css",
-		"selector": ".swap > *, .choice::before, .orb, .orb::after, .rail .thumb, .rocker .thumb",
+		"file": "components/theme.css",
+		"selector": ".swap > *, .choice::before, .orb, .orb::after, .range-rail .thumb, .rocker .thumb",
 		"declarations": "transition-property: opacity, scale, rotate, translate; transition-duration: calc(var(--spring-ms) * var(--motion-scale)); transition-timing-function: var(--spring)"
 	},
 	{
 		"class": "roomy",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".roomy.data-table th, .roomy.data-table td",
 		"declarations": "padding: var(--space-bs) var(--space-lg)"
 	},
 	{
+		"class": "round",
+		"file": "components/feedback.css",
+		"selector": ".bone.round",
+		"declarations": "width: var(--w, 3em); height: var(--w, 3em)"
+	},
+	{
 		"class": "rounded",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".avatar.rounded",
-		"declarations": "border-radius: 12%"
+		"declarations": "border-radius: var(--radius-avatar)"
 	},
 	{
 		"class": "row",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".avatar-group.gap-overlap.row",
 		"declarations": "--avatar-ring: var(--bg-surface)"
 	},
 	{
 		"class": "rule",
-		"file": "kits/navigation.css",
+		"file": "components/navigation.css",
 		"selector": ".indicator.rule",
 		"declarations": "top: auto; bottom: 0; height: 2px; background-color: var(--theme-color)"
 	},
 	{
 		"class": "scaled",
-		"file": "kits/motion-b.css",
+		"file": "components/motion.css",
 		"selector": ".fill.scaled",
 		"declarations": "left: 0; width: 100%; scale: var(--value, 0) 1; transform-origin: left"
 	},
 	{
-		"class": "scrim",
-		"file": "20-surface.css",
-		"selector": ".scrim",
-		"declarations": "background-color: var(--scrim)"
-	},
-	{
-		"class": "scroll-hidden",
-		"file": "20-surface.css",
-		"selector": ".scroll-hidden",
-		"declarations": "scrollbar-width: none"
-	},
-	{
 		"class": "scroll-hover",
-		"file": "kits/layout.css",
+		"file": "components/layout.css",
 		"selector": ".scroll-hover",
 		"declarations": "scrollbar-width: none"
 	},
 	{
-		"class": "scroll-tall",
-		"file": "90-docs.css",
-		"selector": ".code.scroll-tall",
-		"declarations": "max-height: 32rem; overflow-y: auto"
-	},
-	{
-		"class": "scroll-thin",
-		"file": "20-surface.css",
-		"selector": ".scroll-thin",
-		"declarations": "scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent"
-	},
-	{
 		"class": "scroll-xy",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".scroll-xy",
 		"declarations": "overflow: auto; overscroll-behavior: contain; max-height: var(--max-height, none)"
 	},
 	{
 		"class": "scrub",
-		"file": "kits/theme.css",
-		"selector": ".rail:has(.scrub:active) .thumb",
+		"file": "components/theme.css",
+		"selector": ".range-rail:has(.scrub:active) .thumb",
 		"declarations": "scale: 1.15"
 	},
 	{
 		"class": "secondary",
-		"file": "kits/actions.css",
+		"file": "components/actions.css",
 		"selector": ".button[aria-pressed='true']:is(.ghost, .outline, .secondary, .link), .button[aria-pressed='true']:is(.ghost, .outline, .secondary, .link):hover",
 		"declarations": "background-color: var(--state-selected); color: var(--text-primary)"
 	},
 	{
 		"class": "segment",
-		"file": "kits/pickers.css",
+		"file": "components/pickers.css",
 		"selector": ".segment",
 		"declarations": "display: inline-block; min-width: calc(var(--ch, 2) * 1ch); padding-inline: 0.125rem; border-radius: var(--radius-sm); text-align: center; font-variant-numeric: tabular-nums; caret-color: transparent; outline: none; cursor: default; user-select: none"
 	},
 	{
-		"class": "select-none",
-		"file": "20-surface.css",
-		"selector": ".select-none",
-		"declarations": "user-select: none; -webkit-user-select: none"
-	},
-	{
 		"class": "selected",
-		"file": "20-surface.css",
-		"selector": ".soft:hover, .soft.selected",
-		"declarations": "background-color: color-mix(in oklab, var(--soft-ink) 22%, transparent)"
+		"file": "components/data.css",
+		"selector": ".still.data-table tbody tr.selected:hover td",
+		"declarations": "background-color: var(--state-selected)"
 	},
 	{
 		"class": "sentinel",
-		"file": "kits/layout.css",
+		"file": "components/layout.css",
 		"selector": ".sentinel",
 		"declarations": "height: 1px; margin: 0; padding: 0; overflow: hidden; pointer-events: none"
 	},
 	{
 		"class": "settle",
-		"file": "kits/layout.css",
+		"file": "components/layout.css",
 		"selector": ".pane.settle",
 		"declarations": "transition: flex-grow calc(var(--spring-ms) * var(--motion-scale)) var(--spring)"
 	},
 	{
-		"class": "shad-2xl",
-		"file": "20-surface.css",
-		"selector": ".rim.shad-2xl",
-		"declarations": "box-shadow: var(--shadow-rim), var(--shadow-2xl)"
-	},
-	{
-		"class": "shad-lg",
-		"file": "20-surface.css",
-		"selector": ".rim.shad-lg",
-		"declarations": "box-shadow: var(--shadow-rim), var(--shadow-lg)"
-	},
-	{
-		"class": "shad-md",
-		"file": "20-surface.css",
-		"selector": ".rim.shad-md",
-		"declarations": "box-shadow: var(--shadow-rim), var(--shadow-md)"
-	},
-	{
-		"class": "shad-sm",
-		"file": "20-surface.css",
-		"selector": ".rim.shad-sm",
-		"declarations": "box-shadow: var(--shadow-rim), var(--shadow-sm)"
-	},
-	{
-		"class": "shad-xl",
-		"file": "20-surface.css",
-		"selector": ".rim.shad-xl",
-		"declarations": "box-shadow: var(--shadow-rim), var(--shadow-xl)"
-	},
-	{
 		"class": "sheet",
-		"file": "30-overlay.css",
-		"selector": ".dialog.sheet",
-		"declarations": "margin: 0; max-width: 100vw; max-height: 100dvh"
-	},
-	{
-		"class": "sidebar-left",
-		"file": "90-docs.css",
-		"selector": ".app-shell.open .sidebar-left",
-		"declarations": "top: var(--header-height); height: calc(100dvh - var(--header-height)); background-color: var(--bg); border-right: 1px solid var(--border)"
-	},
-	{
-		"class": "site-header",
-		"file": "90-docs.css",
-		"selector": ".site-header",
-		"declarations": "background-color: color-mix(in oklab, var(--bg) 78%, transparent); backdrop-filter: blur(0.75rem) saturate(1.5); -webkit-backdrop-filter: blur(0.75rem) saturate(1.5)"
+		"file": "components/overlays.css",
+		"selector": ".dialog.sheet.motion[open]",
+		"declarations": "translate: calc(var(--mx, 0) * 1px) calc(var(--my, 0) * 1px)"
 	},
 	{
 		"class": "sized",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".stage > .sized",
 		"declarations": "height: calc(var(--row-h, 0) * 1px)"
 	},
 	{
 		"class": "slide",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".slides.reel > .slide",
 		"declarations": "flex: 0 0 calc((100% - (var(--per-view, 1) - 1) * var(--gap, 0rem)) / var(--per-view, 1)); min-width: 0"
 	},
 	{
 		"class": "slides",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".slides.reel",
 		"declarations": "gap: var(--gap, 0); scroll-behavior: smooth"
 	},
 	{
 		"class": "slim",
-		"file": "kits/selection.css",
+		"file": "components/selection.css",
 		"selector": ".slim",
 		"declarations": "height: 0.5em"
 	},
 	{
 		"class": "slot",
-		"file": "kits/motion-b.css",
+		"file": "components/motion.css",
 		"selector": ".slot",
 		"declarations": "display: inline-block; height: 1lh; overflow: clip; vertical-align: bottom"
 	},
 	{
 		"class": "slot-reel",
-		"file": "kits/motion-b.css",
+		"file": "components/motion.css",
 		"selector": ".slot-reel",
 		"declarations": "display: flex; flex-direction: column; translate: 0 calc(var(--digit, 0) * -10%)"
 	},
 	{
 		"class": "snug",
-		"file": "kits/selection.css",
+		"file": "components/selection.css",
 		"selector": ".snug",
 		"declarations": "height: calc(100% - 0.25em); left: calc(25% + var(--value, 0) * 50%)"
 	},
 	{
-		"class": "soft",
-		"file": "20-surface.css",
-		"selector": ".soft, .soft.info, .soft.success, .soft.warning, .soft.danger",
-		"declarations": "background-color: color-mix(in oklab, var(--soft-ink) 14%, transparent); border: 1px solid transparent; color: color-mix(in oklab, var(--soft-ink) 72%, var(--text-primary))"
-	},
-	{
 		"class": "soft-wrap",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".code.soft-wrap .code-line > span",
 		"declarations": "white-space: pre-wrap; overflow-wrap: anywhere"
 	},
 	{
+		"class": "solid",
+		"file": "components/feedback.css",
+		"selector": ".msg.solid, .msg.solid.neutral, .msg.solid.info, .msg.solid.success, .msg.solid.warning, .msg.solid.danger",
+		"declarations": "background-color: var(--msg-ink); border: 1px solid var(--msg-ink); --ink-bg: var(--msg-ink)"
+	},
+	{
 		"class": "span",
-		"file": "kits/layout.css",
+		"file": "components/layout.css",
 		"selector": ".bento > .span",
 		"declarations": "grid-column: span var(--cspan, 1); grid-row: span var(--rspan, 1); min-width: 0; min-height: 0"
 	},
 	{
 		"class": "spectrum",
-		"file": "kits/pickers.css",
+		"file": "components/pickers.css",
 		"selector": ".spectrum",
 		"declarations": "background-image: linear-gradient(to right, hsl(0 100% 50%), hsl(60 100% 50%), hsl(120 100% 50%), hsl(180 100% 50%), hsl(240 100% 50%), hsl(300 100% 50%), hsl(360 100% 50%))"
 	},
 	{
 		"class": "spin",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".spin",
 		"declarations": "animation: spin-angle calc(var(--spin, 8) * 1s * var(--motion-scale)) linear infinite; animation-delay: calc(var(--spin-delay, 0) * 1s)"
 	},
 	{
 		"class": "spin-hover",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".spin-hover",
 		"declarations": "animation-play-state: paused"
 	},
 	{
 		"class": "splitter",
-		"file": "kits/layout.css",
+		"file": "components/layout.css",
 		"selector": ".splitter",
 		"declarations": "position: relative; flex: none; display: flex; align-items: center; justify-content: center; inline-size: 1px; background-color: var(--border-subtle); cursor: col-resize; outline: none; transition: background-color var(--motionin1), box-shadow var(--motionin1)"
 	},
 	{
 		"class": "spread",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".avatar-group.gap-overlap.row.spread > * + *",
 		"declarations": "margin-inline-start: calc(var(--avatar-size) * (var(--spread, 0) * 0.35 - 0.25))"
 	},
 	{
-		"class": "spring",
-		"file": "10-motion.css",
-		"selector": ".spring",
-		"declarations": "transition-property: translate, scale, rotate, transform, opacity, background-color, border-color, color, box-shadow, filter, width, height, grid-template-rows, grid-template-columns; transition-duration: calc(var(--spring-ms) * var(--motion-scale)); transition-timing-function: var(--spring)"
-	},
-	{
-		"class": "spring-bouncy",
-		"file": "10-motion.css",
-		"selector": ".spring-bouncy",
-		"declarations": "--spring: var(--spring-bouncy); --spring-ms: var(--spring-bouncy-ms)"
-	},
-	{
-		"class": "spring-gentle",
-		"file": "10-motion.css",
-		"selector": ".spring-gentle",
-		"declarations": "--spring: var(--spring-gentle); --spring-ms: var(--spring-gentle-ms)"
-	},
-	{
-		"class": "spring-slow",
-		"file": "10-motion.css",
-		"selector": ".spring-slow",
-		"declarations": "--spring: var(--spring-slow); --spring-ms: var(--spring-slow-ms)"
-	},
-	{
-		"class": "spring-snappy",
-		"file": "10-motion.css",
-		"selector": ".spring-snappy",
-		"declarations": "--spring: var(--spring-snappy); --spring-ms: var(--spring-snappy-ms)"
-	},
-	{
-		"class": "spring-stiff",
-		"file": "10-motion.css",
-		"selector": ".spring-stiff",
-		"declarations": "--spring: var(--spring-stiff); --spring-ms: var(--spring-stiff-ms)"
-	},
-	{
 		"class": "square",
-		"file": "20-surface.css",
-		"selector": ".square",
-		"declarations": "aspect-ratio: 1"
+		"file": "components/display.css",
+		"selector": ".avatar.square",
+		"declarations": "border-radius: 0"
 	},
 	{
 		"class": "sr-only-focusable",
-		"file": "kits/primitives.css",
+		"file": "components/primitives.css",
 		"selector": ".sr-only-focusable:focus-within",
 		"declarations": "position: static; width: auto; height: auto; margin: 0; overflow: visible; clip: auto; white-space: normal"
 	},
 	{
 		"class": "stack-rule",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".stack-rule > * + *",
 		"declarations": "border-top: 1px solid var(--border)"
 	},
 	{
-		"class": "stacked",
-		"file": "kits/motion-b.css",
-		"selector": ".stacked",
-		"declarations": "display: grid"
-	},
-	{
 		"class": "stage",
-		"file": "90-docs.css",
+		"file": "components/data.css",
 		"selector": ".stage",
-		"declarations": "min-height: 11rem; background-image: radial-gradient(color-mix(in oklab, var(--text-muted) 30%, transparent) 1px, transparent 1px); background-size: 1rem 1rem; background-position: center"
+		"declarations": "position: relative; height: calc(var(--extent, 0) * 1px)"
 	},
 	{
 		"class": "start",
-		"file": "kits/layout.css",
+		"file": "components/layout.css",
 		"selector": ".sentinel.start",
 		"declarations": "margin-bottom: -1px"
 	},
 	{
 		"class": "sticky-head",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".sticky-head.data-table thead th",
-		"declarations": "position: sticky; top: 0; z-index: 1; background-color: var(--bg-surface); background-image: linear-gradient(var(--state-hover), var(--state-hover)); box-shadow: inset 0 -1px 0 var(--border)"
+		"declarations": "position: sticky; top: 0; z-index: var(--z-sticky); background-color: var(--bg-surface); background-image: linear-gradient(var(--state-hover), var(--state-hover)); box-shadow: inset 0 -1px 0 var(--border)"
 	},
 	{
 		"class": "sticky-top",
-		"file": "kits/feedback.css",
+		"file": "components/feedback.css",
 		"selector": ".sticky-top",
 		"declarations": "position: sticky; top: 0; z-index: var(--z-sticky)"
 	},
 	{
 		"class": "still",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".still.data-table tbody tr:hover td",
 		"declarations": "background-color: transparent"
 	},
 	{
+		"class": "stout",
+		"file": "components/selection.css",
+		"selector": ".stout",
+		"declarations": "height: 1.25em"
+	},
+	{
 		"class": "striped",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".still.data-table.striped tbody tr:nth-child(even):hover td",
 		"declarations": "background-color: var(--state-hover)"
 	},
 	{
 		"class": "stripes",
-		"file": "kits/feedback.css",
+		"file": "components/feedback.css",
 		"selector": ".stripes",
 		"declarations": "background-image: repeating-linear-gradient(135deg, color-mix(in oklab, var(--white-fixed) 28%, transparent) 0 0.5rem, transparent 0.5rem 1rem)"
 	},
 	{
 		"class": "success",
-		"file": "20-surface.css",
-		"selector": ".soft, .soft.info, .soft.success, .soft.warning, .soft.danger",
-		"declarations": "background-color: color-mix(in oklab, var(--soft-ink) 14%, transparent); border: 1px solid transparent; color: color-mix(in oklab, var(--soft-ink) 72%, var(--text-primary))"
+		"file": "components/feedback.css",
+		"selector": ".msg.solid, .msg.solid.neutral, .msg.solid.info, .msg.solid.success, .msg.solid.warning, .msg.solid.danger",
+		"declarations": "background-color: var(--msg-ink); border: 1px solid var(--msg-ink); --ink-bg: var(--msg-ink)"
 	},
 	{
 		"class": "swap",
-		"file": "kits/theme.css",
-		"selector": ".swap > *, .choice::before, .orb, .orb::after, .rail .thumb, .rocker .thumb",
+		"file": "components/theme.css",
+		"selector": ".swap > *, .choice::before, .orb, .orb::after, .range-rail .thumb, .rocker .thumb",
 		"declarations": "transition-property: opacity, scale, rotate, translate; transition-duration: calc(var(--spring-ms) * var(--motion-scale)); transition-timing-function: var(--spring)"
 	},
 	{
 		"class": "swatch",
-		"file": "90-docs.css",
+		"file": "components/pickers.css",
 		"selector": ".swatch",
-		"declarations": "flex: none; width: 1em; height: 1em; border-radius: var(--radius-full); background-color: oklch(0.68 var(--chroma) var(--hue)); box-shadow: inset 0 0 0 1px oklch(1 0 0 / 0.15)"
+		"declarations": "background-image: linear-gradient(var(--color, transparent), var(--color, transparent)), repeating-conic-gradient(var(--border-strong) 0 25%, var(--bg-overlay) 0 50%); background-size: 100% 100%, 0.5rem 0.5rem; box-shadow: inset 0 0 0 1px var(--border)"
 	},
 	{
 		"class": "text",
-		"file": "kits/feedback.css",
+		"file": "components/feedback.css",
 		"selector": ".bone.text",
 		"declarations": "height: 0.75em"
 	},
 	{
 		"class": "thin",
-		"file": "kits/inputs.css",
+		"file": "components/inputs.css",
 		"selector": ".track.thin",
 		"declarations": "height: 0.25rem"
 	},
 	{
 		"class": "thumb",
-		"file": "40-controls.css",
-		"selector": ".thumb",
-		"declarations": "position: absolute; top: 50%; left: calc(var(--value, 0) * 100%); translate: -50% -50%; aspect-ratio: 1; border-radius: var(--radius-full); border: 1px solid var(--border-strong); background-color: var(--white-fixed); box-shadow: var(--shadow-sm)"
+		"file": "components/pickers.css",
+		"selector": ".thumb.free",
+		"declarations": "top: calc(var(--vy, 0) * 100%); left: calc(var(--vx, 0) * 100%)"
 	},
 	{
 		"class": "tick",
-		"file": "kits/selection.css",
+		"file": "components/selection.css",
 		"selector": ".tick",
 		"declarations": "position: absolute; top: 50%; left: calc(var(--value, 0) * 100%); translate: -50% -50%; width: 0.25em; aspect-ratio: 1; border-radius: var(--radius-full); background-color: var(--border-strong); pointer-events: none"
 	},
 	{
 		"class": "tick-label",
-		"file": "kits/selection.css",
+		"file": "components/selection.css",
 		"selector": ".tick-label",
 		"declarations": "position: absolute; top: 1.75em; left: 50%; translate: -50% 0; white-space: nowrap"
 	},
 	{
-		"class": "tilt",
-		"file": "10-motion.css",
-		"selector": ".tilt",
-		"declarations": "transform: perspective(50rem) rotateX(calc(var(--rx, 0) * 1deg)) rotateY(calc(var(--ry, 0) * 1deg)); transform-style: preserve-3d"
-	},
-	{
 		"class": "timeline",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".timeline",
 		"declarations": "display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none"
 	},
 	{
 		"class": "timeline-body",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".timeline.alternate .timeline-item:nth-child(odd) > .timeline-body",
 		"declarations": "grid-column: 1; grid-row: 1; align-items: flex-end; text-align: right"
 	},
 	{
 		"class": "timeline-item",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".timeline-item",
 		"declarations": "display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--space-bs); padding-bottom: var(--space-lg)"
 	},
 	{
 		"class": "timeline-rail",
-		"file": "kits/display.css",
+		"file": "components/display.css",
 		"selector": ".timeline-rail",
 		"declarations": "display: flex; flex-direction: column; align-items: center"
 	},
 	{
 		"class": "tinted",
-		"file": "kits/effects.css",
+		"file": "components/effects.css",
 		"selector": ".tinted",
 		"declarations": "background-color: color-mix(in oklab, var(--theme-color) 10%, color-mix(in oklab, var(--bg-overlay) var(--glass-alpha), transparent))"
 	},
 	{
-		"class": "toc-link",
-		"file": "90-docs.css",
-		"selector": ".toc-link",
-		"declarations": "padding-block: var(--space-xs); padding-left: var(--space-md); border-left: 1px solid var(--border-subtle); transition: color var(--motionin1), border-color var(--motionin1)"
-	},
-	{
 		"class": "today",
-		"file": "kits/pickers.css",
+		"file": "components/pickers.css",
 		"selector": ".cell.today",
 		"declarations": "color: var(--theme-color); font-weight: 600"
 	},
 	{
 		"class": "tok-attr",
-		"file": "90-docs.css",
+		"file": "components/display.css",
 		"selector": ".tok-attr",
 		"declarations": "color: var(--warning)"
 	},
 	{
 		"class": "tok-com",
-		"file": "90-docs.css",
+		"file": "components/display.css",
 		"selector": ".tok-com",
 		"declarations": "color: var(--text-muted); font-style: italic"
 	},
 	{
 		"class": "tok-fn",
-		"file": "90-docs.css",
+		"file": "components/display.css",
 		"selector": ".tok-fn",
 		"declarations": "color: var(--theme-color-up)"
 	},
 	{
 		"class": "tok-kw",
-		"file": "90-docs.css",
+		"file": "components/display.css",
 		"selector": ".tok-kw",
 		"declarations": "color: var(--theme-color)"
 	},
 	{
 		"class": "tok-num",
-		"file": "90-docs.css",
+		"file": "components/display.css",
 		"selector": ".tok-num",
 		"declarations": "color: var(--danger)"
 	},
 	{
 		"class": "tok-punc",
-		"file": "90-docs.css",
+		"file": "components/display.css",
 		"selector": ".tok-punc",
 		"declarations": "color: var(--text-muted)"
 	},
 	{
 		"class": "tok-str",
-		"file": "90-docs.css",
+		"file": "components/display.css",
 		"selector": ".tok-str",
 		"declarations": "color: var(--success)"
 	},
 	{
 		"class": "tok-tag",
-		"file": "90-docs.css",
+		"file": "components/display.css",
 		"selector": ".tok-tag",
 		"declarations": "color: var(--info)"
 	},
 	{
 		"class": "tok-type",
-		"file": "90-docs.css",
+		"file": "components/display.css",
 		"selector": ".tok-type",
 		"declarations": "color: var(--info)"
 	},
 	{
-		"class": "tone-danger",
-		"file": "kits/motion-b.css",
-		"selector": ".tone-danger",
-		"declarations": "--theme-color: var(--danger)"
-	},
-	{
-		"class": "tone-info",
-		"file": "kits/motion-b.css",
-		"selector": ".tone-info",
-		"declarations": "--theme-color: var(--info)"
-	},
-	{
-		"class": "tone-neutral",
-		"file": "kits/motion-b.css",
-		"selector": ".tone-neutral",
-		"declarations": "--theme-color: var(--text-secondary)"
-	},
-	{
-		"class": "tone-success",
-		"file": "kits/motion-b.css",
-		"selector": ".tone-success",
-		"declarations": "--theme-color: var(--success)"
-	},
-	{
-		"class": "tone-warning",
-		"file": "kits/motion-b.css",
-		"selector": ".tone-warning",
-		"declarations": "--theme-color: var(--warning)"
-	},
-	{
 		"class": "track",
-		"file": "40-controls.css",
-		"selector": ".track",
-		"declarations": "position: relative; flex: none; background-color: var(--state-selected); border-radius: var(--radius-full)"
+		"file": "components/inputs.css",
+		"selector": ".track.thin",
+		"declarations": "height: 0.25rem"
 	},
 	{
 		"class": "track-v",
-		"file": "kits/selection.css",
+		"file": "components/selection.css",
 		"selector": ".track-v.slim",
 		"declarations": "width: 0.5em; height: 10em"
 	},
 	{
-		"class": "underline-always",
-		"file": "kits/actions.css",
-		"selector": ".underline-hover, .underline-always",
-		"declarations": "text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; text-decoration-color: transparent; transition: color var(--motionin1), text-decoration-color var(--motionin1)"
-	},
-	{
-		"class": "underline-hover",
-		"file": "kits/actions.css",
-		"selector": ".underline-hover, .underline-always",
+		"class": "underline",
+		"file": "components/actions.css",
+		"selector": ".underline.hover, .underline.always",
 		"declarations": "text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; text-decoration-color: transparent; transition: color var(--motionin1), text-decoration-color var(--motionin1)"
 	},
 	{
 		"class": "vertical",
-		"file": "40-controls.css",
-		"selector": ".track.vertical .fill",
-		"declarations": "inset-block: auto; inset-inline: 0; left: 0; width: auto; bottom: calc(var(--from, 0) * 100%); height: calc((var(--value, 0) - var(--from, 0)) * 100%)"
+		"file": "components/motion.css",
+		"selector": ".marquee.vertical",
+		"declarations": "flex-direction: column"
 	},
 	{
 		"class": "viewport",
-		"file": "kits/navigation.css",
+		"file": "components/navigation.css",
 		"selector": ".viewport",
 		"declarations": "width: calc(var(--vw, 0) * 1px); height: calc(var(--vh, 0) * 1px); overflow: hidden"
 	},
 	{
-		"class": "vt-fade",
-		"file": "10-motion.css",
-		"selector": "html.vt-fade::view-transition-old(root)",
-		"declarations": "animation: fade-out calc(var(--speed3) * var(--motion-scale)) var(--transout2) both"
-	},
-	{
-		"class": "vt-name",
-		"file": "10-motion.css",
-		"selector": ".vt-name",
-		"declarations": "view-transition-name: var(--vt-name)"
-	},
-	{
-		"class": "vt-reveal",
-		"file": "10-motion.css",
-		"selector": "html.vt-reveal::view-transition-old(root)",
-		"declarations": "animation: none; z-index: 0"
-	},
-	{
-		"class": "vt-scale",
-		"file": "10-motion.css",
-		"selector": "html.vt-scale::view-transition-old(root)",
-		"declarations": "animation: vt-out-scale calc(var(--speed3) * var(--motion-scale)) var(--transin1) both"
-	},
-	{
-		"class": "vt-slide",
-		"file": "10-motion.css",
-		"selector": "html.vt-slide::view-transition-old(root)",
-		"declarations": "animation: vt-out-left calc(var(--speed3) * var(--motion-scale)) var(--transin1) both"
-	},
-	{
-		"class": "vt-slide-back",
-		"file": "10-motion.css",
-		"selector": "html.vt-slide-back::view-transition-old(root)",
-		"declarations": "animation: vt-out-right calc(var(--speed3) * var(--motion-scale)) var(--transin1) both"
-	},
-	{
 		"class": "warning",
-		"file": "20-surface.css",
-		"selector": ".soft, .soft.info, .soft.success, .soft.warning, .soft.danger",
-		"declarations": "background-color: color-mix(in oklab, var(--soft-ink) 14%, transparent); border: 1px solid transparent; color: color-mix(in oklab, var(--soft-ink) 72%, var(--text-primary))"
-	},
-	{
-		"class": "will-move",
-		"file": "10-motion.css",
-		"selector": ".will-move",
-		"declarations": "will-change: translate, scale, rotate, opacity"
+		"file": "components/feedback.css",
+		"selector": ".msg.solid, .msg.solid.neutral, .msg.solid.info, .msg.solid.success, .msg.solid.warning, .msg.solid.danger",
+		"declarations": "background-color: var(--msg-ink); border: 1px solid var(--msg-ink); --ink-bg: var(--msg-ink)"
 	},
 	{
 		"class": "wmin-xs",
-		"file": "kits/overlays.css",
+		"file": "components/overlays.css",
 		"selector": ".wmin-xs",
 		"declarations": "min-width: var(--measure-xs)"
 	},
 	{
-		"class": "wordmark",
-		"file": "90-docs.css",
-		"selector": ".wordmark",
-		"declarations": "letter-spacing: -0.03em"
-	},
-	{
-		"class": "wrap-any",
-		"file": "90-docs.css",
-		"selector": ".code-chip.wrap-any",
-		"declarations": "white-space: normal; overflow-wrap: anywhere"
-	},
-	{
 		"class": "wvar",
-		"file": "kits/data.css",
+		"file": "components/data.css",
 		"selector": ".wvar",
 		"declarations": "width: var(--w, auto)"
 	}

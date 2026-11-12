@@ -81,7 +81,7 @@
 				</li>
 			{:else if slot.item.href && !slot.current}
 				<li>
-					<a href={slot.item.href} class="link-subtle row ycenter gap-xs text-sm">
+					<a href={slot.item.href} class="link-subtle focus-ring row ycenter gap-xs text-sm">
 						{#if slot.item.icon}
 							<Icon icon={slot.item.icon} />
 						{/if}

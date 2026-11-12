@@ -39,9 +39,6 @@
 .scroll-hover { scrollbar-width: none; }
 .scroll-hover:is(:hover, :focus-visible) { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
 
-/* Completes the measure-based max-height ladder. */
-.max-h-2xl { max-height: var(--measure-2xl); }
-
 /* Sticky offset: combine with .sticky. */
 .pin-top { top: var(--offset, 0px); }
 .pin-bottom { bottom: var(--offset, 0px); }

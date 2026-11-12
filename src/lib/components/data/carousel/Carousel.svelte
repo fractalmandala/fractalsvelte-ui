@@ -275,7 +275,7 @@
 		{#each slides as slide, i (slide.node)}
 			<button
 				type="button"
-				class="bare pad-sm focusable"
+				class="bare pad-sm focus-ring"
 				aria-label={slide.label ?? `Go to slide ${i + 1}`}
 				aria-current={i === safeIndex ? 'true' : undefined}
 				onclick={() => setIndex(i)}

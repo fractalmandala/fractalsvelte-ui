@@ -49,7 +49,7 @@
 		warning: luTriangleAlert,
 		danger: luCircleAlert
 	};
-	const fills = { soft: 'msg', outline: 'msg-outline', solid: 'msg-solid' } as const;
+	const fills = { soft: 'msg', outline: 'msg outline', solid: 'msg solid ink-auto' } as const;
 
 	let open = $state(true);
 	const glyph = $derived(icon === undefined ? defaults[tone] : icon);
@@ -85,7 +85,7 @@
 			{/if}
 		</div>
 		{#if dismissible}
-			<button type="button" class="dismiss text-bs" aria-label="Dismiss" onclick={dismiss}>
+			<button type="button" class="dismiss focus-ring text-bs" aria-label="Dismiss" onclick={dismiss}>
 				<Icon icon={luX} />
 			</button>
 		{/if}

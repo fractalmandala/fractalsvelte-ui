@@ -1,8 +1,5 @@
 /* The primitives kit: the smallest general pieces composition cannot express. */
 
-/* A key cap: a hairline box with a heavier floor, like a physical key. */
-.kbd { display: inline-flex; align-items: center; justify-content: center; min-width: 1.75em; padding-inline: var(--space-xs); border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: var(--radius-sm); background-color: var(--bg-surface); color: var(--text-primary); font-family: var(--font-mono); font-weight: 500; line-height: 1; white-space: nowrap; }
-
 /* A sr-only region that shows itself while something inside it has focus, such as a skip link. */
 .sr-only-focusable:focus-within { position: static; width: auto; height: auto; margin: 0; overflow: visible; clip: auto; white-space: normal; }
 

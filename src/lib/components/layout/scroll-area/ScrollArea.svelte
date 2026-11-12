@@ -59,7 +59,7 @@
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -- a labelled scroll region must be keyboard-focusable -->
 <div
 	class={[
-		'wfull focusable',
+		'wfull focus-ring',
 		overflowClass[orientation],
 		maxHeight && heightClass[maxHeight],
 		barClass[scrollbar],

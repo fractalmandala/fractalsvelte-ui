@@ -83,7 +83,7 @@
 		<div class="card-grid gap-sm">
 			{#each themes as t (t.id)}
 				<button type="button" class={['link-parent box gap-sm border radius-bs bg-surface pad-bs ta-l lift', theme.theme === t.id && !theme.customised && 'glow']} onclick={() => theme.setTheme(t.id)}>
-					<span class="row ycenter gap-sm"><span class="swatch" data-theme={t.id}></span><span class="link-title text-md weight-600">{t.label}</span></span>
+					<span class="row ycenter gap-sm"><span class="theme-swatch" data-theme={t.id}></span><span class="link-title text-md weight-600">{t.label}</span></span>
 					<span class="text-xs text-muted font-mono tabular-nums">{t.hue}° · {t.chroma} · {t.tint}</span>
 				</button>
 			{/each}

@@ -41,8 +41,8 @@ Styling is **composition of registered classes in markup**. Nothing else.
   (Check a name exists: `grep -c "luName\b" node_modules/@fractaldesign/icons/dist/lucide.d.ts`.)
 - Every class must exist in **fractalstyler's registry**
   (`node_modules/@fractaldesign/fractalstyler/registry.md` — read it) or in the
-  **fractalsvelte-ui extension layer** (`src/lib/styles/layers/*.css` — read them; they
-  are short).
+  **fractalsvelte-ui extension layer** (`src/lib/styles/layers/components/<kit>.css` —
+  read them; they are short kit fragments).
 - Modifiers are never standalone: `.row.xcenter`, never a bare `.xcenter`.
 - There is no `.w-*`, `.pad-x-*`, `.border-top`. Search the registry; never guess.
 
@@ -55,7 +55,7 @@ owns the real property (`translate: calc(var(--mx, 0) * 1px) …`). Use the
 
 **The extension layer is small on purpose.** Compose first. If the system
 genuinely cannot express something, add the *smallest general primitive* to
-your kit's fragment `src/lib/styles/layers/kits/<kit>.css`:
+your kit's fragment `src/lib/styles/layers/components/<kit>.css`:
 
 - plain CSS, tokens only (`var(--space-*)`, `var(--radius-*)`, colour roles),
   `rem`/`em`/`%` — no px above 2, no hex, no `&` nesting;
@@ -193,7 +193,7 @@ export default defineDoc({
 
 | | |
 |:---|:---|
-| `src/lib/styles/layers/*.css` | the fractalsvelte-ui extension layer — sources. `kits/<kit>.css` are the kit fragments |
+| `src/lib/styles/layers/components/<kit>.css` | the fractalsvelte-ui extension layer — kit fragments only. `components.css` is the import manifest `pnpm gen` concatenates into `custom.css`. General primitives belong in fractalstyler |
 | `src/lib/styles/custom.css` | GENERATED concat of the layers — fractalstyler's sanctioned `custom.css` extension point; the linter reads it |
 | `src/lib/internal/` | shared tokens, floating/anchor helpers, list navigation, highlight |
 | `src/lib/motion/` | spring solver, CSS spring tokens, `animate`, attachments, transitions, view transitions |
@@ -252,7 +252,7 @@ theme (ThemeState: mode theme hue chroma tint radius density motion resolvedMode
 themes, initTheme(), themeInitScript()
 ```
 
-CSS side (see `src/lib/styles/layers/10-motion.css`): `.spring` + `.spring-<preset>`
+CSS side (see `@fractaldesign/fractalstyler` `motion-animation.css`): `.spring` + `.spring-<preset>`
 for state transitions, `.pop` + `.enter-*` for anything that opens (works on
 `[popover]`, `<dialog open>`, and `.open`), `.anim-in` (staggered by `--i`),
 `.reveal`/`.in`, `.lift`, `.press`.

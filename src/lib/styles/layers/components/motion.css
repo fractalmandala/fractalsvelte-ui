@@ -1,3 +1,7 @@
+/* motion kit — leftovers that are specific to this kit.
+ * General motion now lives in fractalstyler motion-animation.css.
+ * This file concatenates the former motion-b.css then motion.css, so cascade is unchanged. */
+
 /* motion (b) — marquee, ticker, text, typewriter, parallax, scroll progress, transitions, lists. */
 
 /* An endless strip. Each .marquee-group is one copy of the content and slides by
@@ -44,16 +48,19 @@
 .edge-top { position: fixed; inset: 0 0 auto 0; z-index: var(--z-toast); }
 .edge-bottom { position: fixed; inset: auto 0 0 0; z-index: var(--z-toast); }
 
-/* Tones re-point the accent, so .fill, .ring and .text-theme follow. */
-.tone-neutral { --theme-color: var(--text-secondary); }
-.tone-info { --theme-color: var(--info); }
-.tone-success { --theme-color: var(--success); }
-.tone-warning { --theme-color: var(--warning); }
-.tone-danger { --theme-color: var(--danger); }
-
-/* Children share one grid cell: an outgoing and an incoming view overlap. */
-.stacked { display: grid; }
-.stacked > * { grid-area: 1 / 1; }
-
 /* An item on its way out, lifted from the flow at its last box (JS writes --ox --oy --ow). */
 .leaving { position: absolute; top: calc(var(--oy, 0) * 1px); left: calc(var(--ox, 0) * 1px); width: calc(var(--ow, 0) * 1px); margin: 0; pointer-events: none; }
+
+/* Motion kit A — glare, blur channel, drag cursors. */
+
+/* Highlight that follows --px/--py percentages written by tilt({ glare: true }). */
+.glare {
+	background-image: radial-gradient(circle at var(--px, 50%) var(--py, 50%), color-mix(in oklab, var(--white-fixed) 42%, transparent) 0%, transparent 58%);
+}
+
+/* Entrance blur. JavaScript writes --blur as a unitless px amount. */
+.blur-in { filter: blur(calc(var(--blur, 0) * 1px)); }
+
+/* Drag affordances. */
+.grab { cursor: grab; }
+.grabbing { cursor: grabbing; }

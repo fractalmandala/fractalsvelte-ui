@@ -5,7 +5,7 @@ import path from 'node:path';
 import { PATHS, blank, byCodepoint, cssCodeLines, lineAt, listDir, readText } from './util.ts';
 
 export interface LayerFile {
-	/** Path relative to the layers folder: `10-surfaces.css`, `kits/actions.css`. */
+	/** Path relative to the layers folder: `10-surfaces.css`, `components/actions.css`. */
 	name: string;
 	full: string;
 	source: string;
@@ -42,15 +42,32 @@ export interface LayerBuild {
 	codeLines: number;
 }
 
+
+/** Kit fragment file names in the order declared by layers/components.css. */
+export function componentFragmentNames(): string[] {
+	const manifest = path.join(PATHS.layers, 'components.css');
+	const source = readText(manifest);
+	if (source) {
+		const names: string[] = [];
+		for (const m of source.matchAll(/@import\s+['"]\.\/components\/([^'"]+)['"]\s*;/g)) {
+			names.push(m[1]);
+		}
+		if (names.length) return names;
+	}
+	return listDir(PATHS.kitLayers, 'file').filter((n) => n.endsWith('.css'));
+}
+
 export function readLayers(): LayerFile[] {
 	const out: LayerFile[] = [];
-	for (const name of listDir(PATHS.layers, 'file').filter((n) => n.endsWith('.css'))) {
+	for (const name of listDir(PATHS.layers, 'file').filter((n) => n.endsWith('.css') && n !== 'components.css')) {
 		const full = path.join(PATHS.layers, name);
 		out.push({ name, full, source: readText(full) ?? '' });
 	}
-	for (const name of listDir(PATHS.kitLayers, 'file').filter((n) => n.endsWith('.css'))) {
+	// `components.css` is the manifest of @import order. The files themselves are
+	// concatenated here (an @import mid-sheet would be invalid after other rules).
+	for (const name of componentFragmentNames()) {
 		const full = path.join(PATHS.kitLayers, name);
-		out.push({ name: `kits/${name}`, full, source: readText(full) ?? '' });
+		out.push({ name: `components/${name}`, full, source: readText(full) ?? '' });
 	}
 	return out;
 }

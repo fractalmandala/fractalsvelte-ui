@@ -137,7 +137,7 @@
 			<span class="text-sm text-secondary">{name}</span>
 			<span class="text-sm tabular-nums text-muted">{display}</span>
 		</div>
-		<div class={['rail track relative', track]} {@attach vars({ value: (current - min) / (max - min), hue, 'ramp-max': 0.3 })}>
+		<div class={['range-rail track relative', track]} {@attach vars({ value: (current - min) / (max - min), hue, 'ramp-max': 0.3 })}>
 			<span class="thumb"></span>
 			<input
 				class="scrub"
@@ -182,7 +182,7 @@
 			<p class="text-sm weight-500">Radius</p>
 			<div role="radiogroup" aria-label="Radius" class="choice-group text-sm" {@attach roving({ orientation: 'horizontal', onNavigate: (item) => item.click() })}>
 				{#each radii as option (option.id)}
-					<button type="button" role="radio" aria-checked={option.id === settings.radius} tabindex={option.id === settings.radius ? 0 : -1} class="bare choice weight-500" onclick={() => patch({ radius: option.id })}>
+					<button type="button" role="radio" aria-checked={option.id === settings.radius} tabindex={option.id === settings.radius ? 0 : -1} class="bare choice focus-ring weight-500" onclick={() => patch({ radius: option.id })}>
 						{option.name}
 					</button>
 				{/each}
@@ -195,7 +195,7 @@
 			<p class="text-sm weight-500">Density</p>
 			<div role="radiogroup" aria-label="Density" class="choice-group text-sm" {@attach roving({ orientation: 'horizontal', onNavigate: (item) => item.click() })}>
 				{#each densities as option (option.id)}
-					<button type="button" role="radio" aria-checked={option.id === settings.density} tabindex={option.id === settings.density ? 0 : -1} class="bare choice weight-500" onclick={() => patch({ density: option.id })}>
+					<button type="button" role="radio" aria-checked={option.id === settings.density} tabindex={option.id === settings.density ? 0 : -1} class="bare choice focus-ring weight-500" onclick={() => patch({ density: option.id })}>
 						{option.name}
 					</button>
 				{/each}
@@ -208,7 +208,7 @@
 			<p class="text-sm weight-500">Motion</p>
 			<div role="radiogroup" aria-label="Motion" class="choice-group text-sm" {@attach roving({ orientation: 'horizontal', onNavigate: (item) => item.click() })}>
 				{#each motions as option (option.id)}
-					<button type="button" role="radio" aria-checked={option.id === settings.motion} tabindex={option.id === settings.motion ? 0 : -1} class="bare choice weight-500" onclick={() => patch({ motion: option.id })}>
+					<button type="button" role="radio" aria-checked={option.id === settings.motion} tabindex={option.id === settings.motion ? 0 : -1} class="bare choice focus-ring weight-500" onclick={() => patch({ motion: option.id })}>
 						{option.name}
 					</button>
 				{/each}

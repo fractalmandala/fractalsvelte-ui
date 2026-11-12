@@ -55,7 +55,7 @@
 			aria-checked={on}
 			aria-label={preset.label}
 			tabindex={on ? 0 : -1}
-			class="bare pick box xcenter gap-xs"
+			class="bare pick focus-ring box xcenter gap-xs"
 			onclick={() => pick(preset.id)}
 			{@attach vars({ hue: preset.hue, chroma: preset.chroma })}
 		>

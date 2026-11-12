@@ -1,0 +1,69 @@
+/* Docs-site stylesheet. Not part of the published library.
+ * Moved out of src/lib/styles/layers/90-docs.css and custom.sass so syntax
+ * colours that the Code component needs (tok-*) stay in the library, and
+ * everything else that is docs-only does not ship to consumers.
+ */
+
+/* Syntax chips in API tables and running text (the Code component uses tok-* from the library). */
+.code-chip { display: inline; padding: 0.1em 0.4em; border-radius: var(--radius-sm); background-color: var(--state-selected); color: var(--text-primary); font-family: var(--font-mono); font-size: 0.86em; white-space: nowrap; }
+.code-chip.wrap-any { white-space: normal; overflow-wrap: anywhere; }
+
+/* A highlighted block of source in the docs (distinct from the library .code component). */
+.code-block { display: block; margin: 0; padding: var(--space-bs) var(--space-lg); overflow-x: auto; font-family: var(--font-mono); font-size: var(--text-sm); line-height: 1.7; white-space: pre; tab-size: 2; color: var(--text-primary); scrollbar-width: thin; }
+.code-block.scroll-tall { max-height: 32rem; overflow-y: auto; }
+
+/* The stage a live example sits on: a quiet dot grid. Distinct from the virtual-list .stage. */
+.example-stage { min-height: 11rem; background-image: radial-gradient(color-mix(in oklab, var(--text-muted) 30%, transparent) 1px, transparent 1px); background-size: 1rem 1rem; background-position: center; }
+
+/* The landing hero: one soft wash of the theme colour, and gradient ink. */
+.hero-wash { background-image: radial-gradient(60% 55% at 50% 0%, color-mix(in oklab, var(--theme-color) 16%, transparent), transparent 72%); }
+.ink-fade { background-image: linear-gradient(180deg, var(--text-primary) 30%, var(--text-secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.measure-hero { max-width: 15ch; }
+.measure-lead { max-width: 44ch; }
+
+/* Headings land below the sticky header when jumped to. */
+.anchored { scroll-margin-top: calc(var(--header-height) + var(--space-lg)); }
+
+/* The table of contents marks the section being read. */
+.toc-link { padding-block: var(--space-xs); padding-left: var(--space-md); border-left: 1px solid var(--border-subtle); transition: color var(--motionin1), border-color var(--motionin1); }
+.toc-link.active { color: var(--theme-color); border-left-color: var(--theme-color); }
+
+/* A colour swatch that reads its theme's own numbers (set data-theme on it). Distinct from the colour-picker .swatch. */
+.theme-swatch { flex: none; width: 1em; height: 1em; border-radius: var(--radius-full); background-color: oklch(0.68 var(--chroma) var(--hue)); box-shadow: inset 0 0 0 1px oklch(1 0 0 / 0.15); }
+
+/* The docs header: the designed hairline glass wash (0.75rem, not .glass's --glass-blur of 1rem). */
+.app-header { background-color: color-mix(in oklab, var(--bg) 78%, transparent); backdrop-filter: blur(0.75rem) saturate(1.5); -webkit-backdrop-filter: blur(0.75rem) saturate(1.5); }
+.wordmark { letter-spacing: -0.03em; }
+
+/* Narrow screens: the drawer height, background and border now live in
+ * fractalstyler layout-shell.css. The docs site only adds a scrim. */
+.drawer-scrim { position: fixed; inset: var(--header-height) 0 0 0; background-color: var(--scrim); }
+
+/* Fonts and hero lockup, formerly custom.sass. */
+@font-face {
+	font-family: "Google Sans";
+	src: url("/fonts/GoogleSans.woff2") format("woff2");
+	font-weight: 400 700;
+	font-style: normal;
+}
+@font-face {
+	font-family: "Google Sans";
+	src: url("/fonts/GoogleSans-Italic.woff2") format("woff2");
+	font-weight: 400 700;
+	font-style: italic;
+}
+:root {
+	--font-sans: "Google Sans", sans-serif;
+	--prose-clamp: 55ch;
+}
+.page-section { display: flex; }
+@media (min-width: 1025px) {
+	.page-section {
+		min-height: calc(100vh - var(--header-height) - var(--footer-height));
+		padding-block: var(--space-bs);
+	}
+}
+.prose-clamp { width: var(--prose-clamp); }
+/* Justified exceptions: no letter-spacing or 104px step on the type/size ladders. */
+.hero-text { font-size: calc(var(--text-5xl) * 2); letter-spacing: -0.3rem; }
+.hero-logo { height: 104px; }

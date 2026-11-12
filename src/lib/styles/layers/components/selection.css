@@ -3,6 +3,7 @@
 /* A native input drawn by its parent: invisible, covering it, still the click and focus target. */
 .native { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
 .native:disabled { cursor: not-allowed; }
+/* Focus is on the invisible .native child; this is the .focus-theme ring on the parent. */
 *:has(> .native:focus-visible) { outline: 2px solid var(--theme-color); outline-offset: 2px; }
 
 /* A position or size that springs to its new value: a thumb or fill gliding to --value. */
@@ -12,7 +13,7 @@
 .slim { height: 0.5em; }
 .track-v.slim { width: 0.5em; height: 10em; }
 .pill { height: 1.5em; aspect-ratio: 2; }
-.grip { height: 1.25em; }
+.stout { height: 1.25em; }
 
 /* A thumb inset inside a 2:1 pill track, travelling edge to edge with --value. It follows a checked input sibling. */
 .native:checked ~ .thumb { --value: 1; }

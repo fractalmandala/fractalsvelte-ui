@@ -17,9 +17,10 @@ export interface ThemePreset {
 	tint: number;
 }
 
-/** The named themes and the numbers behind them (mirrors `60-themes.css`). */
+/** The named themes and the numbers behind them.
+ *  Keep in sync with `@fractaldesign/fractalstyler` `src/lib/styles/colors-themes.css` — that stylesheet is the source; this list is a mirror for the picker and `theme.hue`. */
 export const themes: ThemePreset[] = [
-	{ id: 'fractalsvelte', label: 'Fractalsvelte', hue: 268, chroma: 0.2, tint: 0.012 },
+	{ id: 'fractalsvelte', label: 'Fractalsvelte', hue: 38, chroma: 0.2, tint: 0.012 },
 	{ id: 'aurora', label: 'Aurora', hue: 168, chroma: 0.15, tint: 0.01 },
 	{ id: 'ocean', label: 'Ocean', hue: 238, chroma: 0.17, tint: 0.014 },
 	{ id: 'ember', label: 'Ember', hue: 42, chroma: 0.19, tint: 0.01 },

@@ -14,7 +14,7 @@ export const PATHS = {
 	kitsTs: path.join(ROOT, 'src/lib/components/kits.ts'),
 	tokensTs: path.join(ROOT, 'src/lib/internal/tokens.ts'),
 	layers: path.join(ROOT, 'src/lib/styles/layers'),
-	kitLayers: path.join(ROOT, 'src/lib/styles/layers/kits'),
+	kitLayers: path.join(ROOT, 'src/lib/styles/layers/components'),
 	customCss: path.join(ROOT, 'src/lib/styles/custom.css'),
 	barrel: path.join(ROOT, 'src/lib/index.ts'),
 	generated: path.join(ROOT, 'src/lib/docs/generated'),

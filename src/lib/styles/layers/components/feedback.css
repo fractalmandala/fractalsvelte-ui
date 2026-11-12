@@ -1,22 +1,21 @@
 /* Feedback primitives. */
 
 /* Status fills beyond .msg (the soft fill): a full-strength fill and a status-coloured hairline. */
-.msg-solid, .msg-solid.neutral, .msg-solid.info, .msg-solid.success, .msg-solid.warning, .msg-solid.danger { background-color: var(--msg-ink); border: 1px solid var(--msg-ink); color: var(--white-fixed); }
-.msg-solid, .msg-solid.neutral { --msg-ink: var(--bg-button); color: var(--text-inverse); }
-.msg-solid.info { --msg-ink: var(--info); }
-.msg-solid.success { --msg-ink: var(--success); }
-.msg-solid.warning { --msg-ink: var(--warning); color: var(--black-fixed); }
-.msg-solid.danger { --msg-ink: var(--danger); }
-.msg-outline, .msg-outline.neutral, .msg-outline.info, .msg-outline.success, .msg-outline.warning, .msg-outline.danger { background-color: transparent; border: 1px solid var(--msg-edge, var(--border-strong)); color: var(--text-primary); }
-.msg-outline.info { --msg-edge: color-mix(in oklab, var(--info) 55%, transparent); }
-.msg-outline.success { --msg-edge: color-mix(in oklab, var(--success) 55%, transparent); }
-.msg-outline.warning { --msg-edge: color-mix(in oklab, var(--warning) 55%, transparent); }
-.msg-outline.danger { --msg-edge: color-mix(in oklab, var(--danger) 55%, transparent); }
+.msg.solid, .msg.solid.neutral, .msg.solid.info, .msg.solid.success, .msg.solid.warning, .msg.solid.danger { background-color: var(--msg-ink); border: 1px solid var(--msg-ink); --ink-bg: var(--msg-ink); }
+.msg.solid, .msg.solid.neutral { --msg-ink: var(--bg-button); }
+.msg.solid.info { --msg-ink: var(--info); }
+.msg.solid.success { --msg-ink: var(--success); }
+.msg.solid.warning { --msg-ink: var(--warning); }
+.msg.solid.danger { --msg-ink: var(--danger); }
+.msg.outline, .msg.outline.neutral, .msg.outline.info, .msg.outline.success, .msg.outline.warning, .msg.outline.danger { background-color: transparent; border: 1px solid var(--msg-edge, var(--border-strong)); color: var(--text-primary); }
+.msg.outline.info { --msg-edge: color-mix(in oklab, var(--info) 55%, transparent); }
+.msg.outline.success { --msg-edge: color-mix(in oklab, var(--success) 55%, transparent); }
+.msg.outline.warning { --msg-edge: color-mix(in oklab, var(--warning) 55%, transparent); }
+.msg.outline.danger { --msg-edge: color-mix(in oklab, var(--danger) 55%, transparent); }
 
 /* A close control that follows the ink of whatever it sits on. */
 .dismiss { display: inline-grid; place-items: center; flex: none; width: 1.75em; aspect-ratio: 1; padding: 0; border: none; border-radius: var(--radius-sm); background: transparent; color: inherit; font-size: inherit; opacity: 0.65; cursor: pointer; transition: opacity var(--motionin1), background-color var(--motionin1); }
 .dismiss:hover, .dismiss:focus-visible { opacity: 1; background-color: color-mix(in oklab, currentColor 14%, transparent); }
-.dismiss:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
 
 /* Children share one grid cell: a cross-fade, a stack of cards. */
 .overlap { display: grid; }
@@ -37,21 +36,10 @@
 /* A loading placeholder block. --w and --h size it. */
 .bone { width: var(--w, 100%); height: var(--h, 1em); border-radius: var(--radius-sm); background-color: var(--state-selected); }
 .bone.text { height: 0.75em; }
-.bone.circle { width: var(--w, 3em); height: var(--w, 3em); border-radius: var(--radius-full); }
+.bone.round { width: var(--w, 3em); height: var(--w, 3em); }
 
 /* Diagonal stripes over a fill. */
 .stripes { background-image: repeating-linear-gradient(135deg, color-mix(in oklab, var(--white-fixed) 28%, transparent) 0 0.5rem, transparent 0.5rem 1rem); }
-
-/* Staggered loops: --i offsets each part. */
-@keyframes wave { 0%, 80%, 100% { scale: 0.55; opacity: 0.35; } 40% { scale: 1; opacity: 1; } }
-@keyframes stretch { 0%, 80%, 100% { scale: 1 0.4; opacity: 0.45; } 40% { scale: 1 1; opacity: 1; } }
-@keyframes slide { from { translate: -100% 0; } to { translate: 250% 0; } }
-.anim-wave { animation: wave 1.2s ease-in-out infinite; animation-delay: calc(var(--i, 0) * 0.15s); }
-.anim-stretch { animation: stretch 1.2s ease-in-out infinite; animation-delay: calc(var(--i, 0) * 0.15s); }
-.anim-slide { animation: slide 1.4s var(--transout2) infinite; }
-@media (prefers-reduced-motion: reduce) {
-	.anim-wave, .anim-stretch, .anim-slide { animation: none; }
-}
 
 /* Stick a full-width announcement to the top of the scrollport. */
 .sticky-top { position: sticky; top: 0; z-index: var(--z-sticky); }

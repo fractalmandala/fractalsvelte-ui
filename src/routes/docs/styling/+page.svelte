@@ -9,7 +9,7 @@
 	import Section from '../../../docs-site/Section.svelte';
 	import { layerClasses } from '../../../docs-site/registry.js';
 
-	const classes = layerClasses().filter((c) => !c.file.startsWith('90-docs') && !c.class.startsWith('tok-'));
+	const classes = layerClasses().filter((c) => !c.class.startsWith('tok-'));
 	let query = $state('');
 	const q = $derived(query.trim().toLowerCase());
 	const shown = $derived(classes.filter((c) => !q || `${c.class} ${c.file} ${c.declarations}`.toLowerCase().includes(q)));
@@ -40,14 +40,13 @@
 </div>
 <button onclick={() => (level.target = Math.random())}>Spring it</button>`;
 
-	const layerCss = `/* src/lib/styles/layers/40-controls.css */
-.fill {
-	position: absolute;
-	inset-block: 0;
-	left: calc(var(--from, 0) * 100%);
-	width: calc((var(--value, 0) - var(--from, 0)) * 100%);
-	border-radius: inherit;
-	background-color: var(--theme-color);
+	const layerCss = `/* src/lib/styles/layers/components/navigation.css */
+.rail {
+	--rail-width: var(--sidebar-width-left);
+	--rail-width-collapsed: var(--sidebar-width-collapsed);
+	width: var(--rail-width);
+	min-width: var(--rail-width);
+	overflow: hidden;
 }`;
 </script>
 
@@ -75,7 +74,7 @@
 
 	<Section id="extension" title="The extension layer">
 		<p class="text-body text-secondary lh16">
-			<Rich text={`Where the system genuinely cannot express something, fractalsvelte-ui adds the smallest general primitive: plain CSS, tokens only, named in the system's voice. The layers live in \`src/lib/styles/layers\` and are concatenated into \`custom.css\` by \`pnpm gen\`. These are its ${classes.length} classes:`} />
+			<Rich text={`Where the system genuinely cannot express something, fractalsvelte-ui adds the smallest kit-specific primitive: plain CSS, tokens only, named in the system's voice. General primitives belong in fractalstyler. The kit fragments live in \`src/lib/styles/layers/components\` and are concatenated into \`custom.css\` by \`pnpm gen\`. These are its ${classes.length} classes:`} />
 		</p>
 		<label class="field row ycenter gap-sm border radius-md bg-input px-md h-xl measure-md">
 			<Icon icon={luSearch} class="text-muted shrink-0" />
@@ -107,7 +106,7 @@
 		<p class="text-body text-secondary lh16">
 			<Rich text="JavaScript never writes a real property. It writes custom properties — through the `vars()` attachment or `node.style.setProperty('--x', …)` — and a class turns them into layout. Here a spring drives `--value`; `.fill` owns the width." />
 		</p>
-		<div class="stage box gap-md border radius-bs pad-xl">
+		<div class="example-stage box gap-md border radius-bs pad-xl">
 			<div class="track h-xs wfull">
 				<div class="fill" {@attach vars({ value: level.current })}></div>
 			</div>

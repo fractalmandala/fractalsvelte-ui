@@ -331,7 +331,7 @@
 			aria-valuenow={Math.round(hsv.a * 100)}
 			aria-valuetext={`${Math.round(hsv.a * 100)}%`}
 			aria-disabled={disabled || undefined}
-			class={['track fade relative wfull h-sm', disabled ? 'disabled' : 'pointer touch-none']}
+			class={['track alpha-fade relative wfull h-sm', disabled ? 'disabled' : 'pointer touch-none']}
 			onpointerdown={alphaDown}
 			onpointermove={alphaMove}
 			onpointerup={up}
@@ -368,7 +368,7 @@
 			{#each swatches as colour (colour)}
 				<button
 					type="button"
-					class={['cell swatch h-lg', swatchOn(colour) && 'selected']}
+					class={['cell swatch focus-ring h-lg', swatchOn(colour) && 'selected']}
 					aria-label={colour}
 					aria-pressed={swatchOn(colour)}
 					{disabled}

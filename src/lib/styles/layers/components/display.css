@@ -1,7 +1,7 @@
 /* Display kit: avatar, interactive surfaces, bleed, code, timeline. */
 
 /* Avatar: a sized, hued tile. --avatar-size comes from .avatar-<size>, --avatar-hue from vars(). */
-.avatar { --avatar-size: var(--h-xl); position: relative; display: inline-grid; place-items: center; flex: none; width: var(--avatar-size); height: var(--avatar-size); font-size: calc(var(--avatar-size) * 0.38); font-weight: 600; line-height: 1; user-select: none; box-shadow: 0 0 0 2px var(--avatar-ring, transparent); }
+.avatar { --radius-avatar: 12%; --avatar-size: var(--h-xl); position: relative; display: inline-grid; place-items: center; flex: none; width: var(--avatar-size); height: var(--avatar-size); font-size: calc(var(--avatar-size) * 0.38); font-weight: 600; line-height: 1; user-select: none; box-shadow: 0 0 0 2px var(--avatar-ring, transparent); }
 :where(.avatar) { background-color: color-mix(in oklab, oklch(0.7 0.13 var(--avatar-hue, 268)) 20%, var(--bg-panel)); color: color-mix(in oklab, oklch(0.62 0.16 var(--avatar-hue, 268)) 70%, var(--text-primary)); }
 .avatar::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--text-primary) 10%, transparent); pointer-events: none; }
 .avatar > img { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: inherit; }
@@ -10,8 +10,8 @@
 .avatar-md { --avatar-size: var(--h-xl); }
 .avatar-lg { --avatar-size: var(--h-2xl); }
 .avatar-xl { --avatar-size: var(--h-3xl); }
-.avatar.circle { border-radius: var(--radius-full); }
-.avatar.rounded { border-radius: 12%; }
+/* Circle avatars use the system .round shape. */
+.avatar.rounded { border-radius: var(--radius-avatar); }
 .avatar.square { border-radius: 0; }
 .avatar-status { position: absolute; right: 4%; bottom: 4%; font-size: calc(var(--avatar-size) * 0.5); box-shadow: 0 0 0 2px var(--avatar-ring, var(--bg-surface)); }
 .avatar-group.gap-overlap.row { --avatar-ring: var(--bg-surface); }
@@ -22,19 +22,11 @@
 .interactive { cursor: pointer; outline: none; transition: border-color var(--motionin1), background-color var(--motionin1); }
 .interactive:hover { border-color: var(--border-strong); }
 .interactive.bg-none:hover { background-color: var(--state-hover); }
-.interactive:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
 
 /* Media that runs to the edge of a padded parent that sets --pad. */
 .bleed { margin-inline: calc(var(--pad, 0rem) * -1); }
 .bleed:first-child { margin-top: calc(var(--pad, 0rem) * -1); }
 .bleed:last-child { margin-bottom: calc(var(--pad, 0rem) * -1); }
-
-/* Height ladder for scrolling regions, on the measure tokens. */
-.max-h-xs { max-height: var(--measure-xs); }
-.max-h-sm { max-height: var(--measure-sm); }
-.max-h-md { max-height: var(--measure-md); }
-.max-h-lg { max-height: var(--measure-lg); }
-.max-h-xl { max-height: var(--measure-xl); }
 
 /* Code: one flex line per source line; gutter numbers come from a counter. */
 .code { counter-reset: line; margin: 0; font-family: var(--font-mono); font-size: var(--text-sm); line-height: 1.65; tab-size: 2; }
@@ -46,7 +38,6 @@
 
 /* Stacked rows separated by a hairline. */
 .divided > * + * { padding-top: var(--space-sm); border-top: 1px solid var(--border-subtle); }
-
 
 /* Description list: flush native spacing; a term/definition row that aligns terms. */
 .pairs { margin: 0; }
@@ -63,3 +54,14 @@
 .timeline.alternate .timeline-rail { grid-column: 2; grid-row: 1; }
 .timeline.alternate .timeline-item:nth-child(odd) > .timeline-body { grid-column: 1; grid-row: 1; align-items: flex-end; text-align: right; }
 .timeline.alternate .timeline-item:nth-child(even) > .timeline-body { grid-column: 3; grid-row: 1; }
+
+/* Syntax colours emitted by highlight.ts and used by the Code component. */
+.tok-kw { color: var(--theme-color); }
+.tok-str { color: var(--success); }
+.tok-com { color: var(--text-muted); font-style: italic; }
+.tok-tag { color: var(--info); }
+.tok-attr { color: var(--warning); }
+.tok-num { color: var(--danger); }
+.tok-fn { color: var(--theme-color-up); }
+.tok-punc { color: var(--text-muted); }
+.tok-type { color: var(--info); }

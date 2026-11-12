@@ -16,8 +16,8 @@ if (!arg) {
 }
 const scope = parseScope(arg);
 const prefix = `src/lib/components/${scope.kit}/${scope.name ? scope.name + '/' : ''}`;
-/** kits/<kit>.css and kits/<kit>-<suffix>.css */
-const fragment = new RegExp(`^src/lib/styles/layers/kits/${escapeRe(scope.kit ?? '')}(-[^/]+)?\\.css$`);
+/** components/<kit>.css and components/<kit>-<suffix>.css */
+const fragment = new RegExp(`^src/lib/styles/layers/components/${escapeRe(scope.kit ?? '')}(-[^/]+)?\\.css$`);
 const inScope = (file: string) => {
 	const f = file.split(path.sep).join('/').replace(/^\.\//, '');
 	return f.startsWith(prefix) || fragment.test(f);

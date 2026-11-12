@@ -503,9 +503,9 @@ export function checkComponent(a: ComponentAnalysis, ctx: GateContext): Diag[] {
 
 // ── styles + library ────────────────────────────────────────────────────────
 
-/** `kits/motion.css` and `kits/motion-b.css` both belong to kit `motion`. */
+/** `components/motion.css` belongs to kit `motion`. */
 export function fragmentKit(name: string, kits: KitInfo[]): string {
-	const base = name.replace(/^kits\//, '').replace(/\.css$/, '');
+	const base = name.replace(/^(kits|components)\//, '').replace(/\.css$/, '');
 	const parts = base.split('-');
 	for (let n = parts.length; n > 0; n--) {
 		const candidate = parts.slice(0, n).join('-');
@@ -517,7 +517,7 @@ export function fragmentKit(name: string, kits: KitInfo[]): string {
 export function checkKitFragments(layers: LayerBuild, kits: KitInfo[], onlyKit: string | null): Diag[] {
 	const out: Diag[] = [];
 	for (const fl of layers.files) {
-		if (!fl.name.startsWith('kits/')) continue;
+		if (!fl.name.startsWith('components/')) continue;
 		const kit = fragmentKit(fl.name, kits);
 		if (onlyKit && kit !== onlyKit) continue;
 		const file = rel(fl.full);
@@ -525,7 +525,7 @@ export function checkKitFragments(layers: LayerBuild, kits: KitInfo[], onlyKit: 
 		if (n > KIT_BUDGET)
 			out.push({ rule: 'layer/budget', severity: 'error', file, line: null, message: `${n} lines (budget ${KIT_BUDGET})`, fix: 'compose more in markup; keep only the smallest general primitives' });
 		if (!kits.some((k) => k.id === kit))
-			out.push({ rule: 'kit/unknown', severity: 'error', file, line: null, message: `kit fragment for unknown kit "${kit}"`, fix: 'name the fragment kits/<kit>.css or kits/<kit>-<suffix>.css after a kit in kits.ts' });
+			out.push({ rule: 'kit/unknown', severity: 'error', file, line: null, message: `kit fragment for unknown kit "${kit}"`, fix: 'name the fragment components/<kit>.css or components/<kit>-<suffix>.css after a kit in kits.ts' });
 		for (const m of fl.source.matchAll(/&/g)) {
 			out.push({ rule: 'layer/nesting', severity: 'error', file, line: lineAt(fl.source, m.index ?? 0), message: '`&` nesting in a plain CSS layer', fix: 'write the selector out in full' });
 			break;

@@ -89,7 +89,7 @@
 						<button
 							type="button"
 							class={[
-								'bare circle inline-flex xcenter ycenter shrink-0 square h-lg text-sm weight-500 focus-ring',
+								'bare round inline-flex xcenter ycenter shrink-0 square h-lg text-sm weight-500 focus-ring',
 								markerClass[status],
 								!allowed && 'disabled'
 							]}
@@ -109,7 +109,7 @@
 					{:else}
 						<div
 							class={[
-								'circle inline-flex xcenter ycenter shrink-0 square h-lg text-sm weight-500',
+								'round inline-flex xcenter ycenter shrink-0 square h-lg text-sm weight-500',
 								markerClass[status]
 							]}
 							aria-current={status === 'current' ? 'step' : undefined}

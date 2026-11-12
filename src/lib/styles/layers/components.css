@@ -1,0 +1,16 @@
+/* Kit fragments, one file per kit. `pnpm gen` concatenates them into custom.css
+ * in this order (do not rearrange — the cascade depends on it). */
+@import './components/actions.css';
+@import './components/data.css';
+@import './components/display.css';
+@import './components/effects.css';
+@import './components/feedback.css';
+@import './components/inputs.css';
+@import './components/layout.css';
+@import './components/motion.css';
+@import './components/navigation.css';
+@import './components/overlays.css';
+@import './components/pickers.css';
+@import './components/primitives.css';
+@import './components/selection.css';
+@import './components/theme.css';

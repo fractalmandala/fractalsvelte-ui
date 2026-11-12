@@ -112,7 +112,7 @@
 			<a class="link shrink-0 text-sm weight-500" {href}>{action}</a>
 		{/if}
 		{#if dismissible}
-			<button type="button" class="dismiss text-bs" aria-label="Dismiss" onclick={dismiss}>
+			<button type="button" class="dismiss focus-ring text-bs" aria-label="Dismiss" onclick={dismiss}>
 				<Icon icon={luX} />
 			</button>
 		{/if}

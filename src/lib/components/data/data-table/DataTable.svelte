@@ -344,7 +344,7 @@
 						{#if col.sortable}
 							<button
 								type="button"
-								class="bare row ycenter gap-sm pointer focusable text-xs weight-600"
+								class="bare row ycenter gap-sm pointer focus-ring text-xs weight-600"
 								onclick={(event) => onSortClick(col.key, event)}
 							>
 								{#if typeof col.header === 'string'}
@@ -434,7 +434,7 @@
 							<TableCell class="data-table-select">
 								<button
 									type="button"
-									class={['bare focusable caret spring spring-snappy', open && 'open']}
+									class={['bare focus-ring caret spring spring-snappy', open && 'open']}
 									aria-expanded={open}
 									aria-controls="{uid}-detail-{key}"
 									aria-label={open ? 'Collapse row' : 'Expand row'}

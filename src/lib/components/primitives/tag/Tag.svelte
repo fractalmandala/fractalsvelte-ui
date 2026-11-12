@@ -62,7 +62,7 @@
 		variant,
 		heightClasses[size], textClasses[textSize ?? size],
 		shape,
-		href && 'link-plain',
+		href && 'link-plain focus-ring',
 		klass
 	]);
 </script>

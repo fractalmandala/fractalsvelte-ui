@@ -120,7 +120,7 @@
 	role="dialog"
 	tabindex="-1"
 	class={[
-		'floating pop spring-snappy border rim shad-lg radius-lg pad-bs cap-sm focus-none',
+		'floating pop spring-snappy border rim shad-lg radius-lg pad-bs max-w-sm focus-none',
 		surfaceClass[surface],
 		placementClass[placement],
 		enterFrom[placement],

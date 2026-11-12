@@ -34,7 +34,7 @@
 		<button
 			id={triggerId}
 			type="button"
-			class={['item focusable', disabled && 'disabled']}
+			class={['item focus-ring', disabled && 'disabled']}
 			data-accordion-trigger
 			aria-expanded={open}
 			aria-controls={panelId}

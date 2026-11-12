@@ -63,7 +63,7 @@
 		padClass[size],
 		gapClass[size],
 		shape,
-		live && 'interactive',
+		live && 'interactive focus-ring',
 		(live || tilt) && 'motion',
 		tilt && 'tilt',
 		klass

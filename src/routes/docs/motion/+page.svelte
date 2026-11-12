@@ -143,13 +143,13 @@
 	<Section id="attachments" title="Attachments">
 		<p class="text-body text-secondary lh16"><Rich text={"Attach behaviour with `{@attach …}`. Try these three:"} /></p>
 		<div class="grid-3 gap-md">
-			<div class="stage box xcenter ycenter border radius-bs pad-lg">
+			<div class="example-stage box xcenter ycenter border radius-bs pad-lg">
 				<button type="button" class="button themed h-lg px-lg mincurved motion" {@attach press()}>press()</button>
 			</div>
-			<div class="stage box xcenter ycenter border radius-bs pad-lg">
+			<div class="example-stage box xcenter ycenter border radius-bs pad-lg">
 				<span class="button outline h-lg px-lg round motion" {@attach magnetic()}>magnetic()</span>
 			</div>
-			<div class="stage box xcenter ycenter border radius-bs pad-lg">
+			<div class="example-stage box xcenter ycenter border radius-bs pad-lg">
 				<div class="tilt motion box xcenter ycenter border radius-bs bg-surface rim shad-md pad-lg" {@attach tilt()}>
 					<span class="text-sm weight-500">tilt()</span>
 				</div>

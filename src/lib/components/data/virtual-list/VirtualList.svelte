@@ -157,7 +157,7 @@
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -- a scrollable list must be keyboard-focusable -->
 <div
-	class={['scroll-xy scroll-thin wfull', label && 'focusable', klass]}
+	class={['scroll-xy scroll-thin wfull', label && 'focus-ring', klass]}
 	role="list"
 	aria-label={label}
 	tabindex={label ? 0 : undefined}

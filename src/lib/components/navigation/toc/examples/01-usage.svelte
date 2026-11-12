@@ -13,7 +13,7 @@
 </script>
 
 <div class="row gap-xl ytop">
-	<div id="atlas-essay" class="scroll-y cap grow pad-bs box gap-lg">
+	<div id="atlas-essay" class="scroll-y max-h grow pad-bs box gap-lg">
 		<section class="box gap-sm">
 			<h2 id="harbour" class="page-heading-bs">The harbour</h2>
 			<p class="text-body text-secondary">

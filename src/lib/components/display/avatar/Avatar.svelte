@@ -67,7 +67,8 @@
 			.join(', ')
 	);
 
-	const classes = $derived(['avatar', avatarSizeClass[resolvedSize], resolvedShape, klass]);
+	const shapeClass = { circle: 'round', rounded: 'rounded', square: 'square' } as const;
+	const classes = $derived(['avatar', avatarSizeClass[resolvedSize], shapeClass[resolvedShape], klass]);
 </script>
 
 <span
