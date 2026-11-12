@@ -5,8 +5,8 @@
 .box.ycenter, .column.ycenter { justify-content: center; }
 .box.ytop, .column.ytop { justify-content: flex-start; }
 .box.ybot, .column.ybot { justify-content: flex-end; }
-.box.ybetween, column.ybetween { justify-content: space-between; }
-.box.yevenly, column.yevenly { justify-content: space-evenly; }
+.box.ybetween, .column.ybetween { justify-content: space-between; }
+.box.yevenly, .column.yevenly { justify-content: space-evenly; }
 .box.yaround, .column.yaround { justify-content: space-around; }
 .box.yinherit, .column.yinherit { justify-content: inherit; }
 .box.xinherit, .column.xinherit { align-items: inherit; }

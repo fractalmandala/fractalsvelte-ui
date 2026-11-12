@@ -120,15 +120,16 @@
 .msg.success { background-color: var(--success-00); border: 1px solid var(--success-25); color: var(--success-100); }
 .msg.warning { background-color: var(--warning-00); border: 1px solid var(--warning-25); color: var(--warning-100); }
 .msg.danger { background-color: var(--danger-00); border: 1px solid var(--danger-25); color: var(--danger-100); }
+.msg.neutral { background-color: var(--neutral-00); border: 1px solid var(--neutral-25); color: var(--neutral-100); }
 
 @supports (color: oklch(from red l c h)) {
   .primary { color: var(--on-button, oklch(from var(--bg-button) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
   .secondary { color: var(--on-button-secondary, oklch(from var(--bg-button-secondary) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
   .themed { color: var(--on-theme, oklch(from var(--theme-color) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
-  .info, .variant-info { color: var(--on-info, oklch(from var(--info) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
-  .success, .variant-success { color: var(--on-success, oklch(from var(--success) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
-  .warning, .variant-warning { color: var(--on-warning, oklch(from var(--warning) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
-  .danger, .variant-danger { color: var(--on-danger, oklch(from var(--danger) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
+  .info { color: var(--on-info, oklch(from var(--info) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
+  .success { color: var(--on-success, oklch(from var(--success) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
+  .warning { color: var(--on-warning, oklch(from var(--warning) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
+  .danger { color: var(--on-danger, oklch(from var(--danger) clamp(0.2, (0.62 - l) * 1000, 1) 0 0)); }
 }
 
 .rect {

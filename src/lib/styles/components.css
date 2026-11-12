@@ -25,7 +25,6 @@
 
 .badge {
   padding-inline: var(--space-sm);
-  font-weight: 500;
   white-space: nowrap;
 }
 
@@ -241,7 +240,16 @@ button, .button { display: flex; align-items: center; justify-content: center; t
 button:focus-visible, .button:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
 button:disabled, .button:disabled, .button[aria-disabled='true'] { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
 :is(button, .button):not(.no-scaling):active {transform: scale(0.98);}
-button.h-xs, button.h-sm, button.h-md, .button.h-xs, .button.h-sm, .button.h-md { padding-inline: var(--space-sm); }
+
+button.h-xs:not(.btn-icon), 
+button.h-sm:not(.btn-icon), 
+button.h-md:not(.btn-icon), 
+.button.h-xs:not(.btn-icon), 
+.button.h-sm:not(.btn-icon), 
+.button.h-md:not(.btn-icon) { 
+	padding-inline: var(--space-sm); 
+}
+
 .button-group, .split-button { display: inline-flex; align-items: stretch; vertical-align: middle; }
 .button-group.vertical, .split-button.vertical { flex-direction: column; }
 .button-group:not(.vertical), .split-button:not(.vertical) { flex-direction: row; }
@@ -260,7 +268,10 @@ a.btn, a.button { display: flex; align-items: center; justify-content: center; f
 a.btn:focus-visible, a.button:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
 a.btn:disabled, a.button:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
 
-.btn-icon, button.btn-icon { flex-shrink: 0; aspect-ratio: 1; padding: 0; }
+.btn-icon, button.btn-icon { flex-shrink: 0; aspect-ratio: 1; padding: 0; padding-inline: 0; }
+
+/* An icon button that is exactly its icon: no padding or border, and its size comes from the icon, not the size class. */
+.btn-icon.fit-icon, .btn-icon.fit-icon:hover { padding: 0; border-width: 0; height: auto; min-block-size: 0; }
 
 /* a card's size sets its text scale, not its height */
 .card, .card.h-xs, .card.h-sm, .card.h-md, .card.h-bs, .card.h-lg, .card.h-xl { height: auto; min-block-size: 0; }

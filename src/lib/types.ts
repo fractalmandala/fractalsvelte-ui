@@ -25,6 +25,9 @@ export type Variant = (typeof Variants)[number];
 export const Sizes = ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl'] as const;
 export type Size = (typeof Sizes)[number];
 
+export const Scales = ['scale-xs', 'scale-sm', 'scale-md', 'scale-bs', 'scale-lg', 'scale-xl', 'scale-2xl', 'scale-3xl'] as const;
+export type Scale = (typeof Scales)[number];
+
 // Shape defines the roundedness of the component, ie - border radius. Shape types range from no border-radius - set at 0px, to fully rounded - set at 9999px. Each value is a class of the same name.
 export const Shapes = ['rect', 'mincurved', 'modern', 'curved', 'round'] as const;
 export type Shape = (typeof Shapes)[number];
@@ -52,7 +55,7 @@ export type ThemeColor = (typeof ThemeColors)[number];
 export const Borders = ['border', 'border-subtle', 'border-strong', 'border-dashed', 'border-none', 'bb', 'bb-str', 'bb-sub', 'bb-dash'] as const;
 export type Border = (typeof Borders)[number];
 
-export const Messages = ['info', 'success', 'warning', 'danger'] as const;
+export const Messages = ['info', 'success', 'warning', 'danger', 'neutral'] as const;
 export type Message = (typeof Messages)[number];
 
 export const IconVariants = [

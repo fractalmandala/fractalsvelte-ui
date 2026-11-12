@@ -122,20 +122,20 @@ for (const m of curatedSrc.matchAll(/'([\w/]+)':\s*\[([^\]]*)\]/g))
 
 const CARDLIKE = new Set(['layout/Card', 'layout/ClickableCard', 'layout/SelectableCard']);
 const SAMPLE_TEXT = {
-	avatar: 'https://picsum.photos/id/64/80/80',
+	avatar: 'https://sddlbohniijgegvypkfk.supabase.co/storage/v1/object/public/panvate/fractalsvelte/assets/avatar.png',
 	timeframe: 'vs last month',
 	title: 'Title',
 	label: 'Label',
 	description: 'A short description.',
 	badge: 'New',
 	placeholder: 'Type here…',
-	popularLabel: 'Best value',
+	popularLabel: 'Label!',
 	helperText: 'Helper text',
 	unit: '%',
-	prefix: '$',
+	prefix: '₹',
 	suffix: 'k',
 	shortcut: '⌘K',
-	counter: '12/50',
+	counter: '7/7',
 	error: 'Something went wrong'
 };
 

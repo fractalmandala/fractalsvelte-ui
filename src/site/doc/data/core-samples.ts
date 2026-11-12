@@ -5,25 +5,25 @@
 export const coreSamples: Record<string, Record<string, unknown>> = {
 	// ---- core
 	'core/Accordion': {
-		value: 'what',
+		value: 'why',
 		items: [
-			{ id: 'what', title: 'What is it?', content: 'A Svelte 5 component library styled by its own class language.' },
-			{ id: 'free', title: 'Is it free?', content: 'Yes. It is MIT licensed.' },
-			{ id: 'themes', title: 'Can I theme it?', content: 'Every colour is a token you can set per mode.' }
+			{ id: 'why', title: 'Why Fractalsvelte UI?', content: 'No Tailwind deps, easy props, lean.' },
+			{ id: 'custom', title: 'Is it customizable?', content: 'It absolutely is.' },
+			{ id: 'themes', title: 'Themeable?', content: 'Fully!' }
 		]
 	},
 	'core/Alert': { title: 'Saved', description: 'Your changes have been saved.' },
 	'core/AlertDialog': {
-		title: 'Delete project?',
-		description: 'This permanently deletes the Atlas project, its 24 files and all comments.',
-		confirmText: 'Delete project'
+		title: 'Delete Past Life?',
+		description: 'This permanently deletes past life memories and initiates next incarnation.',
+		confirmText: 'Reincarnate'
 	},
 	'core/AspectRatio': {},
 	'core/Button': { children: { $snippet: 'Save' } },
 	'core/Card': {
-		title: 'Project',
-		description: 'Last updated today.',
-		children: { $snippet: 'Three tasks remaining.' }
+		title: 'This is the title of a hypothetical blog essay.',
+		description: 'The essay is hypothetically about human imagination and inner space.',
+		children: { $snippet: '#consciousness' }
 	},
 	'core/Checkbox': { label: 'Accept terms', checked: true },
 	'core/CodeBlock': {
@@ -109,9 +109,9 @@ export const coreSamples: Record<string, Record<string, unknown>> = {
 	},
 
 	// ---- actions
-	'actions/CloseButton': { label: 'Close' },
-	'actions/CopyButton': { text: 'pnpm add @fractaldesign/fractalsvelte-ui' },
-	'actions/IconButton': { label: 'Favourite' },
+	'actions/CloseButton': { label: 'Close', size: 'h-xl' },
+	'actions/CopyButton': { text: 'pnpm add @fractaldesign/fractalsvelte-ui', size: 'h-xl' },
+	'actions/IconButton': { label: 'Favourite', size: 'h-xl' },
 
 	// ---- forms
 	'forms/ColorPicker': { label: 'Colour' },

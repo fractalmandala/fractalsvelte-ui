@@ -3,13 +3,12 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Size, Surface, Border, Shape, Shadow, TextSize } from '$lib/types.js';
+	import type { Surface, Border, Shape, Shadow, TextSize } from '$lib/types.js';
 
 	export type CardVariant = Surface;
 	export type CardElevation = Shadow;
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		size?: Size;
 		surface?: Surface;
 		border?: Border;
 		shadow?: Shadow;
@@ -29,12 +28,11 @@
 	}
 
 	let {
-		size = 'h-md',
 		surface = 'bg-panel',
 		border = 'border',
 		shadow = 'shad-none',
 		padding = 'pad-lg',
-		shape = 'curved',
+		shape = 'modern',
 		title,
 		description,
 		textsize = 'text-md',
@@ -52,7 +50,7 @@
 
 <!-- .card pushes a <footer> child to the bottom on its own (margin-top: auto). -->
 <div
-	class="card card-sized box gap-md {size} {shape} {padding} {surface} {border} {shadow} {textsize} {className}"
+	class="card card-sized box gap-md {shape} {padding} {surface} {border} {shadow} {textsize} {className}"
 	{...restProps}
 >
 	{#if media}<div class="box overflow-hidden {shape}">{@render media()}</div>{/if}

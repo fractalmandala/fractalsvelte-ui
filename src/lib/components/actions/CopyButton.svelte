@@ -14,6 +14,8 @@
 		iconVariant?: IconVariant;
 		variant?: IconVariant;
 		size?: Size;
+		/** The button is exactly its icon: no padding, the icon cropped to its drawn shape and sized by `size`. */
+		fit?: boolean;
 		shape?: Shape;
 		shadow?: Shadow;
 		class?: string;
@@ -26,6 +28,7 @@
 		iconVariant,
 		variant,
 		size = 'h-md',
+		fit = false,
 		shape = 'modern',
 		shadow = 'shad-none',
 		class: className = '',
@@ -50,7 +53,7 @@
 <IconButton
 	variant={currentVariant}
 	label={copied ? copiedLabel : 'Copy'}
-	{size}
+	{size} {fit}
 	{shape}
 	{shadow}
 	class={className}

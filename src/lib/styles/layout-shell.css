@@ -3,7 +3,7 @@
 .app-shell { display: flex; flex-direction: column; position: relative; min-height: 100vh; }
 .app-header { display: flex; flex-direction: row; align-items: center; position: sticky; top: 0; z-index: var(--z-sticky); height: var(--header-height); padding-inline: var(--app-inline); }
 .app-header.clamped { width: var(--content-clamp); margin-inline: auto; }
-.app-main { flex: 1 1 0%; min-width: 0; min-height: calc(100dvh var(--fit-height)); display: flex; flex-direction: row; }
+.app-main { flex: 1 1 0%; min-width: 0; min-height: calc(100dvh - var(--fit-height)); display: flex; flex-direction: row; }
 .app-main.clamped { width: var(--content-clamp); margin-inline: auto; }
 .main-section { flex: 1 1 0%; min-width: 0; }
 .main-section.solo { padding-inline: var(--app-inline); }

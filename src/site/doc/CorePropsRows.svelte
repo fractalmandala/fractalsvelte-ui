@@ -11,6 +11,7 @@
 		type Example
 	} from '$site/doc/live-components';
 	import { docIcons } from './data/doc-icons';
+	import Icon from '#lib/components/core/Icon.svelte';
 	import Select from '#lib/components/core/Select.svelte';
 	import Badge from '#lib/components/display/Badge.svelte';
 
@@ -80,8 +81,6 @@
 		render: () =>
 			'<div class="full bg-panel border radius-sm row xcenter ycenter text-xs text-muted">media</div>'
 	}));
-	const STAR = createRawSnippet(() => ({ render: () => '<span class="row ycenter">★</span>' }));
-
 	const trigger = (label: string) =>
 		createRawSnippet<[{ open?: () => void; toggle?: () => void }]>((api) => ({
 			render: () =>
@@ -97,7 +96,7 @@
 		'forms/FormField': fieldSample,
 		'display/AspectRatio': FILL,
 		'core/AspectRatio': FILL,
-		'actions/IconButton': STAR,
+		'actions/IconButton': starIcon,
 	};
 
 	function hasCellStyle() {
@@ -224,6 +223,10 @@
 	}
 </script>
 
+{#snippet starIcon()}
+	<Icon icon={docIcons.klStar} />
+{/snippet}
+
 {#snippet fieldSample()}
 	<Select label="Country" value="in">
 		<option value="in">India</option>
@@ -259,7 +262,7 @@
 						{:else}
 							<div class="box gap-sm xcenter ta-c" style={CELL_STYLE[path]}>
 								<Comp {...propsFor(prop, ex)} />
-								<Badge shape="mincurved" textsize="text-xs">{ex.label}</Badge>
+								<Badge shape="modern" message="neutral" textsize="text-xs">{ex.label}</Badge>
 							</div>
 						{/if}
 					{/each}

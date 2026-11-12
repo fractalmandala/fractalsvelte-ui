@@ -5,7 +5,7 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import Icon from '$lib/components/core/Icon.svelte';
 	import type { IconNode } from '$lib/icons/types.js';
-	import { klCircleCheck, klCircleX, klInfo, klTriangleAlert, klX } from '$lib/icons/keylinestroke.js';
+	import { klCircleCheck, klCircleX, klInfo, klTriangleAlert, klX, klBell } from '$lib/icons/keylinestroke.js';
 	import type { Message, MessageText, Size, Shape, TextSize } from '$lib/types.js';
 	import IconButton from '../actions/IconButton.svelte';
 
@@ -43,7 +43,7 @@
 		...restProps
 	}: Props = $props();
 
-	const ICONS: Record<Message, IconNode> = { info: klInfo, success: klCircleCheck, warning: klTriangleAlert, danger: klCircleX };
+	const ICONS: Record<Message, IconNode> = { info: klInfo, success: klCircleCheck, warning: klTriangleAlert, danger: klCircleX, neutral: klBell };
 	const tone = $derived<Message>(messageText ? (messageText.replace('text-', '') as Message) : message);
 	const toneText = $derived(messageText ?? `text-${message}`);
 	let closed = $state(false);

@@ -14,6 +14,8 @@
 		/** Alias for iconVariant */
 		variant?: IconVariant;
 		size?: Size;
+		/** The button is exactly its icon: no padding, the icon cropped to its drawn shape and sized by `size`. */
+		fit?: boolean;
 		shape?: Shape;
 		shadow?: Shadow;
 		class?: string;
@@ -24,6 +26,7 @@
 		iconVariant,
 		variant,
 		size = 'h-md',
+		fit = false,
 		shape = 'modern',
 		shadow = 'shad-none',
 		class: className = '',
@@ -33,6 +36,6 @@
 	const currentVariant = $derived(iconVariant ?? variant ?? 'ghost');
 </script>
 
-<IconButton {label} iconVariant={currentVariant} {size} {shape} {shadow} class={className} {...restProps}>
+<IconButton {label} iconVariant={currentVariant} {size} {fit} {shape} {shadow} class={className} {...restProps}>
 	<Icon icon={klX} />
 </IconButton>

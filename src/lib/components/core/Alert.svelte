@@ -5,7 +5,7 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import Icon from './Icon.svelte';
 	import type { IconNode } from '$lib/icons/types.js';
-	import { klCircleCheck, klCircleX, klInfo, klTriangleAlert, klX } from '$lib/icons/keylinestroke.js';
+	import { klCircleCheck, klCircleX, klInfo, klTriangleAlert, klX, klBell } from '$lib/icons/keylinestroke.js';
 	import type { Message, MessageText, Shape, TextSize, ChildTextSize } from '$lib/types.js';
 	import Card from './Card.svelte';
 	import IconButton from '../actions/IconButton.svelte';
@@ -40,7 +40,7 @@
 		onclose,
 		icon,
 		shape = 'modern',
-		padding = 'py-bs px-lg',
+		padding = 'py-bs pl-lg pr-xl',
 		textsize = 'text-sm',
 		childtextsize = 'text-sm',
 		class: className = '',
@@ -49,7 +49,7 @@
 		...restProps
 	}: Props = $props();
 
-	const ICONS: Record<Message, IconNode> = { info: klInfo, success: klCircleCheck, warning: klTriangleAlert, danger: klCircleX };
+	const ICONS: Record<Message, IconNode> = { info: klInfo, success: klCircleCheck, warning: klTriangleAlert, danger: klCircleX, neutral: klBell };
 	const tone = $derived<Message>(messageText ? (messageText.replace('text-', '') as Message) : message);
 	const toneText = $derived(messageText ?? `text-${message}`);
 	let closed = $state(false);
@@ -69,9 +69,7 @@
 		{...restProps}
 	>
 		<div class="row ytop gap-sm">
-			<span class="row ycenter shrink-0 text-lg" aria-hidden="true">
-				<Icon icon={icon ?? ICONS[tone]} />
-			</span>
+			<Icon icon={icon ?? ICONS[tone]} />
 			<div class="box gap-xs grow min0 xleft ta-l">
 				{#if title}<h5 class="{textsize} weight-500 lh11">{title}</h5>{/if}
 				{#if description}<p class="{textsize} lh11 text-secondary">{description}</p>{/if}
@@ -79,8 +77,8 @@
 				{#if actions}<div class="row ycenter gap-xs wrap pt-xs">{@render actions()}</div>{/if}
 			</div>
 			{#if dismissible}
-				<IconButton icon="ghost" size="h-md" label="Dismiss alert" class="text-muted" onclick={dismiss}>
-					<Icon size={16} icon={klX} />
+				<IconButton icon="ghost" size="h-md" fit label="Dismiss alert" class="text-muted" onclick={dismiss}>
+					<Icon size={8} icon={klX} />
 				</IconButton>
 			{/if}
 		</div>

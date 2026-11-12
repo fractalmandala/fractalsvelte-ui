@@ -71,7 +71,9 @@ a.nav-link
 		width: 30%
 	th:nth-child(3)
 		width: 14%
-	td:nth-child(1), td:nth-child(3)
+	// Only the prop name stays on one line. Every other column has a fixed
+	// width and long values (defaults, unions) must wrap inside it, never spill.
+	td:nth-child(1)
 		white-space: nowrap
 	.props-values
 		display: block
@@ -81,6 +83,9 @@ a.nav-link
 	code
 		font-family: inherit
 		font-size: var(--text-sm)
+		// a pill that wraps keeps its padding and corners on every line
+		-webkit-box-decoration-break: clone
+		box-decoration-break: clone
 		padding: 0.1rem 0.35rem
 		border-radius: var(--radius-sm)
 		background-color: var(--state-selected)

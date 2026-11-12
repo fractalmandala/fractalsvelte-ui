@@ -3,5 +3,5 @@
 </script>
 
 <AspectRatio>
-	<img src="https://picsum.photos/800/450" alt="Landscape" />
+	<img src="https://sddlbohniijgegvypkfk.supabase.co/storage/v1/object/public/panvate/fractalsvelte/backimages/fdesign-back-image-12.webp" alt="Landscape" />
 </AspectRatio>

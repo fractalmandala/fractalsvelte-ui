@@ -49,7 +49,7 @@
 	}: Props = $props();
 
 	const classes = $derived(
-		`button inline-flex gap-sm weight-500 ${variant} ${size} ${shape} ${shadow} ${textsize ?? TEXT_FOR_SIZE[size]} ${className}`
+		`button inline-flex gap-sm ${variant} ${size} ${shape} ${shadow} ${textsize ?? TEXT_FOR_SIZE[size]} ${className}`
 	);
 </script>
 
