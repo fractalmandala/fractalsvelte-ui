@@ -33,7 +33,7 @@
 			<Button onclick={close}>Accept</Button>
 		{/snippet}
 	</Dialog>
-	<Dialog title="Terms of service" scrollBehavior="outside" size="lg">
+	<Dialog title="Terms of service" scrollBehavior="outside" width="measure-lg">
 		{#snippet trigger({ props })}
 			<Button variant="outline" {...props}>Scroll outside</Button>
 		{/snippet}

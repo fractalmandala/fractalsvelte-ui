@@ -25,7 +25,7 @@
 		shortcut,
 		disabled = false,
 		children,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -49,7 +49,7 @@
 	tabindex="-1"
 	aria-checked={checked}
 	aria-disabled={disabled || undefined}
-	class={['item', disabled && 'disabled', klass]}
+	class={['item', disabled && 'disabled', className]}
 	onclick={toggle}
 	{onkeydown}
 	{...rest}

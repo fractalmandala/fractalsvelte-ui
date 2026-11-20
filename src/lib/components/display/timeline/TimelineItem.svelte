@@ -6,7 +6,8 @@
 	import { Icon } from '@fractaldesign/icons';
 	import type { IconData } from '@fractaldesign/icons';
 	import { inView } from '../../../motion/index.js';
-	import { toneText, type Tone } from '../../../internal/tokens.js';
+	import { type Tone } from '../../../internal/tokens.js';
+import { toneText } from '../../../internal/helpers.js';
 
 	interface Props extends HTMLAttributes<HTMLLIElement> {
 		/** The heading for this event. */
@@ -23,9 +24,9 @@
 		children?: Snippet;
 	}
 
-	let { title, description, time, icon, tone, class: klass, children, ...rest }: Props = $props();
+	let { title, description, time, icon, tone, class: className, children, ...rest }: Props = $props();
 
-	const classes = $derived(['timeline-item', 'motion', 'reveal', klass]);
+	const classes = $derived(['timeline-item', 'motion', 'reveal', className]);
 	const markerTone = $derived(tone ? toneText[tone] : 'text-muted');
 </script>
 
@@ -41,7 +42,7 @@
 	</div>
 	<div class="timeline-body box gap-xs">
 		<div class="row ycenter xbetween wrap gap-sm">
-			<span class="weight-500 text-primary">{title}</span>
+			<span class="weight-500">{title}</span>
 			{#if time}
 				<time class="text-sm text-muted tabular-nums">{time}</time>
 			{/if}

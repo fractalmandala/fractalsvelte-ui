@@ -1,5 +1,6 @@
-/* Kit fragments, one file per kit. `pnpm gen` concatenates them into custom.css
- * in this order (do not rearrange — the cascade depends on it). */
+/* Base component & variant styles followed by kit fragments in cascade order. */
+@import './components-base.css';
+@import './component-props.css';
 @import './components/actions.css';
 @import './components/data.css';
 @import './components/display.css';

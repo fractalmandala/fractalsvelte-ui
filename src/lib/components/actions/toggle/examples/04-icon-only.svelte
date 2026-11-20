@@ -14,7 +14,7 @@
 			onPressedChange={(on) => (log = on ? 'Pinned to top' : 'Unpinned')}
 		/>
 		<Toggle icon={luBellOff} aria-label="Mute thread" variant="outline" pressable={false} />
-		<Toggle icon={luStar} aria-label="Favourite" variant="soft" disabled />
+		<Toggle icon={luStar} aria-label="Favourite" variant="secondary" disabled />
 	</div>
 	<p class="text-sm text-secondary" aria-live="polite">{log}</p>
 </div>

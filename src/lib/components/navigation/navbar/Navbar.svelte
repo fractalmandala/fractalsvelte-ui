@@ -5,7 +5,7 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luMenu } from '@fractaldesign/icons/lucide';
-	import { anchor, floating } from '../../../internal/floating.js';
+	import { anchor, floating } from '../../../internal/helpers.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
 		/** The mark or title at the start of the bar. */
@@ -32,7 +32,7 @@
 		glassOnScroll = true,
 		label = 'Site',
 		menuLabel = 'Open menu',
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -58,7 +58,7 @@
 		sticky ? 'app-header' : 'row ycenter',
 		(glassOnScroll ? scrolled : false) && 'glass',
 		'bg-surface bb',
-		klass
+		className
 	]);
 </script>
 

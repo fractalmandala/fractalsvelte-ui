@@ -9,7 +9,8 @@
 
 <div class="measure-sm box gap-sm">
 	<Field label="Units in stock" error={invalid ? 'This size is sold out.' : undefined}>
-		<NumberInput bind:value={stock} {invalid} min={0} max={99} onValueChange={() => changes++} />
+		<NumberInput value={42} disabled />
+<NumberInput bind:value={stock} {invalid} min={0} max={99} onValueChange={() => changes++} />
 	</Field>
 	<p class="text-sm text-muted tabular-nums">{changes} adjustments. Use the wheel while the field is focused.</p>
 </div>

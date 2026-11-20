@@ -9,9 +9,9 @@
 		children?: Snippet;
 	}
 
-	let { class: klass, children, ...rest }: Props = $props();
+	let { class: className, children, ...rest }: Props = $props();
 </script>
 
-<div class={['relative overflow-hidden', klass]} {...rest}>
+<div class={['relative overflow-hidden', className]} {...rest}>
 	{@render children?.()}
 </div>

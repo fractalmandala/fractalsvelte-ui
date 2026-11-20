@@ -44,7 +44,7 @@
 			"svelte": "./dist/theme/index.js",
 			"default": "./dist/theme/index.js"
 		},
-		"./styles": "./dist/styles/custom.css",
+		"./styles": "./dist/styles/layers/components.css",
 		"./package.json": "./package.json"
 	},
 	"scripts": {
@@ -52,6 +52,8 @@
 		"gen": "node scripts/gen.ts",
 		"gate": "node scripts/gate.ts",
 		"verify": "node scripts/verify.ts",
+		"comments:strip": "node scripts/comments-strip.ts",
+		"comments:restore": "node scripts/comments-restore.ts",
 		"lint": "node node_modules/@fractaldesign/fractalstyler/lint/cli.ts .",
 		"build": "node scripts/gen.ts && vite build && pnpm run prepack",
 		"preview": "vite preview",
@@ -76,6 +78,7 @@
 		"@types/node": "^26.6.6",
 		"publint": "^0.3.21",
 		"sass": "^1.108.2",
+		"sv-agentation": "^0.4.0",
 		"svelte": "^5.57.2",
 		"svelte-check": "^4.6.0",
 		"typescript": "^6.0.3",

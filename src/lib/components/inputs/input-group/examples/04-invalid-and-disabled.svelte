@@ -10,17 +10,17 @@
 	<Field label="Port" error={invalid ? 'Enter a port between 0 and 65535.' : undefined}>
 		<InputGroup invalid={invalid}>
 			<InputGroupInput bind:value={port} inputmode="numeric" aria-label="Port" />
-			<InputGroupAddon side="end">
+			<InputGroupAddon align="end">
 				<InputGroupText>TCP</InputGroupText>
 			</InputGroupAddon>
 		</InputGroup>
 	</Field>
 	<InputGroup disabled>
-		<InputGroupAddon side="start">
+		<InputGroupAddon align="start">
 			<InputGroupText>org</InputGroupText>
 		</InputGroupAddon>
 		<InputGroupInput value="fractal-labs" aria-label="Organisation slug" />
-		<InputGroupAddon side="end">
+		<InputGroupAddon align="end">
 			<InputGroupButton>Edit</InputGroupButton>
 		</InputGroupAddon>
 	</InputGroup>

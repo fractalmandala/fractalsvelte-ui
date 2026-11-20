@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { defaultSize, controlSize, type Shape, type Size } from '../../../internal/tokens.js';
+	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
 import { getFieldContext } from '../../inputs/field/field.js';
 	import Segments from './internal/Segments.svelte';
 	import type { DateGranularity } from './segments.js';
@@ -22,10 +22,10 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		granularity?: DateGranularity;
 		/** ISO date used when a person first increments an empty segment. Defaults to today. */
 		placeholder?: string;
-		/** The control height. Text follows this unless `textSize` is set. @default 'md' */
+		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
 		/** The text scale, independent of the control height. Follows `size` when omitted. */
-		textSize?: Size;
+		textSize?: TextSize;
 		/** The corner shape of the field. @default 'modern' */
 		shape?: Shape;
 		/** Marks the field as failing validation: a danger border and `aria-invalid`. */
@@ -54,7 +54,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		name,
 		disabled = false,
 		id,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -69,11 +69,11 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	role="group"
 	class={[
 		'field relative row ycenter bg-input border px-md font-sans tabular-nums',
-		controlSize(resolvedSize, textSize),
+		resolvedSize, textSize,
 		resolvedShape,
 		resolvedInvalid && 'is-invalid',
 		disabled && 'disabled',
-		klass
+		className
 	]}
 	aria-disabled={disabled || undefined}
 	{...rest}

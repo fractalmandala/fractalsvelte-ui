@@ -1,9 +1,9 @@
-<!-- @example Variants and type :: variant covers separated, contained and flush; type covers single and multiple; collapsible={false} keeps one item open. -->
+<!-- @example Looks and multiplicity :: look covers separated, contained and flush; multiple opens any number; collapsible={false} keeps one item open. -->
 <script lang="ts">
 	import { Accordion, AccordionItem } from '@fractaldesign/fractalsvelte-ui';
 
-	const variants = ['separated', 'contained', 'flush'] as const;
-	let variant = $state<(typeof variants)[number]>('separated');
+	const looks = ['separated', 'contained', 'flush'] as const;
+	let look = $state<(typeof looks)[number]>('separated');
 	let multiple = $state(false);
 	let value = $state<string | string[] | null>('uptime');
 
@@ -14,8 +14,8 @@
 
 <div class="box gap-lg">
 	<div class="row wrap gap-sm">
-		{#each variants as item (item)}
-			<button type="button" class={['button ghost modern h-bs text-sm', variant === item && 'soft']} onclick={() => (variant = item)}>
+		{#each looks as item (item)}
+			<button type="button" class={['button ghost modern h-bs text-sm', look === item && 'soft']} onclick={() => (look = item)}>
 				{item}
 			</button>
 		{/each}
@@ -24,8 +24,8 @@
 		</button>
 	</div>
 	<Accordion
-		type={multiple ? 'multiple' : 'single'}
-		{variant}
+		{multiple}
+		{look}
 		bind:value
 		{onValueChange}
 		collapsible={false}

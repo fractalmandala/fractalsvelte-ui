@@ -63,7 +63,7 @@
 		numberOfMonths = 1,
 		disabled = false,
 		label,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -268,7 +268,7 @@
 </script>
 
 <div
-	class={['box gap-sm select-none', disabled && 'disabled', klass]}
+	class={['box gap-sm select-none', disabled && 'disabled', className]}
 	{...rest}
 >
 	<div class="row ycenter xbetween gap-sm">
@@ -281,7 +281,7 @@
 		>
 			<Icon icon={luChevronLeft} />
 		</button>
-		<div class="text-md weight-500 text-primary grow ta-c">{title}</div>
+		<div class="text-md weight-500 grow ta-c">{title}</div>
 		<button
 			type="button"
 			class="button btn-icon ghost round h-lg"

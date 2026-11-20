@@ -4,8 +4,8 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCalendar, luX } from '@fractaldesign/icons/lucide';
-	import { anchor, floating, popoverSync } from '../../../internal/floating.js';
-	import { defaultSize, controlSize, textClass, type Shape, type Size } from '../../../internal/tokens.js';
+	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
+	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
 import { getFieldContext } from '../../inputs/field/field.js';
 	import Calendar from '../calendar/Calendar.svelte';
 	import { formatIso, parseInput, type DateFormat } from '../calendar/dates.js';
@@ -17,7 +17,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		value: string;
 	}
 
-	interface Props extends Omit<HTMLInputAttributes, 'value' | 'size' | 'children' | 'type' | 'name' | 'form'> {
+	interface Props extends Omit<HTMLInputAttributes, 'value' | 'size' | 'children' | 'type' | 'name' | 'form' | 'disabled'> {
 		/** The chosen date as ISO `YYYY-MM-DD`, or `null`. Bindable. */
 		value?: string | null;
 		/** Called whenever the person changes the date. */
@@ -36,10 +36,10 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		locale?: string;
 		/** Day the week starts on, 0 = Sunday through 6 = Saturday. */
 		weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-		/** The control height. Text follows this unless `textSize` is set. @default 'md' */
+		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
 		/** The text scale, independent of the control height. Follows `size` when omitted. */
-		textSize?: Size;
+		textSize?: TextSize;
 		/** The corner shape of the field. @default 'modern' */
 		shape?: Shape;
 		/** Marks the field as failing validation: a danger border and `aria-invalid`. */
@@ -52,7 +52,9 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		open?: boolean;
 		/** Called when the calendar opens or closes. */
 		onOpenChange?: (open: boolean) => void;
-	}
+			/** Blocks opening the calendar and dims the field. */
+		disabled?: boolean | null;
+}
 
 	let {
 		value = $bindable(null),
@@ -74,7 +76,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		onOpenChange,
 		disabled = false,
 		id: idProp,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -185,11 +187,11 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	bind:this={field}
 	class={[
 		'field anchor relative row ycenter xright bg-input border',
-		controlSize(resolvedSize, textSize),
+		resolvedSize, textSize,
 		resolvedShape,
 		resolvedInvalid && 'is-invalid',
 		disabled && 'disabled',
-		klass
+		className
 	]}
 	aria-invalid={resolvedInvalid || undefined}
 	{@attach anchor(uid)}
@@ -198,7 +200,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		bind:this={input}
 		id={inputId}
 		type="text"
-		class={['cover bare pl-md bg-none text-primary font-sans focus-none', textClass[textSize ?? resolvedSize], resolvedShape, 'pr-2xl']}
+		class={['cover bare pl-md bg-none font-sans focus-none', textSize, resolvedShape, 'pr-2xl']}
 		autocomplete="off"
 		spellcheck="false"
 		role="combobox"

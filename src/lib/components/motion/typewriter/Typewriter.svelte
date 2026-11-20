@@ -26,7 +26,7 @@
 		pause = 1600,
 		loop = true,
 		cursor = true,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -98,6 +98,6 @@
 	});
 </script>
 
-<span class={klass} aria-label={label} {...rest}>
+<span class={className} aria-label={label} {...rest}>
 	<span aria-hidden="true" aria-live="off">{shown}{#if cursor}<span class="cursor anim-blink"></span>{/if}</span>
 </span>

@@ -6,6 +6,7 @@
 	import ShowcaseCell from '../docs-site/ShowcaseCell.svelte';
 	import { components, kitGroups } from '../docs-site/registry.js';
 	import FullSection from '../docs-site/newcomps/FullSection.svelte'
+	import Heart from '../docs-site/icons/heart.svelte'
 
 	const all = components();
 	const groups = kitGroups();
@@ -59,14 +60,9 @@
 				<a href="/docs/installation" class="button themed h-lg px-lg mincurved gap-sm"><span class="text-inverse">Get Started</span> </a>
 				<a href="/components" class="button outline h-lg px-lg mincurved gap-sm">Browse Components</a>
 			</div>
-			<dl class="grid-4 gap-lg pt-xl wfull measure-xl">
-				{#each stats as s (s.label)}
-					<div class="box xcenter gap-xs">
-						<dt class="text-sm text-muted">{s.label}</dt>
-						<dd class="text-3xl weight-600 tabular-nums ls-tight-lg">{s.value}</dd>
-					</div>
-				{/each}
-			</dl>
+			<div class="row ycenter gap-xs bt wfull xcenter prose-clamp pt-lg">
+				<span class="text-sm weight-600 text-primary">made with </span><Heart/><span class="text-sm weight-600 text-primary"> for Sveltekit.</span>
+			</div>
 	</FullSection>
 	<!-- hero -->
 	<section class="bb-sub">

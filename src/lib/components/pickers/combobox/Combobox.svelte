@@ -5,12 +5,12 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck, luChevronDown, luLoaderCircle, luX } from '@fractaldesign/icons/lucide';
-	import { anchor, floating, popoverSync } from '../../../internal/floating.js';
-	import { defaultSize, controlSize, textClass, type Shape, type Size } from '../../../internal/tokens.js';
+	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
+	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
 import { getFieldContext } from '../../inputs/field/field.js';
 	import { groupOptions, valueKey, type SelectOption } from '../select/options.js';
 
-	interface Props extends Omit<HTMLInputAttributes, 'value' | 'size' | 'children' | 'type' | 'name' | 'form'> {
+	interface Props extends Omit<HTMLInputAttributes, 'value' | 'size' | 'children' | 'type' | 'name' | 'form' | 'disabled'> {
 		/** The choices. Options sharing a `group` are listed together under that heading. */
 		options: SelectOption<T>[];
 		/** The chosen value. Bindable. */
@@ -33,10 +33,10 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		empty?: Snippet;
 		/** The text shown while the field is empty. */
 		placeholder?: string;
-		/** The control height. Text follows this unless `textSize` is set. @default 'md' */
+		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
 		/** The text scale, independent of the control height. Follows `size` when omitted. */
-		textSize?: Size;
+		textSize?: TextSize;
 		/** The corner shape of the field. @default 'modern' */
 		shape?: Shape;
 		/** Marks the field as failing validation: a danger border and `aria-invalid`. */
@@ -49,7 +49,9 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		open?: boolean;
 		/** Called when the list opens or closes. */
 		onOpenChange?: (open: boolean) => void;
-	}
+			/** Blocks typing and opening the list, and dims the field. */
+		disabled?: boolean | null;
+}
 
 	let {
 		options,
@@ -73,7 +75,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		onOpenChange,
 		disabled = false,
 		id: idProp,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -260,11 +262,11 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	bind:this={field}
 	class={[
 		'field anchor relative row ycenter xright bg-input border',
-		controlSize(resolvedSize, textSize),
+		resolvedSize, textSize,
 		resolvedShape,
 		resolvedInvalid && 'is-invalid',
 		disabled && 'disabled',
-		klass
+		className
 	]}
 	aria-invalid={resolvedInvalid || undefined}
 	{@attach anchor(uid)}
@@ -274,7 +276,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		id={inputId}
 		type="text"
 		role="combobox"
-		class={['cover bare pl-md bg-none text-primary font-sans focus-none', textClass[textSize ?? resolvedSize], resolvedShape, clearable && hasValue ? 'pr-3xl' : 'pr-2xl']}
+		class={['cover bare pl-md bg-none font-sans focus-none', textSize, resolvedShape, clearable && hasValue ? 'pr-3xl' : 'pr-2xl']}
 		autocomplete="off"
 		spellcheck="false"
 		aria-autocomplete="list"
@@ -327,7 +329,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	aria-labelledby={inputId}
 	class={[
 		'floating at-bottom-start match-anchor pop enter-down spring-snappy glass border rim shad-lg modern pad-xs scroll-y scroll-thin box gap-xs focus-none',
-		textClass[textSize ?? resolvedSize]
+		textSize
 	]}
 	{@attach floating(uid)}
 	{@attach popoverSync(() => open, onPopoverChange)}

@@ -5,7 +5,7 @@
 
 	interface Props extends HTMLAttributes<HTMLHRElement> {}
 
-	let { class: klass, ...rest }: Props = $props();
+	let { class: className, ...rest }: Props = $props();
 </script>
 
-<hr class={['border-none bt wfull', klass]} {...rest} />
+<hr class={['border-none bt wfull', className]} {...rest} />

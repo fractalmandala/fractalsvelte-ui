@@ -5,11 +5,14 @@
 
 <div class="box gap-lg">
 	<div class="row wrap ycenter gap-lg">
-		<Status size="xs">Operational</Status>
-		<Status size="sm">Operational</Status>
-		<Status size="md">Operational</Status>
-		<Status size="lg">Operational</Status>
-		<Status size="xl">Operational</Status>
+		<Status size="h-xs">Operational</Status>
+		<Status size="h-sm">Operational</Status>
+		<Status size="h-md">Operational</Status>
+		<Status size="h-lg">Operational</Status>
+		<Status size="h-xl">Operational</Status>
+		<Status size="h-bs">Operational</Status>
+		<Status size="h-2xl">Operational</Status>
+		<Status size="h-3xl">Operational</Status>
 	</div>
 	<div class="row wrap gap-lg">
 		<Status tone="success" pulse>All regions live</Status>

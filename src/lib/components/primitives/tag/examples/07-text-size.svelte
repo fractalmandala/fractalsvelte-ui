@@ -4,7 +4,7 @@
 </script>
 
 <div class="row wrap gap-sm ycenter">
-	<Tag size="lg" textSize="sm">Small type</Tag>
-	<Tag size="lg" textSize="md">Medium type</Tag>
-	<Tag size="lg" textSize="lg">Large type</Tag>
+	<Tag size="h-lg" textSize="text-sm">Small type</Tag>
+	<Tag size="h-lg" textSize="text-md">Medium type</Tag>
+	<Tag size="h-lg" textSize="text-lg">Large type</Tag>
 </div>

@@ -37,6 +37,12 @@
 		onCheckedChange?: (checked: Set<string>) => void;
 		/** Load children when an unloaded expandable node is first opened. */
 		loadChildren?: (item: TreeItem) => Promise<TreeItem[]>;
+		/** Allow inline renaming of nodes via F2 or double-click. */
+		renamable?: boolean;
+		/** Called when an item rename commits with a non-empty label. */
+		onRename?: (id: string, label: string) => void;
+		/** Draw subtle vertical indent guides beside nested branches. */
+		guides?: boolean;
 		/** Names the tree for assistive technology. */
 		label?: string;
 	}
@@ -52,8 +58,11 @@
 		checked = $bindable(new Set()),
 		onCheckedChange,
 		loadChildren,
+		renamable = false,
+		onRename,
+		guides = true,
 		label,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -63,6 +72,29 @@
 	let focused = $state<string | null>(null);
 	let typeBuffer = $state('');
 	let typeTimer: ReturnType<typeof setTimeout> | undefined;
+	let editingId = $state<string | null>(null);
+	let renameDraft = $state('');
+	let renameEl = $state<HTMLInputElement | null>(null);
+
+	function startRename(item: TreeItem) {
+		if (!renamable || item.disabled) return;
+		editingId = item.id;
+		renameDraft = item.label;
+		queueMicrotask(() => {
+			renameEl?.focus();
+			renameEl?.select();
+		});
+	}
+
+	function commitRename(item: TreeItem) {
+		if (editingId !== item.id) return;
+		const trimmed = renameDraft.trim();
+		editingId = null;
+		if (trimmed && trimmed !== item.label) {
+			onRename?.(item.id, trimmed);
+		}
+		queueMicrotask(() => focusId(item.id));
+	}
 
 	const canLoad = $derived(typeof loadChildren === 'function');
 	const visible = $derived(flattenVisible(items, expanded, loaded, canLoad));
@@ -246,6 +278,9 @@
 			event.preventDefault();
 			if (checkable) onCheck(current.item, checkState(current.item, checked, loaded) !== 'checked');
 			else selectItem(current.item, event);
+		} else if (event.key === 'F2' && renamable && !current.item.disabled) {
+			event.preventDefault();
+			startRename(current.item);
 		} else if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
 			typeahead(event.key);
 		}
@@ -268,7 +303,7 @@
 			<!-- svelte-ignore a11y_click_events_have_key_events -- keyboard is handled on the tree root -->
 			<div
 				id="{uid}-{item.id}"
-				class={['item indent', item.disabled && 'disabled']}
+				class={['item indent', guides && 'guides', item.disabled && 'disabled']}
 				role="treeitem"
 				data-tree-id={item.id}
 				tabindex={focused === item.id || (focused == null && item.id === visible[0]?.item.id) ? 0 : -1}
@@ -283,6 +318,11 @@
 					if (item.disabled) return;
 					if ((event.target as HTMLElement).closest('button, input, label, .checkbox-box')) return;
 					selectItem(item, event);
+				}}
+				ondblclick={(event) => {
+					if (item.disabled) return;
+					if ((event.target as HTMLElement).closest('button, input, label, .checkbox-box')) return;
+					startRename(item);
 				}}
 			>
 				{#if expandable}
@@ -328,7 +368,30 @@
 				{#if item.icon}
 					<Icon icon={item.icon} />
 				{/if}
-				<span class="truncate">{item.label}</span>
+				{#if editingId === item.id}
+					<input
+						bind:this={renameEl}
+						type="text"
+						class="bare bg-input px-xs radius-xs focus-ring grow min0"
+						aria-label={`Rename ${item.label}`}
+						bind:value={renameDraft}
+						onclick={(e) => e.stopPropagation()}
+						onblur={() => commitRename(item)}
+						onkeydown={(e) => {
+							e.stopPropagation();
+							if (e.key === 'Enter') {
+								e.preventDefault();
+								commitRename(item);
+							} else if (e.key === 'Escape') {
+								e.preventDefault();
+								editingId = null;
+								queueMicrotask(() => focusId(item.id));
+							}
+						}}
+					/>
+				{:else}
+					<span class="truncate">{item.label}</span>
+				{/if}
 			</div>
 			{#if expandable}
 				<div class={['collapse spring spring-snappy', open && 'open']} role="group">
@@ -343,7 +406,7 @@
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -- the tree handles its own keyboard -->
 <div
-	class={['box', klass]}
+	class={['box', className]}
 	role="tree"
 	aria-label={label}
 	aria-multiselectable={multiple || undefined}

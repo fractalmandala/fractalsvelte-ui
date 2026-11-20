@@ -9,7 +9,7 @@
 		children?: Snippet;
 	}
 
-	let { class: klass, children, ...rest }: Props = $props();
+	let { class: className, children, ...rest }: Props = $props();
 </script>
 
-<code class={['font-mono text-sm pad-xs bg-panel curved', klass]} {...rest}>{@render children?.()}</code>
+<code class={['font-mono text-sm pad-xs bg-panel curved', className]} {...rest}>{@render children?.()}</code>

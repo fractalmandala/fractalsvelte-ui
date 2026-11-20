@@ -17,14 +17,14 @@
 	let {
 		intensity = 0.45,
 		speed = 18,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
 </script>
 
 <div
-	class={['aurora', klass]}
+	class={['aurora', className]}
 	{@attach vars({ 'aurora-intensity': intensity, aurora: speed })}
 	{...rest}
 >

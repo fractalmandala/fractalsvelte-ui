@@ -6,6 +6,7 @@
 </script>
 
 <div class="measure-sm column gap-sm">
-	<Slider orientation="horizontal" bind:value={volume} label="Volume" showValue />
+	<Slider value={40} textSize="text-sm" label="Smaller type" />
+<Slider orientation="horizontal" bind:value={volume} label="Volume" showValue />
 	<p class="text-sm text-muted tabular-nums">Volume {volume}%</p>
 </div>

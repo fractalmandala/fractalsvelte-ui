@@ -4,9 +4,9 @@
 </script>
 
 <div class="box gap-sm measure-sm">
-	<SearchInput size="lg" textSize="xs" value="Extra-small type" aria-label="Extra-small type" />
-	<SearchInput size="lg" textSize="sm" value="Small type" aria-label="Small type" />
-	<SearchInput size="lg" textSize="md" value="Medium type" aria-label="Medium type" />
-	<SearchInput size="lg" textSize="lg" value="Large type" aria-label="Large type" />
-	<SearchInput size="lg" textSize="xl" value="Extra-large type" aria-label="Extra-large type" />
+	<SearchInput size="h-lg" textSize="text-xs" value="Extra-small type" aria-label="Extra-small type" />
+	<SearchInput size="h-lg" textSize="text-sm" value="Small type" aria-label="Small type" />
+	<SearchInput size="h-lg" textSize="text-md" value="Medium type" aria-label="Medium type" />
+	<SearchInput size="h-lg" textSize="text-lg" value="Large type" aria-label="Large type" />
+	<SearchInput size="h-lg" textSize="text-xl" value="Extra-large type" aria-label="Extra-large type" />
 </div>

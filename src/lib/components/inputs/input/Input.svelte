@@ -7,23 +7,23 @@
 	import type { IconData } from '@fractaldesign/icons';
 	import { luX } from '@fractaldesign/icons/lucide';
 	import { springScale } from '../../../motion/index.js';
-	import { defaultSize, type Shape, type Size } from '../../../internal/tokens.js';
+	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
 	import { useFieldControl } from '../field/field.js';
 	import { focusFrame, frameClasses } from './frame.js';
 
-	interface Props extends Omit<HTMLInputAttributes, 'size' | 'value' | 'children'> {
+	interface Props extends Omit<HTMLInputAttributes, 'size' | 'value' | 'children' | 'disabled'> {
 		/** The text. Bindable; works controlled and uncontrolled. */
 		value?: string;
 		/** Called with the new text whenever it changes, including when it is cleared. */
 		onValueChange?: (value: string) => void;
-		/** The control height. Text follows this unless `textSize` is set. @default 'md' */
+		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
 		/** The text scale, independent of the control height. Follows `size` when omitted. */
-		textSize?: Size;
+		textSize?: TextSize;
 		/** The corner shape. @default 'modern' */
 		shape?: Shape;
 		/** `outline` is a bordered field, `filled` a tinted one without a border, `ghost` is bare until hovered or focused. @default 'outline' */
-		variant?: 'outline' | 'filled' | 'ghost';
+		look?: 'outline' | 'filled' | 'ghost';
 		/** Marks the input invalid (red border, `aria-invalid`). Inside a `Field` it follows the field's error unless set. */
 		invalid?: boolean;
 		/** An icon drawn at the start of the field. */
@@ -36,7 +36,9 @@
 		clearable?: boolean;
 		/** The underlying `<input>` element. Bindable, for focusing from code. */
 		ref?: HTMLInputElement | null;
-	}
+			/** Blocks pointer and keyboard input, and dims the frame. */
+		disabled?: boolean | null;
+}
 
 	let {
 		value = $bindable(''),
@@ -44,7 +46,7 @@
 		size,
 		textSize,
 		shape,
-		variant,
+		look,
 		invalid,
 		icon,
 		leading,
@@ -56,7 +58,7 @@
 		required,
 		disabled,
 		readonly,
-		class: klass,
+		class: className,
 		oninput,
 		onkeydown,
 		'aria-describedby': describedby,
@@ -64,17 +66,24 @@
 	}: Props = $props();
 
 	const uid = $props.id();
-	const control = useFieldControl(uid, () => ({ id, invalid, required, disabled, describedby, size, shape, variant }));
+	const control = useFieldControl(uid, () => ({ id, invalid, required, disabled, describedby, size, shape, look }));
 
 	const resolvedSize = $derived(size ?? control.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? control.shape ?? 'modern');
-	const resolvedVariant = $derived(variant ?? control.variant ?? 'outline');
-
-
+	const resolvedVariant = $derived(look ?? control.look ?? 'outline');
 	const classes = $derived([
-		frameClasses({ variant: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled }),
-		klass
+		...frameClasses({
+			look: resolvedVariant,
+			size: resolvedSize,
+			textSize,
+			shape: resolvedShape,
+			invalid: control.invalid,
+			disabled: control.disabled
+		}),
+		className
 	]);
+
+
 	const canClear = $derived(clearable && value !== '' && !control.disabled && !readonly);
 
 	function set(next: string): void {

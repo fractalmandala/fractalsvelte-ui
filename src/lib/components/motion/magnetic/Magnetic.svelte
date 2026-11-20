@@ -23,7 +23,7 @@
 		radius = 40,
 		spring = 'snappy',
 		disabled = false,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -31,6 +31,6 @@
 	const attach = $derived(disabled ? undefined : magnetic({ strength, radius, spring }));
 </script>
 
-<div class={['motion', klass]} {@attach attach} {...rest}>
+<div class={['motion', className]} {@attach attach} {...rest}>
 	{@render children?.()}
 </div>

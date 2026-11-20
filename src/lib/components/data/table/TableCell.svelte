@@ -4,8 +4,9 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLTdAttributes } from 'svelte/elements';
 	import { cellAlign, type TableAlign } from './table.js';
+	
 
-	interface Props extends HTMLTdAttributes {
+	interface Props extends Omit<HTMLTdAttributes, 'align'> {
 		/** Horizontal alignment of the content. */
 		align?: TableAlign;
 		/** A number: right-aligned with tabular numerals, so digits line up down the column. */
@@ -16,10 +17,10 @@
 		children?: Snippet;
 	}
 
-	let { align, numeric = false, muted = false, class: klass, children, ...rest }: Props = $props();
+	let { align, numeric = false, muted = false, class: className, children, ...rest }: Props = $props();
 
 </script>
 
-<td class={[cellAlign(align, numeric), numeric && 'tabular-nums', muted && 'text-secondary', klass]} {...rest}>
+<td class={[cellAlign(align, numeric), numeric && 'tabular-nums', muted && 'text-secondary', className]} {...rest}>
 	{@render children?.()}
 </td>

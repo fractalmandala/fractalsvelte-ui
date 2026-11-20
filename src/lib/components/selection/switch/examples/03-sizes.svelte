@@ -6,9 +6,9 @@
 </script>
 
 <div class="row ycenter wrap gap-lg">
-	{#each ['xs', 'sm', 'md', 'lg', 'xl'] as size (size)}
+	{#each ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const as size (size)}
 		<Switch
-			size={size as 'xs' | 'sm' | 'md' | 'lg' | 'xl'}
+			size={size}
 			checked
 			label={size}
 			onCheckedChange={() => flips++}

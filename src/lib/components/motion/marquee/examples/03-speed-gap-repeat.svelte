@@ -2,11 +2,11 @@
 <script lang="ts">
 	import { Marquee } from '@fractaldesign/fractalsvelte-ui';
 
-	const gaps = ['xs', 'sm', 'md', 'bs', 'lg', 'xl', '2xl', '3xl'] as const;
+	const gaps = ['gap-xs', 'gap-sm', 'gap-md', 'gap-bs', 'gap-lg', 'gap-xl', 'gap-2xl', 'gap-3xl'] as const;
 </script>
 
 <div class="box gap-md">
-	<Marquee speed={24} gap="xl" repeat={4} aria-label="A short phrase, tiled four times">
+	<Marquee speed={24} gap="gap-xl" repeat={4} aria-label="A short phrase, tiled four times">
 		<span class="text-sm weight-500">fractalsvelte-ui</span>
 		<span class="text-sm text-muted">the spring library</span>
 	</Marquee>

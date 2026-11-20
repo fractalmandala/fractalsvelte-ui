@@ -23,7 +23,7 @@
 		<option value="enterprise">Enterprise</option>
 	</NativeSelect>
 	<div class="row ycenter gap-sm">
-		<Button size="sm" variant="secondary" onclick={() => select?.focus()}>Focus select</Button>
+		<Button size="h-sm" variant="secondary" onclick={() => select?.focus()}>Focus select</Button>
 		<span id="plan-hint" class="text-sm text-muted">
 			{invalid ? 'Pick a plan to continue.' : `${changes} changes. ${plan} is selected.`}
 		</span>

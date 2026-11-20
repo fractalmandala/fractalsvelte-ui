@@ -34,6 +34,12 @@ export interface ApiComponent {
 	kit: string;
 	slug: string;
 	name: string;
+	/** The page's summary, '' when the folder has no doc block. */
+	summary: string;
+	/** The page's description, '' when the folder has no doc block. */
+	description: string;
+	/** The rest of the prose block: features, accessibility, keyboard, parts, api, related, status. */
+	doc?: Record<string, unknown>;
 	/** Value exports of `index.ts`. */
 	exports: string[];
 	/** Type-only exports of `index.ts`. */

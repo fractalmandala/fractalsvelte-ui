@@ -4,9 +4,12 @@
 </script>
 
 <div class="row wrap gap-sm ycenter">
-	<Button size="xs">Extra small</Button>
-	<Button size="sm">Small</Button>
-	<Button size="md">Medium</Button>
-	<Button size="lg">Large</Button>
-	<Button size="xl">Extra large</Button>
+	<Button size="h-xs" class="text-inverse" textSize="text-xs">Extra small</Button>
+	<Button size="h-sm" class="text-inverse" textSize="text-sm">Small</Button>
+	<Button size="h-md" class="text-inverse" textSize="text-sm">Medium</Button>
+		<Button size="h-bs" class="text-inverse" textSize="text-md">Base</Button>
+	<Button size="h-lg" class="text-inverse" textSize="text-md">Large</Button>
+	<Button size="h-xl" class="text-inverse" textSize="text-bs">Extra large</Button>
+	<Button size="h-2xl" class="text-inverse" textSize="text-bs">2× large</Button>
+	<Button size="h-3xl" class="text-inverse" textSize="text-bs">3× large</Button>
 </div>

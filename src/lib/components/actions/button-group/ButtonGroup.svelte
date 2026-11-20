@@ -3,39 +3,35 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Orientation } from '../../../internal/tokens.js';
+	import type { Orientation, Gap, Shape } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** The accessible name of the group, announced when focus enters it. */
 		label?: string;
-		/** The direction the buttons run in. */
 		orientation?: Orientation;
-		/** Joins the buttons into one segmented control. When false, they sit apart with a small gap. */
+		gap?: Gap;
+		shape?: Shape;
 		attached?: boolean;
-		/** The buttons. */
 		children?: Snippet;
 	}
 
 	let {
 		label,
 		orientation = 'horizontal',
+		gap = '',
+		shape = 'modern',
 		attached = true,
 		class: className,
 		children,
 		...rest
 	}: Props = $props();
 
-	const vertical = $derived(orientation === 'vertical');
+	const spaced = $derived(!attached || Boolean(gap));
 </script>
 
 <div
 	role="group"
 	aria-label={label}
-	class={[
-		attached ? 'button-group' : vertical ? 'box gap-sm' : 'row wrap gap-sm',
-		attached && vertical && 'vertical',
-		className
-	]}
+	class={['button-group overflow-hidden', orientation, shape, spaced && 'spaced', gap, className]}
 	{...rest}
 >
 	{@render children?.()}

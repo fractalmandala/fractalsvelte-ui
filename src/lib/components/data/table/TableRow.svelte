@@ -11,9 +11,9 @@
 		children?: Snippet;
 	}
 
-	let { selected = false, class: klass, children, ...rest }: Props = $props();
+	let { selected = false, class: className, children, ...rest }: Props = $props();
 </script>
 
-<tr class={[selected && 'selected', klass]} {...rest}>
+<tr class={[selected && 'selected', className]} {...rest}>
 	{@render children?.()}
 </tr>

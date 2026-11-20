@@ -7,11 +7,11 @@
 
 <div class="measure-sm">
 	<InputGroup>
-		<InputGroupAddon side="start">
+		<InputGroupAddon align="start">
 			<InputGroupText>https://</InputGroupText>
 		</InputGroupAddon>
 		<InputGroupInput bind:value={host} aria-label="Workspace address" />
-		<InputGroupAddon side="end">
+		<InputGroupAddon align="end">
 			<InputGroupButton onclick={() => navigator.clipboard.writeText(`https://${host}`)}>Copy</InputGroupButton>
 		</InputGroupAddon>
 	</InputGroup>

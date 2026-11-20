@@ -5,11 +5,11 @@
 	import { Icon } from '@fractaldesign/icons';
 	import { luX } from '@fractaldesign/icons/lucide';
 	import { springScale } from '../../../motion/index.js';
-	import { defaultSize, type Shape, type Size } from '../../../internal/tokens.js';
+	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
 	import { useFieldControl } from '../field/field.js';
 	import { focusFrame, frameClasses } from '../input/frame.js';
 
-	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
+	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'disabled'> {
 		/** The tags. Bindable; works controlled and uncontrolled. */
 		value?: string[];
 		/** Called with the new list whenever a tag is added or removed. */
@@ -20,19 +20,25 @@
 		validate?: (tag: string) => boolean | string;
 		/** When true, a tag that is already in the list can be added again. */
 		allowDuplicates?: boolean;
+		/** Allow double-clicking an existing tag to edit it inline. */
+		editable?: boolean;
+		/** Delimiter character or RegExp used to split drafted or pasted tags. */
+		delimiter?: string | RegExp;
 		/** Placeholder shown in the typing area while the list is empty. */
 		placeholder?: string;
-		/** The control height. Text follows this unless `textSize` is set. @default 'md' */
+		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
 		/** The text scale, independent of the control height. Follows `size` when omitted. */
-		textSize?: Size;
+		textSize?: TextSize;
 		/** The corner shape. @default 'modern' */
 		shape?: Shape;
 		/** `outline` is a bordered field, `filled` a tinted one without a border, `ghost` is bare until hovered or focused. @default 'outline' */
-		variant?: 'outline' | 'filled' | 'ghost';
+		look?: 'outline' | 'filled' | 'ghost';
 		/** Marks the field invalid (red border, `aria-invalid`). Inside a `Field` it follows the field's error unless set. */
 		invalid?: boolean;
-	}
+			/** Blocks pointer and keyboard input, and dims the frame. */
+		disabled?: boolean | null;
+}
 
 	let {
 		value = $bindable([]),
@@ -40,14 +46,16 @@
 		max,
 		validate,
 		allowDuplicates = false,
+		editable = false,
+		delimiter = ',',
 		placeholder,
 		size,
 		textSize,
 		shape,
-		variant,
+		look,
 		invalid,
 		id,
-		class: klass,
+		class: className,
 		'aria-describedby': describedby,
 		...rest
 	}: Props = $props();
@@ -60,22 +68,25 @@
 		describedby: [describedby, message ? messageId : null].filter(Boolean).join(' ') || null,
 		size,
 		shape,
-		variant
+		look
 	}));
 
 	const resolvedSize = $derived(size ?? control.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? control.shape ?? 'modern');
-	const resolvedVariant = $derived(variant ?? control.variant ?? 'outline');
+	const resolvedVariant = $derived(look ?? control.look ?? 'outline');
 
 	let draft = $state('');
 	let message = $state<string | null>(null);
 	let input: HTMLInputElement | null = $state(null);
+	let editingIndex = $state<number | null>(null);
+	let editingDraft = $state('');
+	let editInput: HTMLInputElement | null = $state(null);
 
 	const tags = $derived(value ?? []);
 	const atMax = $derived(max !== undefined && tags.length >= max);
 	const frame = $derived(
 		frameClasses({
-			variant: resolvedVariant,
+			look: resolvedVariant,
 			size: resolvedSize,
 			textSize,
 			shape: resolvedShape,
@@ -131,7 +142,46 @@
 	}
 
 	function split(text: string): string[] {
-		return text.split(/[,\n\r\t]+/);
+		if (delimiter instanceof RegExp) return text.split(delimiter);
+		const escaped = delimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+		return text.split(new RegExp(`(?:${escaped}|[\\n\\r\\t])+`));
+	}
+
+	function beginEdit(index: number): void {
+		if (!editable || control.disabled) return;
+		editingIndex = index;
+		editingDraft = tags[index] ?? '';
+		queueMicrotask(() => {
+			editInput?.focus();
+			editInput?.select();
+		});
+	}
+
+	function commitEdit(): void {
+		if (editingIndex === null) return;
+		const idx = editingIndex;
+		const trimmed = editingDraft.trim();
+		editingIndex = null;
+		if (!trimmed) {
+			remove(idx);
+			return;
+		}
+		if (trimmed === tags[idx]) return;
+		if (!allowDuplicates && tags.some((t, i) => i !== idx && t.toLowerCase() === trimmed.toLowerCase())) {
+			reject(`“${trimmed}” is already in the list.`);
+			return;
+		}
+		const result = validate?.(trimmed);
+		if (result === false) {
+			reject(`“${trimmed}” is not allowed.`);
+			return;
+		}
+		if (typeof result === 'string') {
+			reject(result);
+			return;
+		}
+		message = null;
+		set(tags.map((t, i) => (i === idx ? trimmed : t)));
 	}
 
 	function remove(index: number): void {
@@ -142,7 +192,7 @@
 	}
 
 	function handleKeydown(event: KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement }): void {
-		if (event.key === 'Enter' || event.key === ',') {
+		if (event.key === 'Enter' || (typeof delimiter === 'string' && event.key === delimiter)) {
 			event.preventDefault();
 			addDraft();
 			return;
@@ -155,9 +205,10 @@
 
 	function handlePaste(event: ClipboardEvent): void {
 		const text = event.clipboardData?.getData('text') ?? '';
-		if (!/[,\n\r]/.test(text)) return;
+		const parts = split(text);
+		if (parts.length <= 1 && !/[\n\r]/.test(text)) return;
 		event.preventDefault();
-		addMany(split((draft ? draft + ',' : '') + text));
+		addMany(split((draft ? draft + (typeof delimiter === 'string' ? delimiter : ',') : '') + text));
 	}
 
 	function handleBlur(): void {
@@ -165,7 +216,7 @@
 	}
 </script>
 
-<div class={['box gap-xs wfull', klass]}>
+<div class={['box gap-xs wfull', className]}>
 	<div
 		role="presentation"
 		class={frame}
@@ -174,18 +225,44 @@
 	>
 		<div class="row wrap ycenter gap-xs grow wmin0">
 			{#each tags as tag, index (allowDuplicates ? `${tag}-${index}` : tag)}
-				<span class="tag row ycenter gap-xs text-sm ink-auto" transition:springScale={{ start: 0.85 }}>
-					{tag}
-					<button
-						type="button"
-						class="bare tag-remove row ycenter xcenter radius-full press"
-						aria-label={`Remove ${tag}`}
-						disabled={control.disabled}
-						onclick={() => remove(index)}
+				{#if editingIndex === index}
+					<input
+						bind:this={editInput}
+						type="text"
+						class="bare tag text-sm px-sm focus-ring"
+						aria-label={`Edit tag ${tag}`}
+						bind:value={editingDraft}
+						onblur={commitEdit}
+						onkeydown={(e) => {
+							if (e.key === 'Enter') {
+								e.preventDefault();
+								commitEdit();
+							} else if (e.key === 'Escape') {
+								e.preventDefault();
+								editingIndex = null;
+								input?.focus();
+							}
+						}}
+					/>
+				{:else}
+					<span
+						role="presentation"
+						class="tag row ycenter gap-xs text-sm ink-auto"
+						transition:springScale={{ start: 0.85 }}
+						ondblclick={() => beginEdit(index)}
 					>
-						<Icon icon={luX} />
-					</button>
-				</span>
+						{tag}
+						<button
+							type="button"
+							class="bare tag-remove row ycenter xcenter radius-full press"
+							aria-label={`Remove ${tag}`}
+							disabled={control.disabled}
+							onclick={() => remove(index)}
+						>
+							<Icon icon={luX} />
+						</button>
+					</span>
+				{/if}
 			{/each}
 			<input
 				bind:this={input}

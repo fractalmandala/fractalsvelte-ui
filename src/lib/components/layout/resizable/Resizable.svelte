@@ -24,7 +24,7 @@
 		sizes = $bindable([]),
 		onResize,
 		storageKey,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -89,7 +89,7 @@
 
 <div
 	{...rest}
-	class={['wfull hfull min0 overflow-hidden', orientation === 'horizontal' ? 'row' : 'box', klass]}
+	class={['wfull hfull min0 overflow-hidden', orientation === 'horizontal' ? 'row' : 'box', className]}
 	data-orientation={orientation}
 	{@attach root}
 >

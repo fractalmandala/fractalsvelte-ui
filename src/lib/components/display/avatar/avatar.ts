@@ -30,3 +30,6 @@ export const avatarSizeClass = {
 	lg: 'avatar-lg',
 	xl: 'avatar-xl'
 } as const;
+
+/** The avatar size ladder. */
+export type AvatarSize = keyof typeof avatarSizeClass;

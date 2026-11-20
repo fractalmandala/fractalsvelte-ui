@@ -11,9 +11,9 @@
 <div class="box gap-md">
 	<div class="row wrap gap-sm ycenter">
 		{#each origins as origin}
-			<Button variant={from === origin ? 'primary' : 'ghost'} size="sm" onclick={() => (from = origin)}>{origin}</Button>
+			<Button variant={from === origin ? 'primary' : 'ghost'} size="h-sm" onclick={() => (from = origin)}>{origin}</Button>
 		{/each}
-		<Button variant="secondary" size="sm" onclick={() => (version += 1)}>Replay</Button>
+		<Button variant="secondary" size="h-sm" onclick={() => (version += 1)}>Replay</Button>
 	</div>
 	{#key `${from}-${version}`}
 		<Stagger {from} step={80} enter="scale" class="row wrap gap-sm">

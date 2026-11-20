@@ -17,14 +17,14 @@
 	let {
 		duration = 1.8,
 		spread = '12%',
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
 </script>
 
 <span
-	class={['ink', 'ink-shimmer', klass]}
+	class={['ink', 'ink-shimmer', className]}
 	{@attach vars({ 'shimmer-ms': duration, 'shimmer-spread': spread })}
 	{...rest}
 >

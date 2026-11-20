@@ -2,7 +2,7 @@
 <script lang="ts">
 	import { Rating } from '@fractaldesign/fractalsvelte-ui';
 
-	const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+	const sizes = ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const;
 </script>
 
 <div class="box gap-sm">

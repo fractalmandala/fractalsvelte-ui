@@ -3,7 +3,7 @@
 	import { Heading, Typography } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
-<Typography align="start">
+<Typography align="left">
 	<Heading level={1}>The complete library</Heading>
 	<Heading level={2}>What shipped in this wave</Heading>
 	<Heading level={3}>Feedback, inputs and typography</Heading>

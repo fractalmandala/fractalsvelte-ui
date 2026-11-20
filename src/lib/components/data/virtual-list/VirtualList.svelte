@@ -27,7 +27,7 @@
 		overscan = 4,
 		height = 320,
 		label,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -157,7 +157,7 @@
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -- a scrollable list must be keyboard-focusable -->
 <div
-	class={['scroll-xy scroll-thin wfull', label && 'focus-ring', klass]}
+	class={['scroll-xy scroll-thin wfull', label && 'focus-ring', className]}
 	role="list"
 	aria-label={label}
 	tabindex={label ? 0 : undefined}

@@ -18,7 +18,7 @@
 	let {
 		position = 'top',
 		offset = '0px',
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -48,7 +48,7 @@
 		'sticky z-sticky spring pop open',
 		position === 'top' ? 'pin-top enter-up' : 'pin-bottom enter-down',
 		stuck && 'glass rim shad-sm',
-		klass
+		className
 	]}
 	data-stuck={stuck || undefined}
 	{@attach vars({ offset })}

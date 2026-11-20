@@ -4,10 +4,10 @@
 </script>
 
 <div class="column gap-bs">
-	{#each ['xs', 'sm', 'md', 'lg', 'xl'] as size (size)}
+	{#each ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const as size (size)}
 		<RadioGroup
 			orientation="horizontal"
-			size={size as 'xs' | 'sm' | 'md' | 'lg' | 'xl'}
+			size={size}
 			value="b"
 			name={`size-${size}`}
 			aria-label={`Size ${size}`}

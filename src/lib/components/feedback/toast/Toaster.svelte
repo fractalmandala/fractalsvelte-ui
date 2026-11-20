@@ -22,7 +22,7 @@
 		max = 3,
 		duration = 4000,
 		expand = false,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -94,7 +94,7 @@
 
 	function arm(item: ToastItem) {
 		const dur = item.duration ?? duration;
-		if (dur <= 0 || item.type === 'loading' || timers.has(item.id)) return;
+		if (dur <= 0 || item.tone === 'loading' || timers.has(item.id)) return;
 		const started = Date.now();
 		const id = window.setTimeout(() => void dismiss(item.id), dur);
 		timers.set(item.id, { remaining: dur, started, id });
@@ -160,7 +160,7 @@
 	<div
 		bind:this={layer}
 		popover="manual"
-		class={['layer', layerClass[position], 'z-toast', klass]}
+		class={['layer', layerClass[position], 'z-toast', className]}
 		onkeydown={onKey}
 		{...rest}
 	>
@@ -188,7 +188,7 @@
 					{@attach drag({ axis: 'x', snapBack: true, momentum: true, onDragEnd: swipe(item.id) })}
 				>
 					<Toast
-						type={item.type}
+						tone={item.tone}
 						message={item.message}
 						description={item.description}
 						action={item.action}

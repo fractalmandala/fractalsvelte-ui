@@ -4,7 +4,7 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { animate, setMotion } from '../../../motion/index.js';
-	import { textClass } from '../../../internal/tokens.js';
+	
 	import { getRadioGroup } from './radio-group.js';
 
 	interface Props extends Omit<HTMLInputAttributes, 'type' | 'size' | 'children' | 'checked' | 'name' | 'value' | 'group'> {
@@ -18,7 +18,7 @@
 		children?: Snippet;
 	}
 
-	let { value, label, description, disabled = false, class: klass, children, ...rest }: Props = $props();
+	let { value, label, description, disabled = false, class: className, children, ...rest }: Props = $props();
 
 	const group = getRadioGroup();
 	const id = $props.id();
@@ -45,9 +45,9 @@
 		card ? 'ytop pad-md modern spring bg-surface' : description ? 'ytop' : 'ycenter',
 		card && (checked ? 'glow' : 'border'),
 		card && !checked && !off && 'shad-hover-xs',
-		textClass[group.size],
+		group.textSize,
 		off ? 'disabled' : 'pointer',
-		klass
+		className
 	]}
 >
 	<span class={['checkbox-box radio motion', (description || card) && 'mt-xs']} bind:this={box}>
@@ -65,7 +65,7 @@
 	</span>
 	{#if label || description || children}
 		<span class="column xleft gap-xs">
-			<span class="lh13 weight-500 text-primary">{#if children}{@render children()}{:else}{label}{/if}</span>
+			<span class="lh13 weight-500">{#if children}{@render children()}{:else}{label}{/if}</span>
 			{#if description}
 				<span id="{id}-desc" class="text-secondary text-sm lh14">{description}</span>
 			{/if}

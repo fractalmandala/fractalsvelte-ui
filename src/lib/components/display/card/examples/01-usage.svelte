@@ -19,7 +19,7 @@
 	<CardContent>
 		<p>Seats are billed monthly. You have 3 of 10 seats in use on the Team plan.</p>
 	</CardContent>
-	<CardFooter align="end">
+	<CardFooter align="right">
 		<Button variant="ghost">Later</Button>
 		<Button>Send invites</Button>
 	</CardFooter>

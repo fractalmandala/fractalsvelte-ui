@@ -13,7 +13,7 @@
 		children?: Snippet;
 	}
 
-	let { value, class: klass, children, ...rest }: Props = $props();
+	let { value, class: className, children, ...rest }: Props = $props();
 
 	const tabs = getTabs();
 	const selected = $derived(tabs.value() === value);
@@ -28,7 +28,7 @@
 			role="tabpanel"
 			aria-labelledby={tabId}
 			tabindex="0"
-			class={['pad-bs focus-ring', klass]}
+			class={['pad-bs focus-ring', className]}
 			transition:springFade
 			{...rest}
 		>
@@ -41,7 +41,7 @@
 		role="tabpanel"
 		aria-labelledby={tabId}
 		tabindex="0"
-		class={['pad-bs focus-ring', klass]}
+		class={['pad-bs focus-ring', className]}
 		{...rest}
 	>
 		{@render children?.()}
@@ -52,7 +52,7 @@
 		role="tabpanel"
 		aria-labelledby={tabId}
 		hidden
-		class={klass}
+		class={className}
 		{...rest}
 	>
 		{@render children?.()}

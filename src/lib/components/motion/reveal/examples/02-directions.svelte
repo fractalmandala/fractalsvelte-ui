@@ -14,7 +14,7 @@
 	<p class="text-sm text-muted">Scroll to reveal each dispatch, then scroll away to send it back.</p>
 	<div class="pad-lg"></div>
 	{#each items as item}
-		<Reveal direction={item.direction} distance={item.distance} once={false} amount={0.35} spring="gentle">
+		<Reveal from={item.direction} distance={item.distance} once={false} amount={0.35} spring="gentle">
 			<article class="card rim shad-sm pad-md">
 				<p class="text-sm text-muted">{item.title}</p>
 				<p class="weight-500">{item.deck}</p>

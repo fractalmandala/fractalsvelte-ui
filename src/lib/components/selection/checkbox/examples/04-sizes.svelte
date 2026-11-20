@@ -4,7 +4,7 @@
 </script>
 
 <div class="row ycenter wrap gap-lg">
-	{#each ['xs', 'sm', 'md', 'lg', 'xl'] as size (size)}
-		<Checkbox size={size as 'xs' | 'sm' | 'md' | 'lg' | 'xl'} checked label={size} />
+	{#each ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const as size (size)}
+		<Checkbox size={size} checked label={size} />
 	{/each}
 </div>

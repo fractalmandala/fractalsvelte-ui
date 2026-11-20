@@ -9,8 +9,6 @@
 
 	import TimelineItem from './TimelineItem.svelte';
 
-	type TimelineAlign = 'left' | 'alternate';
-
 	interface TimelineEvent {
 		/** The heading for this event. */
 		title: string;
@@ -27,15 +25,17 @@
 	interface Props extends HTMLAttributes<HTMLOListElement> {
 		/** The events to render. When omitted, `children` (usually `TimelineItem`s) are used. */
 		items?: TimelineEvent[];
-		/** `left` keeps every body to the right of the rail; `alternate` swings them to both sides. */
-		align?: TimelineAlign;
+		/** Which side of the rail the bodies sit on. */
+		align?: 'left' | 'right';
+		/** Swings the bodies to both sides of the rail, alternating item by item. */
+		alternate?: boolean;
 		/** Custom items, used when `items` is omitted. */
 		children?: Snippet;
 	}
 
-	let { items, align = 'left', class: klass, children, ...rest }: Props = $props();
+	let { items, align = 'left', alternate = false, class: className, children, ...rest }: Props = $props();
 
-	const classes = $derived(['timeline', align === 'alternate' && 'alternate', klass]);
+	const classes = $derived(['timeline', align === 'right' && 'right', alternate && 'alternate', className]);
 </script>
 
 <ol class={classes} {@attach stagger({ step: 70 })} {...rest}>

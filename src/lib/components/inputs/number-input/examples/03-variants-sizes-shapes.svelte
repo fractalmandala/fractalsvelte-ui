@@ -4,10 +4,10 @@
 </script>
 
 <div class="box gap-sm measure-sm">
-	{#each ['outline', 'filled', 'ghost'] as const as variant (variant)}
-		<NumberInput {variant} value={24} aria-label={`${variant} quantity`} />
+	{#each ['outline', 'filled', 'ghost'] as const as look (look)}
+		<NumberInput {look} value={24} aria-label={`${look} quantity`} />
 	{/each}
-	{#each ['xs', 'sm', 'md', 'lg', 'xl'] as const as size (size)}
+	{#each ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const as size (size)}
 		<NumberInput {size} value={8} aria-label={`Size ${size}`} />
 	{/each}
 	{#each ['rect', 'mincurved', 'modern', 'curved', 'round'] as const as shape (shape)}

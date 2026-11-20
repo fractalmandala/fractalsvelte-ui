@@ -3,7 +3,7 @@
 	import { Button, Container } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
-<Container as="section" size="lg" padded center>
+<Container as="section" width="measure-lg" padded center>
 	<div class="box gap-sm">
 		<span class="text-sm text-muted">Release 2.4</span>
 		<span class="text-lg weight-500">Invoice run, reminders and a quieter dark mode</span>

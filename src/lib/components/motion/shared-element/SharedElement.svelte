@@ -14,9 +14,9 @@
 		children?: Snippet;
 	}
 
-	let { name, as = 'div', class: klass, children, ...rest }: Props = $props();
+	let { name, as = 'div', class: className, children, ...rest }: Props = $props();
 </script>
 
-<svelte:element this={as} class={['vt-name', klass]} {@attach vtName(name)} {...rest}>
+<svelte:element this={as} class={['vt-name', className]} {@attach vtName(name)} {...rest}>
 	{@render children?.()}
 </svelte:element>

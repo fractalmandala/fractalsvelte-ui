@@ -2,7 +2,7 @@
 <script lang="ts">
 	import { SegmentedControl } from '@fractaldesign/fractalsvelte-ui';
 
-	const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+	const sizes = ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const;
 	const options = [
 		{ value: 'grid', label: 'Grid' },
 		{ value: 'list', label: 'List' }

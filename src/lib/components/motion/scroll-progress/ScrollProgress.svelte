@@ -8,7 +8,7 @@
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		/** A bar along the edge of the viewport, or a ring that fills with the same progress. */
-		variant?: 'bar' | 'ring';
+		form?: 'bar' | 'ring';
 		/** Where a `bar` sits — the top or the bottom of the viewport. Ignored by the ring. */
 		position?: 'top' | 'bottom';
 		/** `page` tracks the document scroll; `element` tracks this component's passage through the viewport. */
@@ -20,21 +20,21 @@
 	}
 
 	let {
-		variant = 'bar',
+		form = 'bar',
 		position = 'top',
 		target = 'page',
 		tone = 'info',
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
 
 	const meter = $derived(scrollProgress({ target }));
-	const bar = $derived(variant === 'bar');
+	const bar = $derived(form === 'bar');
 </script>
 
 <div
-	class={['relative', klass]}
+	class={['relative', className]}
 	{@attach target === 'element' ? meter : undefined}
 	{...rest}
 >

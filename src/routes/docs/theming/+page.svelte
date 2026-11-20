@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { theme, themes, type ThemeDensity, type ThemeMode, type ThemeMotion, type ThemeRadius } from '@fractaldesign/fractalsvelte-ui/theme';
+	import { theme, themes, type ThemeDensity, type ThemeMode, type ThemeMotion } from '@fractaldesign/fractalsvelte-ui/theme';
+	import type { Shape } from '@fractaldesign/fractalsvelte-ui';
 	import CodeBlock from '../../../docs-site/CodeBlock.svelte';
 	import DocPage from '../../../docs-site/DocPage.svelte';
 	import GuideFooter from '../../../docs-site/GuideFooter.svelte';
@@ -7,7 +8,7 @@
 	import Section from '../../../docs-site/Section.svelte';
 
 	const modes: ThemeMode[] = ['light', 'dark', 'system'];
-	const radii: ThemeRadius[] = ['sharp', 'soft', 'round'];
+	const shapes: Shape[] = ['rect', 'mincurved', 'modern', 'curved', 'round'];
 	const densities: ThemeDensity[] = ['compact', 'cozy', 'comfortable'];
 	const motions: ThemeMotion[] = ['off', 'calm', 'snappy', 'playful'];
 
@@ -39,7 +40,7 @@
 		['--scrim', 'Behind modals']
 	];
 
-	const html = `<html data-mode="dark" data-theme="ember" data-radius="soft" data-density="cozy" data-motion="snappy">`;
+	const html = `<html data-mode="dark" data-theme="ember" data-shape="modern" data-density="cozy" data-motion="snappy">`;
 	const runtime = `<script lang="ts">
 	import { theme } from '@fractaldesign/fractalsvelte-ui/theme';
 </` + `script>
@@ -109,7 +110,7 @@
 			</div>
 			<div class="grid-2 gap-lg">
 				{@render segmented('Mode', modes, theme.mode, (v) => theme.setMode(v as ThemeMode))}
-				{@render segmented('Radius', radii, theme.radius, (v) => theme.set({ radius: v as ThemeRadius }))}
+				{@render segmented('Shape', shapes, theme.shape, (v) => theme.set({ shape: v as Shape }))}
 				{@render segmented('Density', densities, theme.density, (v) => theme.set({ density: v as ThemeDensity }))}
 				{@render segmented('Motion', motions, theme.motion, (v) => theme.set({ motion: v as ThemeMotion }))}
 			</div>
@@ -127,7 +128,7 @@
 
 	<Section id="attributes" title="Attributes">
 		<p class="text-body text-secondary lh16">
-			<Rich text="Five attributes on `<html>` (or any subtree) configure everything: `data-mode`, `data-theme`, `data-radius` (`sharp` `soft` `round` — rewrites the radius ladder), `data-density` (`compact` `cozy` `comfortable` — rewrites the space and height ladders) and `data-motion` (`off` `calm` `snappy` `playful` — re-points the default spring)." />
+			<Rich text="Five attributes on `<html>` (or any subtree) configure everything: `data-mode`, `data-theme`, `data-shape` (`rect` `mincurved` `modern` `curved` `round` — rewrites the radius ladder), `data-density` (`compact` `cozy` `comfortable` — rewrites the space and height ladders) and `data-motion` (`off` `calm` `playful` — re-points the default spring; `snappy` is the base spring and needs no attribute)." />
 		</p>
 		<CodeBlock code={html} lang="html" />
 		<CodeBlock code={subtree} lang="html" />
@@ -135,7 +136,7 @@
 
 	<Section id="runtime" title="The runtime">
 		<p class="text-body text-secondary lh16">
-			<Rich text="`theme` is a reactive singleton (`mode`, `theme`, `hue`, `chroma`, `tint`, `radius`, `density`, `motion`, `resolvedMode`). Call `initTheme()` once in the root layout; `themeInitScript()` returns a tiny blocking script that applies the stored theme before first paint. `toggleMode(event)` animates the switch from the pointer with a view-transition reveal." />
+			<Rich text="`theme` is a reactive singleton (`mode`, `theme`, `hue`, `chroma`, `tint`, `shape`, `density`, `motion`, `resolvedMode`). Call `initTheme()` once in the root layout; `themeInitScript()` returns a tiny blocking script that applies the stored theme before first paint. `toggleMode(event)` animates the switch from the pointer with a view-transition reveal." />
 		</p>
 		<CodeBlock code={runtime} />
 	</Section>

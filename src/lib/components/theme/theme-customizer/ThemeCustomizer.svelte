@@ -1,11 +1,12 @@
-<!-- @component The live theme editor: mode, named theme, colour, radius, density, motion, a preview, and copy or reset. -->
+<!-- @component The live theme editor: mode, named theme, colour, shape, density, motion, a preview, and copy or reset. -->
 
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck, luCopy, luRotateCcw } from '@fractaldesign/icons/lucide';
 	import { Button } from '../../actions/button/index.js';
-	import { roving } from '../../../internal/roving.js';
+	import { roving } from '../../../internal/helpers.js';
+import type { Shape } from '../../../internal/tokens.js';
 	import { vars } from '../../../motion/index.js';
 	import {
 		defaultTheme,
@@ -15,7 +16,6 @@
 		type ThemeMotion,
 		type ThemeMode,
 		type ThemeName,
-		type ThemeRadius,
 		type ThemeSettings
 	} from '../../../theme/index.js';
 	import { ModeToggle } from '../mode-toggle/index.js';
@@ -23,10 +23,12 @@
 	import { ThemeProvider } from '../theme-provider/index.js';
 	import type { CustomizerSection } from './sections.js';
 
-	const ALL: CustomizerSection[] = ['mode', 'theme', 'color', 'radius', 'density', 'motion', 'preview'];
-	const radii: { id: ThemeRadius; name: string }[] = [
-		{ id: 'sharp', name: 'Sharp' },
-		{ id: 'soft', name: 'Soft' },
+	const ALL: CustomizerSection[] = ['mode', 'theme', 'color', 'shape', 'density', 'motion', 'preview'];
+	const shapes: { id: Shape; name: string }[] = [
+		{ id: 'rect', name: 'Rect' },
+		{ id: 'mincurved', name: 'Mincurved' },
+		{ id: 'modern', name: 'Modern' },
+		{ id: 'curved', name: 'Curved' },
 		{ id: 'round', name: 'Round' }
 	];
 	const densities: { id: ThemeDensity; name: string }[] = [
@@ -42,11 +44,8 @@
 	];
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The settings. Bindable. Leave it undefined to read and write the shared `theme`. */
 		value?: ThemeSettings;
-		/** Called with the new settings whenever a control changes. */
 		onValueChange?: (value: ThemeSettings) => void;
-		/** Which sections to show, in order. Defaults to every section. */
 		sections?: CustomizerSection[];
 	}
 
@@ -54,7 +53,7 @@
 		value = $bindable(),
 		onValueChange,
 		sections = ALL,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -100,7 +99,7 @@
 		const lines = [
 			`data-theme="${settings.theme}"`,
 			`data-mode="${settings.mode}"`,
-			`data-radius="${settings.radius}"`,
+			`data-shape="${settings.shape}"`,
 			`data-density="${settings.density}"`,
 			`data-motion="${settings.motion}"`
 		];
@@ -153,11 +152,11 @@
 	</div>
 {/snippet}
 
-<div class={['box gap-lg pad-lg radius-lg border bg-panel', klass]} {...rest}>
+<div class={['box gap-lg pad-lg radius-lg border bg-panel', className]} {...rest}>
 	{#if has('mode')}
 		<div class="box gap-sm">
 			<p class="text-sm weight-500">Mode</p>
-			<ModeToggle variant="segmented" withSystem value={settings.mode} onValueChange={setMode} />
+			<ModeToggle form="segmented" withSystem value={settings.mode} onValueChange={setMode} />
 		</div>
 	{/if}
 
@@ -177,12 +176,12 @@
 		</div>
 	{/if}
 
-	{#if has('radius')}
+	{#if has('shape')}
 		<div class="box gap-sm">
-			<p class="text-sm weight-500">Radius</p>
-			<div role="radiogroup" aria-label="Radius" class="choice-group text-sm" {@attach roving({ orientation: 'horizontal', onNavigate: (item) => item.click() })}>
-				{#each radii as option (option.id)}
-					<button type="button" role="radio" aria-checked={option.id === settings.radius} tabindex={option.id === settings.radius ? 0 : -1} class="bare choice focus-ring weight-500" onclick={() => patch({ radius: option.id })}>
+			<p class="text-sm weight-500">Shape</p>
+			<div role="radiogroup" aria-label="Shape" class="choice-group text-sm" {@attach roving({ orientation: 'horizontal', onNavigate: (item) => item.click() })}>
+				{#each shapes as option (option.id)}
+					<button type="button" role="radio" aria-checked={option.id === settings.shape} tabindex={option.id === settings.shape ? 0 : -1} class="bare choice focus-ring weight-500" onclick={() => patch({ shape: option.id })}>
 						{option.name}
 					</button>
 				{/each}
@@ -223,7 +222,7 @@
 			hue={hue}
 			chroma={chroma}
 			tint={tint}
-			radius={settings.radius}
+			shape={settings.shape}
 			density={settings.density}
 			motion={settings.motion}
 			class="box gap-sm pad-bs radius-md border"
@@ -232,24 +231,24 @@
 			<p class="weight-600">Invoice INV-2048</p>
 			<p class="text-sm text-secondary tabular-nums">$1,284.00 due 18 Nov</p>
 			<div class="row wrap gap-sm">
-				<Button size="sm">Pay now</Button>
-				<Button size="sm" variant="secondary">Download PDF</Button>
-				<Button size="sm" variant="themed">Accent</Button>
+				<Button size="h-sm">Pay now</Button>
+				<Button size="h-sm" variant="secondary">Download PDF</Button>
+				<Button size="h-sm" variant="themed">Accent</Button>
 				<span class="tag ink-auto">Published</span>
 			</div>
 		</ThemeProvider>
 	{/if}
 
 	<div class="row wrap gap-sm">
-		<Button size="sm" variant="secondary" onclick={reset}>
+		<Button size="h-sm" variant="secondary" onclick={reset}>
 			<Icon icon={luRotateCcw} />
 			Reset
 		</Button>
-		<Button size="sm" variant="outline" onclick={() => copy('css')}>
+		<Button size="h-sm" variant="outline" onclick={() => copy('css')}>
 			<Icon icon={copied === 'css' ? luCheck : luCopy} />
 			{copied === 'css' ? 'Copied CSS' : 'Copy CSS'}
 		</Button>
-		<Button size="sm" variant="outline" onclick={() => copy('config')}>
+		<Button size="h-sm" variant="outline" onclick={() => copy('config')}>
 			<Icon icon={copied === 'config' ? luCheck : luCopy} />
 			{copied === 'config' ? 'Copied config' : 'Copy config'}
 		</Button>

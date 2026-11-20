@@ -10,7 +10,7 @@
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
 		/** The side the element springs in from. */
-		direction?: RevealDirection;
+		from?: RevealDirection;
 		/** How far the element starts from rest, in pixels. */
 		distance?: number;
 		/** The starting scale. `1` leaves scale unchanged. */
@@ -30,7 +30,7 @@
 	}
 
 	let {
-		direction = 'up',
+		from = 'up',
 		distance = 24,
 		scale = 1,
 		blur = 0,
@@ -38,16 +38,16 @@
 		once = true,
 		amount = 0.2,
 		spring = 'gentle',
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
 
 	const offset = $derived.by((): MotionValues => {
 		const values: MotionValues = { scale, opacity: 0 };
-		if (direction === 'up') values.y = distance;
-		else if (direction === 'down') values.y = -distance;
-		else if (direction === 'left') values.x = distance;
+		if (from === 'up') values.y = distance;
+		else if (from === 'down') values.y = -distance;
+		else if (from === 'left') values.x = distance;
 		else values.x = -distance;
 		if (blur > 0) values['--blur'] = blur;
 		return values;
@@ -99,6 +99,6 @@
 	);
 </script>
 
-<div class={['motion', blur > 0 && 'blur-in', klass]} {@attach attach} {...rest}>
+<div class={['motion', blur > 0 && 'blur-in', className]} {@attach attach} {...rest}>
 	{@render children?.()}
 </div>

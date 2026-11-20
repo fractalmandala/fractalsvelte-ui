@@ -6,11 +6,6 @@ type - sveltekit (library + docs site)
 status - current
 tags - svelte package, svelte 5, sveltekit 3, fractalstyler
 
----
-
-This file is the **contract**. Every rule below is enforced by a script
-(`pnpm gate`, `pnpm lint`, `pnpm check`). If a rule and a script disagree, the
-script is the truth — fix the file, never the gate.
 
 ## 0. Commands
 
@@ -44,26 +39,6 @@ Styling is **composition of registered classes in markup**. Nothing else.
   **fractalsvelte-ui extension layer** (`src/lib/styles/layers/components/<kit>.css` —
   read them; they are short kit fragments).
 - Modifiers are never standalone: `.row.xcenter`, never a bare `.xcenter`.
-- There is no `.w-*`, `.pad-x-*`, `.border-top`. Search the registry; never guess.
-
-**Dynamic values travel through custom properties.** JavaScript may write
-*only* custom properties — `node.style.setProperty('--x', …)` — and a class
-owns the real property (`translate: calc(var(--mx, 0) * 1px) …`). Use the
-`vars()` attachment (`src/lib/motion`) to bind values:
-`<div class="fill" {@attach vars({ value: 0.4 })}>`. Never assign
-`node.style.transform = …` or any real property.
-
-**The extension layer is small on purpose.** Compose first. If the system
-genuinely cannot express something, add the *smallest general primitive* to
-your kit's fragment `src/lib/styles/layers/components/<kit>.css`:
-
-- plain CSS, tokens only (`var(--space-*)`, `var(--radius-*)`, colour roles),
-  `rem`/`em`/`%` — no px above 2, no hex, no `&` nesting;
-- named in the system's voice (`.track`, `.thumb`, `.indicator`) — a
-  primitive several components could use, not `.my-component-inner`;
-- hard budget: **90 lines per kit fragment**. The gate fails above it;
-- only edit your own kit's fragment. Never edit `custom.css` (generated) or
-  another layer file. After editing run `pnpm gen`.
 
 ### Law 2 — a component and its documentation are one
 
@@ -76,7 +51,7 @@ src/lib/components/<kit>/<name>/        # <name> is kebab-case
   <NamePart>.svelte …                   # optional further parts (DialogTitle.svelte)
   <name>.svelte.ts | <name>.ts          # optional logic/state modules
   index.ts                              # named exports of every public thing
-  doc.ts                                # the documentation manifest
+  comments.md                           # source annotations + the page's own prose
   examples/01-usage.svelte              # ≥ 1, ordered by numeric prefix
   examples/02-….svelte
 ```
@@ -87,7 +62,71 @@ The docs page is **generated** from that folder — you never write a route:
 - **Examples** — each example file is rendered live *and* shown as source
   (the same file, so demo and code cannot drift).
 - **API tables** — extracted from each part's `interface Props` and its JSDoc.
-- **Accessibility / keyboard** — from `doc.ts`.
+- **Accessibility / keyboard** — from the `<!-- doc … -->` block in `comments.md`.
+
+## CANONICAL PROPS
+
+Standard props are named and provided in `lib/internal/tokens.ts`
+you must never drift from these, and if you spot components having drifted, correct them back to these → you do not need user approval for this. 
+**if action realigns a component to the props of tokens.ts it is already a proactive good action.**
+
+### Variants
+buttons, inputs, selects, fields, etc. use the type Variant which defines their background and border combinations.
+primary | secondary | themed | outline | ghost | link | info | danger | success | warning | neutral
+> if you see “soft” or “tint” being used - it’s incorrect and must be removed
+> if you see a component using prop type Look instead - it’s incorrect and must be removed
+
+### Sizes
+this determines height for buttons, inputs, selects, icons, avatars, fields, etc., using the type Size 
+h-xs | h-sm | h-md | h-bs | h-lg | h-xl | h-2xl | h-3xl
+> if you see any other method being used to set their height, it’s incorrect
+> Examples should always demo these in the same order, do not change the order and sequence
+> Avoid using h-xs in example demos. It works out to 12px and is too short a height for components that have text in them, which is all fields and inputs for example. Start their examples from h-sm or h-md even. 
+> Similarly, h-2xl or h-3xl is usually too big for the same components, so the ideal ladder to show in examples is h-md to h-xl
+> But prop APIs, documentation, should always show the full prop set steps
+
+### Shapes
+the type Shape determines border-radius props
+rect | mincurved | modern | curved | round
+> no other method for border-radius should be used in components
+> round is 999px , rect is 0px
+
+### Gaps
+determines gap for components like button group, chip group, icon button with text etc. (they must be styled as flex column or row though, for it to work)
+gap-xs —> *-sm —> *-md —> *-bs —> *-lg —> *-xl —> *-2xl —> *-3xl
+> components that have more than 1 element in them should have gap as a prop so user can select, for example, button group with no gaps, or gapped.
+
+### Text in Components
+fractalsvelte does not hard-code text sizes or colors in components - giving user flexibility.
+all components that feature text must use the props TextSize and TextColor
+text-xs —> text-sm —> *-md —> *-bs —> *-lg —> *-xl —> *-2xl —> *-3xl
+text-primary | text-secondary | text-muted | text-inverse | text-black | text-white | text-danger | text-neutral | text-info | text-success | text-warning
+> some components may have 2 different text sections. They should also use props ChildTextSize and ChildTextColor
+> for the disabled or inactive variants of components, use text-muted for text-color
+> For components where a variant is a dark background on light mode and light background on dark mode, use text-inverse color
+> if variant has dark background in both light mode and dark mode, use text-white color
+
+### Orientation and Alignment
+Components like button groups, chip groups can either be flex columns, or rows, using type Orientation
+horizontal | vertical
+Components that have text and/or labels must extend alignment prop for uses, type AlignContent
+xleft | xcenter | xright | xbetween | xcenter mleft | xright mleft
+> xbetween is space-between, additional mleft sets alignment to left on mobile view.
+
+### Backgrounds/Surfaces
+Components like cards, accordions and others use the Surface type to set their background-color + border combinations
+elevated | outlined | vacant | overlayed | paneled | glass
+
+### Component Examples
+The core primitive of a component group displays the full props set. 
+ex: input displays examples for variant, size, shape
+And the others should only show examples for what they additionally use
+ex: pin input, number input, search input need not show those demos again
+> But all should show the full props they use in their props API table.
+> Props API tables must always be complete and comprehensive; demos and examples need not be repetitive.
+
+
+<!--THE BELOW SECTIONS ARE STALE-->
 
 What the gate requires:
 
@@ -96,7 +135,8 @@ What the gate requires:
 2. Every exported `.svelte` part declares `interface Props` in its instance
    script. **Every prop has a JSDoc comment** (one sentence or more). Defaults
    are documented by the destructuring default or an explicit `@default` tag.
-3. `doc.ts` default-exports `defineDoc({...})` (shape below), nothing empty.
+3. The page's prose (summary, description, features, accessibility, keyboard) is a
+   `<!-- doc { … } -->` JSON block in the folder's `comments.md` — see below.
 4. Each example starts with the header line
    `<!-- @example Title :: One sentence describing what it shows. -->`
    and example 01 is the minimal usage.
@@ -111,9 +151,37 @@ What the gate requires:
    import only from `@fractaldesign/fractalsvelte-ui` (and `/motion`, `/theme`),
    `@fractaldesign/icons*`, and `svelte*` — exactly what a consumer would write.
 
-### `doc.ts`
+### The page prose — `comments.md`
 
-```ts
+Everything the page says that is not extracted from the source lives in the folder's
+`comments.md`, in one JSON block at the top:
+
+```md
+<!-- doc
+{
+  "name": "Button",
+  "summary": "One sentence. Shown in the index and the page header.",
+  "description": "One to three paragraphs. A blank line starts a new paragraph. `code` is allowed.",
+  "parts": { "ButtonGroup": "One line: what this part is for." },
+  "features": ["Spring-pressed", "…"],
+  "accessibility": ["Renders a native <button> …"],
+  "keyboard": [{ "keys": "Enter / Space", "action": "Activates the button." }],
+  "api": [{ "name": "toast(message, options?)", "type": "(…) => string", "description": "…" }],
+  "related": ["icon-button"]
+}
+-->
+```
+
+- The block is optional: a folder without one simply has no prose section (the page still
+  gets its summary from the first line of the primary component's `@component` header).
+- A **kit folder** may hold a `comments.md` too, for prose that belongs to the group: one
+  block per component, keyed by slug — `<!-- doc:data-table { … } -->`. The component
+  folder's own block wins.
+- Below the block, the same file carries the folder's source JSDoc (written by
+  `pnpm comments:strip`, put back by `pnpm comments:restore`). The doc block is not
+  touched by either.
+- `scripts/lib/comments.ts#readDocBlock` reads it; `scripts/gen.ts` folds it into
+  `api.json` as `summary`, `description` and `doc`, which is what the page renders.ts
 import { defineDoc } from '../../../docs/define.js';
 
 export default defineDoc({
@@ -176,7 +244,7 @@ export default defineDoc({
 - SSR-safe: no `window`/`document` at module or init time — only inside
   `$effect`, attachments and event handlers.
 - Accessible by construction: correct roles, `aria-*` wiring, labels, focus
-  management, full keyboard support (document it in `doc.ts`).
+  management, full keyboard support (document it in the folder's `comments.md`).
 - Motion (all from `src/lib/motion`): springs for anything a user moves or
   triggers; honour reduced motion (the motion layer already does — do not
   bypass it). Prefer CSS spring tokens (`.spring.snappy`, `.pop`) for

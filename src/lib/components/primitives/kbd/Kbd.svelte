@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { type Size, type TextSize } from '../../../internal/tokens.js';
 	import type { HTMLAttributes } from 'svelte/elements';
 
 	interface Props extends HTMLAttributes<HTMLSpanElement> {
@@ -10,14 +11,14 @@
 		/** The text drawn between two keys. */
 		separator?: string;
 		/** The key cap height. Text follows this unless `textSize` is set. */
-		size?: 'sm' | 'md' | 'lg';
+		size?: Size;
 		/** The text scale, independent of the cap height. Follows `size` when omitted. */
-		textSize?: 'sm' | 'md' | 'lg';
+		textSize?: TextSize;
 		/** The key label, used when `keys` is not given. */
 		children?: Snippet;
 	}
 
-	let { keys, separator = '+', size = 'md', textSize, class: klass, children, ...rest }: Props = $props();
+	let { keys, separator = '+', size = 'h-md', textSize, class: className, children, ...rest }: Props = $props();
 
 	// Platform is detected after mount only, so the server render never claims a platform it cannot know.
 	let apple = $state(false);
@@ -30,19 +31,9 @@
 		return key;
 	}
 
-	const heightClasses = {
-		sm: 'h-md',
-		md: 'h-bs',
-		lg: 'h-lg'
-	};
-	const textClasses = {
-		sm: 'text-xs',
-		md: 'text-sm',
-		lg: 'text-md'
-	};
 
-	const classes = $derived(['inline-flex xcenter gap-xs', klass]);
-	const capClasses = $derived(['kbd', heightClasses[size], textClasses[textSize ?? size]]);
+	const classes = $derived(['inline-flex xcenter gap-xs', className]);
+	const capClasses = $derived(['kbd', size, textSize]);
 </script>
 
 <span class={classes} {...rest}>

@@ -5,7 +5,7 @@
 	import { Icon } from '@fractaldesign/icons';
 	import { animate } from '../../../motion/index.js';
 	import { roving } from '../../../internal/roving.js';
-	import { controlSize, type Size } from '../../../internal/tokens.js';
+	import { type Size, type TextSize } from '../../../internal/tokens.js';
 	import { valueKey, type SegmentOption } from './options.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
@@ -18,7 +18,7 @@
 		/** The segment height. Text follows this unless `textSize` is set. */
 		size?: Size;
 		/** The text scale, independent of the segment height. Follows `size` when omitted. */
-		textSize?: Size;
+		textSize?: TextSize;
 		/** Stretches the control to the full width of its container, with equal segments. */
 		block?: boolean;
 		/** Accessible name of the group. */
@@ -33,13 +33,13 @@
 		options,
 		value = $bindable(null),
 		onValueChange,
-		size = 'md',
+		size = 'h-lg',
 		textSize,
 		block = false,
 		label,
 		disabled = false,
 		name,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -108,7 +108,7 @@
 		'relative inline-flex row ycenter pad-xs bg-input border modern',
 		block && 'wfull',
 		disabled && 'disabled',
-		klass
+		className
 	]}
 	{@attach roving({
 		selector: '[role="radio"]',
@@ -132,9 +132,9 @@
 			disabled={disabled || option.disabled || undefined}
 			class={[
 				'bare relative z-raised row ycenter xcenter gap-sm px-md weight-500 focus-ring select-none',
-				controlSize(size, textSize),
+				size, textSize,
 				block && 'grow',
-				on ? 'text-primary' : 'text-secondary'
+				on ? '' : 'text-secondary'
 			]}
 			onclick={() => !option.disabled && commit(option.value)}
 		>

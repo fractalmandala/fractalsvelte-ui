@@ -23,7 +23,7 @@
 		tint = false,
 		border = true,
 		rim = true,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -32,7 +32,7 @@
 </script>
 
 <div
-	class={['glass', 'box', 'curved', 'pad-lg', 'gap-sm', tint && 'tinted', border && 'border', rim && 'rim', klass]}
+	class={['glass', 'box', 'curved', 'pad-lg', 'gap-sm', tint && 'tinted', border && 'border', rim && 'rim', className]}
 	{@attach vars({ 'glass-blur': blurValue[blur] })}
 	{...rest}
 >

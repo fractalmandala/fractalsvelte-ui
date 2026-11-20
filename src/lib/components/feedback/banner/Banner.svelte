@@ -7,7 +7,8 @@
 	import type { IconData } from '@fractaldesign/icons';
 	import { luCircleAlert, luCircleCheck, luInfo, luTriangleAlert, luX } from '@fractaldesign/icons/lucide';
 	import { springSlide } from '../../../motion/index.js';
-	import { toneText, type Tone } from '../../../internal/tokens.js';
+	import { type Tone } from '../../../internal/tokens.js';
+import { toneText } from '../../../internal/helpers.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
 		/** The meaning of the announcement. `danger` and `warning` are announced assertively; the rest politely. */
@@ -43,7 +44,7 @@
 		action,
 		href,
 		children,
-		class: klass,
+		class: className,
 		role,
 		...rest
 	}: Props = $props();
@@ -89,7 +90,7 @@
 
 {#if ready && open}
 	<div
-		class={['banner h-bs row ycenter gap-md wfull', 'msg', tone, sticky && 'sticky-top', klass]}
+		class={['banner h-bs row ycenter gap-md wfull', 'msg', tone, sticky && 'sticky-top', className]}
 		role={role ?? (urgent ? 'alert' : 'region')}
 		aria-label={!role && !urgent ? 'Announcement' : undefined}
 		out:springSlide

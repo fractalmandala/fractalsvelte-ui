@@ -4,6 +4,9 @@ import type { Shape, Size } from '../../../internal/tokens.js';
 /** The look a `Field` can pass down to the control inside it. */
 export type FieldVariant = 'outline' | 'filled' | 'ghost';
 
+/** The old name for `FieldVariant`, kept while components still use it. */
+export type FieldLook = FieldVariant;
+
 /** What a `Field` shares with the control inside it. Every member is reactive. */
 export interface FieldContext {
 	/** The id the control should carry — the label's `for` points at it. */

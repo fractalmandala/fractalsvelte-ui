@@ -33,3 +33,10 @@
 .viewport { width: calc(var(--vw, 0) * 1px); height: calc(var(--vh, 0) * 1px); overflow: hidden; }
 .viewport > * { position: absolute; top: 0; left: 0; visibility: hidden; pointer-events: none; }
 .viewport > *[data-active] { visibility: visible; pointer-events: auto; }
+
+/* Responsive mobile drawer overlay for SidebarNav when mobileOpen is true. */
+.rail-backdrop { position: fixed; inset: 0; z-index: calc(var(--z-modal) - 1); background-color: var(--bg-backdrop); }
+@media (max-width: 768px) {
+	.rail.mobile-drawer:not(.mobile-open) { display: none; }
+	.rail.mobile-drawer.mobile-open { position: fixed; inset-block: 0; left: 0; z-index: var(--z-modal); }
+}

@@ -14,7 +14,7 @@
 		children?: Snippet;
 	}
 
-	let { label, class: klass, children, ...rest }: Props = $props();
+	let { label, class: className, children, ...rest }: Props = $props();
 
 	const tabs = getTabs();
 
@@ -81,7 +81,7 @@
 			variant === 'enclosed' && 'pad-xs bg-input border modern',
 			variant === 'pill' && 'gap-xs',
 			variant === 'underline' && (vertical ? 'bl' : 'bb'),
-			klass
+			className
 		];
 	});
 

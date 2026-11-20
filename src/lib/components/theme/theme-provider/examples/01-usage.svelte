@@ -11,8 +11,8 @@
 		<p class="text-sm text-muted">Invoice INV-2048</p>
 		<p class="weight-600 tabular-nums">$1,284.00 due 18 Nov</p>
 		<div class="row gap-sm">
-			<Button size="sm">Pay now</Button>
-			<Button size="sm" variant="secondary">Download PDF</Button>
+			<Button size="h-sm">Pay now</Button>
+			<Button size="h-sm" variant="secondary">Download PDF</Button>
 		</div>
 	</ThemeProvider>
 </ThemeProvider>

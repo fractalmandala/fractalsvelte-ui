@@ -17,7 +17,7 @@
 				icon={luBold}
 				aria-label="Bold"
 				variant="ghost"
-				size="sm"
+				size="h-sm"
 				bind:pressed={bold}
 				onPressedChange={(next) => (bold = next)}
 			/>
@@ -25,7 +25,7 @@
 				icon={luItalic}
 				aria-label="Italic"
 				variant="ghost"
-				size="sm"
+				size="h-sm"
 				bind:pressed={italic}
 				onPressedChange={(next) => (italic = next)}
 			/>
@@ -33,7 +33,7 @@
 				icon={luUnderline}
 				aria-label="Underline"
 				variant="ghost"
-				size="sm"
+				size="h-sm"
 				bind:pressed={underline}
 				onPressedChange={(next) => (underline = next)}
 			/>
@@ -44,7 +44,7 @@
 				icon={luTextAlignStart}
 				aria-label="Align left"
 				variant="ghost"
-				size="sm"
+				size="h-sm"
 				pressed={align === 'left'}
 				onPressedChange={() => (align = 'left')}
 			/>
@@ -52,7 +52,7 @@
 				icon={luTextAlignCenter}
 				aria-label="Align centre"
 				variant="ghost"
-				size="sm"
+				size="h-sm"
 				pressed={align === 'center'}
 				onPressedChange={() => (align = 'center')}
 			/>
@@ -60,22 +60,22 @@
 				icon={luTextAlignEnd}
 				aria-label="Align right"
 				variant="ghost"
-				size="sm"
+				size="h-sm"
 				pressed={align === 'right'}
 				onPressedChange={() => (align = 'right')}
 			/>
 		</ToolbarGroup>
 		<ToolbarSeparator />
 		<ToolbarGroup label="Zoom" attached={false}>
-			<Button variant="ghost" size="sm" onclick={() => (zoom = 'fit')}>Fit</Button>
-			<Button variant="ghost" size="sm" onclick={() => (zoom = 'page')}>Page</Button>
+			<Button variant="ghost" size="h-sm" onclick={() => (zoom = 'fit')}>Fit</Button>
+			<Button variant="ghost" size="h-sm" onclick={() => (zoom = 'page')}>Page</Button>
 		</ToolbarGroup>
 	</Toolbar>
 
 	<Toolbar orientation="vertical" label="Atlas zoom">
-		<Button variant="outline" size="sm" onclick={() => (zoom = 'in')}>Zoom in</Button>
+		<Button variant="outline" size="h-sm" onclick={() => (zoom = 'in')}>Zoom in</Button>
 		<ToolbarSeparator />
-		<Button variant="outline" size="sm" onclick={() => (zoom = 'out')}>Zoom out</Button>
+		<Button variant="outline" size="h-sm" onclick={() => (zoom = 'out')}>Zoom out</Button>
 	</Toolbar>
 
 	<span class="text-sm text-muted">Zoom: {zoom}. Align {align}.</span>

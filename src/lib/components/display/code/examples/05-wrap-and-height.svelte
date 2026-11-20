@@ -29,7 +29,7 @@ export function trim(code: string): string {
 export const languages = ['svelte', 'ts', 'css', 'bash', 'json', 'html'] as const;
 `;
 
-	let maxHeight: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = $state('sm');
+	let maxHeight: 'xs' | 'sm' | 'md' | 'bs' | 'lg' | 'xl' | '2xl' | '3xl' = $state('sm');
 </script>
 
 <div class="box gap-lg">
@@ -40,10 +40,10 @@ export const languages = ['svelte', 'ts', 'css', 'bash', 'json', 'html'] as cons
 	<div class="box gap-xs">
 		<span class="text-sm text-muted">Maximum height</span>
 		<div class="row wrap gap-sm">
-			{#each ['xs', 'sm', 'md', 'lg', 'xl'] as const as step}
+			{#each ['xs', 'sm', 'md', 'bs', 'lg', 'xl', '2xl', '3xl'] as const as step}
 				<Button
 					variant={maxHeight === step ? 'secondary' : 'ghost'}
-					size="sm"
+					size="h-sm"
 					onclick={() => (maxHeight = step)}
 				>
 					{step}

@@ -3,7 +3,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { anchor, floating, popoverSync } from '../../../internal/floating.js';
+	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
 	import { roving } from '../../../internal/roving.js';
 	import type { Orientation } from '../../../internal/tokens.js';
 	import { animate } from '../../../motion/index.js';
@@ -37,7 +37,7 @@
 		orientation = 'horizontal',
 		surface = 'glass',
 		label = 'Main',
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -208,7 +208,7 @@
 <nav
 	bind:this={root}
 	aria-label={label}
-	class={['relative', vertical ? 'row gap-xs' : 'box gap-xs', klass]}
+	class={['relative', vertical ? 'row gap-xs' : 'box gap-xs', className]}
 	onkeydown={onKeydown}
 	{...rest}
 >

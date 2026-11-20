@@ -2,18 +2,18 @@
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { type Shape, type Size, type TextSize, type Variant } from '../../../internal/tokens.js';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import type { IconData } from '@fractaldesign/icons';
-	import type { Shape, Variant } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLSpanElement> {
-		/** The visual style, from the shared variant axis. `soft` is the quiet default. */
+		/** The visual style, from the shared variant axis. */
 		variant?: Variant;
 		/** The label height. Text follows this unless `textSize` is set. */
-		size?: 'sm' | 'md' | 'lg';
+		size?: Size;
 		/** The text scale, independent of the badge height. Follows `size` when omitted. */
-		textSize?: 'sm' | 'md' | 'lg';
+		textSize?: TextSize;
 		/** The corner shape. Pills are the default. */
 		shape?: Shape;
 		/** Draws a small dot in the current ink before the label, for live or status state. */
@@ -25,34 +25,24 @@
 	}
 
 	let {
-		variant = 'soft',
-		size = 'md',
+		variant = 'secondary',
+		size = 'h-bs',
 		textSize,
-		shape = 'round',
+		shape = 'modern',
 		dot = false,
 		icon,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
 
-	const heightClasses = {
-		sm: 'h-md',
-		md: 'h-bs',
-		lg: 'h-lg'
-	};
-	const textClasses = {
-		sm: 'text-xs',
-		md: 'text-sm',
-		lg: 'text-md'
-	};
 
 	const classes = $derived([
 		'badge inline-flex xcenter ycenter gap-xs tabular-nums',
 		variant,
-		heightClasses[size], textClasses[textSize ?? size],
+		size, textSize,
 		shape,
-		klass
+		className
 	]);
 </script>
 

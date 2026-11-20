@@ -3,7 +3,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import { sizeClass } from '../../../internal/tokens.js';
+	
 	import { getTabs } from './tabs.svelte.js';
 
 	interface Props extends HTMLButtonAttributes {
@@ -15,7 +15,7 @@
 		children?: Snippet;
 	}
 
-	let { value, disabled = false, class: klass, children, ...rest }: Props = $props();
+	let { value, disabled = false, class: className, children, ...rest }: Props = $props();
 
 	const tabs = getTabs();
 	const selected = $derived(tabs.value() === value);
@@ -39,10 +39,10 @@
 	disabled={disabled || undefined}
 	class={[
 		'bare relative z-raised row ycenter xcenter gap-sm px-md weight-500 focus-ring select-none',
-		sizeClass[tabs.size],
-		selected ? 'text-primary' : 'text-secondary',
+		tabs.size,
+		selected ? '' : 'text-secondary',
 		disabled && 'disabled',
-		klass
+		className
 	]}
 	onclick={onSelect}
 	{...rest}

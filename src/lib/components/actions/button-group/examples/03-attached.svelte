@@ -10,7 +10,7 @@
 		<Button variant="outline" icon={luShare2}>Share</Button>
 		<IconButton icon={luArrowUpRight} label="Open preview" variant="outline" />
 	</ButtonGroup>
-	<ButtonGroup label="Publish, spaced" attached={false}>
+	<ButtonGroup label="Publish, spaced" gap="gap-bs">
 		<Button variant="primary">Publish</Button>
 		<Button variant="outline" icon={luShare2}>Share</Button>
 		<IconButton icon={luArrowUpRight} label="Open preview" variant="outline" />

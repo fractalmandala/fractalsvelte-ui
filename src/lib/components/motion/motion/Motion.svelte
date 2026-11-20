@@ -60,7 +60,7 @@
 		spring = 'snappy',
 		delay = 0,
 		onAnimationEnd,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -224,6 +224,6 @@
 	const attach = $derived(behavior(snapshot));
 </script>
 
-<svelte:element this={tag} class={['motion', klass]} {@attach attach} {...rest}>
+<svelte:element this={tag} class={['motion', className]} {@attach attach} {...rest}>
 	{@render children?.()}
 </svelte:element>

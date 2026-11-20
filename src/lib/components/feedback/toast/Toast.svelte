@@ -14,12 +14,12 @@
 		luX
 	} from '@fractaldesign/icons/lucide';
 	import { Button } from '../../actions/button/index.js';
-	import { toneText } from '../../../internal/tokens.js';
-	import type { ToastAction, ToastType } from './toast.svelte.js';
+	import { toneText } from '../../../internal/helpers.js';
+	import type { ToastAction, ToastTone } from './toast.svelte.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** The meaning of the toast. `error` and `warning` are announced assertively; the rest politely. */
-		type?: ToastType;
+		/** The meaning of the toast. `danger` and `warning` are announced assertively; the rest politely. */
+		tone?: ToastTone;
 		/** The main message. Used when `children` is omitted. */
 		message?: string;
 		/** Supporting text under the message. */
@@ -37,7 +37,7 @@
 	}
 
 	let {
-		type = 'neutral',
+		tone = 'neutral',
 		message,
 		description,
 		action,
@@ -45,30 +45,30 @@
 		dismissible = true,
 		onDismiss,
 		children,
-		class: klass,
+		class: className,
 		role,
 		...rest
 	}: Props = $props();
 
-	const defaults: Record<ToastType, IconData> = {
+	const defaults: Record<ToastTone, IconData> = {
 		neutral: luInfo,
 		info: luInfo,
 		success: luCircleCheck,
 		warning: luTriangleAlert,
-		error: luCircleAlert,
+		danger: luCircleAlert,
 		loading: luLoaderCircle
 	};
 
-	const toneClass: Record<ToastType, string> = {
+	const toneClass: Record<ToastTone, string> = {
 		neutral: toneText.neutral,
 		info: toneText.info,
 		success: toneText.success,
 		warning: toneText.warning,
-		error: toneText.danger,
+		danger: toneText.danger,
 		loading: toneText.neutral
 	};
 
-	const urgent = $derived(type === 'error' || type === 'warning');
+	const urgent = $derived(tone === 'danger' || tone === 'warning');
 
 	function run(next?: ToastAction) {
 		next?.onClick?.();
@@ -77,14 +77,14 @@
 </script>
 
 <div
-	class={['row gap-md pad-md modern glass rim shad-md border bg-overlay measure-sm', klass]}
+	class={['row gap-md pad-md modern glass rim shad-md border bg-overlay measure-sm', className]}
 	role={role ?? (urgent ? 'alert' : 'status')}
 	aria-live={role ? undefined : urgent ? 'assertive' : 'polite'}
 	aria-atomic="true"
 	{...rest}
 >
-	<span class={['shrink-0 text-bs lh14', toneClass[type], type === 'loading' && 'anim-spin']}>
-		<Icon icon={defaults[type]} />
+	<span class={['shrink-0 text-bs lh14', toneClass[tone], tone === 'loading' && 'anim-spin']}>
+		<Icon icon={defaults[tone]} />
 	</span>
 	<div class="box grow wmin0 gap-xs">
 		{#if children}
@@ -99,13 +99,13 @@
 			<div class="row ycenter wrap gap-sm mt-xs">
 				{#if action}
 					{#if action.href}
-						<Button size="sm" variant="primary" href={action.href} onclick={() => run(action)}>{action.label}</Button>
+						<Button size="h-sm" variant="primary" href={action.href} onclick={() => run(action)}>{action.label}</Button>
 					{:else}
-						<Button size="sm" variant="primary" onclick={() => run(action)}>{action.label}</Button>
+						<Button size="h-sm" variant="primary" onclick={() => run(action)}>{action.label}</Button>
 					{/if}
 				{/if}
 				{#if cancel}
-					<Button size="sm" variant="ghost" onclick={() => run(cancel)}>{cancel.label}</Button>
+					<Button size="h-sm" variant="ghost" onclick={() => run(cancel)}>{cancel.label}</Button>
 				{/if}
 			</div>
 		{/if}

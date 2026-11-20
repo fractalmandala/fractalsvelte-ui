@@ -1,10 +1,12 @@
-<!-- @example Sizes :: Three key cap sizes on the control height ladder. Match them to the text they sit in. -->
+<!-- @example Sizes :: Every step of the control height ladder. Match the caps to the text they sit in. -->
 <script lang="ts">
 	import { Kbd } from '@fractaldesign/fractalsvelte-ui';
+
+	const sizes = ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const;
 </script>
 
-<div class="row wrap gap-sm ycenter">
-	<Kbd size="sm" keys={['mod', 'P']} />
-	<Kbd size="md" keys={['mod', 'P']} />
-	<Kbd size="lg" keys={['mod', 'P']} />
+<div class="row wrap ycenter gap-sm">
+	{#each sizes as size (size)}
+		<Kbd {size} keys={['mod', 'P']} />
+	{/each}
 </div>

@@ -15,7 +15,7 @@
 </script>
 
 <div class="card-grid gap-bs">
-	{#each [['16/9', 'start'], ['4/3', 'center'], ['3/2', 'end'], ['1/1', 'between']] as const as [ratio, align] (ratio)}
+	{#each [['16/9', 'left'], ['4/3', 'center'], ['3/2', 'right'], ['1/1', 'between']] as const as [ratio, align] (ratio)}
 		<Card>
 			<CardMedia
 				{ratio}
@@ -26,19 +26,19 @@
 				<CardTitle level={2}>Lake Louise at dawn</CardTitle>
 				<CardDescription>Photographed in {ratio}</CardDescription>
 				{#snippet action()}
-					<Button variant="ghost" size="sm" class="btn-icon" aria-label="More options">
+					<Button variant="ghost" size="h-sm" class="btn-icon" aria-label="More options">
 						<Icon icon={luEllipsis} />
 					</Button>
 				{/snippet}
 			</CardHeader>
 			<CardContent>A two-day trip with an early start and a long walk down.</CardContent>
 			<CardFooter {align}>
-				<Button size="sm" variant="secondary">Save</Button>
-				<Button size="sm" variant="ghost">Share</Button>
+				<Button size="h-sm" variant="secondary">Save</Button>
+				<Button size="h-sm" variant="ghost">Share</Button>
 			</CardFooter>
 		</Card>
 	{/each}
-	<Card variant="filled">
+	<Card look="filled">
 		<CardMedia ratio="16/9" class="grid center text-muted">No photo yet</CardMedia>
 		<CardContent>Media can also hold an illustration or a placeholder.</CardContent>
 	</Card>

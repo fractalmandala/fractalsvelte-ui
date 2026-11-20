@@ -3,47 +3,40 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { roving } from '../../../internal/roving.js';
-	import type { Orientation, Shape, Size, Variant } from '../../../internal/tokens.js';
+	import { roving } from '../../../internal/helpers.js';
+import type { Orientation, Shape, Size, TextColor, TextSize, Variant } from '../../../internal/tokens.js';
 	import { setToggleGroup } from './toggle-group.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** `single` keeps at most one item on; `multiple` lets any number be on. */
-		type?: 'single' | 'multiple';
-		/** The pressed item values: a string for `single` (empty when none), a string array for `multiple`. Bindable. */
+		multiple?: boolean;
 		value?: string | string[];
-		/** Called with the new value whenever the selection changes. */
 		onValueChange?: (value: string | string[]) => void;
-		/** The visual style of every item. */
 		variant?: Variant;
-		/** The control height and text scale of every item. */
 		size?: Size;
-		/** The corner shape of every item. */
+		textSize?: TextSize;
+		textColor?: TextColor;
 		shape?: Shape;
-		/** The direction items run in, and which arrow keys move focus. */
 		orientation?: Orientation;
-		/** Joins the items into one segmented control. When false they sit apart with a small gap. */
 		attached?: boolean;
-		/** Disables every item. */
 		disabled?: boolean;
-		/** The accessible name of the group. */
 		label?: string;
-		/** The `ToggleGroupItem` children. */
 		children?: Snippet;
 	}
 
 	let {
-		type = 'single',
+		multiple = false,
 		value = $bindable(),
 		onValueChange,
 		variant = 'outline',
-		size = 'md',
+		size = 'h-lg',
+		textSize,
+		textColor,
 		shape = 'modern',
 		orientation = 'horizontal',
 		attached = true,
 		disabled = false,
 		label,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -60,6 +53,12 @@
 		get size() {
 			return size;
 		},
+		get textSize() {
+			return textSize;
+		},
+		get textColor() {
+			return textColor;
+		},
 		get shape() {
 			return shape;
 		},
@@ -70,7 +69,7 @@
 		toggle(item) {
 			const on = selected.includes(item);
 			const next =
-				type === 'multiple'
+				multiple
 					? on
 						? selected.filter((v) => v !== item)
 						: [...selected, item]
@@ -89,7 +88,7 @@
 	class={[
 		attached ? 'button-group' : vertical ? 'box gap-sm' : 'row wrap gap-sm',
 		attached && vertical && 'vertical',
-		klass
+		className
 	]}
 	{@attach roving({ orientation, selector: '[data-roving]' })}
 	{...rest}

@@ -4,7 +4,7 @@
 </script>
 
 <ButtonGroup label="Document actions">
-	<Button variant="secondary">Edit</Button>
-	<Button variant="secondary">Duplicate</Button>
-	<Button variant="secondary">Archive</Button>
+	<Button variant="themed">Edit</Button>
+	<Button variant="themed">Duplicate</Button>
+	<Button variant="themed">Archive</Button>
 </ButtonGroup>

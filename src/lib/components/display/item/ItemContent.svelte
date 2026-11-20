@@ -9,9 +9,9 @@
 		children?: Snippet;
 	}
 
-	let { class: klass, children, ...rest }: Props = $props();
+	let { class: className, children, ...rest }: Props = $props();
 </script>
 
-<div class={['box grow wmin0', klass]} {...rest}>
+<div class={['box grow wmin0', className]} {...rest}>
 	{@render children?.()}
 </div>

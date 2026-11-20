@@ -11,9 +11,9 @@
 		children?: Snippet;
 	}
 
-	let { as = 'ul', class: klass, children, ...rest }: Props = $props();
+	let { as = 'ul', class: className, children, ...rest }: Props = $props();
 </script>
 
-<svelte:element this={as} class={[as === 'ol' ? 'numbers' : 'bullets', 'box gap-xs', klass]} {...rest}>
+<svelte:element this={as} class={[as === 'ol' ? 'numbers' : 'bullets', 'box gap-xs', className]} {...rest}>
 	{@render children?.()}
 </svelte:element>

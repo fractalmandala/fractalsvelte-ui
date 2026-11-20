@@ -1,4 +1,7 @@
 /** Imperative toast API and the reactive list the Toaster host reads. */
+
+/** A toast's tone: the canon tones, plus the spinner state. */
+export type ToastTone = 'neutral' | 'info' | 'success' | 'warning' | 'danger' | 'loading';
 export type ToastType = 'neutral' | 'info' | 'success' | 'warning' | 'error' | 'loading';
 
 /** A button shown on a toast — a next step, or a quieter cancel. */
@@ -31,6 +34,8 @@ export interface ToastItem {
 	id: string;
 	message: string;
 	type: ToastType;
+	/** The canon tone of this toast, when it was given one. */
+	tone?: ToastTone;
 	description?: string;
 	duration?: number;
 	action?: ToastAction;

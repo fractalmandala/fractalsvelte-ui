@@ -10,7 +10,7 @@
 
 <div class="measure-sm">
 	<InputGroup>
-		<InputGroupAddon side="start">
+		<InputGroupAddon align="start">
 			<Icon icon={luSearch} class="text-muted" />
 		</InputGroupAddon>
 		<InputGroupInput
@@ -19,7 +19,7 @@
 			placeholder="Search invoices"
 			onValueChange={() => changes++}
 		/>
-		<InputGroupAddon side="end">
+		<InputGroupAddon align="end">
 			<InputGroupButton aria-label="Clear search" onclick={() => (query = '')}>
 				<Icon icon={luX} />
 			</InputGroupButton>

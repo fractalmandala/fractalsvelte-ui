@@ -9,6 +9,7 @@
 
 <div class="measure-sm">
 	<Field label="Confirm password" error={invalid ? 'The passwords do not match.' : undefined}>
-		<PasswordInput bind:value={confirm} {invalid} autocomplete="new-password" />
+		<PasswordInput value="hunter2" disabled />
+<PasswordInput bind:value={confirm} {invalid} autocomplete="new-password" />
 	</Field>
 </div>

@@ -5,8 +5,8 @@
 
 <div class="row wrap ycenter gap-sm text-secondary">
 	<span>Draft</span>
-	<Divider orientation="vertical" spacing="xs" />
+	<Divider orientation="vertical" spacing="h-xs" />
 	<span>Published</span>
-	<Divider orientation="vertical" variant="strong" spacing="xs" />
+	<Divider orientation="vertical" look="strong" spacing="h-xs" />
 	<span>Archived</span>
 </div>

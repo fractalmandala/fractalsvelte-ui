@@ -1,61 +1,51 @@
-/**
- * The shared prop axes. Every component that takes a variant, a size, a shape
- * or a tone takes THESE — the value is (or maps to) a fractalstyler class, so
- * the same word means the same thing on a button, an input, a card or a tag.
- */
-
-/** Runtime list of visual styles — each value is a class of the same name. */
-export const Variants = [
+export const VARIANTS = [
 	'primary',
 	'secondary',
 	'themed',
 	'outline',
 	'ghost',
 	'link',
-	'soft',
 	'info',
 	'success',
 	'warning',
-	'danger'
+	'danger',
+	'neutral',
 ] as const;
+export type Variant = (typeof VARIANTS)[number];
 
-/** Visual style — each value is a class of the same name. */
-export type Variant =
-	| 'primary'
-	| 'secondary'
-	| 'themed'
-	| 'outline'
-	| 'ghost'
-	| 'link'
-	| 'soft'
-	| 'info'
-	| 'success'
-	| 'warning'
-	| 'danger';
+export const STEPS = ['xs', 'sm', 'md', 'bs', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'] as const;
+export type Step = (typeof STEPS)[number];
 
-/** Runtime list of control scales. */
-export const Sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+export const SIZES = ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const;
+export type Size = (typeof SIZES)[number];
+export const defaultSize: Size = 'h-lg';
 
-/** Control scale: height + text size. */
-export type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export const ACTION_SIZES = ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl'] as const;
+export type ActionSize = (typeof ACTION_SIZES)[number];
 
-/** Default control size when a component or field does not set one. */
-export const defaultSize: Size = 'md';
+export const GAPS = ['', 'gap-xs', 'gap-sm', 'gap-md', 'gap-bs', 'gap-lg', 'gap-xl', 'gap-2xl', 'gap-3xl'] as const;
+export type Gap = (typeof GAPS)[number];
+export const defaultGap: Gap = 'gap-bs';
 
-/** Runtime list of corner shapes — each value is a class of the same name. */
-export const Shapes = ['rect', 'mincurved', 'modern', 'curved', 'round'] as const;
+export const SHAPES = ['rect', 'mincurved', 'modern', 'curved', 'round'] as const;
+export type Shape = (typeof SHAPES)[number];
 
-/** Corner shape — each value is a class of the same name. */
-export type Shape = 'rect' | 'mincurved' | 'modern' | 'curved' | 'round';
+export const TONES = ['neutral', 'info', 'success', 'warning', 'danger'] as const;
+export type Tone = (typeof TONES)[number];
 
-/** Runtime list of status colours. */
-export const Tones = ['neutral', 'info', 'success', 'warning', 'danger'] as const;
+export const MEASURES = ['measure-xs', 'measure-sm', 'measure-md', 'measure-bs', 'measure-lg', 'measure-xl', 'measure-2xl', 'measure-3xl', 'measure-4xl', 'measure-full'] as const;
+export type Measure = (typeof MEASURES)[number];
 
-/** Status colour for messages, badges, meters. */
-export type Tone = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
+export const ALIGNS = ['left', 'center', 'right', 'between'] as const;
+export type Align = (typeof ALIGNS)[number];
 
-/** Runtime list of placements. */
-export const Placements = [
+export const DENSITIES = ['compact', 'cozy', 'comfortable'] as const;
+export type Density = (typeof DENSITIES)[number];
+
+export const MOTIONS = ['off', 'calm', 'playful'] as const;
+export type MotionPreset = (typeof MOTIONS)[number];
+
+export const PLACEMENTS = [
 	'top',
 	'top-start',
 	'top-end',
@@ -63,51 +53,100 @@ export const Placements = [
 	'bottom-start',
 	'bottom-end',
 	'left',
-	'right'
+	'left-start',
+	'left-end',
+	'right',
+	'right-start',
+	'right-end'
 ] as const;
+export type Placement = (typeof PLACEMENTS)[number];
 
-/** Where a floating element sits relative to its anchor. */
-export type Placement =
-	| 'top'
-	| 'top-start'
-	| 'top-end'
-	| 'bottom'
-	| 'bottom-start'
-	| 'bottom-end'
-	| 'left'
-	| 'right';
-
-/** Runtime list of overall alignment to place for large containers like cards, hero sections, etc. */
-export const ControlAlignments = [
-	'xleft', 'xright', 'xcenter', 'xcenter mleft', 'xright mleft', 'xleft mright', 'xcenter mright'
+export const SURFACES = [
+	'elevated',
+	'outlined',
+	'vacant',
+	'overlayed',
+	'paneled',
+	'glass'
 ] as const;
+export type Surface = (typeof SURFACES)[number];
 
-/** Overall alignment inside any containing element, with options to switch at mobile views. */
-export type ControlAlignment =
-	| 'xleft'
-	| 'xright'
-	| 'xcenter'
-	| 'xcenter mleft'
-	| 'xright mleft'
-	| 'xleft mright'
-	| 'xcenter mright';
+export const PADS = ['pad-xs', 'pad-sm', 'pad-md', 'pad-bs', 'pad-lg', 'pad-xl', 'pad-2xl'] as const;
+export type Pad = (typeof PADS)[number];
 
-/** Runtime list of orientations. */
-export const Orientations = ['horizontal', 'vertical'] as const;
+export const ORIENTATIONS = ['horizontal', 'vertical'] as const;
+export type Orientation = (typeof ORIENTATIONS)[number];
 
-export type Orientation = 'horizontal' | 'vertical';
+export const TEXTSIZES = [
+	'text-xs',
+	'text-sm',
+	'text-md',
+	'text-bs',
+	'text-lg',
+	'text-xl',
+	'text-2xl',
+	'text-3xl'
+] as const;
+export type TextSize = (typeof TEXTSIZES)[number];
 
-/** Height + text classes for a control (button, input, select, toggle). */
-export const sizeClass: Record<Size, string> = {
-	xs: 'h-md text-xs',
-	sm: 'h-bs text-sm',
-	md: 'h-lg text-md',
-	lg: 'h-xl text-bs',
-	xl: 'h-2xl text-lg'
-};
+export const CHILDTEXTSIZES = [
+	'text-xs',
+	'text-sm',
+	'text-md',
+	'text-bs',
+	'text-lg',
+	'text-xl',
+	'text-2xl',
+	'text-3xl'
+] as const;
+export type ChildTextSize = (typeof CHILDTEXTSIZES)[number];
 
-/** Height only — for square things (icon buttons, avatars, dots). */
-export const heightClass: Record<Size, string> = {
+export const TEXTCOLORS = [
+	'text-primary',
+	'text-secondary',
+	'text-muted',
+	'text-inverse',
+	'text-white',
+	'text-black',
+	'text-neutral',
+	'text-info',
+	'text-success',
+	'text-warning',
+	'text-danger'
+] as const;
+export type TextColor = (typeof TEXTCOLORS)[number];
+
+export const CHILDTEXTCOLORS = [
+	'text-primary',
+	'text-secondary',
+	'text-muted',
+	'text-inverse',
+	'text-white',
+	'text-black',
+	'text-neutral',
+	'text-info',
+	'text-success',
+	'text-warning',
+	'text-danger'
+] as const;
+export type ChildTextColor = (typeof CHILDTEXTCOLORS)[number];
+
+export const ALIGNCONTENTS = [
+	'xleft',
+	'xcenter',
+	'xright',
+	'xbetween',
+	'xcenter mleft',
+	'xright mleft',
+] as const;
+export type AlignContent = (typeof ALIGNCONTENTS)[number];
+
+/** The five rungs a control's height-and-text ladder covers. */
+export const CONTROL_SCALE = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+export type ControlScale = (typeof CONTROL_SCALE)[number];
+
+/** The control height class for each rung of the scale. */
+export const heightClass: Record<ControlScale, string> = {
 	xs: 'h-md',
 	sm: 'h-bs',
 	md: 'h-lg',
@@ -115,8 +154,8 @@ export const heightClass: Record<Size, string> = {
 	xl: 'h-2xl'
 };
 
-/** Text scale only. */
-export const textClass: Record<Size, string> = {
+/** The text scale class for each `Size`. */
+export const textClass: Record<ControlScale, string> = {
 	xs: 'text-xs',
 	sm: 'text-sm',
 	md: 'text-md',
@@ -125,36 +164,6 @@ export const textClass: Record<Size, string> = {
 };
 
 /** Height from `size` and text from `textSize` (or `size` when omitted). */
-export function controlSize(size: Size, textSize?: Size): string {
+export function controlSize(size: ControlScale, textSize?: ControlScale): string {
 	return `${heightClass[size]} ${textClass[textSize ?? size]}`;
 }
-
-/** Padding for a surface (card, popover, dialog) at each size. */
-export const padClass: Record<Size, string> = {
-	xs: 'pad-sm',
-	sm: 'pad-md',
-	md: 'pad-bs',
-	lg: 'pad-lg',
-	xl: 'pad-xl'
-};
-
-/** `.floating` placement modifier for a Placement. */
-export const placementClass: Record<Placement, string> = {
-	top: 'at-top',
-	'top-start': 'at-top-start',
-	'top-end': 'at-top-end',
-	bottom: 'at-bottom',
-	'bottom-start': 'at-bottom-start',
-	'bottom-end': 'at-bottom-end',
-	left: 'at-left',
-	right: 'at-right'
-};
-
-/** Text colour class for a tone. */
-export const toneText: Record<Tone, string> = {
-	neutral: 'text-secondary',
-	info: 'text-info',
-	success: 'text-success',
-	warning: 'text-warning',
-	danger: 'text-danger'
-};

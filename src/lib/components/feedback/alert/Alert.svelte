@@ -7,13 +7,14 @@
 	import type { IconData } from '@fractaldesign/icons';
 	import { luCircleAlert, luCircleCheck, luInfo, luTriangleAlert, luX } from '@fractaldesign/icons/lucide';
 	import { springSlide } from '../../../motion/index.js';
-	import { toneText, type Tone } from '../../../internal/tokens.js';
+	import { type Tone } from '../../../internal/tokens.js';
+import { toneText } from '../../../internal/helpers.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
 		/** The meaning of the message. `danger` and `warning` are announced assertively; the rest politely. */
 		tone?: Tone;
 		/** The fill style: a tinted `soft` fill, a hairline `outline`, or a full-strength `solid` fill. */
-		variant?: 'soft' | 'outline' | 'solid';
+		look?: 'soft' | 'outline' | 'solid';
 		/** A short heading, set above the message. */
 		title?: string;
 		/** The leading icon. Defaults to one that matches the tone; pass `false` for none. */
@@ -30,14 +31,14 @@
 
 	let {
 		tone = 'info',
-		variant = 'soft',
+		look = 'soft',
 		title,
 		icon,
 		dismissible = false,
 		onDismiss,
 		actions,
 		children,
-		class: klass,
+		class: className,
 		role,
 		...rest
 	}: Props = $props();
@@ -63,13 +64,13 @@
 
 {#if open}
 	<div
-		class={['row gap-md pad-md modern', fills[variant], tone, klass]}
+		class={['row gap-md pad-md modern', fills[look], tone, className]}
 		role={role ?? (urgent ? 'alert' : 'status')}
 		out:springSlide
 		{...rest}
 	>
 		{#if glyph}
-			<span class={['shrink-0 text-bs lh14', variant === 'solid' ? '' : toneText[tone]]}>
+			<span class={['shrink-0 text-bs lh14', look === 'solid' ? '' : toneText[tone]]}>
 				<Icon icon={glyph} />
 			</span>
 		{/if}

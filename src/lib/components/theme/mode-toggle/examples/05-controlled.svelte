@@ -10,7 +10,7 @@
 <ThemeProvider {mode} class="column gap-sm pad-bs radius-md border">
 	<div class="row ycenter xbetween">
 		<p class="weight-600">Billing preview</p>
-		<ModeToggle variant="segmented" size="sm" withSystem bind:value={mode} onValueChange={() => changes++} />
+		<ModeToggle form="segmented" size="h-sm" withSystem bind:value={mode} onValueChange={() => changes++} />
 	</div>
 	<p class="text-sm text-secondary tabular-nums">Only this card follows the toggle. Changed {changes} times.</p>
 </ThemeProvider>

@@ -6,7 +6,7 @@
 <Alert tone="warning" title="Your trial ends in 3 days">
 	Add a payment method to keep your workspace, history and integrations.
 	{#snippet actions()}
-		<Button size="sm" variant="primary">Add payment method</Button>
-		<Button size="sm" variant="ghost">Remind me later</Button>
+		<Button size="h-sm" variant="primary">Add payment method</Button>
+		<Button size="h-sm" variant="ghost">Remind me later</Button>
 	{/snippet}
 </Alert>

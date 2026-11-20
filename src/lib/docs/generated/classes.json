@@ -24,6 +24,24 @@
 		"declarations": "text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; text-decoration-color: transparent; transition: color var(--motionin1), text-decoration-color var(--motionin1)"
 	},
 	{
+		"class": "angle-dial",
+		"file": "components/selection.css",
+		"selector": ".angle-dial",
+		"declarations": "position: relative; display: grid; place-items: center; border-radius: var(--radius-full); touch-action: none; cursor: grab; user-select: none"
+	},
+	{
+		"class": "angle-dial-arm",
+		"file": "components/selection.css",
+		"selector": ".angle-dial-arm",
+		"declarations": "position: absolute; inset: 0; transform: rotate(calc(var(--angle, 0) * 1deg)); pointer-events: none"
+	},
+	{
+		"class": "angle-dial-dot",
+		"file": "components/selection.css",
+		"selector": ".angle-dial-dot",
+		"declarations": "position: absolute; top: 0.25rem; left: 50%; translate: -50% 0; width: 0.5rem; height: 0.5rem; border-radius: var(--radius-full); background-color: var(--theme-color)"
+	},
+	{
 		"class": "anim-in",
 		"file": "components/motion.css",
 		"selector": ".held .anim-in",
@@ -34,6 +52,12 @@
 		"file": "components/effects.css",
 		"selector": ".aurora",
 		"declarations": "position: relative; isolation: isolate; overflow: hidden; contain: paint"
+	},
+	{
+		"class": "auto-fit",
+		"file": "components/layout.css",
+		"selector": ".simple-grid.auto-fit",
+		"declarations": "grid-template-columns: repeat(auto-fit, minmax(min(var(--min-col, 14rem), 100%), 1fr))"
 	},
 	{
 		"class": "autosize",
@@ -49,9 +73,9 @@
 	},
 	{
 		"class": "avatar-group",
-		"file": "components/display.css",
-		"selector": ".avatar-group.gap-overlap.row",
-		"declarations": "--avatar-ring: var(--bg-surface)"
+		"file": "components-base.css",
+		"selector": ".avatar-group.circle > .avatar-more",
+		"declarations": "border-radius: 50%"
 	},
 	{
 		"class": "avatar-lg",
@@ -64,6 +88,12 @@
 		"file": "components/display.css",
 		"selector": ".avatar-md",
 		"declarations": "--avatar-size: var(--h-xl)"
+	},
+	{
+		"class": "avatar-more",
+		"file": "components-base.css",
+		"selector": ".avatar-group.circle > .avatar-more",
+		"declarations": "border-radius: 50%"
 	},
 	{
 		"class": "avatar-sm",
@@ -96,6 +126,18 @@
 		"declarations": "animation-name: parallax-x"
 	},
 	{
+		"class": "badge",
+		"file": "components-base.css",
+		"selector": ".badge",
+		"declarations": "padding-inline: var(--space-sm); font-weight: 500; white-space: nowrap"
+	},
+	{
+		"class": "banner",
+		"file": "components-base.css",
+		"selector": ".banner.h-sm, .banner.h-md, .banner.h-bs, .banner.h-lg, .banner.h-xl",
+		"declarations": "height: auto"
+	},
+	{
 		"class": "bar",
 		"file": "components/feedback.css",
 		"selector": ".bar",
@@ -103,15 +145,21 @@
 	},
 	{
 		"class": "bare",
-		"file": "components/inputs.css",
-		"selector": ".field .bare::placeholder, .field .bare::-webkit-input-placeholder",
-		"declarations": "color: var(--text-muted); opacity: 1"
+		"file": "component-props.css",
+		"selector": ".bare",
+		"declarations": "appearance: none; -webkit-appearance: none; background: none; border: none; padding: 0; margin: 0; font: inherit; color: inherit; outline: none; min-width: 0"
 	},
 	{
 		"class": "bento",
 		"file": "components/layout.css",
 		"selector": ".bento",
-		"declarations": "display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); grid-auto-rows: var(--row-h, 8rem); gap: var(--gap, var(--space-md)); container-type: inline-size"
+		"declarations": "display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); grid-auto-rows: var(--row-h, 8rem)"
+	},
+	{
+		"class": "bento-wrap",
+		"file": "components/layout.css",
+		"selector": ".bento-wrap",
+		"declarations": "container-type: inline-size; width: 100%"
 	},
 	{
 		"class": "bg-none",
@@ -126,6 +174,24 @@
 		"declarations": "margin-inline: calc(var(--pad, 0rem) * -1)"
 	},
 	{
+		"class": "bleed-block",
+		"file": "components/layout.css",
+		"selector": ".bleed-block",
+		"declarations": "margin-block: calc(var(--bleed-y, 0rem) * -1)"
+	},
+	{
+		"class": "bleed-full",
+		"file": "components/layout.css",
+		"selector": ".bleed-full",
+		"declarations": "width: 100vw; max-width: 100vw; margin-inline: calc(50% - 50vw)"
+	},
+	{
+		"class": "bleed-inline",
+		"file": "components/layout.css",
+		"selector": ".bleed-inline",
+		"declarations": "margin-inline: calc(var(--bleed-x, 0rem) * -1)"
+	},
+	{
 		"class": "blur-in",
 		"file": "components/motion.css",
 		"selector": ".blur-in",
@@ -136,6 +202,42 @@
 		"file": "components/feedback.css",
 		"selector": ".bone",
 		"declarations": "width: var(--w, 100%); height: var(--h, 1em); border-radius: var(--radius-sm); background-color: var(--state-selected)"
+	},
+	{
+		"class": "border",
+		"file": "components-base.css",
+		"selector": ".is-invalid, .checkbox-box input.is-invalid, .border.is-invalid, .border-strong.is-invalid",
+		"declarations": "border-color: var(--danger)"
+	},
+	{
+		"class": "border-dashed",
+		"file": "components/inputs.css",
+		"selector": "button.border-dashed",
+		"declarations": "border: 1px dashed var(--border-strong); white-space: normal"
+	},
+	{
+		"class": "border-strong",
+		"file": "components-base.css",
+		"selector": ".is-invalid, .checkbox-box input.is-invalid, .border.is-invalid, .border-strong.is-invalid",
+		"declarations": "border-color: var(--danger)"
+	},
+	{
+		"class": "box",
+		"file": "components-base.css",
+		"selector": ".avatar-group.gap-overlap.box > * + *",
+		"declarations": "margin-block-start: calc(var(--avatar-size) * -0.25)"
+	},
+	{
+		"class": "btn",
+		"file": "components-base.css",
+		"selector": "a.btn, a.button",
+		"declarations": "display: flex; align-items: center; justify-content: center; font-size: var(--text-md); text-decoration: none; cursor: pointer; user-select: none; transition: background var(--motionin1), border-color var(--motionin1), color var(--motionin1); padding-inline: var(--space-md)"
+	},
+	{
+		"class": "btn-icon",
+		"file": "component-props.css",
+		"selector": "button.disclosure.pad-none:not(.btn-icon)",
+		"declarations": "padding: 0"
 	},
 	{
 		"class": "bubble",
@@ -151,9 +253,51 @@
 	},
 	{
 		"class": "button",
-		"file": "components/actions.css",
-		"selector": ".button[aria-pressed='true']",
-		"declarations": "box-shadow: inset 0 0 0 1px color-mix(in oklab, currentColor 30%, transparent)"
+		"file": "components-base.css",
+		"selector": "button, .button",
+		"declarations": "display: flex; align-items: center; justify-content: center; text-decoration: none; white-space: nowrap; cursor: pointer; user-select: none; transition: background var(--motionin1), border-color var(--motionin1), color var(--motionin1); padding-inline: var(--space-md)"
+	},
+	{
+		"class": "button-group",
+		"file": "components-base.css",
+		"selector": ".button-group",
+		"declarations": "display: inline-grid; align-items: stretch; vertical-align: middle; --group-radius: var(--radius-md)"
+	},
+	{
+		"class": "capped",
+		"file": "components/layout.css",
+		"selector": ".capped",
+		"declarations": "max-height: var(--max-height, none)"
+	},
+	{
+		"class": "card-clickable",
+		"file": "components-base.css",
+		"selector": ".card-clickable",
+		"declarations": "cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s"
+	},
+	{
+		"class": "caret",
+		"file": "component-props.css",
+		"selector": ".caret",
+		"declarations": "flex: none; transition: rotate calc(var(--spring-ms) * var(--motion-scale)) var(--spring)"
+	},
+	{
+		"class": "carousel-dot",
+		"file": "components-base.css",
+		"selector": "button.carousel-dot:not(.btn-icon)",
+		"declarations": "padding: 0"
+	},
+	{
+		"class": "carousel-pip",
+		"file": "components-base.css",
+		"selector": ".carousel-pip",
+		"declarations": "background-color: currentColor"
+	},
+	{
+		"class": "carousel-track",
+		"file": "components-base.css",
+		"selector": ".carousel-track",
+		"declarations": "scrollbar-width: none; touch-action: pan-y pinch-zoom; user-select: none; -webkit-user-select: none"
 	},
 	{
 		"class": "cell",
@@ -174,6 +318,12 @@
 		"declarations": "margin-inline: auto"
 	},
 	{
+		"class": "checkbox-box",
+		"file": "components-base.css",
+		"selector": ".checkbox-box",
+		"declarations": "display: inline-grid; place-items: center; flex-shrink: 0"
+	},
+	{
 		"class": "choice",
 		"file": "components/theme.css",
 		"selector": ".swap > *, .choice::before, .orb, .orb::after, .range-rail .thumb, .rocker .thumb",
@@ -184,6 +334,12 @@
 		"file": "components/theme.css",
 		"selector": ".choice-group",
 		"declarations": "display: inline-flex; align-items: stretch; gap: 2px; padding: 2px; border: 1px solid var(--border); border-radius: var(--radius-md); background-color: var(--bg-panel)"
+	},
+	{
+		"class": "circle",
+		"file": "components-base.css",
+		"selector": ".avatar-group.circle > .avatar-more",
+		"declarations": "border-radius: 50%"
 	},
 	{
 		"class": "clip",
@@ -205,9 +361,9 @@
 	},
 	{
 		"class": "collapse",
-		"file": "components/data.css",
-		"selector": ".data-table .flush:has(> .collapse:not(.open))",
-		"declarations": "border-bottom-color: transparent"
+		"file": "components-base.css",
+		"selector": ".collapse",
+		"declarations": "display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--motionout3)"
 	},
 	{
 		"class": "collapsed",
@@ -217,9 +373,9 @@
 	},
 	{
 		"class": "column",
-		"file": "components/navigation.css",
-		"selector": ".column > .indicator.rule, .vertical > .indicator.rule",
-		"declarations": "top: 0; bottom: auto; left: 0; width: 2px; height: calc(var(--ih, 0) * 1px)"
+		"file": "components/layout.css",
+		"selector": ".stack-divided.column > :not(:first-child)",
+		"declarations": "padding-top: var(--space-sm); border-top: 1px solid var(--border-subtle)"
 	},
 	{
 		"class": "connector",
@@ -228,22 +384,100 @@
 		"declarations": "height: 2px"
 	},
 	{
+		"class": "corner-tr",
+		"file": "components/inputs.css",
+		"selector": ".corner-tr",
+		"declarations": "position: absolute; top: var(--space-xs); right: var(--space-xs)"
+	},
+	{
+		"class": "crop-box",
+		"file": "components/pickers.css",
+		"selector": ".crop-box",
+		"declarations": "position: absolute; left: calc(var(--crop-x, 10) * 1%); top: calc(var(--crop-y, 10) * 1%); width: calc(var(--crop-w, 80) * 1%); height: calc(var(--crop-h, 80) * 1%); border: 2px solid var(--white-fixed); box-shadow: 0 0 0 100vmax color-mix(in oklab, oklch(0 0 0) 55%, transparent); cursor: move"
+	},
+	{
+		"class": "crop-grid",
+		"file": "components/pickers.css",
+		"selector": ".crop-grid",
+		"declarations": "position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); pointer-events: none"
+	},
+	{
+		"class": "crop-handle",
+		"file": "components/pickers.css",
+		"selector": ".crop-handle",
+		"declarations": "position: absolute; width: 0.75rem; height: 0.75rem; border-radius: var(--radius-full); background-color: var(--white-fixed); border: 1px solid var(--border-strong); translate: -50% -50%"
+	},
+	{
+		"class": "crop-img",
+		"file": "components/pickers.css",
+		"selector": ".crop-img",
+		"declarations": "display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; transform: scale(var(--zoom, 1))"
+	},
+	{
+		"class": "crop-ne",
+		"file": "components/pickers.css",
+		"selector": ".crop-ne",
+		"declarations": "top: 0%; left: 100%; cursor: nesw-resize"
+	},
+	{
+		"class": "crop-nw",
+		"file": "components/pickers.css",
+		"selector": ".crop-nw",
+		"declarations": "top: 0%; left: 0%; cursor: nwse-resize"
+	},
+	{
+		"class": "crop-se",
+		"file": "components/pickers.css",
+		"selector": ".crop-se",
+		"declarations": "top: 100%; left: 100%; cursor: nwse-resize"
+	},
+	{
+		"class": "crop-stage",
+		"file": "components/pickers.css",
+		"selector": ".crop-stage",
+		"declarations": "position: relative; overflow: hidden; touch-action: none; user-select: none; background-color: var(--bg-panel); min-height: 14rem"
+	},
+	{
+		"class": "crop-sw",
+		"file": "components/pickers.css",
+		"selector": ".crop-sw",
+		"declarations": "top: 100%; left: 0%; cursor: nesw-resize"
+	},
+	{
 		"class": "cursor",
 		"file": "components/motion.css",
 		"selector": ".cursor",
 		"declarations": "display: inline-block; width: 0.09em; height: 1em; margin-inline-start: 0.08em; vertical-align: -0.12em; background-color: currentColor; border-radius: var(--radius-xs)"
 	},
 	{
+		"class": "curved",
+		"file": "components-base.css",
+		"selector": ".split-button.curved > :first-child",
+		"declarations": "border-top-left-radius: var(--radius-bs); border-bottom-left-radius: var(--radius-bs)"
+	},
+	{
 		"class": "danger",
-		"file": "components/feedback.css",
-		"selector": ".msg.solid, .msg.solid.neutral, .msg.solid.info, .msg.solid.success, .msg.solid.warning, .msg.solid.danger",
-		"declarations": "background-color: var(--msg-ink); border: 1px solid var(--msg-ink); --ink-bg: var(--msg-ink)"
+		"file": "component-props.css",
+		"selector": ".danger",
+		"declarations": "background-color: var(--danger); border: 1px solid var(--danger)"
 	},
 	{
 		"class": "data-table",
-		"file": "components/data.css",
-		"selector": ".dense.data-table",
-		"declarations": "font-size: var(--text-sm)"
+		"file": "components-base.css",
+		"selector": ".data-table",
+		"declarations": "width: 100%; border-collapse: collapse; font-size: var(--text-md); color: var(--text-primary)"
+	},
+	{
+		"class": "data-table-empty",
+		"file": "components-base.css",
+		"selector": ".data-table .data-table-empty",
+		"declarations": "padding-block: var(--space-2xl); text-align: center"
+	},
+	{
+		"class": "data-table-select",
+		"file": "components-base.css",
+		"selector": ".data-table .data-table-select",
+		"declarations": "width: 2.75rem; padding-right: 0"
 	},
 	{
 		"class": "dense",
@@ -258,6 +492,24 @@
 		"declarations": "translate: calc(var(--mx, 0) * 1px) calc(var(--my, 0) * 1px)"
 	},
 	{
+		"class": "disabled",
+		"file": "component-props.css",
+		"selector": ".item.disabled, .item:disabled, .item[aria-disabled='true']",
+		"declarations": "opacity: 0.5; pointer-events: none"
+	},
+	{
+		"class": "disclosure",
+		"file": "component-props.css",
+		"selector": "button.disclosure.pad-none:not(.btn-icon)",
+		"declarations": "padding: 0"
+	},
+	{
+		"class": "disclosure-panel",
+		"file": "components/data.css",
+		"selector": ".disclosure .mleft, .disclosure-panel.mleft",
+		"declarations": "align-items: flex-start"
+	},
+	{
 		"class": "dismiss",
 		"file": "components/feedback.css",
 		"selector": ".dismiss",
@@ -268,6 +520,12 @@
 		"file": "components/display.css",
 		"selector": ".divided > * + *",
 		"declarations": "padding-top: var(--space-sm); border-top: 1px solid var(--border-subtle)"
+	},
+	{
+		"class": "dot",
+		"file": "component-props.css",
+		"selector": ".dot",
+		"declarations": "flex: none; width: 0.5em; height: 0.5em; border-radius: var(--radius-full); background-color: currentColor"
 	},
 	{
 		"class": "drag-over",
@@ -288,6 +546,12 @@
 		"declarations": "position: fixed; inset: 0 0 auto 0; z-index: var(--z-toast)"
 	},
 	{
+		"class": "elevated",
+		"file": "component-props.css",
+		"selector": ".elevated",
+		"declarations": "background-color: var(--bg-surface); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-rim), var(--shadow-md)"
+	},
+	{
 		"class": "empty",
 		"file": "components/pickers.css",
 		"selector": ".segment.empty",
@@ -301,9 +565,9 @@
 	},
 	{
 		"class": "fade",
-		"file": "components/motion.css",
-		"selector": ".marquee.fade",
-		"declarations": "mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent)"
+		"file": "components/actions.css",
+		"selector": ".swap.fade > *",
+		"declarations": "scale: 1; rotate: 0deg"
 	},
 	{
 		"class": "fade-x",
@@ -319,21 +583,69 @@
 	},
 	{
 		"class": "field",
-		"file": "components/inputs.css",
-		"selector": ".field .bare::placeholder, .field .bare::-webkit-input-placeholder",
-		"declarations": "color: var(--text-muted); opacity: 1"
+		"file": "components-base.css",
+		"selector": ".field",
+		"declarations": "transition: border-color var(--motionin1), box-shadow var(--motionin1)"
 	},
 	{
 		"class": "fill",
-		"file": "components/motion.css",
-		"selector": ".fill.scaled",
-		"declarations": "left: 0; width: 100%; scale: var(--value, 0) 1; transform-origin: left"
+		"file": "component-props.css",
+		"selector": ".fill",
+		"declarations": "position: absolute; inset-block: 0; left: calc(var(--from, 0) * 100%); width: calc((var(--value, 0) - var(--from, 0)) * 100%); border-radius: inherit; background-color: var(--theme-color)"
+	},
+	{
+		"class": "fit-contain",
+		"file": "components/display.css",
+		"selector": ".image-frame > img.fit-contain",
+		"declarations": "object-fit: contain"
+	},
+	{
+		"class": "fit-fill",
+		"file": "components/display.css",
+		"selector": ".image-frame > img.fit-fill",
+		"declarations": "object-fit: fill"
+	},
+	{
+		"class": "fit-icon",
+		"file": "components-base.css",
+		"selector": ".btn-icon.fit-icon, .btn-icon.fit-icon:hover",
+		"declarations": "padding: 0; border-width: 0; height: auto; min-block-size: 0"
+	},
+	{
+		"class": "fit-scale-down",
+		"file": "components/display.css",
+		"selector": ".image-frame > img.fit-scale-down",
+		"declarations": "object-fit: scale-down"
+	},
+	{
+		"class": "fitted",
+		"file": "components-base.css",
+		"selector": ".input.fitted",
+		"declarations": "width: max-content"
+	},
+	{
+		"class": "flip",
+		"file": "components/actions.css",
+		"selector": ".swap.flip > *",
+		"declarations": "scale: 1; rotate: 0deg; transition-property: opacity, transform; transform: rotateY(90deg)"
+	},
+	{
+		"class": "floating-panel",
+		"file": "components/overlays.css",
+		"selector": ".floating-panel",
+		"declarations": "position: fixed; top: 0; left: 0; z-index: var(--z-popover); width: var(--panel-w, 22rem); max-width: calc(100vw - 2rem); translate: calc(var(--panel-x, 24) * 1px) calc(var(--panel-y, 24) * 1px)"
 	},
 	{
 		"class": "flush",
 		"file": "components/data.css",
 		"selector": ".data-table .flush",
 		"declarations": "padding: 0"
+	},
+	{
+		"class": "frame-21-9",
+		"file": "components/display.css",
+		"selector": ".frame-21-9",
+		"declarations": "aspect-ratio: 21 / 9; overflow: hidden; position: relative"
 	},
 	{
 		"class": "free",
@@ -349,21 +661,27 @@
 	},
 	{
 		"class": "gap-overlap",
-		"file": "components/display.css",
-		"selector": ".avatar-group.gap-overlap.row",
-		"declarations": "--avatar-ring: var(--bg-surface)"
+		"file": "components-base.css",
+		"selector": ".avatar-group.gap-overlap",
+		"declarations": "--avatar-ring: var(--bg-panel)"
 	},
 	{
 		"class": "ghost",
-		"file": "components/actions.css",
-		"selector": ".button[aria-pressed='true']:is(.ghost, .outline, .secondary, .link), .button[aria-pressed='true']:is(.ghost, .outline, .secondary, .link):hover",
-		"declarations": "background-color: var(--state-selected); color: var(--text-primary)"
+		"file": "component-props.css",
+		"selector": ".ghost",
+		"declarations": "background-color: transparent; border: 1px solid transparent"
 	},
 	{
 		"class": "glare",
 		"file": "components/motion.css",
 		"selector": ".glare",
 		"declarations": "background-image: radial-gradient(circle at var(--px, 50%) var(--py, 50%), color-mix(in oklab, var(--white-fixed) 42%, transparent) 0%, transparent 58%)"
+	},
+	{
+		"class": "glass",
+		"file": "component-props.css",
+		"selector": ".glass",
+		"declarations": "border: 1px solid var(--border); box-shadow: var(--shadow-rim), var(--shadow-md); background-color: color-mix(in oklab, var(--bg-overlay) var(--glass-alpha), transparent); backdrop-filter: blur(var(--glass-blur)) saturate(1.6); -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.6)"
 	},
 	{
 		"class": "glide",
@@ -396,6 +714,60 @@
 		"declarations": "flex: none; width: 2.5rem; height: 0.25rem; border-radius: var(--radius-full); background-color: var(--border-strong)"
 	},
 	{
+		"class": "guides",
+		"file": "components/data.css",
+		"selector": ".indent.guides",
+		"declarations": "background-image: repeating-linear-gradient(to right, transparent 0, transparent calc(var(--space-bs) - 1px), var(--border-subtle) calc(var(--space-bs) - 1px), var(--border-subtle) var(--space-bs)); background-size: calc(var(--level, 0) * var(--space-bs)) 100%; background-repeat: no-repeat; background-position: var(--space-sm) 0"
+	},
+	{
+		"class": "h-2xl",
+		"file": "component-props.css",
+		"selector": ".hgrow.h-2xl",
+		"declarations": "height: auto; min-height: var(--h-2xl)"
+	},
+	{
+		"class": "h-3xl",
+		"file": "component-props.css",
+		"selector": ".hgrow.h-3xl",
+		"declarations": "height: auto; min-height: var(--h-3xl)"
+	},
+	{
+		"class": "h-bs",
+		"file": "component-props.css",
+		"selector": ".hgrow.h-bs",
+		"declarations": "height: auto; min-height: var(--h-bs)"
+	},
+	{
+		"class": "h-lg",
+		"file": "component-props.css",
+		"selector": ".hgrow.h-lg",
+		"declarations": "height: auto; min-height: var(--h-lg)"
+	},
+	{
+		"class": "h-md",
+		"file": "component-props.css",
+		"selector": ".hgrow.h-md",
+		"declarations": "height: auto; min-height: var(--h-md)"
+	},
+	{
+		"class": "h-sm",
+		"file": "component-props.css",
+		"selector": ".hgrow.h-sm",
+		"declarations": "height: auto; min-height: var(--h-sm)"
+	},
+	{
+		"class": "h-xl",
+		"file": "component-props.css",
+		"selector": ".hgrow.h-xl",
+		"declarations": "height: auto; min-height: var(--h-xl)"
+	},
+	{
+		"class": "h-xs",
+		"file": "component-props.css",
+		"selector": ".hgrow.h-xs",
+		"declarations": "height: auto; min-height: var(--h-xs)"
+	},
+	{
 		"class": "hairline",
 		"file": "components/motion.css",
 		"selector": ".track.hairline",
@@ -412,6 +784,18 @@
 		"file": "components/motion.css",
 		"selector": ".held .anim-in",
 		"declarations": "animation-play-state: paused"
+	},
+	{
+		"class": "hgrow",
+		"file": "component-props.css",
+		"selector": ".hgrow.h-xs",
+		"declarations": "height: auto; min-height: var(--h-xs)"
+	},
+	{
+		"class": "highlighted",
+		"file": "component-props.css",
+		"selector": ".item:hover, .item:focus-visible, .item.highlighted",
+		"declarations": "background-color: var(--state-hover)"
 	},
 	{
 		"class": "hint",
@@ -450,6 +834,18 @@
 		"declarations": "background-image: linear-gradient(to right, oklch(0.7 0.17 0), oklch(0.7 0.17 60), oklch(0.7 0.17 120), oklch(0.7 0.17 180), oklch(0.7 0.17 240), oklch(0.7 0.17 300), oklch(0.7 0.17 360))"
 	},
 	{
+		"class": "image-figure",
+		"file": "components/display.css",
+		"selector": ".image-figure",
+		"declarations": "margin: 0"
+	},
+	{
+		"class": "image-frame",
+		"file": "components/display.css",
+		"selector": ".image-frame > img",
+		"declarations": "display: block; width: 100%; height: 100%; object-fit: cover"
+	},
+	{
 		"class": "in-range",
 		"file": "components/pickers.css",
 		"selector": ".cell.in-range",
@@ -462,16 +858,22 @@
 		"declarations": "padding-left: calc(var(--level, 0) * var(--space-bs) + var(--space-sm))"
 	},
 	{
+		"class": "indeterminate",
+		"file": "components/feedback.css",
+		"selector": ".fill.indeterminate",
+		"declarations": "width: 35%; animation: progress-indeterminate 1.4s var(--transout2) infinite"
+	},
+	{
 		"class": "indicator",
-		"file": "components/navigation.css",
-		"selector": ".indicator.rule",
-		"declarations": "top: auto; bottom: 0; height: 2px; background-color: var(--theme-color)"
+		"file": "component-props.css",
+		"selector": ".indicator",
+		"declarations": "position: absolute; top: 0; left: 0; width: calc(var(--iw, 0) * 1px); height: calc(var(--ih, 0) * 1px); translate: calc(var(--ix, 0) * 1px) calc(var(--iy, 0) * 1px); pointer-events: none"
 	},
 	{
 		"class": "info",
-		"file": "components/feedback.css",
-		"selector": ".msg.solid, .msg.solid.neutral, .msg.solid.info, .msg.solid.success, .msg.solid.warning, .msg.solid.danger",
-		"declarations": "background-color: var(--msg-ink); border: 1px solid var(--msg-ink); --ink-bg: var(--msg-ink)"
+		"file": "component-props.css",
+		"selector": ".info",
+		"declarations": "background-color: var(--info); border: 1px solid var(--info)"
 	},
 	{
 		"class": "ink",
@@ -484,6 +886,12 @@
 		"file": "components/effects.css",
 		"selector": ".ink-aurora",
 		"declarations": "background-image: linear-gradient(90deg, oklch(0.65 var(--chroma) var(--hue)), oklch(0.72 var(--chroma) calc(var(--hue) + 70)), oklch(0.65 var(--chroma) calc(var(--hue) + 140)))"
+	},
+	{
+		"class": "ink-auto",
+		"file": "components-base.css",
+		"selector": ".ink-auto",
+		"declarations": "color: var(--text-primary)"
 	},
 	{
 		"class": "ink-flow",
@@ -516,10 +924,46 @@
 		"declarations": "background-image: linear-gradient(90deg, var(--theme-color), var(--theme-color-up))"
 	},
 	{
+		"class": "input",
+		"file": "components-base.css",
+		"selector": ".input",
+		"declarations": "display: block; padding-inline: var(--space-md); transition: background var(--motionin1), border-color var(--motionin1), color var(--motionin1)"
+	},
+	{
 		"class": "interactive",
 		"file": "components/display.css",
 		"selector": ".interactive",
 		"declarations": "cursor: pointer; outline: none; transition: border-color var(--motionin1), background-color var(--motionin1)"
+	},
+	{
+		"class": "is-draggable",
+		"file": "components-base.css",
+		"selector": ".carousel-track.is-draggable",
+		"declarations": "cursor: grab"
+	},
+	{
+		"class": "is-dragging",
+		"file": "components-base.css",
+		"selector": ".carousel-track.is-dragging",
+		"declarations": "cursor: grabbing; scroll-snap-type: none; scroll-behavior: auto"
+	},
+	{
+		"class": "is-invalid",
+		"file": "components-base.css",
+		"selector": ".is-invalid, .checkbox-box input.is-invalid, .border.is-invalid, .border-strong.is-invalid",
+		"declarations": "border-color: var(--danger)"
+	},
+	{
+		"class": "item",
+		"file": "component-props.css",
+		"selector": ".item",
+		"declarations": "display: flex; align-items: center; justify-content: flex-start; gap: var(--space-sm); width: 100%; min-height: var(--h-lg); padding: var(--space-xs) var(--space-sm); border: none; border-radius: var(--radius-md); background-color: transparent; color: var(--text-primary); font-size: var(--text-md); text-align: left; cursor: pointer; user-select: none; outline: none; transition: background-color var(--motionin1), color var(--motionin1)"
+	},
+	{
+		"class": "kbd",
+		"file": "components-base.css",
+		"selector": ".kbd",
+		"declarations": "display: inline-flex; align-items: center; justify-content: center; min-width: 1.75em; padding-inline: var(--space-xs); border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: var(--radius-sm); background-color: var(--bg-surface); color: var(--text-primary); font-family: var(--font-mono); font-weight: 500; line-height: 1; white-space: nowrap"
 	},
 	{
 		"class": "leaving",
@@ -546,16 +990,52 @@
 		"declarations": "--light-color: var(--theme-color)"
 	},
 	{
+		"class": "lightbox-media",
+		"file": "components/overlays.css",
+		"selector": ".lightbox-media",
+		"declarations": "max-width: 88vw; max-height: 76dvh; object-fit: contain; transform: scale(var(--zoom, 1)); transition: transform calc(var(--spring-ms) * var(--motion-scale)) var(--spring)"
+	},
+	{
+		"class": "lightbox-stage",
+		"file": "components/overlays.css",
+		"selector": ".lightbox-stage",
+		"declarations": "max-width: 100vw; max-height: 100dvh; width: 100vw; height: 100dvh; margin: 0; border: none; background-color: transparent; color: var(--text-primary)"
+	},
+	{
 		"class": "link",
-		"file": "components/actions.css",
-		"selector": ".button[aria-pressed='true']:is(.ghost, .outline, .secondary, .link), .button[aria-pressed='true']:is(.ghost, .outline, .secondary, .link):hover",
-		"declarations": "background-color: var(--state-selected); color: var(--text-primary)"
+		"file": "component-props.css",
+		"selector": ".link",
+		"declarations": "background-color: transparent; border: 1px solid transparent; text-decoration: none; text-decoration-color: var(--theme-color)"
+	},
+	{
+		"class": "link-parent",
+		"file": "components-base.css",
+		"selector": ".link-parent",
+		"declarations": "color: var(--text-primary); text-decoration: none"
+	},
+	{
+		"class": "link-plain",
+		"file": "components-base.css",
+		"selector": ".link-plain",
+		"declarations": "color: var(--text-primary); text-decoration: none; transition: color var(--motionin1)"
 	},
 	{
 		"class": "link-subtle",
 		"file": "components/actions.css",
 		"selector": ".link-subtle",
-		"declarations": "color: var(--text-secondary); text-decoration: none; transition: color var(--motionin1), text-decoration-color var(--motionin1)"
+		"declarations": "text-decoration: none; transition: color var(--motionin1), text-decoration-color var(--motionin1)"
+	},
+	{
+		"class": "link-title",
+		"file": "components-base.css",
+		"selector": ".link-parent .link-title",
+		"declarations": "transition: color var(--motionin1); text-decoration: none"
+	},
+	{
+		"class": "mark-highlight",
+		"file": "components/primitives.css",
+		"selector": "mark.mark-highlight",
+		"declarations": "background-color: color-mix(in oklab, var(--theme-color) 24%, transparent); color: inherit; padding-inline: 0.2em; border-radius: var(--radius-xs)"
 	},
 	{
 		"class": "marked",
@@ -567,13 +1047,13 @@
 		"class": "marquee",
 		"file": "components/motion.css",
 		"selector": ".marquee",
-		"declarations": "display: flex; overflow: hidden; gap: var(--gap, var(--space-lg))"
+		"declarations": "display: flex; overflow: hidden"
 	},
 	{
 		"class": "marquee-group",
 		"file": "components/motion.css",
 		"selector": ".marquee-group",
-		"declarations": "display: flex; flex: none; align-items: center; gap: var(--gap, var(--space-lg)); min-width: 100%; animation: marquee-x calc(var(--duration, 20) * 1s * var(--motion-scale)) linear infinite"
+		"declarations": "display: flex; flex: none; align-items: center; min-width: 100%; animation: marquee-x calc(var(--duration, 20) * 1s * var(--motion-scale)) linear infinite"
 	},
 	{
 		"class": "mask-bottom",
@@ -603,13 +1083,7 @@
 		"class": "masonry",
 		"file": "components/layout.css",
 		"selector": ".masonry",
-		"declarations": "display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: var(--gap, var(--space-md))"
-	},
-	{
-		"class": "match-anchor",
-		"file": "components/actions.css",
-		"selector": ".match-anchor",
-		"declarations": "min-width: anchor-size(width)"
+		"declarations": "display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); width: 100%"
 	},
 	{
 		"class": "max-h",
@@ -630,6 +1104,36 @@
 		"declarations": "max-width: var(--measure-xs)"
 	},
 	{
+		"class": "mincurved",
+		"file": "components-base.css",
+		"selector": ".split-button.mincurved > :first-child",
+		"declarations": "border-top-left-radius: var(--radius-sm); border-bottom-left-radius: var(--radius-sm)"
+	},
+	{
+		"class": "mleft",
+		"file": "components/data.css",
+		"selector": ".disclosure .mleft, .disclosure-panel.mleft",
+		"declarations": "align-items: flex-start"
+	},
+	{
+		"class": "mobile-drawer",
+		"file": "components/navigation.css",
+		"selector": ".rail.mobile-drawer:not(.mobile-open)",
+		"declarations": "display: none"
+	},
+	{
+		"class": "mobile-open",
+		"file": "components/navigation.css",
+		"selector": ".rail.mobile-drawer:not(.mobile-open)",
+		"declarations": "display: none"
+	},
+	{
+		"class": "modern",
+		"file": "components-base.css",
+		"selector": ".split-button.modern > :first-child",
+		"declarations": "border-top-left-radius: var(--radius-md); border-bottom-left-radius: var(--radius-md)"
+	},
+	{
 		"class": "motion",
 		"file": "components/overlays.css",
 		"selector": ".dialog.sheet.motion[open]",
@@ -637,9 +1141,9 @@
 	},
 	{
 		"class": "msg",
-		"file": "components/feedback.css",
-		"selector": ".msg.solid, .msg.solid.neutral, .msg.solid.info, .msg.solid.success, .msg.solid.warning, .msg.solid.danger",
-		"declarations": "background-color: var(--msg-ink); border: 1px solid var(--msg-ink); --ink-bg: var(--msg-ink)"
+		"file": "component-props.css",
+		"selector": ".msg.info",
+		"declarations": "background-color: var(--info-00); border: 1px solid var(--info-25); color: var(--info-100)"
 	},
 	{
 		"class": "native",
@@ -648,10 +1152,22 @@
 		"declarations": "position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer"
 	},
 	{
+		"class": "nav-link",
+		"file": "components-base.css",
+		"selector": "a.nav-link",
+		"declarations": "padding: var(--space-sm) var(--space-md); border-radius: var(--radius-sm)"
+	},
+	{
 		"class": "neutral",
-		"file": "components/feedback.css",
-		"selector": ".msg.solid, .msg.solid.neutral, .msg.solid.info, .msg.solid.success, .msg.solid.warning, .msg.solid.danger",
-		"declarations": "background-color: var(--msg-ink); border: 1px solid var(--msg-ink); --ink-bg: var(--msg-ink)"
+		"file": "component-props.css",
+		"selector": ".msg.neutral",
+		"declarations": "background-color: var(--neutral-00); border: 1px solid var(--neutral-25); color: var(--neutral-100)"
+	},
+	{
+		"class": "no-scaling",
+		"file": "components-base.css",
+		"selector": ":is(button, .button):not(.no-scaling):active",
+		"declarations": "transform: scale(0.98)"
 	},
 	{
 		"class": "numbered",
@@ -667,9 +1183,9 @@
 	},
 	{
 		"class": "open",
-		"file": "components/data.css",
-		"selector": ".data-table .flush:has(> .collapse:not(.open))",
-		"declarations": "border-bottom-color: transparent"
+		"file": "component-props.css",
+		"selector": ".caret.open",
+		"declarations": "rotate: 180deg"
 	},
 	{
 		"class": "orb",
@@ -691,9 +1207,15 @@
 	},
 	{
 		"class": "outline",
-		"file": "components/actions.css",
-		"selector": ".button[aria-pressed='true']:is(.ghost, .outline, .secondary, .link), .button[aria-pressed='true']:is(.ghost, .outline, .secondary, .link):hover",
-		"declarations": "background-color: var(--state-selected); color: var(--text-primary)"
+		"file": "component-props.css",
+		"selector": ".outline",
+		"declarations": "background-color: transparent; border: 1px solid var(--border-strong)"
+	},
+	{
+		"class": "outlined",
+		"file": "component-props.css",
+		"selector": ".outlined",
+		"declarations": "border: 1px solid var(--border)"
 	},
 	{
 		"class": "outside",
@@ -708,10 +1230,70 @@
 		"declarations": "display: grid"
 	},
 	{
+		"class": "overlayed",
+		"file": "component-props.css",
+		"selector": ".overlayed",
+		"declarations": "background-color: var(--bg-overlayed); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-rim), var(--shadow-md)"
+	},
+	{
 		"class": "packed",
 		"file": "components/layout.css",
 		"selector": ".masonry.packed",
 		"declarations": "position: relative; height: calc(var(--extent, 0) * 1px)"
+	},
+	{
+		"class": "pad-2xl",
+		"file": "component-props.css",
+		"selector": "button.disclosure.pad-2xl:not(.btn-icon)",
+		"declarations": "padding: var(--space-2xl)"
+	},
+	{
+		"class": "pad-3xl",
+		"file": "component-props.css",
+		"selector": "button.disclosure.pad-3xl:not(.btn-icon)",
+		"declarations": "padding: var(--space-3xl)"
+	},
+	{
+		"class": "pad-bs",
+		"file": "component-props.css",
+		"selector": "button.disclosure.pad-bs:not(.btn-icon)",
+		"declarations": "padding: var(--space-bs)"
+	},
+	{
+		"class": "pad-lg",
+		"file": "component-props.css",
+		"selector": "button.disclosure.pad-lg:not(.btn-icon)",
+		"declarations": "padding: var(--space-lg)"
+	},
+	{
+		"class": "pad-md",
+		"file": "component-props.css",
+		"selector": "button.disclosure.pad-md:not(.btn-icon)",
+		"declarations": "padding: var(--space-md)"
+	},
+	{
+		"class": "pad-none",
+		"file": "component-props.css",
+		"selector": "button.disclosure.pad-none:not(.btn-icon)",
+		"declarations": "padding: 0"
+	},
+	{
+		"class": "pad-sm",
+		"file": "component-props.css",
+		"selector": "button.disclosure.pad-sm:not(.btn-icon)",
+		"declarations": "padding: var(--space-sm)"
+	},
+	{
+		"class": "pad-xl",
+		"file": "component-props.css",
+		"selector": "button.disclosure.pad-xl:not(.btn-icon)",
+		"declarations": "padding: var(--space-xl)"
+	},
+	{
+		"class": "pad-xs",
+		"file": "component-props.css",
+		"selector": "button.disclosure.pad-xs:not(.btn-icon)",
+		"declarations": "padding: var(--space-xs)"
 	},
 	{
 		"class": "pair-row",
@@ -730,6 +1312,12 @@
 		"file": "components/layout.css",
 		"selector": ".pane",
 		"declarations": "flex: var(--pane, 1) 1 0; min-width: 0; min-height: 0; overflow: hidden"
+	},
+	{
+		"class": "paneled",
+		"file": "component-props.css",
+		"selector": ".paneled",
+		"declarations": "background-color: var(--bg-panel); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-rim), var(--shadow-md)"
 	},
 	{
 		"class": "parallax-view",
@@ -816,16 +1404,46 @@
 		"declarations": "background-image: linear-gradient(to top, oklch(0 0 0), transparent), linear-gradient(to right, oklch(1 0 0), hsl(calc(var(--angle, 0) * 1deg) 100% 50%))"
 	},
 	{
+		"class": "pop",
+		"file": "components/selection.css",
+		"selector": ".track > .pop",
+		"declarations": "transition: opacity var(--motionin1), transform var(--motionin1)"
+	},
+	{
 		"class": "preview",
 		"file": "components/pickers.css",
 		"selector": ".cell.in-range.preview",
 		"declarations": "background-color: color-mix(in oklab, var(--theme-color) 8%, transparent); border-block-color: color-mix(in oklab, var(--theme-color) 40%, transparent); border-style: dashed none"
 	},
 	{
+		"class": "primary",
+		"file": "component-props.css",
+		"selector": ".primary",
+		"declarations": "background-color: var(--bg-button); border: 1px solid var(--bg-button)"
+	},
+	{
+		"class": "quarter",
+		"file": "component-props.css",
+		"selector": ".caret.quarter.open",
+		"declarations": "rotate: 90deg"
+	},
+	{
+		"class": "radio",
+		"file": "components-base.css",
+		"selector": ".checkbox-box.radio input",
+		"declarations": "border-radius: 50%"
+	},
+	{
 		"class": "rail",
 		"file": "components/navigation.css",
 		"selector": ".rail",
 		"declarations": "--rail-width: var(--sidebar-width-left); --rail-width-collapsed: var(--sidebar-width-collapsed); width: var(--rail-width); min-width: var(--rail-width); overflow: hidden"
+	},
+	{
+		"class": "rail-backdrop",
+		"file": "components/navigation.css",
+		"selector": ".rail-backdrop",
+		"declarations": "position: fixed; inset: 0; z-index: calc(var(--z-modal) - 1); background-color: var(--bg-backdrop)"
 	},
 	{
 		"class": "ramp",
@@ -852,10 +1470,16 @@
 		"declarations": "border-radius: var(--radius-md) 0 0 var(--radius-md)"
 	},
 	{
+		"class": "rect",
+		"file": "components-base.css",
+		"selector": ".split-button.rect > :first-child",
+		"declarations": "border-top-left-radius: 0; border-bottom-left-radius: 0"
+	},
+	{
 		"class": "reel",
 		"file": "components/data.css",
 		"selector": ".slides.reel",
-		"declarations": "gap: var(--gap, 0); scroll-behavior: smooth"
+		"declarations": "scroll-behavior: smooth"
 	},
 	{
 		"class": "relative",
@@ -892,6 +1516,24 @@
 		"file": "components/effects.css",
 		"selector": ".spin.reverse",
 		"declarations": "animation-direction: reverse"
+	},
+	{
+		"class": "ribbon-bookmark",
+		"file": "components-base.css",
+		"selector": ".ribbon-bookmark",
+		"declarations": "clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 80%, 0% 100%); padding-bottom: var(--space-sm)"
+	},
+	{
+		"class": "right",
+		"file": "components/display.css",
+		"selector": ".timeline.right .timeline-item",
+		"declarations": "grid-template-columns: minmax(0, 1fr) auto"
+	},
+	{
+		"class": "ring",
+		"file": "component-props.css",
+		"selector": ".ring",
+		"declarations": "flex: none; aspect-ratio: 1; border-radius: var(--radius-full); background: conic-gradient(var(--theme-color) calc(var(--value, 0) * 360deg), var(--state-selected) 0); mask: radial-gradient(farthest-side, transparent calc(100% - 0.3em), black calc(100% - 0.3em + 1px)); -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 0.3em), black calc(100% - 0.3em + 1px))"
 	},
 	{
 		"class": "ring-beam",
@@ -937,21 +1579,21 @@
 	},
 	{
 		"class": "round",
-		"file": "components/feedback.css",
-		"selector": ".bone.round",
-		"declarations": "width: var(--w, 3em); height: var(--w, 3em)"
+		"file": "components-base.css",
+		"selector": ".split-button.round > :first-child",
+		"declarations": "border-top-left-radius: 9999px; border-bottom-left-radius: 9999px"
 	},
 	{
 		"class": "rounded",
-		"file": "components/display.css",
-		"selector": ".avatar.rounded",
-		"declarations": "border-radius: var(--radius-avatar)"
+		"file": "components-base.css",
+		"selector": ".avatar-group.rounded > .avatar-more",
+		"declarations": "border-radius: 12%"
 	},
 	{
 		"class": "row",
-		"file": "components/display.css",
-		"selector": ".avatar-group.gap-overlap.row",
-		"declarations": "--avatar-ring: var(--bg-surface)"
+		"file": "components-base.css",
+		"selector": ".avatar-group.gap-overlap.row > * + *",
+		"declarations": "margin-inline-start: calc(var(--avatar-size) * -0.25)"
 	},
 	{
 		"class": "rule",
@@ -984,10 +1626,16 @@
 		"declarations": "scale: 1.15"
 	},
 	{
+		"class": "scrub-handle",
+		"file": "components/inputs.css",
+		"selector": ".scrub-handle",
+		"declarations": "cursor: ew-resize; user-select: none; touch-action: none"
+	},
+	{
 		"class": "secondary",
-		"file": "components/actions.css",
-		"selector": ".button[aria-pressed='true']:is(.ghost, .outline, .secondary, .link), .button[aria-pressed='true']:is(.ghost, .outline, .secondary, .link):hover",
-		"declarations": "background-color: var(--state-selected); color: var(--text-primary)"
+		"file": "component-props.css",
+		"selector": ".secondary",
+		"declarations": "background-color: var(--bg-button-secondary); border: 1px solid var(--bg-button-secondary)"
 	},
 	{
 		"class": "segment",
@@ -996,10 +1644,28 @@
 		"declarations": "display: inline-block; min-width: calc(var(--ch, 2) * 1ch); padding-inline: 0.125rem; border-radius: var(--radius-sm); text-align: center; font-variant-numeric: tabular-nums; caret-color: transparent; outline: none; cursor: default; user-select: none"
 	},
 	{
+		"class": "select",
+		"file": "components-base.css",
+		"selector": ".select-wrap > select.select",
+		"declarations": "background-image: none; padding-right: calc(var(--space-sm) + 1.25em)"
+	},
+	{
+		"class": "select-chevron",
+		"file": "components-base.css",
+		"selector": ".select-wrap > .select-chevron",
+		"declarations": "position: absolute; right: var(--space-sm); pointer-events: none"
+	},
+	{
+		"class": "select-wrap",
+		"file": "components-base.css",
+		"selector": ".select-wrap > select.select",
+		"declarations": "background-image: none; padding-right: calc(var(--space-sm) + 1.25em)"
+	},
+	{
 		"class": "selected",
-		"file": "components/data.css",
-		"selector": ".still.data-table tbody tr.selected:hover td",
-		"declarations": "background-color: var(--state-selected)"
+		"file": "component-props.css",
+		"selector": ".primary.selected",
+		"declarations": "background-color: var(--bg-button-active); border: 1px solid var(--bg-button-active)"
 	},
 	{
 		"class": "sentinel",
@@ -1020,6 +1686,24 @@
 		"declarations": "translate: calc(var(--mx, 0) * 1px) calc(var(--my, 0) * 1px)"
 	},
 	{
+		"class": "signature-canvas",
+		"file": "components/inputs.css",
+		"selector": ".signature-canvas",
+		"declarations": "display: block; width: 100%; height: 100%; touch-action: none; cursor: crosshair"
+	},
+	{
+		"class": "signature-guide",
+		"file": "components/inputs.css",
+		"selector": ".signature-guide",
+		"declarations": "position: absolute; inset-inline: var(--space-lg); bottom: 22%; border-bottom: 1px dashed var(--border-strong); pointer-events: none"
+	},
+	{
+		"class": "simple-grid",
+		"file": "components/layout.css",
+		"selector": ".simple-grid",
+		"declarations": "display: grid; grid-template-columns: repeat(var(--cols, 1), minmax(0, 1fr))"
+	},
+	{
 		"class": "sized",
 		"file": "components/data.css",
 		"selector": ".stage > .sized",
@@ -1029,13 +1713,19 @@
 		"class": "slide",
 		"file": "components/data.css",
 		"selector": ".slides.reel > .slide",
-		"declarations": "flex: 0 0 calc((100% - (var(--per-view, 1) - 1) * var(--gap, 0rem)) / var(--per-view, 1)); min-width: 0"
+		"declarations": "flex: 0 0 calc(100% / var(--per-view, 1)); min-width: 0"
+	},
+	{
+		"class": "slide-unlock",
+		"file": "components-base.css",
+		"selector": ".slide-unlock",
+		"declarations": "min-width: 16rem; user-select: none; touch-action: none"
 	},
 	{
 		"class": "slides",
 		"file": "components/data.css",
 		"selector": ".slides.reel",
-		"declarations": "gap: var(--gap, 0); scroll-behavior: smooth"
+		"declarations": "scroll-behavior: smooth"
 	},
 	{
 		"class": "slim",
@@ -1074,6 +1764,12 @@
 		"declarations": "background-color: var(--msg-ink); border: 1px solid var(--msg-ink); --ink-bg: var(--msg-ink)"
 	},
 	{
+		"class": "spaced",
+		"file": "components-base.css",
+		"selector": ".button-group.spaced .button, .button-group.spaced button",
+		"declarations": "border-radius: var(--group-radius)"
+	},
+	{
 		"class": "span",
 		"file": "components/layout.css",
 		"selector": ".bento > .span",
@@ -1098,6 +1794,12 @@
 		"declarations": "animation-play-state: paused"
 	},
 	{
+		"class": "split-button",
+		"file": "components-base.css",
+		"selector": ".split-button > :first-child",
+		"declarations": "border-top-right-radius: 0; border-bottom-right-radius: 0"
+	},
+	{
 		"class": "splitter",
 		"file": "components/layout.css",
 		"selector": ".splitter",
@@ -1120,6 +1822,12 @@
 		"file": "components/primitives.css",
 		"selector": ".sr-only-focusable:focus-within",
 		"declarations": "position: static; width: auto; height: auto; margin: 0; overflow: visible; clip: auto; white-space: normal"
+	},
+	{
+		"class": "stack-divided",
+		"file": "components/layout.css",
+		"selector": ".stack-divided.column > :not(:first-child)",
+		"declarations": "padding-top: var(--space-sm); border-top: 1px solid var(--border-subtle)"
 	},
 	{
 		"class": "stack-rule",
@@ -1165,8 +1873,8 @@
 	},
 	{
 		"class": "striped",
-		"file": "components/data.css",
-		"selector": ".still.data-table.striped tbody tr:nth-child(even):hover td",
+		"file": "components-base.css",
+		"selector": ".data-table.striped tbody tr:nth-child(even) td",
 		"declarations": "background-color: var(--state-hover)"
 	},
 	{
@@ -1176,16 +1884,28 @@
 		"declarations": "background-image: repeating-linear-gradient(135deg, color-mix(in oklab, var(--white-fixed) 28%, transparent) 0 0.5rem, transparent 0.5rem 1rem)"
 	},
 	{
-		"class": "success",
+		"class": "stripes-anim",
 		"file": "components/feedback.css",
-		"selector": ".msg.solid, .msg.solid.neutral, .msg.solid.info, .msg.solid.success, .msg.solid.warning, .msg.solid.danger",
-		"declarations": "background-color: var(--msg-ink); border: 1px solid var(--msg-ink); --ink-bg: var(--msg-ink)"
+		"selector": ".fill.stripes-anim",
+		"declarations": "animation: progress-stripes 0.8s linear infinite"
+	},
+	{
+		"class": "success",
+		"file": "component-props.css",
+		"selector": ".success",
+		"declarations": "background-color: var(--success); border: 1px solid var(--success)"
+	},
+	{
+		"class": "surface-tight",
+		"file": "components/data.css",
+		"selector": ".surface-tight",
+		"declarations": "padding: 0"
 	},
 	{
 		"class": "swap",
-		"file": "components/theme.css",
-		"selector": ".swap > *, .choice::before, .orb, .orb::after, .range-rail .thumb, .rocker .thumb",
-		"declarations": "transition-property: opacity, scale, rotate, translate; transition-duration: calc(var(--spring-ms) * var(--motion-scale)); transition-timing-function: var(--spring)"
+		"file": "components/actions.css",
+		"selector": ".swap.fade > *",
+		"declarations": "scale: 1; rotate: 0deg"
 	},
 	{
 		"class": "swatch",
@@ -1194,10 +1914,154 @@
 		"declarations": "background-image: linear-gradient(var(--color, transparent), var(--color, transparent)), repeating-conic-gradient(var(--border-strong) 0 25%, var(--bg-overlay) 0 50%); background-size: 100% 100%, 0.5rem 0.5rem; box-shadow: inset 0 0 0 1px var(--border)"
 	},
 	{
+		"class": "switch-box",
+		"file": "components-base.css",
+		"selector": ".switch-box",
+		"declarations": "display: inline-flex; flex-shrink: 0"
+	},
+	{
+		"class": "tag",
+		"file": "components-base.css",
+		"selector": ".tag",
+		"declarations": "padding-inline: var(--space-sm); font-weight: 500; white-space: nowrap; background-color: var(--tag-color)"
+	},
+	{
+		"class": "tag-remove",
+		"file": "components-base.css",
+		"selector": ".tag .tag-remove",
+		"declarations": "height: 1.5em; width: 1.5em; margin-inline-end: calc(var(--space-xs) * -1); color: inherit"
+	},
+	{
 		"class": "text",
 		"file": "components/feedback.css",
 		"selector": ".bone.text",
 		"declarations": "height: 0.75em"
+	},
+	{
+		"class": "text-2xl",
+		"file": "components/data.css",
+		"selector": ".data-table.text-2xl",
+		"declarations": "font-size: var(--text-2xl)"
+	},
+	{
+		"class": "text-3xl",
+		"file": "components/data.css",
+		"selector": ".data-table.text-3xl",
+		"declarations": "font-size: var(--text-3xl)"
+	},
+	{
+		"class": "text-black",
+		"file": "components/data.css",
+		"selector": ".data-table.text-black",
+		"declarations": "color: var(--black-fixed)"
+	},
+	{
+		"class": "text-bs",
+		"file": "components/data.css",
+		"selector": ".data-table.text-bs",
+		"declarations": "font-size: var(--text-bs)"
+	},
+	{
+		"class": "text-danger",
+		"file": "components/data.css",
+		"selector": ".data-table.text-danger",
+		"declarations": "color: var(--text-danger)"
+	},
+	{
+		"class": "text-info",
+		"file": "components/data.css",
+		"selector": ".data-table.text-info",
+		"declarations": "color: var(--text-info)"
+	},
+	{
+		"class": "text-inverse",
+		"file": "components/data.css",
+		"selector": ".data-table.text-inverse",
+		"declarations": "color: var(--text-inverse)"
+	},
+	{
+		"class": "text-lg",
+		"file": "components/data.css",
+		"selector": ".data-table.text-lg",
+		"declarations": "font-size: var(--text-lg)"
+	},
+	{
+		"class": "text-md",
+		"file": "components/data.css",
+		"selector": ".data-table.text-md",
+		"declarations": "font-size: var(--text-md)"
+	},
+	{
+		"class": "text-muted",
+		"file": "components/data.css",
+		"selector": ".data-table.text-muted",
+		"declarations": "color: var(--text-muted)"
+	},
+	{
+		"class": "text-neutral",
+		"file": "components/data.css",
+		"selector": ".data-table.text-neutral",
+		"declarations": "color: var(--text-neutral)"
+	},
+	{
+		"class": "text-only",
+		"file": "components-base.css",
+		"selector": ".tag.text-only",
+		"declarations": "background-color: transparent; color: var(--tag-color)"
+	},
+	{
+		"class": "text-primary",
+		"file": "components/data.css",
+		"selector": ".data-table.text-primary",
+		"declarations": "color: var(--text-primary)"
+	},
+	{
+		"class": "text-secondary",
+		"file": "components/data.css",
+		"selector": ".data-table.text-secondary",
+		"declarations": "color: var(--text-secondary)"
+	},
+	{
+		"class": "text-sm",
+		"file": "components/data.css",
+		"selector": ".data-table.text-sm",
+		"declarations": "font-size: var(--text-sm)"
+	},
+	{
+		"class": "text-success",
+		"file": "components/data.css",
+		"selector": ".data-table.text-success",
+		"declarations": "color: var(--text-success)"
+	},
+	{
+		"class": "text-warning",
+		"file": "components/data.css",
+		"selector": ".data-table.text-warning",
+		"declarations": "color: var(--text-warning)"
+	},
+	{
+		"class": "text-white",
+		"file": "components/data.css",
+		"selector": ".data-table.text-white",
+		"declarations": "color: var(--white-fixed)"
+	},
+	{
+		"class": "text-xl",
+		"file": "components/data.css",
+		"selector": ".data-table.text-xl",
+		"declarations": "font-size: var(--text-xl)"
+	},
+	{
+		"class": "text-xs",
+		"file": "components/data.css",
+		"selector": ".data-table.text-xs",
+		"declarations": "font-size: var(--text-xs)"
+	},
+	{
+		"class": "themed",
+		"file": "component-props.css",
+		"selector": ".themed",
+		"declarations": "background-color: var(--theme-color); border: 1px solid var(--theme-color)"
 	},
 	{
 		"class": "thin",
@@ -1207,9 +2071,9 @@
 	},
 	{
 		"class": "thumb",
-		"file": "components/pickers.css",
-		"selector": ".thumb.free",
-		"declarations": "top: calc(var(--vy, 0) * 100%); left: calc(var(--vx, 0) * 100%)"
+		"file": "component-props.css",
+		"selector": ".thumb",
+		"declarations": "position: absolute; top: 50%; left: calc(var(--value, 0) * 100%); translate: -50% -50%; aspect-ratio: 1; border-radius: var(--radius-full); border: 1px solid var(--border-strong); background-color: var(--white-fixed); box-shadow: var(--shadow-sm)"
 	},
 	{
 		"class": "tick",
@@ -1232,7 +2096,7 @@
 	{
 		"class": "timeline-body",
 		"file": "components/display.css",
-		"selector": ".timeline.alternate .timeline-item:nth-child(odd) > .timeline-body",
+		"selector": ".timeline.right .timeline-body",
 		"declarations": "grid-column: 1; grid-row: 1; align-items: flex-end; text-align: right"
 	},
 	{
@@ -1314,16 +2178,64 @@
 		"declarations": "color: var(--info)"
 	},
 	{
+		"class": "tone-danger",
+		"file": "component-props.css",
+		"selector": ".tone-danger",
+		"declarations": "--theme-color: var(--danger)"
+	},
+	{
+		"class": "tone-info",
+		"file": "component-props.css",
+		"selector": ".tone-info",
+		"declarations": "--theme-color: var(--info)"
+	},
+	{
+		"class": "tone-neutral",
+		"file": "component-props.css",
+		"selector": ".tone-neutral",
+		"declarations": "--theme-color: var(--text-secondary)"
+	},
+	{
+		"class": "tone-success",
+		"file": "component-props.css",
+		"selector": ".tone-success",
+		"declarations": "--theme-color: var(--success)"
+	},
+	{
+		"class": "tone-warning",
+		"file": "component-props.css",
+		"selector": ".tone-warning",
+		"declarations": "--theme-color: var(--warning)"
+	},
+	{
+		"class": "tour-card",
+		"file": "components/overlays.css",
+		"selector": ".tour-card",
+		"declarations": "position: fixed; z-index: calc(var(--z-modal) + 1); width: var(--measure-sm); max-width: calc(100vw - 2rem); left: calc(var(--card-x, 24) * 1px); top: calc(var(--card-y, 24) * 1px)"
+	},
+	{
+		"class": "tour-spot",
+		"file": "components/overlays.css",
+		"selector": ".tour-spot",
+		"declarations": "position: fixed; top: calc(var(--spot-y, 0) * 1px); left: calc(var(--spot-x, 0) * 1px); width: calc(var(--spot-w, 0) * 1px); height: calc(var(--spot-h, 0) * 1px); border-radius: var(--radius-md); box-shadow: 0 0 0 100vmax var(--bg-backdrop), 0 0 0 2px var(--theme-color); pointer-events: none; z-index: var(--z-modal); transition: top var(--speed3) var(--transout2), left var(--speed3) var(--transout2), width var(--speed3) var(--transout2), height var(--speed3) var(--transout2)"
+	},
+	{
 		"class": "track",
-		"file": "components/inputs.css",
-		"selector": ".track.thin",
-		"declarations": "height: 0.25rem"
+		"file": "component-props.css",
+		"selector": ".track",
+		"declarations": "position: relative; flex: none; background-color: var(--state-selected); border-radius: var(--radius-full)"
+	},
+	{
+		"class": "track-min",
+		"file": "components-base.css",
+		"selector": ".track-min",
+		"declarations": "min-width: 14em"
 	},
 	{
 		"class": "track-v",
-		"file": "components/selection.css",
-		"selector": ".track-v.slim",
-		"declarations": "width: 0.5em; height: 10em"
+		"file": "components-base.css",
+		"selector": ".track-v",
+		"declarations": "height: 10em"
 	},
 	{
 		"class": "underline",
@@ -1333,9 +2245,9 @@
 	},
 	{
 		"class": "vertical",
-		"file": "components/motion.css",
-		"selector": ".marquee.vertical",
-		"declarations": "flex-direction: column"
+		"file": "component-props.css",
+		"selector": ".track.vertical .fill",
+		"declarations": "inset-block: auto; inset-inline: 0; left: 0; width: auto; bottom: calc(var(--from, 0) * 100%); height: calc((var(--value, 0) - var(--from, 0)) * 100%)"
 	},
 	{
 		"class": "viewport",
@@ -1345,9 +2257,27 @@
 	},
 	{
 		"class": "warning",
-		"file": "components/feedback.css",
-		"selector": ".msg.solid, .msg.solid.neutral, .msg.solid.info, .msg.solid.success, .msg.solid.warning, .msg.solid.danger",
-		"declarations": "background-color: var(--msg-ink); border: 1px solid var(--msg-ink); --ink-bg: var(--msg-ink)"
+		"file": "component-props.css",
+		"selector": ".warning",
+		"declarations": "background-color: var(--warning); border: 1px solid var(--warning)"
+	},
+	{
+		"class": "wf-bar",
+		"file": "components/data.css",
+		"selector": ".wf-bar",
+		"declarations": "position: absolute; top: 0.25rem; bottom: 0.25rem; left: calc(var(--start, 0) * 1%); width: max(0.25rem, calc(var(--span, 0) * 1%)); border-radius: var(--radius-sm); background-color: var(--theme-color)"
+	},
+	{
+		"class": "wf-lane",
+		"file": "components/data.css",
+		"selector": ".wf-lane",
+		"declarations": "position: relative; height: 1.5rem"
+	},
+	{
+		"class": "wf-marker",
+		"file": "components/data.css",
+		"selector": ".wf-marker",
+		"declarations": "position: absolute; inset-block: 0; left: calc(var(--pos, 0) * 1%); border-left: 1px dashed var(--danger); pointer-events: none"
 	},
 	{
 		"class": "wmin-xs",

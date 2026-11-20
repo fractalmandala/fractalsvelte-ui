@@ -31,7 +31,7 @@
 		collapsible = false,
 		collapsedSize = 0,
 		collapsed = $bindable(false),
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -87,7 +87,7 @@
 <div
 	{...rest}
 	{id}
-	class={['pane', !group.dragging && 'settle', klass]}
+	class={['pane', !group.dragging && 'settle', className]}
 	data-collapsed={shut || undefined}
 	inert={shut && collapsedSize === 0 ? true : undefined}
 	{@attach vars({ pane: size })}

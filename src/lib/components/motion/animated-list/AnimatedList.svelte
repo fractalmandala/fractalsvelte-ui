@@ -18,7 +18,7 @@
 		children?: Snippet<[T]>;
 	}
 
-	let { items, key: keyOf, max, reverse = false, class: klass, children, ...rest }: Props = $props();
+	let { items, key: keyOf, max, reverse = false, class: className, children, ...rest }: Props = $props();
 
 	const flip = createFlip({ spring: 'snappy' });
 
@@ -52,7 +52,7 @@
 	}
 </script>
 
-<div class={['relative box gap-sm', klass]} role="list" {@attach flip.attach} {...rest}>
+<div class={['relative box gap-sm', className]} role="list" {@attach flip.attach} {...rest}>
 	{#each visible as item (keyOf(item))}
 		<div
 			class="motion"

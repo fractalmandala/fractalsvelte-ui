@@ -8,6 +8,7 @@
 
 <div class="measure-sm">
 	<Field label="Find a customer" error={invalid ? 'Type at least two characters.' : undefined}>
-		<SearchInput bind:value={query} {invalid} placeholder="Name or account number" />
+		<SearchInput value="locked" disabled />
+<SearchInput bind:value={query} {invalid} placeholder="Name or account number" />
 	</Field>
 </div>

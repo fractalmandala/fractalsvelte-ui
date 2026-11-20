@@ -19,7 +19,7 @@
 		</div>
 	</ScrollArea>
 
-	<ScrollArea orientation="both" maxHeight="sm" scrollbar="auto" label="Week plan">
+	<ScrollArea orientation="both" maxHeight="h-sm" scrollbar="auto" label="Week plan">
 		<div class="box pad-md">
 			<table class="text-sm">
 				<thead>

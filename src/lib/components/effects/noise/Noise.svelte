@@ -14,13 +14,13 @@
 	let {
 		opacity = 0.18,
 		blend = 'overlay',
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 </script>
 
 <div
-	class={['grain', 'pointer-none', klass]}
+	class={['grain', 'pointer-none', className]}
 	aria-hidden="true"
 	{@attach vars({ 'grain-opacity': opacity, 'grain-blend': blend })}
 	{...rest}

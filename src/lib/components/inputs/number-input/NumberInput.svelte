@@ -3,12 +3,12 @@
 <script lang="ts">
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
-	import { luChevronDown, luChevronUp } from '@fractaldesign/icons/lucide';
-	import { defaultSize, type Shape, type Size } from '../../../internal/tokens.js';
+	import { luChevronDown, luChevronUp, luGripVertical } from '@fractaldesign/icons/lucide';
+	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
 	import { useFieldControl } from '../field/field.js';
 	import { focusFrame, frameClasses } from '../input/frame.js';
 
-	interface Props extends Omit<HTMLInputAttributes, 'size' | 'value' | 'children' | 'min' | 'max' | 'step' | 'type'> {
+	interface Props extends Omit<HTMLInputAttributes, 'size' | 'value' | 'children' | 'min' | 'max' | 'step' | 'type' | 'disabled'> {
 		/** The number. `null` when the field is empty. Bindable; works controlled and uncontrolled. */
 		value?: number | null;
 		/** Called with the new number (or `null` when cleared) whenever it changes. */
@@ -23,19 +23,27 @@
 		precision?: number;
 		/** `Intl.NumberFormat` options used to present the value while the field is not being edited. */
 		format?: Intl.NumberFormatOptions;
-		/** The control height. Text follows this unless `textSize` is set. @default 'md' */
+		/** Locale identifier passed to `Intl.NumberFormat`. */
+		locale?: string;
+		/** Alias for `format` options passed to `Intl.NumberFormat`. */
+		formatOptions?: Intl.NumberFormatOptions;
+		/** Enables horizontal pointer-drag scrubbing via a leading grip handle. */
+		scrubbable?: boolean;
+		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
 		/** The text scale, independent of the control height. Follows `size` when omitted. */
-		textSize?: Size;
+		textSize?: TextSize;
 		/** The corner shape. @default 'modern' */
 		shape?: Shape;
 		/** `outline` is a bordered field, `filled` a tinted one without a border, `ghost` is bare until hovered or focused. @default 'outline' */
-		variant?: 'outline' | 'filled' | 'ghost';
+		look?: 'outline' | 'filled' | 'ghost';
 		/** Marks the field invalid (red border, `aria-invalid`). Inside a `Field` it follows the field's error unless set. */
 		invalid?: boolean;
 		/** The underlying `<input>` element. Bindable. */
 		ref?: HTMLInputElement | null;
-	}
+			/** Blocks pointer and keyboard input, and dims the frame. */
+		disabled?: boolean | null;
+}
 
 	let {
 		value = $bindable(null),
@@ -45,17 +53,20 @@
 		step = 1,
 		precision,
 		format,
+		locale,
+		formatOptions,
+		scrubbable = false,
 		size,
 		textSize,
 		shape,
-		variant,
+		look,
 		invalid,
 		ref = $bindable(null),
 		id,
 		required,
 		disabled,
 		readonly,
-		class: klass,
+		class: className,
 		oninput,
 		onkeydown,
 		onfocus,
@@ -66,23 +77,26 @@
 	}: Props = $props();
 
 	const uid = $props.id();
-	const control = useFieldControl(uid, () => ({ id, invalid, required, disabled, describedby, size, shape, variant }));
+	const control = useFieldControl(uid, () => ({ id, invalid, required, disabled, describedby, size, shape, look }));
 
 	const resolvedSize = $derived(size ?? control.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? control.shape ?? 'modern');
-	const resolvedVariant = $derived(variant ?? control.variant ?? 'outline');
+	const resolvedVariant = $derived(look ?? control.look ?? 'outline');
 
 	const classes = $derived([
-		frameClasses({ variant: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled }),
-		klass
+		frameClasses({ look: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled }),
+		className
 	]);
 
 	let focused = $state(false);
 	let draft = $state('');
 	let holdTimer: ReturnType<typeof setTimeout> | undefined;
 	let holdRepeat: ReturnType<typeof setInterval> | undefined;
+	let scrubbing = $state(false);
+	let scrubOriginX = 0;
+	let scrubOriginVal = 0;
 
-	const formatter = $derived(new Intl.NumberFormat(undefined, format));
+	const formatter = $derived(new Intl.NumberFormat(locale, formatOptions ?? format));
 	const places = $derived(precision ?? fractionDigits(step));
 	const shown = $derived(focused ? draft : value === null ? '' : formatter.format(value));
 	const atMin = $derived(value !== null && min !== undefined && value <= min);
@@ -207,12 +221,49 @@
 		stepBy(event.deltaY < 0 ? 1 : -1, event.shiftKey ? 10 : 1);
 	}
 
+	function onScrubDown(event: PointerEvent): void {
+		if (!scrubbable || control.disabled || readonly || event.button > 0) return;
+		event.preventDefault();
+		event.stopPropagation();
+		(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
+		scrubbing = true;
+		scrubOriginX = event.clientX;
+		scrubOriginVal = value ?? min ?? 0;
+	}
+
+	function onScrubMove(event: PointerEvent): void {
+		if (!scrubbing || control.disabled || readonly) return;
+		const stepsMoved = Math.round((event.clientX - scrubOriginX) / 4);
+		const multiplier = event.shiftKey ? 10 : 1;
+		set(clamp(scrubOriginVal + stepsMoved * step * multiplier));
+	}
+
+	function onScrubUp(event: PointerEvent): void {
+		if (!scrubbing) return;
+		scrubbing = false;
+		const el = event.currentTarget as HTMLElement;
+		if (el.hasPointerCapture(event.pointerId)) el.releasePointerCapture(event.pointerId);
+	}
+
 	$effect(() => {
 		return () => stopHold();
 	});
 </script>
 
 <div role="presentation" class={classes} onpointerdown={(event) => focusFrame(event, ref)}>
+	{#if scrubbable}
+		<span
+			role="presentation"
+			class="scrub-handle row ycenter px-xs text-muted shrink-0"
+			title="Drag horizontally to adjust"
+			onpointerdown={onScrubDown}
+			onpointermove={onScrubMove}
+			onpointerup={onScrubUp}
+			onpointercancel={onScrubUp}
+		>
+			<Icon icon={luGripVertical} />
+		</span>
+	{/if}
 	<input
 		bind:this={ref}
 		class="bare grow wmin0 hfull tabular-nums"

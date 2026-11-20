@@ -5,7 +5,7 @@
 	import { Icon } from '@fractaldesign/icons';
 	import { luPipette } from '@fractaldesign/icons/lucide';
 	import { vars } from '../../../motion/index.js';
-	import { textClass } from '../../../internal/tokens.js';
+	
 	import { equalHsv, formatColor, formatSolid, parseColor, type ColorFormat, type Hsv } from './color.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
@@ -36,7 +36,7 @@
 		disabled = false,
 		name,
 		label,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -276,7 +276,7 @@
 </script>
 
 <div
-	class={['box gap-sm measure-xs', textClass.md, disabled && 'disabled', klass]}
+	class={['box gap-sm measure-xs text-md', disabled && 'disabled', className]}
 	{@attach vars({ angle: hsv.h, color: css, 'color-solid': solid })}
 	{...rest}
 >

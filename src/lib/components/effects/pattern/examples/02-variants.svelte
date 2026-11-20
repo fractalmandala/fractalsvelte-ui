@@ -11,9 +11,9 @@
 </script>
 
 <div class="grid-2 gap-bs">
-	{#each tiles as [variant, title, copy] (variant)}
+	{#each tiles as [form, title, copy] (form)}
 		<div class="relative overflow-hidden curved pad-xl box gap-sm bg-surface border-subtle">
-			<Pattern {variant} fade="radial" />
+			<Pattern {form} fade="radial" />
 			<p class="card-title">{title}</p>
 			<p class="card-desc text-secondary">{copy}</p>
 		</div>

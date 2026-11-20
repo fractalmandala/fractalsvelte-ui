@@ -1,3 +1,5 @@
+export type { Density } from '../../../internal/tokens.js';
+
 /** Row density of a table. */
 export type TableSize = 'sm' | 'md' | 'lg';
 

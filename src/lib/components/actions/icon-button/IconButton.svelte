@@ -6,34 +6,31 @@
 	import type { IconData } from '@fractaldesign/icons';
 	import { luLoaderCircle } from '@fractaldesign/icons/lucide';
 	import { press } from '../../../motion/index.js';
-	import { sizeClass, type Shape, type Size, type Variant } from '../../../internal/tokens.js';
+	import { defaultTextColor } from '../../../internal/helpers.js';
+	import { type Shape, type Size, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
 
-	interface Props extends HTMLButtonAttributes {
-		/** The icon drawn in the button. */
+	interface Props extends Omit<HTMLButtonAttributes, 'disabled'> {
 		icon: IconData;
-		/** The accessible name. Required, because the button has no visible text; it is also announced as the tooltip text. */
 		label: string;
-		/** The visual style. */
 		variant?: Variant;
-		/** The control height; the button is always square. */
 		size?: Size;
-		/** The corner shape. */
+		textSize?: TextSize;
+		textColor?: TextColor;
 		shape?: Shape;
-		/** Shows a spinner in place of the icon and blocks interaction. */
 		loading?: boolean;
-		/** Renders an `<a>` that looks like an icon button. Use for navigation. */
 		href?: string;
-		/** Where to open the link, when `href` is set. */
 		target?: HTMLAnchorAttributes['target'];
-		/** Springs the button down under the pointer. Turn off for a still button. */
 		pressable?: boolean;
-	}
+			disabled?: boolean | null;
+}
 
 	let {
 		icon,
 		label,
 		variant = 'ghost',
-		size = 'md',
+		size = 'h-lg',
+		textSize,
+		textColor,
 		shape = 'modern',
 		loading = false,
 		href,
@@ -41,18 +38,21 @@
 		pressable = true,
 		disabled,
 		type = 'button',
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
+	const resolvedTextColor = $derived(textColor ?? defaultTextColor(variant));
 	const classes = $derived([
 		'button btn-icon no-scaling',
 		variant,
-		sizeClass[size],
+		size,
+		textSize,
+		resolvedTextColor,
 		shape,
 		'inline-flex',
 		pressable && 'motion',
-		klass
+		className
 	]);
 	const spring = $derived(pressable ? press() : undefined);
 </script>

@@ -4,7 +4,7 @@
 </script>
 
 <div class="box gap-sm measure-sm">
-	{#each ['xs', 'sm', 'md', 'lg', 'xl'] as const as size (size)}
+	{#each ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const as size (size)}
 		<Input {size} placeholder={`Size ${size}`} aria-label={`Size ${size}`} />
 	{/each}
 </div>

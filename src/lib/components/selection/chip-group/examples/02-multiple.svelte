@@ -1,4 +1,4 @@
-<!-- @example Multiple, with icons and counts :: type="multiple" toggles any number of chips; icons and counts describe each filter, and onValueChange reports the set. -->
+<!-- @example Multiple, with icons and counts :: multiple toggles any number of chips; icons and counts describe each filter, and onValueChange reports the set. -->
 <script lang="ts">
 	import { ChipGroup, type ChipOption } from '@fractaldesign/fractalsvelte-ui';
 	import { luActivity, luBox, luCpu, luGlobe } from '@fractaldesign/icons/lucide';
@@ -15,7 +15,7 @@
 
 <div class="box gap-sm">
 	<ChipGroup
-		type="multiple"
+		multiple
 		{options}
 		bind:value={filters}
 		label="Deployment filters"

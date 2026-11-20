@@ -3,12 +3,12 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { animate } from '../../../motion/index.js';
-	import { defaultSize, heightClass, type Shape, type Size } from '../../../internal/tokens.js';
+	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
 	import { vars } from '../../../motion/index.js';
 	import { useFieldControl } from '../field/field.js';
 	import { frameClasses } from '../input/frame.js';
 
-	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
+	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'disabled'> {
 		/** The code. Bindable; works controlled and uncontrolled. Length is padded or trimmed to `length`. */
 		value?: string;
 		/** Called with the new code whenever a cell changes. */
@@ -18,49 +18,51 @@
 		/** How many cells to show. */
 		length?: number;
 		/** `numeric` accepts digits only; `alphanumeric` accepts letters and digits. */
-		type?: 'numeric' | 'alphanumeric';
+		charset?: 'numeric' | 'alphanumeric';
 		/** Hides the characters, as a password field would. */
 		mask?: boolean;
-		/** The cell height. Text follows this unless `textSize` is set. @default 'md' */
+		/** The cell height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
 		/** The text scale, independent of the cell height. Follows `size` when omitted. */
-		textSize?: Size;
+		textSize?: TextSize;
 		/** The corner shape of each cell. @default 'modern' */
 		shape?: Shape;
 		/** `outline` is a bordered cell, `filled` a tinted one without a border, `ghost` is bare until hovered or focused. @default 'outline' */
-		variant?: 'outline' | 'filled' | 'ghost';
+		look?: 'outline' | 'filled' | 'ghost';
 		/** Marks the group invalid (red border, `aria-invalid`). Inside a `Field` it follows the field's error unless set. */
 		invalid?: boolean;
-	}
+			/** Blocks pointer and keyboard input, and dims the cells. */
+		disabled?: boolean | null;
+}
 
 	let {
 		value = $bindable(''),
 		onValueChange,
 		onComplete,
 		length = 6,
-		type = 'numeric',
+		charset = 'numeric',
 		mask = false,
 		size,
 		textSize,
 		shape,
-		variant,
+		look,
 		invalid,
 		id,
-		class: klass,
+		class: className,
 		'aria-describedby': describedby,
 		...rest
 	}: Props = $props();
 
 	const uid = $props.id();
-	const control = useFieldControl(uid, () => ({ id, invalid, describedby, size, shape, variant }));
+	const control = useFieldControl(uid, () => ({ id, invalid, describedby, size, shape, look }));
 
 	const resolvedSize = $derived(size ?? control.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? control.shape ?? 'modern');
-	const resolvedVariant = $derived(variant ?? control.variant ?? 'outline');
+	const resolvedVariant = $derived(look ?? control.look ?? 'outline');
 	const cells = $derived(Math.max(1, Math.round(length)));
 	const chars = $derived(pad(value, cells));
-	const pattern = $derived(type === 'numeric' ? /[0-9]/ : /[A-Za-z0-9]/);
-	const inputmode = $derived(type === 'numeric' ? 'numeric' : 'text');
+	const pattern = $derived(charset === 'numeric' ? /[0-9]/ : /[A-Za-z0-9]/);
+	const inputmode = $derived(charset === 'numeric' ? 'numeric' : 'text');
 
 	let inputs: HTMLInputElement[] = [];
 
@@ -168,10 +170,19 @@
 		});
 	}
 
-	const cellSize = { xs: '2.25rem', sm: '2.5rem', md: '3rem', lg: '3.5rem', xl: '4rem' } as const;
+	const cellSize: Record<Size, string> = {
+		'h-xs': '2.25rem',
+		'h-sm': '2.5rem',
+		'h-md': '3rem',
+		'h-bs': '3.25rem',
+		'h-lg': '3.5rem',
+		'h-xl': '4rem',
+		'h-2xl': '4.5rem',
+		'h-3xl': '5rem'
+	};
 	const frame = $derived(
-		frameClasses({ variant: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled, content: true }).filter(
-			(c) => c !== 'wfull'
+		frameClasses({ look: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled, content: true }).filter(
+			(c: string) => c !== 'wfull'
 		)
 	);
 </script>
@@ -179,7 +190,7 @@
 <div
 	role="group"
 	id={control.labelId ? undefined : control.id}
-	class={['cells', klass]}
+	class={['cells', className]}
 	aria-labelledby={control.labelId}
 	aria-describedby={control.describedby}
 	aria-disabled={control.disabled || undefined}
@@ -187,7 +198,7 @@
 	{...rest}
 >
 	{#each chars as char, index (index)}
-		<div class={['motion row ycenter xcenter', frame, heightClass[resolvedSize]]}>
+		<div class={['motion row ycenter xcenter', frame, resolvedSize]}>
 			<input
 				{@attach register(index)}
 				class="bare wfull hfull ta-c tabular-nums weight-600"

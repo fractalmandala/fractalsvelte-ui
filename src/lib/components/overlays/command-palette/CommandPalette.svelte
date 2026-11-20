@@ -5,7 +5,7 @@
 	import type { HTMLDialogAttributes } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luSearch } from '@fractaldesign/icons/lucide';
-	import { dialogSync } from '../../../internal/floating.js';
+	import { dialogSync } from '../../../internal/helpers.js';
 	import { stagger, vars } from '../../../motion/index.js';
 	import { surfaceClass, type OverlaySurface, type OverlayTrigger } from '../dialog/dialog.js';
 	import {
@@ -46,7 +46,7 @@
 		empty,
 		footer,
 		trigger,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -147,7 +147,7 @@
 
 <dialog
 	id={uid}
-	class={['dialog open-column sized pop enter-scale radius-lg shad-2xl', surfaceClass[surface], klass]}
+	class={['dialog open-column sized pop enter-scale radius-lg shad-2xl', surfaceClass[surface], className]}
 	aria-label="Command palette"
 	{@attach dialogSync(() => open, setOpen, { dismissible: true })}
 	{@attach vars({ size: 'var(--measure-md)' })}
@@ -157,7 +157,7 @@
 		<Icon icon={luSearch} class="text-muted shrink-0" />
 		<input
 			bind:this={field}
-			class="bare grow text-md text-primary"
+			class="bare grow text-md"
 			type="text"
 			{placeholder}
 			bind:value={query}

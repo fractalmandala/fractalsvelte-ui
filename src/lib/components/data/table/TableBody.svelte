@@ -9,9 +9,9 @@
 		children?: Snippet;
 	}
 
-	let { class: klass, children, ...rest }: Props = $props();
+	let { class: className, children, ...rest }: Props = $props();
 </script>
 
-<tbody class={klass} {...rest}>
+<tbody class={className} {...rest}>
 	{@render children?.()}
 </tbody>

@@ -2,7 +2,7 @@
 <script lang="ts">
 	import { Select } from '@fractaldesign/fractalsvelte-ui';
 
-	const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+	const sizes = ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const;
 	const plans = [
 		{ value: 'hobby', label: 'Hobby' },
 		{ value: 'pro', label: 'Pro' },

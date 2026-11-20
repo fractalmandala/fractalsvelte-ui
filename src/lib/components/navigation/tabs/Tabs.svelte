@@ -31,9 +31,9 @@
 		orientation = 'horizontal',
 		variant = 'underline',
 		activation = 'automatic',
-		size = 'md',
+		size = 'h-lg',
 		animated = false,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -68,6 +68,6 @@
 	});
 </script>
 
-<div class={['box gap-bs', klass]} {...rest}>
+<div class={['box gap-bs', className]} {...rest}>
 	{@render children?.()}
 </div>

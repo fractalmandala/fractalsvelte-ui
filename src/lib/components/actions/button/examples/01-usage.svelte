@@ -5,5 +5,5 @@
 	let count = $state(0);
 </script>
 
-<Button onclick={() => count++}>Deploy to production</Button>
+<Button onclick={() => count++} class="text-inverse">Deploy to production</Button>
 <p class="text-sm text-muted tabular-nums">Deployed {count} times</p>

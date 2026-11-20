@@ -6,46 +6,42 @@
 	import { Icon } from '@fractaldesign/icons';
 	import type { IconData } from '@fractaldesign/icons';
 	import { press } from '../../../motion/index.js';
-	import { controlSize, type Shape, type Size, type Variant } from '../../../internal/tokens.js';
+	import { defaultTextColor } from '../../../internal/helpers.js';
+	import { type Shape, type Size, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
 
-	interface Props extends HTMLButtonAttributes {
-		/** Whether the toggle is on. Bindable; works controlled and uncontrolled. */
+	interface Props extends Omit<HTMLButtonAttributes, 'disabled'> {
 		pressed?: boolean;
-		/** Called with the new state whenever the user toggles. */
 		onPressedChange?: (pressed: boolean) => void;
-		/** The visual style when off. When on, subtle variants fill and every variant gains an inset ring. */
 		variant?: Variant;
-		/** The control height. Text follows this unless `textSize` is set. */
 		size?: Size;
-		/** The text scale, independent of the control height. Follows `size` when omitted. */
-		textSize?: Size;
-		/** The corner shape. */
+		textSize?: TextSize;
+		textColor?: TextColor;
 		shape?: Shape;
-		/** An icon drawn before the label. With no label, set `aria-label`. */
 		icon?: IconData;
-		/** Springs the toggle down under the pointer. Turn off for a still toggle. */
 		pressable?: boolean;
-		/** The label. Omit it for an icon-only toggle. */
 		children?: Snippet;
-	}
+			disabled?: boolean | null;
+}
 
 	let {
 		pressed = $bindable(false),
 		onPressedChange,
 		variant = 'ghost',
-		size = 'md',
+		size = 'h-lg',
 		textSize,
+		textColor,
 		shape = 'modern',
 		icon,
 		pressable = true,
 		type = 'button',
-		class: klass,
+		class: className,
 		onclick,
 		children,
 		...rest
 	}: Props = $props();
 
 	const iconOnly = $derived(!children);
+	const resolvedTextColor = $derived(textColor ?? defaultTextColor(variant));
 
 	function toggle(event: MouseEvent & { currentTarget: EventTarget & HTMLButtonElement }) {
 		onclick?.(event);
@@ -59,12 +55,12 @@
 	class={[
 		'button no-scaling gap-sm weight-500 inline-flex',
 		variant,
-		controlSize(size, textSize),
+		size, textSize, resolvedTextColor,
 		shape,
 		iconOnly && 'btn-icon',
-		variant === 'soft' && pressed && 'selected',
+		variant === 'secondary' && pressed && 'selected',
 		pressable && 'motion',
-		klass
+		className
 	]}
 	{type}
 	aria-pressed={pressed}

@@ -10,7 +10,11 @@ export const enterFrom: Record<Placement, string> = {
 	'bottom-start': 'enter-down',
 	'bottom-end': 'enter-down',
 	left: 'enter-left',
-	right: 'enter-right'
+	'left-start': 'enter-left',
+	'left-end': 'enter-left',
+	right: 'enter-right',
+	'right-start': 'enter-right',
+	'right-end': 'enter-right'
 };
 
 /** Window after a tooltip closes during which the next one opens instantly. */

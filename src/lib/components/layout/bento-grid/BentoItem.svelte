@@ -23,7 +23,7 @@
 		rowSpan = 1,
 		featured = false,
 		lift = false,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -34,7 +34,7 @@
 		'span min0 anim-in',
 		featured && 'box pad-md border-subtle radius-md bg-panel rim shad-sm',
 		lift && 'lift',
-		klass
+		className
 	]}
 	{@attach vars({ cspan: colSpan, rspan: rowSpan })}
 	{...rest}

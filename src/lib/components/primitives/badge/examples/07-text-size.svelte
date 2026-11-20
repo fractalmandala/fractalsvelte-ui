@@ -4,7 +4,7 @@
 </script>
 
 <div class="row wrap gap-sm ycenter">
-	<Badge size="lg" textSize="sm" variant="themed">Small type</Badge>
-	<Badge size="lg" textSize="md" variant="themed">Medium type</Badge>
-	<Badge size="lg" textSize="lg" variant="themed">Large type</Badge>
+	<Badge size="h-lg" textSize="text-sm" variant="themed">Small type</Badge>
+	<Badge size="h-lg" textSize="text-md" variant="themed">Medium type</Badge>
+	<Badge size="h-lg" textSize="text-lg" variant="themed">Large type</Badge>
 </div>

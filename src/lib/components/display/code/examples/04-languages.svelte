@@ -70,7 +70,7 @@ pnpm --filter @fractaldesign/fractalsvelte-ui build
 <div class="box gap-bs">
 	<div class="row wrap gap-sm">
 		{#each ['svelte', 'ts', 'css', 'bash', 'json', 'html'] as const as next}
-			<Button variant={lang === next ? 'secondary' : 'ghost'} size="sm" onclick={() => (lang = next)}>
+			<Button variant={lang === next ? 'secondary' : 'ghost'} size="h-sm" onclick={() => (lang = next)}>
 				{next}
 			</Button>
 		{/each}

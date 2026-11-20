@@ -50,6 +50,10 @@
 .timeline-rail { display: flex; flex-direction: column; align-items: center; }
 .timeline-rail::after { content: ''; flex: 1 1 0%; width: 1px; margin-block: var(--space-xs); background-color: var(--border); }
 .timeline-item:last-child .timeline-rail::after { display: none; }
+/* Bodies on the end side: the rail moves to the right edge. */
+.timeline.right .timeline-item { grid-template-columns: minmax(0, 1fr) auto; }
+.timeline.right .timeline-rail { grid-column: 2; grid-row: 1; }
+.timeline.right .timeline-body { grid-column: 1; grid-row: 1; align-items: flex-end; text-align: right; }
 .timeline.alternate .timeline-item { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
 .timeline.alternate .timeline-rail { grid-column: 2; grid-row: 1; }
 .timeline.alternate .timeline-item:nth-child(odd) > .timeline-body { grid-column: 1; grid-row: 1; align-items: flex-end; text-align: right; }
@@ -65,3 +69,11 @@
 .tok-fn { color: var(--theme-color-up); }
 .tok-punc { color: var(--text-muted); }
 .tok-type { color: var(--info); }
+
+/* Image frame ratio 21:9 and explicit object-fit overrides. */
+.frame-21-9 { aspect-ratio: 21 / 9; overflow: hidden; position: relative; }
+.image-frame > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.image-frame > img.fit-contain { object-fit: contain; }
+.image-frame > img.fit-fill { object-fit: fill; }
+.image-frame > img.fit-scale-down { object-fit: scale-down; }
+.image-figure { margin: 0; }

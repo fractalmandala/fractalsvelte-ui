@@ -1,4 +1,4 @@
-<!-- @example Placements and delays :: All eight placements, a solid surface, and a controlled card with slower delays. -->
+<!-- @example Placements and delays :: Every placement, a solid surface, and a controlled card with slower delays. -->
 <script lang="ts">
 	import { HoverCard, type Placement } from '@fractaldesign/fractalsvelte-ui';
 
@@ -10,7 +10,11 @@
 		'bottom-start',
 		'bottom-end',
 		'left',
-		'right'
+		'left-start',
+		'left-end',
+		'right',
+		'right-start',
+		'right-end'
 	];
 
 	let open = $state(false);

@@ -5,7 +5,7 @@
 	import { Icon } from '@fractaldesign/icons';
 	import { luArrowUp } from '@fractaldesign/icons/lucide';
 	import { reducedMotion, scrollProgress } from '../../../motion/index.js';
-	import { sizeClass, type Size } from '../../../internal/tokens.js';
+	import { type Size } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLButtonAttributes {
 		/** How far the page must be scrolled, in pixels, before the button appears. */
@@ -19,8 +19,8 @@
 	let {
 		threshold = 320,
 		label = 'Back to top',
-		size = 'md',
-		class: klass,
+		size = 'h-lg',
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -56,7 +56,7 @@
 		<span class="ring cover pointer-none" aria-hidden="true" {@attach scrollProgress()}></span>
 		<button
 			type="button"
-			class={['button btn-icon primary modern no-scaling inline-flex z-raised', sizeClass[size], klass]}
+			class={['button btn-icon primary modern no-scaling inline-flex z-raised', size, className]}
 			aria-label={label}
 			tabindex={visible ? 0 : -1}
 			aria-hidden={!visible || undefined}

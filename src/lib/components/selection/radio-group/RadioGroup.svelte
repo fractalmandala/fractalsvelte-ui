@@ -3,7 +3,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Orientation, Size } from '../../../internal/tokens.js';
+	import type { Orientation, Size, TextSize } from '../../../internal/tokens.js';
 	import { setRadioGroup } from './radio-group.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
@@ -19,6 +19,8 @@
 		variant?: 'default' | 'card';
 		/** The radio and text scale. */
 		size?: Size;
+		/** The text scale of every label, independent of the control. Follows `size` when omitted. */
+		textSize?: TextSize;
 		/** Disables every radio in the group. */
 		disabled?: boolean;
 		/** Marks the group as failing validation. */
@@ -33,10 +35,11 @@
 		orientation = 'vertical',
 		name,
 		variant = 'default',
-		size = 'md',
+		size = 'h-lg',
+		textSize,
 		disabled = false,
 		invalid = false,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -56,6 +59,9 @@
 		get size() {
 			return size;
 		},
+		get textSize() {
+			return textSize;
+		},
 		get disabled() {
 			return disabled;
 		},
@@ -72,7 +78,7 @@
 <div
 	role="radiogroup"
 	aria-invalid={invalid || undefined}
-	class={[orientation === 'horizontal' ? 'row wrap' : 'column', variant === 'card' ? 'gap-sm' : 'gap-md', klass]}
+	class={[orientation === 'horizontal' ? 'row wrap' : 'column', variant === 'card' ? 'gap-sm' : 'gap-md', className]}
 	{...rest}
 >
 	{@render children?.()}

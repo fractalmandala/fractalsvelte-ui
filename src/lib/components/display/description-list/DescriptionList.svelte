@@ -30,7 +30,7 @@
 		orientation = 'vertical',
 		columns = '1',
 		dividers = false,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -47,7 +47,7 @@
 		columnClass[columns],
 		columns === '1' ? 'gap-sm' : 'gap-lg',
 		dividers && 'divided',
-		klass
+		className
 	]);
 
 	const pairClass = $derived(orientation === 'horizontal' ? 'pair-row' : 'box gap-xs');
@@ -58,7 +58,7 @@
 		{#each items as item, i (item.term + String(i))}
 			<div class={pairClass}>
 				<dt class="text-sm text-secondary weight-500">{item.term}</dt>
-				<dd class="text-md text-primary">{item.description}</dd>
+				<dd class="text-md">{item.description}</dd>
 			</div>
 		{/each}
 	{:else}

@@ -13,7 +13,7 @@
 .code-block.scroll-tall { max-height: 32rem; overflow-y: auto; }
 
 /* The stage a live example sits on: a quiet dot grid. Distinct from the virtual-list .stage. */
-.example-stage { min-height: 11rem; background-image: radial-gradient(color-mix(in oklab, var(--text-muted) 30%, transparent) 1px, transparent 1px); background-size: 1rem 1rem; background-position: center; }
+.example-stage { min-height: 11rem; background-color: var(--bg-surface) }
 
 /* The landing hero: one soft wash of the theme colour, and gradient ink. */
 .hero-wash { background-image: radial-gradient(60% 55% at 50% 0%, color-mix(in oklab, var(--theme-color) 16%, transparent), transparent 72%); }
@@ -67,3 +67,5 @@
 /* Justified exceptions: no letter-spacing or 104px step on the type/size ladders. */
 .hero-text { font-size: calc(var(--text-5xl) * 2); letter-spacing: -0.3rem; }
 .hero-logo { height: 104px; }
+
+.logotype { height: 20px;}

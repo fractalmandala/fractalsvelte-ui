@@ -11,6 +11,31 @@
 .dense.data-table th, .dense.data-table td { padding: var(--space-xs) var(--space-md); }
 .roomy.data-table th, .roomy.data-table td { padding: var(--space-bs) var(--space-lg); }
 
+/* The table's own text-* class is the last word on its type. The base
+   .data-table rule (text-md, text-primary) and .dense.data-table (text-sm) are
+   single- and two-class rules in earlier layers, so these equal-specificity
+   rules win by order and Table's textSize/textColor are real props, not tokens
+   that a default quietly overrides. */
+.data-table.text-xs { font-size: var(--text-xs); }
+.data-table.text-sm { font-size: var(--text-sm); }
+.data-table.text-md { font-size: var(--text-md); }
+.data-table.text-bs { font-size: var(--text-bs); }
+.data-table.text-lg { font-size: var(--text-lg); }
+.data-table.text-xl { font-size: var(--text-xl); }
+.data-table.text-2xl { font-size: var(--text-2xl); }
+.data-table.text-3xl { font-size: var(--text-3xl); }
+.data-table.text-primary { color: var(--text-primary); }
+.data-table.text-secondary { color: var(--text-secondary); }
+.data-table.text-muted { color: var(--text-muted); }
+.data-table.text-inverse { color: var(--text-inverse); }
+.data-table.text-neutral { color: var(--text-neutral); }
+.data-table.text-info { color: var(--text-info); }
+.data-table.text-success { color: var(--text-success); }
+.data-table.text-warning { color: var(--text-warning); }
+.data-table.text-danger { color: var(--text-danger); }
+.data-table.text-white { color: var(--white-fixed); }
+.data-table.text-black { color: var(--black-fixed); }
+
 /* A table whose rows do not light up under the pointer. */
 .still.data-table tbody tr:hover td { background-color: transparent; }
 .still.data-table.striped tbody tr:nth-child(even):hover td { background-color: var(--state-hover); }
@@ -26,9 +51,9 @@
 /* Indentation by depth: --level (0, 1, 2 …) steps of the space ladder. Trees, nested lists. */
 .indent { padding-left: calc(var(--level, 0) * var(--space-bs) + var(--space-sm)); }
 
-/* Carousel slides: --per-view slides share the rail, separated by --gap. */
-.slides.reel { gap: var(--gap, 0); scroll-behavior: smooth; }
-.slides.reel > .slide { flex: 0 0 calc((100% - (var(--per-view, 1) - 1) * var(--gap, 0rem)) / var(--per-view, 1)); min-width: 0; }
+/* Carousel slides: --per-view slides share the rail. */
+.slides.reel { scroll-behavior: smooth; }
+.slides.reel > .slide { flex: 0 0 calc(100% / var(--per-view, 1)); min-width: 0; }
 @media (prefers-reduced-motion: reduce) { .slides.reel { scroll-behavior: auto; } }
 
 /* A windowed list: the stage is as tall as every row (--extent, px); each row is placed at --y (px). */
@@ -38,3 +63,31 @@
 
 /* A stack whose children are divided by a hairline. Accordions, grouped lists. */
 .stack-rule > * + * { border-top: 1px solid var(--border); }
+
+/* Waterfall trace lanes, bars and markers (--start, --span, --pos in percent 0-100). */
+.wf-lane { position: relative; height: 1.5rem; }
+.wf-bar { position: absolute; top: 0.25rem; bottom: 0.25rem; left: calc(var(--start, 0) * 1%); width: max(0.25rem, calc(var(--span, 0) * 1%)); border-radius: var(--radius-sm); background-color: var(--theme-color); }
+.wf-marker { position: absolute; inset-block: 0; left: calc(var(--pos, 0) * 1%); border-left: 1px dashed var(--danger); pointer-events: none; }
+
+/* Tree vertical indent guide hairline. */
+.indent.guides { background-image: repeating-linear-gradient(to right, transparent 0, transparent calc(var(--space-bs) - 1px), var(--border-subtle) calc(var(--space-bs) - 1px), var(--border-subtle) var(--space-bs)); background-size: calc(var(--level, 0) * var(--space-bs)) 100%; background-repeat: no-repeat; background-position: var(--space-sm) 0; }
+
+/* A surface that keeps only its edge and fill: the surface classes carry an 8px inset, which would push row padding and .stack-rule dividers off the border. */
+.surface-tight { padding: 0; }
+
+/* A full-width disclosure header: no chrome of its own, a hover and focus fill on the row, and a muted look when disabled. Padding, height and text come from props, not from here. */
+.disclosure { border: none; background-color: transparent; cursor: pointer; text-align: inherit; }
+
+/* A native button does not inherit font-size, and the foundation reset only inherits
+   family and colour. `:where()` keeps this at zero specificity, so a `text-*` class on
+   the same trigger still wins while a bare one follows the disclosure's own type. */
+:where(.disclosure) { font-family: inherit; font-size: inherit; }
+.disclosure:hover:not(:disabled), .disclosure:focus-visible { background-color: var(--state-hover); }
+.disclosure:disabled { cursor: not-allowed; }
+
+/* Mobile-first alignment. `mleft` turns the text left at 1024px and below, but a centred
+   flex column still centres its children, so a short line stays in the middle. Undo that
+   for the disclosure, so the label and the panel body really do go left on small screens. */
+@media (max-width: 1024px) {
+	.disclosure .mleft, .disclosure-panel.mleft { align-items: flex-start; }
+}

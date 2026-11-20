@@ -3,7 +3,7 @@
 	import { BentoGrid, BentoItem } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
-<BentoGrid columns={6} gap="var(--space-sm)" rowHeight="5rem">
+<BentoGrid columns={6} gap="gap-sm" rowHeight="5rem">
 	<BentoItem colSpan={3} rowSpan={2}>
 		<div class="box gap-xs pad-md border-subtle radius-md bg-panel hfull">
 			<span class="text-sm weight-500">Capacity</span>

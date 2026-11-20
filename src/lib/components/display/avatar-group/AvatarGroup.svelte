@@ -4,9 +4,8 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { SpringValue, vars } from '../../../motion/index.js';
-	import type { Size } from '../../../internal/tokens.js';
 	import Avatar from '../avatar/Avatar.svelte';
-	import { avatarSizeClass } from '../avatar/avatar.js';
+	import { avatarSizeClass, type AvatarSize } from '../avatar/avatar.js';
 	import { setAvatarContext, type AvatarShape, type AvatarStatus } from '../avatar/context.js';
 
 	interface AvatarItem {
@@ -26,7 +25,7 @@
 		/** The number of avatars to show before collapsing the rest into a "+N" tile. */
 		max?: number;
 		/** The size of every member, including the overflow tile. */
-		size?: Size;
+		size?: AvatarSize;
 		/** The corner treatment applied to every member and the overflow tile. */
 		shape?: AvatarShape;
 		/** Springs the stack apart on hover. Turn off for a still group. */
@@ -41,7 +40,7 @@
 		size = 'md',
 		shape = 'circle',
 		spread = true,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -75,7 +74,7 @@
 		avatarSizeClass[size],
 		shape,
 		spread && 'spread',
-		klass
+		className
 	]);
 </script>
 

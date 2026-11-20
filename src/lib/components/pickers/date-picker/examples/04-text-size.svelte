@@ -4,9 +4,9 @@
 </script>
 
 <div class="box gap-sm measure-xs">
-	<DatePicker size="lg" textSize="xs" value="2026-11-12" aria-label="Extra-small type" />
-	<DatePicker size="lg" textSize="sm" value="2026-11-12" aria-label="Small type" />
-	<DatePicker size="lg" textSize="md" value="2026-11-12" aria-label="Medium type" />
-	<DatePicker size="lg" textSize="lg" value="2026-11-12" aria-label="Large type" />
-	<DatePicker size="lg" textSize="xl" value="2026-11-12" aria-label="Extra-large type" />
+	<DatePicker size="h-lg" textSize="text-xs" value="2026-11-12" aria-label="Extra-small type" />
+	<DatePicker size="h-lg" textSize="text-sm" value="2026-11-12" aria-label="Small type" />
+	<DatePicker size="h-lg" textSize="text-md" value="2026-11-12" aria-label="Medium type" />
+	<DatePicker size="h-lg" textSize="text-lg" value="2026-11-12" aria-label="Large type" />
+	<DatePicker size="h-lg" textSize="text-xl" value="2026-11-12" aria-label="Extra-large type" />
 </div>

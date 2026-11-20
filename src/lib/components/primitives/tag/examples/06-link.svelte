@@ -4,6 +4,6 @@
 </script>
 
 <div class="row wrap gap-sm ycenter">
-	<Tag href="/topics/motion" variant="soft">Motion</Tag>
-	<Tag href="/topics/tokens" variant="soft" removable>Tokens</Tag>
+	<Tag href="/topics/motion" variant="secondary">Motion</Tag>
+	<Tag href="/topics/tokens" variant="secondary" removable>Tokens</Tag>
 </div>

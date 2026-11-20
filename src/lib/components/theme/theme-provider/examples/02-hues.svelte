@@ -15,8 +15,8 @@
 			<p class="weight-600">{brand.name}</p>
 			<p class="text-xs text-muted tabular-nums">hue {brand.hue} / chroma {brand.chroma}</p>
 			<div class="row gap-xs">
-				<Button size="sm" variant="themed">Accent</Button>
-				<Button size="sm" variant="soft">Soft</Button>
+				<Button size="h-sm" variant="themed">Accent</Button>
+				<Button size="h-sm" variant="secondary">Soft</Button>
 			</div>
 		</ThemeProvider>
 	{/each}

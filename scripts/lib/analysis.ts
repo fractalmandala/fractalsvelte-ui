@@ -6,6 +6,7 @@ import path from 'node:path';
 import type { ApiComponent } from '../../src/lib/docs/api-types.ts';
 import { analyzePart, folderAliases, parseExports, parseTs, readExamples, toApiPart } from './api.ts';
 import type { ExampleInfo, ExportEntry, PartInfo } from './api.ts';
+import { readDocBlock, readDocIndex } from './comments.ts';
 import { evalDoc } from './doc.ts';
 import type { DocEval } from './doc.ts';
 import { PATHS, byCodepoint, exists, isDir, listDir, pascal, readText, rel } from './util.ts';
@@ -106,12 +107,14 @@ export function analyzeComponent(ref: ComponentRef): ComponentAnalysis {
 		const files = listDir(ref.dir, 'file');
 		a.svelteFiles = files.filter((f) => f.endsWith('.svelte'));
 		a.tsFiles = files.filter((f) => f.endsWith('.ts'));
-		a.hasIndex = files.includes('index.ts');
+		// A folder's barrel is index.ts, or index.js where the entry holds no types.
+		const indexName = files.includes('index.ts') ? 'index.ts' : 'index.js';
+		a.hasIndex = files.includes(indexName);
 		a.hasDoc = files.includes('doc.ts');
 
 		if (a.hasIndex) {
 			try {
-				a.exports = parseExports(readText(path.join(ref.dir, 'index.ts')) ?? '', ref.dir);
+				a.exports = parseExports(readText(path.join(ref.dir, indexName)) ?? '', ref.dir);
 			} catch (err) {
 				a.indexError = (err as Error).message;
 			}
@@ -132,13 +135,21 @@ export function analyzeComponent(ref: ComponentRef): ComponentAnalysis {
 		partFiles.sort((x, y) => (x.name === name ? -1 : y.name === name ? 1 : 0));
 
 		const types = folderAliases(ref.dir);
+		const docs = readDocIndex(ref.dir);
 		for (const p of partFiles) {
 			const src = readText(path.join(ref.dir, p.file)) ?? '';
-			a.parts.push(analyzePart(p.name, p.file, src, types));
+			a.parts.push(analyzePart(p.name, p.file, src, types, docs));
 		}
 
 		a.examples = readExamples(ref.dir);
-		if (a.hasDoc) a.doc = evalDoc(readText(path.join(ref.dir, 'doc.ts')) ?? '');
+		// The page prose lives in comments.md now — the folder's own, or its kit's.
+		// doc.ts is still read if a folder has not been migrated.
+		const block = readDocBlock(ref.dir, path.dirname(ref.dir), ref.slug);
+		if (block.value || block.error) {
+			a.doc = { value: block.value as DocEval['value'], error: block.error, line: null, file: block.file };
+		} else if (a.hasDoc) {
+			a.doc = evalDoc(readText(path.join(ref.dir, 'doc.ts')) ?? '');
+		}
 	} catch (err) {
 		a.crash = (err as Error).stack ?? String(err);
 	}
@@ -146,10 +157,16 @@ export function analyzeComponent(ref: ComponentRef): ComponentAnalysis {
 }
 
 export function toApiComponent(a: ComponentAnalysis): ApiComponent {
+	const doc = a.doc?.value ?? null;
 	return {
 		kit: a.ref.kit,
 		slug: a.ref.slug,
 		name: a.name,
+		summary: typeof doc?.summary === 'string' ? doc.summary : '',
+		description: typeof doc?.description === 'string' ? doc.description : '',
+		doc: doc
+			? Object.fromEntries(Object.entries(doc).filter(([k]) => !['name', 'summary', 'description'].includes(k)))
+			: undefined,
 		exports: a.exports.filter((e) => !e.isType).map((e) => e.name),
 		typeExports: a.exports.filter((e) => e.isType).map((e) => e.name),
 		parts: a.parts.map(toApiPart),

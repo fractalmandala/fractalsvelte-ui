@@ -10,7 +10,7 @@
 		class?: string;
 	}
 
-	let { class: klass, ...rest }: Props = $props();
+	let { class: className, ...rest }: Props = $props();
 
 	let request = $state<ConfirmRequest | null>(null);
 	let settled = $state(false);
@@ -41,6 +41,6 @@
 	onOpenChange={(next) => {
 		if (!next) resolve(false);
 	}}
-	class={klass}
+	class={className}
 	{...rest}
 />

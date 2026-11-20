@@ -13,7 +13,7 @@
 		children?: Snippet;
 	}
 
-	let { href, current = false, class: klass, children, ...rest }: Props = $props();
+	let { href, current = false, class: className, children, ...rest }: Props = $props();
 </script>
 
 <a
@@ -22,8 +22,8 @@
 	tabindex="-1"
 	class={[
 		'bare relative z-raised row ycenter px-md h-lg weight-500 focus-ring',
-		current ? 'text-primary' : 'text-secondary',
-		klass
+		current ? '' : 'text-secondary',
+		className
 	]}
 	aria-current={current ? 'page' : undefined}
 	{...rest}

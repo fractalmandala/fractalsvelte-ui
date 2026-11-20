@@ -11,7 +11,7 @@
 		withGrip?: boolean;
 	}
 
-	let { withGrip = false, class: klass, ...rest }: Props = $props();
+	let { withGrip = false, class: className, ...rest }: Props = $props();
 
 	const group = getResizable();
 	const ordinal = group.nextHandle();
@@ -77,7 +77,7 @@
 	aria-label="Resize panels"
 	{...rest}
 	bind:this={el}
-	class={['splitter touch-none select-none', active && 'active', klass]}
+	class={['splitter touch-none select-none', active && 'active', className]}
 	role="separator"
 	tabindex="0"
 	aria-orientation={horizontal ? 'vertical' : 'horizontal'}

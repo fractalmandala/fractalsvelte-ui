@@ -25,7 +25,7 @@
 		trigger,
 		disabled = false,
 		children,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -94,7 +94,7 @@
 	});
 </script>
 
-<div class={['inline-flex', klass]} {...rest}>
+<div class={['inline-flex', className]} {...rest}>
 	{#if trigger}
 		{@render trigger(api)}
 	{:else}
@@ -110,7 +110,7 @@
 			disabled={disabled || undefined}
 			class={[
 				'bare relative z-raised row ycenter gap-sm px-md h-lg weight-500 focus-ring select-none',
-				open ? 'text-primary' : 'text-secondary'
+				open ? '' : 'text-secondary'
 			]}
 			onclick={onClick}
 			onkeydown={onKeydown}

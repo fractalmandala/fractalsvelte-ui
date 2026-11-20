@@ -8,6 +8,6 @@
 		<p class="text-sm text-muted">Live</p>
 		<p class="card-title">Preview is up</p>
 		<p class="text-body-sm text-secondary">The night build is on this URL, with logs and a screenshot of the last run.</p>
-		<Button size="sm">Open preview</Button>
+		<Button size="h-sm">Open preview</Button>
 	</GlassPanel>
 </Aurora>

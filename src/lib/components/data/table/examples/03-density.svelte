@@ -1,4 +1,4 @@
-<!-- @example Density, stripes and hover :: size sets the row density; striped shades every other row; hoverable={false} keeps rows still. -->
+<!-- @example Density, stripes and hover :: density sets the row height; striped shades every other row; hoverable={false} keeps rows still. -->
 <script lang="ts">
 	import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableCaption } from '@fractaldesign/fractalsvelte-ui';
 
@@ -8,17 +8,17 @@
 		{ region: 'ap-south-1', p50: 77, p99: 302 },
 		{ region: 'sa-east-1', p50: 96, p99: 371 }
 	];
-	const variants: { size: 'sm' | 'md' | 'lg'; striped: boolean; hoverable: boolean }[] = [
-		{ size: 'sm', striped: true, hoverable: true },
-		{ size: 'md', striped: false, hoverable: true },
-		{ size: 'lg', striped: true, hoverable: false }
+	const variants: { density: 'compact' | 'cozy' | 'comfortable'; striped: boolean; hoverable: boolean }[] = [
+		{ density: 'compact', striped: true, hoverable: true },
+		{ density: 'cozy', striped: false, hoverable: true },
+		{ density: 'comfortable', striped: true, hoverable: false }
 	];
 </script>
 
 <div class="box gap-lg">
-	{#each variants as { size, striped, hoverable } (size)}
-		<Table {size} {striped} {hoverable}>
-			<TableCaption>Latency at size {size}</TableCaption>
+	{#each variants as { density, striped, hoverable } (density)}
+		<Table {density} {striped} {hoverable}>
+			<TableCaption>Latency at {density} density</TableCaption>
 			<TableHead>
 				<TableRow>
 					<TableHeader>Region</TableHeader>

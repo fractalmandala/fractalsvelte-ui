@@ -10,9 +10,9 @@
 </script>
 
 <div class="box gap-sm measure-xs">
-	<NativeSelect size="lg" textSize="xs" value="eu-west-1" {options} aria-label="Extra-small type" />
-	<NativeSelect size="lg" textSize="sm" value="eu-west-1" {options} aria-label="Small type" />
-	<NativeSelect size="lg" textSize="md" value="eu-west-1" {options} aria-label="Medium type" />
-	<NativeSelect size="lg" textSize="lg" value="eu-west-1" {options} aria-label="Large type" />
-	<NativeSelect size="lg" textSize="xl" value="eu-west-1" {options} aria-label="Extra-large type" />
+	<NativeSelect size="h-lg" textSize="text-xs" value="eu-west-1" {options} aria-label="Extra-small type" />
+	<NativeSelect size="h-lg" textSize="text-sm" value="eu-west-1" {options} aria-label="Small type" />
+	<NativeSelect size="h-lg" textSize="text-md" value="eu-west-1" {options} aria-label="Medium type" />
+	<NativeSelect size="h-lg" textSize="text-lg" value="eu-west-1" {options} aria-label="Large type" />
+	<NativeSelect size="h-lg" textSize="text-xl" value="eu-west-1" {options} aria-label="Extra-large type" />
 </div>

@@ -3,20 +3,20 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { defaultSize, type Shape, type Size } from '../../../internal/tokens.js';
+	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
 	import { useFieldControl } from '../field/field.js';
 	import { focusFrame, frameClasses } from '../input/frame.js';
 	import { setInputGroupContext } from './context.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** The control height. Text follows this unless `textSize` is set. @default 'md' */
+		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
 		/** The text scale, independent of the control height. Follows `size` when omitted. */
-		textSize?: Size;
+		textSize?: TextSize;
 		/** The corner shape. @default 'modern' */
 		shape?: Shape;
 		/** `outline` is a bordered field, `filled` a tinted one without a border, `ghost` is bare until hovered or focused. @default 'outline' */
-		variant?: 'outline' | 'filled' | 'ghost';
+		look?: 'outline' | 'filled' | 'ghost';
 		/** Marks the group invalid (red border). Inside a `Field` it follows the field's error unless set. */
 		invalid?: boolean;
 		/** Disables the input inside and dims the frame. */
@@ -29,21 +29,21 @@
 		size,
 		textSize,
 		shape,
-		variant,
+		look,
 		invalid,
 		disabled,
 		id,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
 
 	const uid = $props.id();
-	const control = useFieldControl(uid, () => ({ id, invalid, disabled, size, shape, variant }));
+	const control = useFieldControl(uid, () => ({ id, invalid, disabled, size, shape, look }));
 
 	const resolvedSize = $derived(size ?? control.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? control.shape ?? 'modern');
-	const resolvedVariant = $derived(variant ?? control.variant ?? 'outline');
+	const resolvedVariant = $derived(look ?? control.look ?? 'outline');
 	let frame = $state<HTMLElement | null>(null);
 
 	setInputGroupContext({
@@ -71,8 +71,8 @@
 	});
 
 	const classes = $derived([
-		frameClasses({ variant: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled }),
-		klass
+		frameClasses({ look: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled }),
+		className
 	]);
 
 	function focusInner(event: PointerEvent): void {

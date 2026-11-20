@@ -7,8 +7,8 @@
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		/** The placeholder shape: lines of text, a circle, or a rectangle. */
-		variant?: 'text' | 'circle' | 'rect';
-		/** How many lines to draw when `variant` is `text`. */
+		form?: 'text' | 'circle' | 'rect';
+		/** How many lines to draw when `form` is `text`. */
 		lines?: number;
 		/** The loading animation. `none` is a still placeholder. */
 		animate?: 'shimmer' | 'pulse' | 'none';
@@ -19,12 +19,12 @@
 	}
 
 	let {
-		variant = 'text',
+		form = 'text',
 		lines = 3,
 		animate = 'shimmer',
 		loaded = false,
 		children,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -35,15 +35,15 @@
 	});
 
 	const motion = $derived(animate === 'shimmer' ? 'anim-shimmer' : animate === 'pulse' ? 'anim-pulse' : '');
-	const count = $derived(variant === 'text' ? Math.max(1, Math.round(lines)) : 1);
+	const count = $derived(form === 'text' ? Math.max(1, Math.round(lines)) : 1);
 </script>
 
-<div class={['overlap', klass]} aria-busy={!loaded || undefined} aria-live="polite" {...rest}>
+<div class={['overlap', className]} aria-busy={!loaded || undefined} aria-live="polite" {...rest}>
 	<div class="motion box gap-sm" {@attach vars({ mo: 1 - fade.current })}>
 		{#each { length: count } as _, i (i)}
 			<div
-				class={['bone', variant === 'text' && 'text', variant === 'circle' && 'round', motion]}
-				{@attach vars({ w: variant === 'text' && i === count - 1 && count > 1 ? '64%' : undefined })}
+				class={['bone', form === 'text' && 'text', form === 'circle' && 'round', motion]}
+				{@attach vars({ w: form === 'text' && i === count - 1 && count > 1 ? '64%' : undefined })}
 			></div>
 		{/each}
 	</div>

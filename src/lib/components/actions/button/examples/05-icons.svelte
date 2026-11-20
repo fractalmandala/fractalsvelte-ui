@@ -8,5 +8,5 @@
 	<Button icon={luPlus}>New project</Button>
 	<Button variant="secondary" icon={luDownload}>Export CSV</Button>
 	<Button variant="themed" iconEnd={luArrowRight}>Continue</Button>
-	<Button variant="soft" class="danger" icon={luTrash2}>Delete branch</Button>
+	<Button variant="secondary" class="danger" textColor="text-inverse" icon={luTrash2}>Delete branch</Button>
 </div>

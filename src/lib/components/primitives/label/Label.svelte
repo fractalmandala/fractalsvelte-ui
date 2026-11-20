@@ -2,13 +2,14 @@
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { type Size } from '../../../internal/tokens.js';
 	import type { HTMLLabelAttributes } from 'svelte/elements';
 
 	interface Props extends HTMLLabelAttributes {
 		/** The id of the control this label names. Sets the native for attribute. */
 		for?: string;
 		/** The label scale: text size. */
-		size?: 'sm' | 'md' | 'lg';
+		size?: Size;
 		/** Draws a red asterisk after the label. The control itself must still carry the required attribute. */
 		required?: boolean;
 		/** Draws a muted "Optional" after the label, for fields that may be left empty. */
@@ -21,26 +22,21 @@
 
 	let {
 		for: htmlFor,
-		size = 'md',
+		size = 'h-sm',
 		required = false,
 		optional = false,
 		disabled = false,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
 
-	const sizeClasses = {
-		sm: 'text-xs',
-		md: 'text-sm',
-		lg: 'text-md'
-	};
 
 	const classes = $derived([
-		'inline-flex xcenter gap-xs weight-500 text-primary',
-		sizeClasses[size],
+		'inline-flex xcenter gap-xs weight-500',
+		size,
 		disabled && 'disabled',
-		klass
+		className
 	]);
 </script>
 

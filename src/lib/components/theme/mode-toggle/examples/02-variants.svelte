@@ -4,7 +4,7 @@
 </script>
 
 <div class="row wrap ycenter gap-xl">
-	<ModeToggle variant="icon" />
-	<ModeToggle variant="switch" label="Dark appearance" />
-	<ModeToggle variant="segmented" label="Appearance" />
+	<ModeToggle form="icon" />
+	<ModeToggle form="switch" label="Dark appearance" />
+	<ModeToggle form="segmented" label="Appearance" />
 </div>

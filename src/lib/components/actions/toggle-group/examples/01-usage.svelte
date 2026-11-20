@@ -6,7 +6,7 @@
 </script>
 
 <div class="box gap-sm">
-	<ToggleGroup type="single" label="Layout" bind:value={layout}>
+	<ToggleGroup  label="Layout" bind:value={layout}>
 		<ToggleGroupItem value="list">List</ToggleGroupItem>
 		<ToggleGroupItem value="grid">Grid</ToggleGroupItem>
 		<ToggleGroupItem value="board">Board</ToggleGroupItem>

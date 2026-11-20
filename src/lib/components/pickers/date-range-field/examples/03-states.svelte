@@ -5,7 +5,7 @@
 	let period = $state<DateRange>({ start: null, end: null });
 	let tenure = $state<DateRange>({ start: '2019-01-01', end: '2026-01-01' });
 	let submitted = $state('');
-	const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+	const sizes = ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const;
 	const shapes = ['rect', 'mincurved', 'modern', 'curved', 'round'] as const;
 
 	function submit(event: SubmitEvent) {

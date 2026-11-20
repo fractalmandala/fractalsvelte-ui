@@ -45,7 +45,7 @@
 		mode = 'sync',
 		key = undefined,
 		onExitComplete,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -128,7 +128,7 @@
 {#key renderedKey}
 	{#if visible}
 		<div
-			class={klass}
+			class={className}
 			in:enterTransition={{ spring, preset: enter }}
 			out:exitTransition={{ spring, preset: exit }}
 			onoutroend={handleExitEnd}

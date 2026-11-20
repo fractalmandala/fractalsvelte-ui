@@ -6,7 +6,7 @@
 </script>
 
 <div class="row wrap ycenter gap-sm">
-	<Button variant="ghost" size="sm" shape="round">
+	<Button variant="ghost" size="h-sm" shape="round">
 		<Icon icon={luTrash2} />
 		<VisuallyHidden as="span">Delete draft</VisuallyHidden>
 	</Button>

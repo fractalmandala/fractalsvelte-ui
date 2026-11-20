@@ -18,7 +18,7 @@
 </script>
 
 <div class="box gap-sm">
-	<Carousel bind:index {onIndexChange} loop autoplay={4000} perView={2} gap="var(--space-bs)" label="Customer quotes">
+	<Carousel bind:index {onIndexChange} loop autoplay={4000} perView={2} gap="gap-bs" label="Customer quotes">
 		{#each quotes as quote (quote.who)}
 			<CarouselSlide label={`${quote.who}, ${quote.role}`}>
 				<figure class="box gap-sm border modern bg-surface pad-bs hfull">

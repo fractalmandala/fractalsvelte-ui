@@ -4,6 +4,6 @@
 </script>
 
 <div class="row wrap ycenter gap-xl">
-	<ModeToggle variant="segmented" withSystem label="Appearance" />
-	<ModeToggle variant="icon" withSystem />
+	<ModeToggle form="segmented" withSystem label="Appearance" />
+	<ModeToggle form="icon" withSystem />
 </div>

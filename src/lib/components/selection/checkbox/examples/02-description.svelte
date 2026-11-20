@@ -4,7 +4,8 @@
 </script>
 
 <div class="column gap-bs">
-	<Checkbox
+	<Checkbox size="h-lg" textSize="text-sm" label="Smaller type at the same box" />
+<Checkbox
 		checked
 		label="Marketing emails"
 		description="Product news and the occasional offer, at most twice a month."

@@ -8,8 +8,8 @@
 		<div class="row ycenter xbetween gap-sm">
 			<span class="text-sm weight-500">Invoice run — Northwind 2.4</span>
 			<div class="row ycenter gap-sm">
-				<Button size="sm" variant="ghost">Preview</Button>
-				<Button size="sm">Share</Button>
+				<Button size="h-sm" variant="ghost">Preview</Button>
+				<Button size="h-sm">Share</Button>
 			</div>
 		</div>
 	</StickyBar>

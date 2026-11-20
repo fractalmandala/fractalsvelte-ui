@@ -6,15 +6,12 @@
 	import { getToolbar } from './toolbar.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The accessible name of the group, announced when focus enters it. */
 		label?: string;
-		/** Joins the controls into one segmented cluster. When false, they sit apart with a small gap. */
 		attached?: boolean;
-		/** The buttons or toggles in the group. */
 		children?: Snippet;
 	}
 
-	let { label, attached = true, class: klass, children, ...rest }: Props = $props();
+	let { label, attached = true, class: className, children, ...rest }: Props = $props();
 
 	const toolbar = getToolbar();
 	const vertical = $derived(toolbar.orientation === 'vertical');
@@ -26,7 +23,7 @@
 	class={[
 		attached ? 'button-group' : vertical ? 'box gap-xs' : 'row gap-xs',
 		attached && vertical && 'vertical',
-		klass
+		className
 	]}
 	{...rest}
 >

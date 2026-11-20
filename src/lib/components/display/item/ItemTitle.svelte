@@ -10,10 +10,10 @@
 		children?: Snippet;
 	}
 
-	let { class: klass, children, ...rest }: Props = $props();
+	let { class: className, children, ...rest }: Props = $props();
 	const item = getItemContext();
 </script>
 
-<div class={['weight-500 lh13 text-primary', titleClass[item.size], klass]} {...rest}>
+<div class={['weight-500 lh13', titleClass[item.size], className]} {...rest}>
 	{@render children?.()}
 </div>

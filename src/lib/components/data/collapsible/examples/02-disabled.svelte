@@ -14,7 +14,7 @@
 </script>
 
 <div class="box gap-sm">
-	<Button variant="outline" size="sm" onclick={() => (disabled = !disabled)}>
+	<Button variant="outline" size="h-sm" onclick={() => (disabled = !disabled)}>
 		{disabled ? 'Enable' : 'Disable'} the disclosure
 	</Button>
 	<Collapsible bind:open {onOpenChange} {disabled}>

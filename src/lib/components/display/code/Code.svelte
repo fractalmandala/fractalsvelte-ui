@@ -5,7 +5,9 @@
 	import { luCheck, luCopy } from '@fractaldesign/icons/lucide';
 	import { Button } from '../../actions/button/index.js';
 	import { highlight, type HighlightLang } from '../../../internal/highlight.js';
-	import type { Size } from '../../../internal/tokens.js';
+	import { vars } from '../../../motion/index.js';
+	import { type Size } from '../../../internal/tokens.js';
+import { maxHeightClass, maxHeightStyle } from '../../../internal/helpers.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
 		/** The source to display. */
@@ -20,10 +22,10 @@
 		highlightLines?: number[] | string;
 		/** Soft-wraps long lines instead of scrolling horizontally. */
 		wrap?: boolean;
-		/** Caps the block's height on the measure ladder and scrolls the rest. */
-		maxHeight?: Size;
+		/** Caps the height and scrolls the rest: a ladder word (`lg`) or any CSS length (`24rem`). */
+		maxHeight?: Size | string;
 		/** `block` is a highlighted panel with a copy button; `inline` is a short snippet in running text. */
-		variant?: 'block' | 'inline';
+		form?: 'block' | 'inline';
 	}
 
 	let {
@@ -34,18 +36,10 @@
 		highlightLines,
 		wrap = false,
 		maxHeight,
-		variant = 'block',
-		class: klass,
+		form = 'block',
+		class: className,
 		...rest
 	}: Props = $props();
-
-	const maxHClass: Record<Size, string> = {
-		xs: 'max-h-xs',
-		sm: 'max-h-sm',
-		md: 'max-h-md',
-		lg: 'max-h-lg',
-		xl: 'max-h-xl'
-	};
 
 	const lines = $derived(highlight(code, lang));
 	const marked = $derived(parseLines(highlightLines));
@@ -99,7 +93,7 @@
 		'curved',
 		'overflow-hidden',
 		'bg-panel',
-		klass
+		className
 	]);
 	const preClasses = $derived([
 		'code',
@@ -107,19 +101,20 @@
 		'scroll-thin',
 		showLineNumbers && 'numbered',
 		wrap && 'soft-wrap',
-		maxHeight && maxHClass[maxHeight]
+		maxHeightClass(maxHeight),
+		maxHeight && 'capped'
 	]);
 </script>
 
-{#if variant === 'inline'}
-	<code class={['font-mono', 'text-sm', 'pad-xs', 'bg-panel', 'curved', klass]} {...rest}>{code}</code>
+{#if form === 'inline'}
+	<code class={['font-mono', 'text-sm', 'pad-xs', 'bg-panel', 'curved', className]} {...rest}>{code}</code>
 {:else}
 	<figure class={blockClasses} {...rest}>
 		<figcaption class="row xbetween ycenter gap-sm pad-sm">
 			<span class="text-sm text-secondary truncate">{filename ?? lang}</span>
 			<Button
 				variant="ghost"
-				size="xs"
+				size="h-xs"
 				class="btn-icon"
 				icon={copied ? luCheck : luCopy}
 				onclick={copyCode}
@@ -127,7 +122,12 @@
 			/>
 		</figcaption>
 		<!-- svelte-ignore a11y_no_noninteractive_tabindex -- a scrollable region must be keyboard-focusable -->
-		<pre class={preClasses} tabindex="0" aria-label={filename ?? `${lang} code`}>
+		<pre
+			class={preClasses}
+			tabindex="0"
+			aria-label={filename ?? `${lang} code`}
+			{@attach vars({ 'max-height': maxHeightStyle(maxHeight) })}
+		>
 			{#each lines as line, i (i)}
 				<span class={['code-line', marked.has(i + 1) && 'marked']}>
 					<span>

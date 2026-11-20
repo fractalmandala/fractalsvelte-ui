@@ -29,14 +29,14 @@
 </script>
 
 <div class="row wrap gap-sm">
-	<Button size="sm" onclick={publish}>Publish (promise)</Button>
-	<Button size="sm" variant="secondary" onclick={save}>Save (update in place)</Button>
+	<Button size="h-sm" onclick={publish}>Publish (promise)</Button>
+	<Button size="h-sm" variant="secondary" onclick={save}>Save (update in place)</Button>
 	<Button
-		size="sm"
+		size="h-sm"
 		variant="secondary"
 		onclick={() =>
 			toast('Your trial ends in 3 days', {
-				type: 'warning',
+				tone: 'warning',
 				description: 'Add a payment method to keep this workspace.',
 				action: { label: 'Choose a plan', href: '#billing' },
 				cancel: { label: 'Not now' },
@@ -45,5 +45,5 @@
 	>
 		Trial (action)
 	</Button>
-	<Button size="sm" variant="ghost" onclick={() => toast.dismiss()}>Dismiss all</Button>
+	<Button size="h-sm" variant="ghost" onclick={() => toast.dismiss()}>Dismiss all</Button>
 </div>

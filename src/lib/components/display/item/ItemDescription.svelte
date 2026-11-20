@@ -9,9 +9,9 @@
 		children?: Snippet;
 	}
 
-	let { class: klass, children, ...rest }: Props = $props();
+	let { class: className, children, ...rest }: Props = $props();
 </script>
 
-<p class={['text-sm text-muted lh14', klass]} {...rest}>
+<p class={['text-sm text-muted lh14', className]} {...rest}>
 	{@render children?.()}
 </p>

@@ -23,7 +23,7 @@
 		scale = 1.02,
 		glare = false,
 		spring = 'snappy',
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -31,7 +31,7 @@
 	const attach = $derived(tilt({ max, scale, spring, glare }));
 </script>
 
-<div class={['tilt', 'motion', 'relative', 'overflow-hidden', klass]} {@attach attach} {...rest}>
+<div class={['tilt', 'motion', 'relative', 'overflow-hidden', className]} {@attach attach} {...rest}>
 	{@render children?.()}
 	{#if glare}
 		<div class="cover pointer-none glare"></div>

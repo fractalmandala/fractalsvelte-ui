@@ -7,7 +7,7 @@
 	<Toggle variant="primary" pressed>Primary</Toggle>
 	<Toggle variant="secondary" pressed>Secondary</Toggle>
 	<Toggle variant="themed" pressed>Themed</Toggle>
-	<Toggle variant="soft" pressed>Soft</Toggle>
+	<Toggle variant="secondary" pressed>Soft</Toggle>
 	<Toggle variant="outline" pressed>Outline</Toggle>
 	<Toggle variant="ghost" pressed>Ghost</Toggle>
 	<Toggle variant="link" pressed>Link</Toggle>

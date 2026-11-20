@@ -6,7 +6,7 @@
 	import type { IconData } from '@fractaldesign/icons';
 	import { luStar } from '@fractaldesign/icons/lucide';
 	import { animate, vars } from '../../../motion/index.js';
-	import { textClass, type Size } from '../../../internal/tokens.js';
+	import { type Size, type TextSize } from '../../../internal/tokens.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
 		/** The rating, from 0 (none) up to `max`. Two-way bindable. */
@@ -21,6 +21,8 @@
 		readonly?: boolean;
 		/** The icon scale. */
 		size?: Size;
+		/** The text scale, independent of the stars. Follows `size` when omitted. */
+		textSize?: TextSize;
 		/** The icon used for each unit. Defaults to a star. */
 		icon?: IconData;
 		/** Accessible name of the group, announced as the rating changes. */
@@ -37,12 +39,13 @@
 		max = 5,
 		allowHalf = false,
 		readonly = false,
-		size = 'md',
+		size = 'h-lg',
+		textSize,
 		icon = luStar,
 		label,
 		disabled = false,
 		name,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -118,7 +121,7 @@
 	aria-label={label ?? 'Rating'}
 	aria-readonly={readonly || undefined}
 	aria-disabled={disabled || undefined}
-	class={['inline-flex row ycenter', textClass[size], disabled && 'disabled', klass]}
+	class={['inline-flex row ycenter', textSize, disabled && 'disabled', className]}
 	onpointerleave={() => (hover = null)}
 	onkeydown={key}
 	{...rest}

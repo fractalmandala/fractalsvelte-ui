@@ -4,7 +4,7 @@
 </script>
 
 <div class="row wrap gap-sm ycenter">
-	<Badge variant="soft">Soft</Badge>
+	<Badge variant="secondary">Soft</Badge>
 	<Badge variant="primary">Primary</Badge>
 	<Badge variant="secondary">Secondary</Badge>
 	<Badge variant="themed">Themed</Badge>

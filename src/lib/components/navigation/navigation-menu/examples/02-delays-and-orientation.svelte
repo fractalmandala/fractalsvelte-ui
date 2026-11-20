@@ -24,7 +24,7 @@
 		>
 			<NavigationMenuItem value="products">
 				{#snippet trigger({ props })}
-					<Button variant="ghost" size="sm" {...props}>Products</Button>
+					<Button variant="ghost" size="h-sm" {...props}>Products</Button>
 				{/snippet}
 				<NavigationMenuContent>
 					<div class="box gap-xs pad-xs">

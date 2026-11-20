@@ -7,43 +7,33 @@
 	import type { IconData } from '@fractaldesign/icons';
 	import { luLoaderCircle } from '@fractaldesign/icons/lucide';
 	import { press } from '../../../motion/index.js';
-	import { controlSize, type Shape, type Size, type Variant } from '../../../internal/tokens.js';
+	import { defaultTextColor } from '../../../internal/helpers.js';
+	import { type Shape, type Size, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
 
-	interface Props extends HTMLButtonAttributes {
-		/** The visual style. `primary` is the page's main action; use one per view. */
+	interface Props extends Omit<HTMLButtonAttributes, 'disabled'> {
 		variant?: Variant;
-		/** The control height. Text follows this unless `textSize` is set. */
 		size?: Size;
-		/** The text scale, independent of the control height. Follows `size` when omitted. */
-		textSize?: Size;
-		/** The corner shape. */
+		textSize?: TextSize;
+		textColor?: TextColor;
 		shape?: Shape;
-		/** An icon drawn before the label. */
 		icon?: IconData;
-		/** An icon drawn after the label. */
 		iconEnd?: IconData;
-		/** Content drawn before the label, after a leading icon. */
 		leading?: Snippet;
-		/** Content drawn after the label, before a trailing icon. */
 		trailing?: Snippet;
-		/** Shows a spinner in place of the leading icon and blocks interaction, keeping the button's width. */
 		loading?: boolean;
-		/** Stretches the button to the full width of its container. */
 		block?: boolean;
-		/** Renders an `<a>` that looks like a button. Use for navigation. */
 		href?: string;
-		/** Where to open the link, when `href` is set. */
 		target?: HTMLAnchorAttributes['target'];
-		/** Springs the button down under the pointer. Turn off for a still button. */
 		pressable?: boolean;
-		/** The label. */
 		children?: Snippet;
-	}
+		disabled?: boolean | null;
+}
 
 	let {
 		variant = 'primary',
-		size = 'md',
-		textSize,
+		size = 'h-lg',
+		textSize = 'text-md',
+		textColor,
 		shape = 'modern',
 		icon,
 		iconEnd,
@@ -62,15 +52,7 @@
 	}: Props = $props();
 
 	const inert = $derived(Boolean(disabled || loading));
-	const classes = $derived([
-		'button no-scaling gap-sm weight-500',
-		variant,
-		controlSize(size, textSize),
-		shape,
-		block ? 'wfull' : 'inline-flex',
-		pressable && 'motion',
-		className
-	]);
+	const resolvedTextColor = $derived(textColor ?? defaultTextColor(variant));
 	const spring = $derived(pressable ? press() : undefined);
 </script>
 
@@ -90,7 +72,7 @@
 
 {#if href}
 	<a
-		class={classes}
+		class={['button row ycenter xcenter gap-sm', variant, size, shape, textSize, resolvedTextColor, block && 'wfull', pressable && 'motion', className]}
 		href={inert ? undefined : href}
 		{target}
 		rel={target === '_blank' ? 'noopener noreferrer' : undefined}
@@ -104,7 +86,7 @@
 	</a>
 {:else}
 	<button
-		class={classes}
+		class={['row ycenter xcenter gap-sm', variant, size, shape, textSize, resolvedTextColor, block && 'wfull', pressable && 'motion', className]}
 		{type}
 		disabled={inert}
 		aria-busy={loading || undefined}

@@ -9,7 +9,7 @@
 
 <div class="box gap-sm">
 	<ToggleGroup
-		type="multiple"
+		multiple
 		label="Text formatting"
 		bind:value={marks}
 		onValueChange={(next) => (last = Array.isArray(next) ? next.join(', ') || 'none' : next)}

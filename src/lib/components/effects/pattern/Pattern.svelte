@@ -7,9 +7,9 @@
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		/** The repeating motif, drawn with CSS gradients. */
-		variant?: 'grid' | 'dots' | 'lines' | 'cross';
+		form?: 'grid' | 'dots' | 'lines' | 'cross';
 		/** Tile size of the pattern, as a CSS length. */
-		size?: string;
+		tile?: string;
 		/** A mask that fades the pattern out. */
 		fade?: 'none' | 'radial' | 'top' | 'bottom' | 'edges';
 		/** Colour of the pattern, taken from the shared tone axis. */
@@ -17,15 +17,15 @@
 	}
 
 	let {
-		variant = 'grid',
-		size = '1.25rem',
+		form = 'grid',
+		tile = '1.25rem',
 		fade = 'none',
 		tone = 'neutral',
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
-	const variantClass = {
+	const formClass = {
 		grid: 'pattern-grid',
 		dots: 'pattern-dots',
 		lines: 'pattern-lines',
@@ -48,10 +48,10 @@
 </script>
 
 <div
-	class={['pattern', 'pointer-none', variantClass[variant], fade !== 'none' && fadeClass[fade], klass]}
+	class={['pattern', 'pointer-none', formClass[form], fade !== 'none' && fadeClass[fade], className]}
 	aria-hidden="true"
 	{@attach vars({
-		'pattern-size': size,
+		'pattern-size': tile,
 		'pattern-tone': `color-mix(in oklab, ${toneInk[tone]} 35%, transparent)`
 	})}
 	{...rest}

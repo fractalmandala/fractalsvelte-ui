@@ -6,8 +6,7 @@
 	import type { IconData } from '@fractaldesign/icons';
 	import { luUser } from '@fractaldesign/icons/lucide';
 	import { vars } from '../../../motion/index.js';
-	import type { Size } from '../../../internal/tokens.js';
-	import { avatarSizeClass, hueFromName, initialsFromName } from './avatar.js';
+	import { avatarSizeClass, hueFromName, initialsFromName, type AvatarSize } from './avatar.js';
 	import { getAvatarContext, type AvatarShape, type AvatarStatus } from './context.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
@@ -18,13 +17,15 @@
 		/** The person's name. Used for initials, the deterministic hue, and the accessible label. */
 		name?: string;
 		/** The avatar's size. Inherited from an enclosing `AvatarGroup` when omitted. */
-		size?: Size;
+		size?: AvatarSize;
 		/** The corner treatment: a circle, a rounded square, or a square. Inherited from an enclosing `AvatarGroup` when omitted. */
 		shape?: AvatarShape;
 		/** A presence indicator at the bottom-right corner. */
 		status?: AvatarStatus;
 		/** The fallback icon used when there is no image and no name to draw initials from. */
 		icon?: IconData;
+		/** Called whenever the portrait image transitions between loading, loaded, and error states. */
+		onStatusChange?: (status: 'loading' | 'loaded' | 'error') => void;
 	}
 
 	let {
@@ -32,10 +33,11 @@
 		alt,
 		name,
 		size,
-		shape,
+		shape = 'circle',
 		status,
 		icon = luUser,
-		class: klass,
+		onStatusChange,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -46,7 +48,16 @@
 	const hue = $derived(name ? hueFromName(name) : undefined);
 
 	let failedSrc = $state<string | undefined>();
+	let lastReportedSrc: string | undefined;
 	const showImage = $derived(!!src && failedSrc !== src);
+
+	$effect(() => {
+		if (!src) return;
+		if (src !== lastReportedSrc) {
+			lastReportedSrc = src;
+			onStatusChange?.('loading');
+		}
+	});
 
 	const statusLabel: Record<AvatarStatus, string> = {
 		online: 'Online',
@@ -68,7 +79,7 @@
 	);
 
 	const shapeClass = { circle: 'round', rounded: 'rounded', square: 'square' } as const;
-	const classes = $derived(['avatar', avatarSizeClass[resolvedSize], shapeClass[resolvedShape], klass]);
+	const classes = $derived(['avatar', avatarSizeClass[resolvedSize as AvatarSize], shapeClass[resolvedShape], className]);
 </script>
 
 <span
@@ -79,7 +90,16 @@
 	{...rest}
 >
 	{#if showImage}
-		<img {src} alt="" class="fit-cover" onerror={() => (failedSrc = src)} />
+		<img
+			{src}
+			alt=""
+			class="fit-cover"
+			onload={() => onStatusChange?.('loaded')}
+			onerror={() => {
+				failedSrc = src;
+				onStatusChange?.('error');
+			}}
+		/>
 	{:else if initials}
 		{initials}
 	{:else}

@@ -19,12 +19,13 @@
 	});
 </script>
 
-<div class="app-main">
-	<aside class="sidebar-left br-sub scroll-thin z-modal">
-		<Sidebar onnavigate={() => (shell.open = false)} />
-	</aside>
+
+<aside class="sidebar-left br-sub scroll-thin z-modal">
+	<Sidebar onnavigate={() => (shell.open = false)} />
+</aside>
+
 	{#if shell.open}
 		<button type="button" class="drawer-scrim bare lg-hide z-sticky" aria-label="Close navigation" onclick={() => (shell.open = false)}></button>
 	{/if}
 	{@render children()}
-</div>
+

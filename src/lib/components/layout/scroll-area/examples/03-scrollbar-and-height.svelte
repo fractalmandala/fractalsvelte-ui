@@ -15,7 +15,7 @@
 <div class="box gap-lg">
 	<div class="box gap-xs">
 		<span class="text-sm weight-500">Hover scrollbar, xs height</span>
-		<ScrollArea orientation="vertical" maxHeight="xs" scrollbar="hover" label="Hover scrollbar task list">
+		<ScrollArea orientation="vertical" maxHeight="h-xs" scrollbar="hover" label="Hover scrollbar task list">
 			<div class="box gap-sm pad-md">
 				{#each lines as line}
 					<span class="text-sm text-secondary">{line}</span>
@@ -25,7 +25,7 @@
 	</div>
 	<div class="box gap-xs">
 		<span class="text-sm weight-500">Hidden scrollbar, sm height</span>
-		<ScrollArea orientation="vertical" maxHeight="sm" scrollbar="hidden" label="Hidden scrollbar task list">
+		<ScrollArea orientation="vertical" maxHeight="h-sm" scrollbar="hidden" label="Hidden scrollbar task list">
 			<div class="box gap-sm pad-md">
 				{#each lines as line}
 					<span class="text-sm text-secondary">{line}</span>
@@ -37,21 +37,21 @@
 	<div class="box gap-xs">
 		<span class="text-sm weight-500">lg, xl and 2xl caps</span>
 		<div class="box gap-md">
-			<ScrollArea maxHeight="lg" label="Long task list, large cap">
+			<ScrollArea maxHeight="h-lg" label="Long task list, large cap">
 				<div class="box gap-sm pad-md">
 					{#each lines as line}
 						<span class="text-sm text-secondary">{line}</span>
 					{/each}
 				</div>
 			</ScrollArea>
-			<ScrollArea maxHeight="xl" label="Long task list, extra-large cap">
+			<ScrollArea maxHeight="h-xl" label="Long task list, extra-large cap">
 				<div class="box gap-sm pad-md">
 					{#each lines as line}
 						<span class="text-sm text-secondary">{line}</span>
 					{/each}
 				</div>
 			</ScrollArea>
-			<ScrollArea maxHeight="2xl" label="Long task list, 2xl cap">
+			<ScrollArea maxHeight="h-2xl" label="Long task list, 2xl cap">
 				<div class="box gap-sm pad-md">
 					{#each lines as line}
 						<span class="text-sm text-secondary">{line}</span>

@@ -9,7 +9,7 @@
 <div class="box gap-lg">
 	<ThemePicker bind:value showLabels onValueChange={() => {}} />
 	<div class="box gap-sm">
-		{#each ['xs', 'sm', 'md', 'lg', 'xl'] as const as size (size)}
+		{#each ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const as size (size)}
 			<div class="row ycenter gap-md">
 				<span class="text-xs text-muted measure-xs">{size}</span>
 				<ThemePicker {size} {value} />

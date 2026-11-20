@@ -7,5 +7,5 @@
 	<span>Dismiss the dialog with</span>
 	<Kbd>Esc</Kbd>
 	<span>or confirm with</span>
-	<Kbd size="sm">Enter</Kbd>
+	<Kbd size="h-sm">Enter</Kbd>
 </div>

@@ -4,9 +4,9 @@
 </script>
 
 <div class="box gap-sm measure-xs">
-	<TimeField size="lg" textSize="xs" value="09:30" aria-label="Extra-small type" />
-	<TimeField size="lg" textSize="sm" value="09:30" aria-label="Small type" />
-	<TimeField size="lg" textSize="md" value="09:30" aria-label="Medium type" />
-	<TimeField size="lg" textSize="lg" value="09:30" aria-label="Large type" />
-	<TimeField size="lg" textSize="xl" value="09:30" aria-label="Extra-large type" />
+	<TimeField size="h-lg" textSize="text-xs" value="09:30" aria-label="Extra-small type" />
+	<TimeField size="h-lg" textSize="text-sm" value="09:30" aria-label="Small type" />
+	<TimeField size="h-lg" textSize="text-md" value="09:30" aria-label="Medium type" />
+	<TimeField size="h-lg" textSize="text-lg" value="09:30" aria-label="Large type" />
+	<TimeField size="h-lg" textSize="text-xl" value="09:30" aria-label="Extra-large type" />
 </div>

@@ -29,14 +29,13 @@ export async function stepSprings(): Promise<StepResult> {
 }
 
 export function stepStyles(layers: LayerBuild = buildLayers()): StepResult {
-	const a = writeAtomic(PATHS.customCss, layers.css);
 	const b = writeAtomic(PATHS.classesJson, stableJson(layers.classes));
 	writeAtomic(PATHS.cssMapJson, stableJson(layers.segments));
 	const kitCount = layers.files.filter((f) => f.name.startsWith('components/')).length;
 	return {
 		step: 'styles',
 		ok: true,
-		summary: `${layers.files.length - kitCount} layers + ${kitCount} kit fragments → ${rel(PATHS.customCss)} (${layers.codeLines} lines, ${layers.classes.length} classes)${a || b ? '' : ' · unchanged'}`
+		summary: `${layers.files.length - kitCount} layers + ${kitCount} kit fragments (${layers.codeLines} lines, ${layers.classes.length} classes)${b ? '' : ' · unchanged'}`
 	};
 }
 

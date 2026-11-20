@@ -5,7 +5,7 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { Icon, type IconData } from '@fractaldesign/icons';
 	import { luChevronRight } from '@fractaldesign/icons/lucide';
-	import { anchor, floating, popoverSync } from '../../../internal/floating.js';
+	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
 	import { roving } from '../../../internal/roving.js';
 	import { surfaceClass, type OverlaySurface } from '../dialog/dialog.js';
 	import { menuRoving } from './menu.js';
@@ -35,7 +35,7 @@
 		disabled = false,
 		surface = 'glass',
 		children,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -94,7 +94,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	data-menu-sub
-	class={klass}
+	class={className}
 	onpointerenter={scheduleOpen}
 	onpointerleave={scheduleClose}
 	{...rest}

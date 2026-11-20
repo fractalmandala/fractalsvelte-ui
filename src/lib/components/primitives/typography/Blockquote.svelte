@@ -9,9 +9,9 @@
 		children?: Snippet;
 	}
 
-	let { class: klass, children, ...rest }: Props = $props();
+	let { class: className, children, ...rest }: Props = $props();
 </script>
 
-<blockquote class={['bl pl-bs text-secondary', klass]} {...rest}>
+<blockquote class={['bl pl-bs text-secondary', className]} {...rest}>
 	{@render children?.()}
 </blockquote>

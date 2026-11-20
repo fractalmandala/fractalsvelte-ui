@@ -12,4 +12,4 @@
 `;
 </script>
 
-<Code variant="block" code={source} lang="ts" filename="formatUsd.ts" />
+<Code form="block" code={source} lang="ts" filename="formatUsd.ts" />

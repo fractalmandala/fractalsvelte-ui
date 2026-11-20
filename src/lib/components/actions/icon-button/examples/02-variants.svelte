@@ -8,7 +8,7 @@
 	<IconButton icon={luBell} label="Primary" variant="primary" />
 	<IconButton icon={luBell} label="Secondary" variant="secondary" />
 	<IconButton icon={luBell} label="Themed" variant="themed" />
-	<IconButton icon={luBell} label="Soft" variant="soft" />
+	<IconButton icon={luBell} label="Soft" variant="secondary" />
 	<IconButton icon={luBell} label="Outline" variant="outline" />
 	<IconButton icon={luBell} label="Ghost" variant="ghost" />
 	<IconButton icon={luBell} label="Link" variant="link" />

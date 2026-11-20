@@ -6,3 +6,6 @@
 /* Restore list markers the platform reset removes, for typographic lists. */
 .bullets { list-style-type: disc; padding-inline-start: 1.25em; }
 .numbers { list-style-type: decimal; padding-inline-start: 1.25em; }
+
+/* Highlight inline <mark> accent pill. */
+mark.mark-highlight { background-color: color-mix(in oklab, var(--theme-color) 24%, transparent); color: inherit; padding-inline: 0.2em; border-radius: var(--radius-xs); }

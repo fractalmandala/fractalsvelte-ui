@@ -47,10 +47,10 @@
 
 <div class="box gap-sm">
 	<div class="row wrap gap-sm ycenter">
-		<Button variant="outline" size="sm" onclick={() => (framed = !framed)}>
+		<Button variant="outline" size="h-sm" onclick={() => (framed = !framed)}>
 			{framed ? 'Framed' : 'Unframed'}
 		</Button>
-		<Button variant="outline" size="sm" onclick={() => (showEmpty = !showEmpty)}>
+		<Button variant="outline" size="h-sm" onclick={() => (showEmpty = !showEmpty)}>
 			{showEmpty ? 'Show rows' : 'Show empty'}
 		</Button>
 	</div>
@@ -69,7 +69,7 @@
 		captionHidden
 		{framed}
 		hoverable={false}
-		size="md"
+		density="cozy"
 		pageSize={6}
 	>
 		{#snippet empty()}

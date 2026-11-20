@@ -12,7 +12,7 @@
 		/** Locale passed to Intl.NumberFormat, such as `"en-GB"` or `"de-DE"`. */
 		locale?: string;
 		/** `count` writes the formatted number; `slot` rolls each digit in its own column. */
-		variant?: 'count' | 'slot';
+		form?: 'count' | 'slot';
 		/** Text rendered immediately before the number, such as a currency symbol the formatter does not supply. */
 		prefix?: string;
 		/** Text rendered immediately after the number, such as a unit. */
@@ -25,11 +25,11 @@
 		value,
 		format,
 		locale,
-		variant = 'count',
+		form = 'count',
 		prefix = '',
 		suffix = '',
 		startOnView = false,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -55,12 +55,12 @@
 </script>
 
 <span
-	class={['tabular-nums', klass]}
+	class={['tabular-nums', className]}
 	aria-label={name}
 	{@attach startOnView ? startWhenVisible : undefined}
 	{...rest}
 >
-	{#if variant === 'slot'}
+	{#if form === 'slot'}
 		<span aria-hidden="true">
 			{#each chars as ch, i (i)}
 				{#if ch >= '0' && ch <= '9'}

@@ -10,9 +10,9 @@
 </script>
 
 <div class="box gap-sm measure-xs">
-	<Combobox size="lg" textSize="xs" options={people} value="maya" inputValue="Maya Chen" aria-label="Extra-small type" />
-	<Combobox size="lg" textSize="sm" options={people} value="maya" inputValue="Maya Chen" aria-label="Small type" />
-	<Combobox size="lg" textSize="md" options={people} value="maya" inputValue="Maya Chen" aria-label="Medium type" />
-	<Combobox size="lg" textSize="lg" options={people} value="maya" inputValue="Maya Chen" aria-label="Large type" />
-	<Combobox size="lg" textSize="xl" options={people} value="maya" inputValue="Maya Chen" aria-label="Extra-large type" />
+	<Combobox size="h-lg" textSize="text-xs" options={people} value="maya" inputValue="Maya Chen" aria-label="Extra-small type" />
+	<Combobox size="h-lg" textSize="text-sm" options={people} value="maya" inputValue="Maya Chen" aria-label="Small type" />
+	<Combobox size="h-lg" textSize="text-md" options={people} value="maya" inputValue="Maya Chen" aria-label="Medium type" />
+	<Combobox size="h-lg" textSize="text-lg" options={people} value="maya" inputValue="Maya Chen" aria-label="Large type" />
+	<Combobox size="h-lg" textSize="text-xl" options={people} value="maya" inputValue="Maya Chen" aria-label="Extra-large type" />
 </div>

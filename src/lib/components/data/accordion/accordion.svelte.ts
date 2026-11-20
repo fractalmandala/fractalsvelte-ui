@@ -39,3 +39,10 @@ export const itemClass: Record<AccordionVariant, string> = {
 	contained: '',
 	flush: ''
 };
+
+/** The classes each `look` puts on the accordion's own element. */
+export const lookClass: Record<AccordionVariant, string> = {
+	separated: 'gap-sm',
+	contained: '',
+	flush: ''
+};

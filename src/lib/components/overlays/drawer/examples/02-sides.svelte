@@ -12,7 +12,7 @@
 
 <div class="row wrap gap-sm">
 	{#each sides as s (s.side)}
-		<Drawer side={s.side} title={s.label} description="The sheet slides in from this edge.">
+		<Drawer placement={s.side} title={s.label} description="The sheet slides in from this edge.">
 			{#snippet trigger({ props })}
 				<Button variant="outline" {...props}>{s.side}</Button>
 			{/snippet}

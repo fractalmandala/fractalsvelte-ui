@@ -8,7 +8,7 @@
 
 	interface Props extends HTMLAttributes<HTMLElement> {
 		/** `default` is a quiet row, `outline` is a hairline box, `muted` is a tinted panel. */
-		variant?: 'default' | 'outline' | 'muted';
+		look?: 'default' | 'outline' | 'muted';
 		/** The padding and the type scale of the title. */
 		size?: Size;
 		/** The corner shape. */
@@ -26,14 +26,14 @@
 	}
 
 	let {
-		variant = 'default',
-		size = 'md',
+		look = 'default',
+		size = 'h-lg',
 		shape = 'modern',
 		interactive = false,
 		href,
 		target,
 		onclick,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -55,10 +55,10 @@
 		'row ycenter gap-sm wfull',
 		itemPadClass[size],
 		shape,
-		surface[variant],
+		surface[look],
 		live && 'interactive focus-ring',
 		href !== undefined && 'link-plain',
-		klass
+		className
 	]);
 
 	function onkeydown(event: KeyboardEvent): void {

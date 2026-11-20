@@ -6,22 +6,21 @@
 	import { roving } from '../../../internal/roving.js';
 	import {
 		setAccordion,
-		variantClass,
-		type AccordionType,
+		lookClass,
 		type AccordionVariant
 	} from './accordion.svelte.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		/** `single` keeps one item open; `multiple` allows several. */
-		type?: AccordionType;
+		multiple?: boolean;
 		/** The open item value (`single`) or values (`multiple`). */
 		value?: string | string[] | null;
 		/** Called when the open item or items change. */
 		onValueChange?: (value: string | string[] | null) => void;
-		/** When `type` is `single`, allow the open item to be closed. */
+		/** When single, allow the open panel to be closed. */
 		collapsible?: boolean;
 		/** How items are grouped: separate cards, one contained panel, or a flush stack. */
-		variant?: AccordionVariant;
+		look?: AccordionVariant;
 		/** The heading level wrapping each item's trigger button. */
 		headingLevel?: 2 | 3 | 4 | 5 | 6;
 		/** The `AccordionItem`s. */
@@ -29,13 +28,13 @@
 	}
 
 	let {
-		type = 'single',
+		multiple = false,
 		value = $bindable(null),
 		onValueChange,
 		collapsible = true,
-		variant = 'contained',
+		look = 'contained',
 		headingLevel = 3,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -43,12 +42,12 @@
 	const uid = $props.id();
 
 	function isOpen(itemValue: string): boolean {
-		if (type === 'multiple') return Array.isArray(value) && value.includes(itemValue);
+		if (multiple) return Array.isArray(value) && value.includes(itemValue);
 		return value === itemValue;
 	}
 
 	function toggle(itemValue: string) {
-		if (type === 'multiple') {
+		if (multiple) {
 			const current = Array.isArray(value) ? value : [];
 			const next = current.includes(itemValue)
 				? current.filter((item) => item !== itemValue)
@@ -66,8 +65,8 @@
 
 	setAccordion({
 		uid,
-		get type() { return type; },
-		get variant() { return variant; },
+		get multiple() { return multiple; },
+		get look() { return look; },
 		get headingLevel() { return headingLevel; },
 		get collapsible() { return collapsible; },
 		value: () => value,
@@ -77,7 +76,7 @@
 </script>
 
 <div
-	class={[variantClass[variant], klass]}
+	class={[lookClass[look], className]}
 	{@attach roving({ selector: '[data-accordion-trigger]', orientation: 'vertical', loop: false })}
 	{...rest}
 >

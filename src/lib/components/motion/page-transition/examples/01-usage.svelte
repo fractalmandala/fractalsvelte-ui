@@ -12,7 +12,7 @@
 		<Button variant="ghost" onclick={() => (page = 'atelier')}>The atelier</Button>
 		<Button variant="ghost" onclick={() => (page = 'press')}>The press</Button>
 	</div>
-	<PageTransition {onNavigate} type="slide" key={page}>
+	<PageTransition {onNavigate} transition="slide" key={page}>
 		{#if page === 'atelier'}
 			<div class="box gap-xs pad-lg bg-panel">
 				<p class="text-lg weight-500">The atelier</p>

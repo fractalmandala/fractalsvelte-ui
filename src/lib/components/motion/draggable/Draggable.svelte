@@ -65,7 +65,7 @@
 		onDragStart,
 		onDrag,
 		onDragEnd,
-		class: klass,
+		class: className,
 		children,
 		onkeydown,
 		...rest
@@ -189,7 +189,7 @@
 
 <div
 	bind:this={node}
-	class={['motion', 'touch-none', 'select-none', 'grab', dragging && 'grabbing', klass]}
+	class={['motion', 'touch-none', 'select-none', 'grab', dragging && 'grabbing', className]}
 	role="button"
 	aria-roledescription="draggable"
 	aria-disabled={disabled || undefined}

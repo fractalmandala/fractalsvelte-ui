@@ -6,7 +6,14 @@ import { analyzeLibrary } from './analysis.ts';
 import type { ComponentAnalysis, Library } from './analysis.ts';
 import { buildLayers } from './css.ts';
 import type { LayerBuild } from './css.ts';
-import { checkComponent, checkKitFragments, checkLibraryFiles, loadAllowlist } from './checks.ts';
+import {
+	checkAxisAttributes,
+	checkComponent,
+	checkKitFragments,
+	checkLibraryFiles,
+	checkVocabulary,
+	loadAllowlist
+} from './checks.ts';
 import type { Diag, GateContext } from './checks.ts';
 import { PATHS, ROOT, cssCodeLines, listDir, readText } from './util.ts';
 
@@ -119,7 +126,12 @@ export async function runGate(scope: Scope, pre?: { lib: Library; layers: LayerB
 	if (styles.length || !scope.kit) result.groups.push({ id: '(styles)', kind: 'styles', diagnostics: sortDiags(styles) });
 
 	if (!scope.kit) {
-		const libraryDiags = [...checkLibraryFiles(allow), ...(await highlightSelftest())];
+		const libraryDiags = [
+			...checkLibraryFiles(allow),
+			...checkAxisAttributes(),
+			...checkVocabulary(allow),
+			...(await highlightSelftest())
+		];
 		result.groups.push({ id: '(library)', kind: 'library', diagnostics: sortDiags(uniq(libraryDiags)) });
 		result.budget = { fractalsvelte: layers.codeLines, fractalstyler: fractalstylerLines() };
 	}

@@ -1,7 +1,7 @@
 <script lang="ts">
 
 	import type { Snippet } from 'svelte';
-	import { type ControlAlignment } from '../../lib/internal/tokens.js';
+	import { type ControlAlignment } from '../alignment.js';
 	import type { HTMLAttributes } from 'svelte/elements';
 	
 	interface Props extends Omit<HTMLAttributes<HTMLElement>, 'children'> {

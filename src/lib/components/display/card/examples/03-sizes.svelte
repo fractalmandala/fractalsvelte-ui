@@ -4,8 +4,8 @@
 </script>
 
 <div class="box gap-bs">
-	{#each ['xs', 'sm', 'md', 'lg', 'xl'] as const as size (size)}
-		<Card {size} variant="outline" class="measure-md">
+	{#each ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const as size (size)}
+		<Card {size} look="outline" class="measure-md">
 			<CardHeader>
 				<CardTitle>Storage almost full ({size})</CardTitle>
 				<CardDescription>9.4 GB of 10 GB used</CardDescription>

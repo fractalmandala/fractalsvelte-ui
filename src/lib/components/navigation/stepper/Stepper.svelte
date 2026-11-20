@@ -1,9 +1,11 @@
 <!-- @component A sequence of steps, with a connector that fills as each one is completed. -->
 
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck } from '@fractaldesign/icons/lucide';
+	import { Button } from '../../actions/button/index.js';
 	import { vars } from '../../../motion/index.js';
 	import type { Orientation } from '../../../internal/tokens.js';
 	import type { StepItem, StepStatus } from './steps.js';
@@ -21,6 +23,12 @@
 		linear?: boolean;
 		/** When true, a step's marker is a button that selects it, subject to `linear`. */
 		clickable?: boolean;
+		/** Render Back / Next / Finish workflow buttons underneath the stepper. */
+		showControls?: boolean;
+		/** Custom snippet displayed once all steps have been completed. */
+		completedContent?: Snippet;
+		/** Called when finishing the last step via `showControls`. */
+		onComplete?: () => void;
 		/** Accessible name of the stepper. */
 		label?: string;
 	}
@@ -32,12 +40,44 @@
 		orientation = 'horizontal',
 		linear = true,
 		clickable = true,
+		showControls = false,
+		completedContent,
+		onComplete,
 		label,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
+	let finished = $state(false);
 	const currentIndex = $derived(steps.findIndex((step) => step.value === value));
+
+	function stepPrev() {
+		finished = false;
+		const idx = currentIndex <= 0 ? 0 : currentIndex - 1;
+		const prevStep = steps[idx];
+		if (!prevStep) return;
+		value = prevStep.value;
+		onValueChange?.(prevStep.value);
+	}
+
+	function stepNext() {
+		if (currentIndex < 0 && steps[0]) {
+			value = steps[0].value;
+			onValueChange?.(steps[0].value);
+			return;
+		}
+		if (currentIndex >= steps.length - 1) {
+			finished = true;
+			value = null;
+			onValueChange?.(null);
+			onComplete?.();
+			return;
+		}
+		const nextStep = steps[currentIndex + 1];
+		if (!nextStep) return;
+		value = nextStep.value;
+		onValueChange?.(nextStep.value);
+	}
 
 	function statusOf(step: StepItem, index: number): StepStatus {
 		if (step.status) return step.status;
@@ -70,14 +110,14 @@
 	const vertical = $derived(orientation === 'vertical');
 
 	const markerClass: Record<StepStatus, string> = {
-		complete: 'bg-button text-inverse border-none',
+		complete: 'primary border-none',
 		current: 'bg-surface text-theme border-strong glow',
 		upcoming: 'bg-surface text-muted border',
-		error: 'bg-danger text-inverse border-none'
+		error: 'danger border-none'
 	};
 </script>
 
-<nav aria-label={label} class={klass} {...rest}>
+<nav aria-label={label} class={className} {...rest}>
 	<ol class={['ycenter', vertical ? 'column gap-xs' : 'row']}>
 		{#each steps as step, index (step.value)}
 			{@const status = statusOf(step, index)}
@@ -134,7 +174,7 @@
 					{/if}
 				</div>
 				<div class={['min0', !vertical && 'pr-md']}>
-					<p class={['text-sm weight-500', status === 'upcoming' ? 'text-muted' : status === 'error' ? 'text-danger' : 'text-primary']}>
+					<p class={['text-sm weight-500', status === 'upcoming' ? 'text-muted' : status === 'error' ? 'text-danger' : '']}>
 						{step.label}
 					</p>
 					{#if step.description}
@@ -144,4 +184,19 @@
 			</li>
 		{/each}
 	</ol>
+	{#if finished && completedContent}
+		<div class="pt-md">
+			{@render completedContent()}
+		</div>
+	{/if}
+	{#if showControls && steps.length > 0}
+		<div class="row ycenter xbetween pt-md">
+			<Button variant="outline" size="h-sm" disabled={currentIndex <= 0 && !finished} onclick={stepPrev}>
+				Back
+			</Button>
+			<Button variant="themed" size="h-sm" disabled={finished} onclick={stepNext}>
+				{currentIndex >= steps.length - 1 ? 'Finish' : 'Next'}
+			</Button>
+		</div>
+	{/if}
 </nav>

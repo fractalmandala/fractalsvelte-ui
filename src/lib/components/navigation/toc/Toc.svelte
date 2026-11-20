@@ -27,7 +27,7 @@
 		active = $bindable(null),
 		onActiveChange,
 		label = 'On this page',
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -160,7 +160,7 @@
 	});
 </script>
 
-<nav bind:this={root} aria-label={label} class={['toc-section relative bl', klass]} {...rest}>
+<nav bind:this={root} aria-label={label} class={['toc-section relative bl', className]} {...rest}>
 	<div bind:this={indicator} class="indicator rule" aria-hidden="true"></div>
 	<p class="nav-header text-muted">{label}</p>
 	<ol class="column">
@@ -172,7 +172,7 @@
 					class={[
 						'toc-link item',
 						padFor(item.level),
-						item.id === active && 'selected text-primary'
+						item.id === active && 'selected'
 					]}
 					aria-current={item.id === active ? 'true' : undefined}
 					onclick={(event) => go(item.id, event)}

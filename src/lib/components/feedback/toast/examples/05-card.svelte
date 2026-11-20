@@ -7,7 +7,7 @@
 
 {#if !gone}
 	<Toast
-		type="success"
+		tone="success"
 		message="Domain verified"
 		description="atlas.studio is now serving traffic over HTTPS."
 		dismissible

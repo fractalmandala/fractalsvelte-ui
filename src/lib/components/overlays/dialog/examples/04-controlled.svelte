@@ -14,7 +14,7 @@
 <Dialog
 	bind:open
 	surface="glass"
-	size="sm"
+	width="measure-sm"
 	dismissible={false}
 	closeButton={false}
 	onOpenChange={(next) => (log = [...log, next ? 'Opened' : 'Closed'])}

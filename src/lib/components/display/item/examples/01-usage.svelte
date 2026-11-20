@@ -5,14 +5,14 @@
 </script>
 
 <div class="measure-sm">
-	<Item variant="outline">
+	<Item look="outline">
 		<ItemMedia icon={luUser} />
 		<ItemContent>
 			<ItemTitle>Ada Lovelace</ItemTitle>
 			<ItemDescription>Owner · last seen in the billing workspace</ItemDescription>
 		</ItemContent>
 		<ItemActions>
-			<Button size="sm" variant="secondary">Message</Button>
+			<Button size="h-sm" variant="secondary">Message</Button>
 		</ItemActions>
 	</Item>
 </div>

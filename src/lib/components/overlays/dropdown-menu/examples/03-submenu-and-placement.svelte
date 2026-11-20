@@ -17,7 +17,11 @@
 		'bottom-start',
 		'bottom-end',
 		'left',
-		'right'
+		'left-start',
+		'left-end',
+		'right',
+		'right-start',
+		'right-end'
 	];
 
 	let open = $state(false);
@@ -30,7 +34,7 @@
 		{#each placements as placement (placement)}
 			<DropdownMenu {placement}>
 				{#snippet trigger({ props })}
-					<Button variant="ghost" size="sm" {...props}>{placement}</Button>
+					<Button variant="ghost" size="h-sm" {...props}>{placement}</Button>
 				{/snippet}
 				<MenuItem>Pin to sidebar</MenuItem>
 				<MenuItem>Move to archive</MenuItem>

@@ -5,7 +5,7 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { springFade } from '../../../motion/index.js';
 	import type { Orientation, Shape, Size } from '../../../internal/tokens.js';
-	import { setFieldContext, type FieldVariant } from './field.js';
+	import { setFieldContext, type FieldLook } from './field.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
 		/** The label text. It is a real `<label>` bound to the control, and doubles as the accessible name of grouped controls. */
@@ -25,7 +25,7 @@
 		/** The corner shape, inherited by the control inside unless it sets its own. */
 		shape?: Shape;
 		/** The field look, inherited by the control inside unless it sets its own. */
-		variant?: FieldVariant;
+		look?: FieldLook;
 		/** The id given to the control inside. Generated when omitted. */
 		id?: string;
 		/** The control. Inputs in this kit pick up the id, description and invalid state automatically. */
@@ -40,10 +40,10 @@
 		disabled = false,
 		orientation = 'vertical',
 		size,
-		shape,
-		variant,
+		shape = 'modern',
+		look,
 		id,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -79,20 +79,20 @@
 		get shape() {
 			return shape;
 		},
-		get variant() {
-			return variant;
+		get look() {
+			return look;
 		}
 	});
 
 	const horizontal = $derived(orientation === 'horizontal');
 </script>
 
-<div class={[horizontal ? 'row gap-lg' : 'box gap-xs', 'wfull', klass]} {...rest}>
+<div class={[horizontal ? 'row gap-lg' : 'box gap-xs', 'wfull', className]} {...rest}>
 	{#if label}
 		<label
 			id={labelId}
 			for={controlId}
-			class={['row ycenter gap-xs text-sm weight-500 text-primary', horizontal && 'measure-xs shrink-0 h-lg', disabled && 'dim']}
+			class={['row ycenter gap-xs text-sm weight-500', horizontal && 'measure-xs shrink-0 h-lg', disabled && 'dim']}
 		>
 			{label}
 			{#if required}

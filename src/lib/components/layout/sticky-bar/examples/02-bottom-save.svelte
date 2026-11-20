@@ -22,7 +22,7 @@
 	<StickyBar position="bottom" offset="var(--space-sm)" class="px-md py-sm bg-surface">
 		<div class="row ycenter xbetween gap-sm">
 			<span class="text-sm text-secondary">Unsaved changes to workspace roles.</span>
-			<Button size="sm">Save changes</Button>
+			<Button size="h-sm">Save changes</Button>
 		</div>
 	</StickyBar>
 </div>

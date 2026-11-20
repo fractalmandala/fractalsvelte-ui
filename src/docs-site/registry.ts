@@ -1,14 +1,15 @@
 /**
  * The docs registry: every component folder, discovered with import.meta.glob.
- * doc.ts manifests are eager (small); example components and their sources are
- * lazy, loaded per page. Works with zero components and with hundreds.
+ * The page prose (summary, description, features, accessibility, keyboard …)
+ * rides along in the generated api.json — it lives in each folder's
+ * comments.md, so nothing here touches the source tree. Example components and
+ * their sources are lazy, loaded per page.
  */
 import type { Component } from 'svelte';
 import type { ComponentDoc } from '../lib/docs/define.js';
 import type { ApiComponent, ApiJson, LayerClass } from '../lib/docs/api-types.js';
 import { kits, type Kit } from '../lib/components/kits.js';
 
-const docModules = import.meta.glob<ComponentDoc>('../lib/components/*/*/doc.ts', { eager: true, import: 'default' });
 const exampleModules = import.meta.glob<Component>('../lib/components/*/*/examples/*.svelte', { import: 'default' });
 const exampleSources = import.meta.glob<string>('../lib/components/*/*/examples/*.svelte', { query: '?raw', import: 'default' });
 const apiModules = import.meta.glob<ApiJson>('../lib/docs/generated/api.json', { eager: true, import: 'default' });
@@ -64,15 +65,20 @@ function build(): Entry[] {
 	const api = Object.values(apiModules)[0]?.components ?? [];
 	const ids = new Map<string, { kit: string; slug: string }>();
 	for (const a of api) ids.set(`${a.kit}/${a.slug}`, { kit: a.kit, slug: a.slug });
-	for (const key of Object.keys(docModules)) {
-		const p = parseKey(key);
-		if (p) ids.set(`${p.kit}/${p.slug}`, p);
-	}
 	const order = new Map(kits.map((k, i) => [k.id, i]));
 	const entries: Entry[] = [];
 	for (const { kit, slug } of ids.values()) {
-		const doc = docModules[`${base(kit, slug)}/doc.ts`] ?? null;
 		const apiEntry = api.find((a) => a.kit === kit && a.slug === slug) ?? null;
+		// The prose is generated into api.json from the folder's comments.md.
+		const doc: ComponentDoc | null = apiEntry
+			? ({
+					name: apiEntry.name,
+					summary: apiEntry.summary,
+					description: apiEntry.description,
+					accessibility: [],
+					...(apiEntry.doc ?? {})
+				} as unknown as ComponentDoc)
+			: null;
 		const examples: ExampleRef[] = (apiEntry?.examples ?? [])
 			.map((e) => ({ ...e, key: `${base(kit, slug)}/examples/${e.file}` }))
 			.filter((e) => e.key in exampleModules);
@@ -86,9 +92,9 @@ function build(): Entry[] {
 		entries.push({
 			kit,
 			slug,
-			name: doc?.name ?? apiEntry?.name ?? pascal(slug),
+			name: apiEntry?.name ?? pascal(slug),
 			href: `/components/${kit}/${slug}`,
-			summary: doc?.summary ?? '',
+			summary: apiEntry?.summary ?? '',
 			doc,
 			api: apiEntry,
 			examples

@@ -8,7 +8,7 @@
 	import InstallTabs from '../../../../docs-site/InstallTabs.svelte';
 	import Rich from '../../../../docs-site/Rich.svelte';
 	import Section from '../../../../docs-site/Section.svelte';
-	import { PACKAGE, bySlug } from '../../../../docs-site/registry.js';
+	import { PACKAGE } from '../../../../docs-site/registry.js';
 	import type { TocItem } from '../../../../docs-site/Toc.svelte';
 	import { kits } from '../../../../lib/components/kits.js';
 	import type { PageProps } from './$types';
@@ -34,7 +34,6 @@
 	const styleImports = `import '@fractaldesign/fractalstyler/styles';\nimport '@fractaldesign/fractalsvelte-ui/styles';`;
 
 	const parts = $derived(api?.parts ?? []);
-	const related = $derived((doc?.related ?? []).map((slug) => ({ slug, entry: bySlug(slug) })));
 
 	const toc = $derived.by(() => {
 		const items: TocItem[] = [];
@@ -47,7 +46,6 @@
 		if (parts.length || doc?.api?.length) items.push({ id: 'api', label: 'API reference' });
 		if (doc?.accessibility?.length) items.push({ id: 'accessibility', label: 'Accessibility' });
 		if (doc?.keyboard?.length) items.push({ id: 'keyboard', label: 'Keyboard' });
-		if (related.length) items.push({ id: 'related', label: 'Related' });
 		return items;
 	});
 </script>
@@ -169,20 +167,6 @@
 						{/each}
 					</tbody>
 				</table>
-			</div>
-		</Section>
-	{/if}
-
-	{#if related.length}
-		<Section id="related" title="Related">
-			<div class="row wrap gap-sm">
-				{#each related as r (r.slug)}
-					{#if r.entry}
-						<a href={r.entry.href} class="button outline h-bs px-md mincurved text-sm">{r.entry.name}</a>
-					{:else}
-						<span class="tag soft text-sm text-muted">{r.slug} (coming)</span>
-					{/if}
-				{/each}
 			</div>
 		</Section>
 	{/if}

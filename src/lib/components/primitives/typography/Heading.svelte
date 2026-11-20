@@ -1,4 +1,4 @@
-<!-- @component A page heading at level 1 to 4; size sets the visual scale independently of the semantic level. -->
+<!-- @component A page heading at level 1 to 4; scale sets the visual size independently of the semantic level. -->
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
@@ -7,24 +7,24 @@
 	interface Props extends HTMLAttributes<HTMLHeadingElement> {
 		/** The heading level, 1 to 4. Pick the one that fits the page outline. */
 		level?: 1 | 2 | 3 | 4;
-		/** The visual size. Follows `level` when omitted. */
-		size?: 1 | 2 | 3 | 4;
+		/** The visual scale, 1 to 4. Follows `level` when omitted. */
+		scale?: 1 | 2 | 3 | 4;
 		/** The heading text. */
 		children?: Snippet;
 	}
 
-	let { level = 2, size, class: klass, children, ...rest }: Props = $props();
+	let { level = 2, scale, class: className, children, ...rest }: Props = $props();
 
 	const levelClass = {
-		1: 'page-title text-primary',
-		2: 'text-2xl lh11 weight-600 ls-tight-lg text-primary',
-		3: 'page-heading-xl text-primary',
-		4: 'page-heading-lg text-primary'
+		1: 'page-title',
+		2: 'text-2xl lh11 weight-600 ls-tight-lg',
+		3: 'page-heading-xl',
+		4: 'page-heading-lg'
 	} as const;
 
-	const visual = $derived(size ?? level);
+	const visual = $derived(scale ?? level);
 </script>
 
-<svelte:element this={`h${level}`} class={[levelClass[visual], klass]} {...rest}>
+<svelte:element this={`h${level}`} class={[levelClass[visual], className]} {...rest}>
 	{@render children?.()}
 </svelte:element>

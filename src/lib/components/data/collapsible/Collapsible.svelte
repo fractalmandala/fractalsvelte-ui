@@ -23,7 +23,7 @@
 		onOpenChange,
 		trigger,
 		disabled = false,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -55,7 +55,7 @@
 	);
 </script>
 
-<div class={['box', klass]} {...rest}>
+<div class={['box', className]} {...rest}>
 	{#if trigger}
 		{@render trigger(triggerProps)}
 	{/if}

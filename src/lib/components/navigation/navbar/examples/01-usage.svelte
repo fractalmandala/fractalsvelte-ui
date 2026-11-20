@@ -11,6 +11,6 @@
 	<NavbarLink href="/log">Ship's log</NavbarLink>
 	<NavbarLink href="/about">About</NavbarLink>
 	{#snippet actions()}
-		<Button variant="ghost" size="sm" href="/subscribe">Subscribe</Button>
+		<Button variant="ghost" size="h-sm" href="/subscribe">Subscribe</Button>
 	{/snippet}
 </Navbar>

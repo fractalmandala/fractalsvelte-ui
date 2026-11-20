@@ -7,7 +7,7 @@
 
 <div class="box gap-sm">
 	<div class="row gap-sm">
-		<Button size="sm" variant="outline" onclick={() => (collapsed = !collapsed)}>
+		<Button size="h-sm" variant="outline" onclick={() => (collapsed = !collapsed)}>
 			{collapsed ? 'Show sidebar' : 'Hide sidebar'}
 		</Button>
 	</div>

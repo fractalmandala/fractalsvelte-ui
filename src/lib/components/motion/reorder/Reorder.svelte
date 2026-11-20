@@ -38,7 +38,7 @@
 		axis = 'y',
 		children,
 		onReorder,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -282,7 +282,7 @@
 
 <ul
 	bind:this={listEl}
-	class={['gap-sm', axis === 'x' ? 'row' : 'box', klass]}
+	class={['gap-sm', axis === 'x' ? 'row' : 'box', className]}
 	role="listbox"
 	aria-orientation={axis === 'x' ? 'horizontal' : 'vertical'}
 	aria-roledescription="sortable list"

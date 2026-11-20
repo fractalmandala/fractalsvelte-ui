@@ -2,14 +2,14 @@
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { Measure } from '../../../internal/tokens.js';
 	import type { HTMLAttributes } from 'svelte/elements';
 
-	type Measure = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
 	type ContainerTag = 'div' | 'section' | 'article' | 'main' | 'aside';
 
 	interface Props extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
 		/** The maximum width, from the measure ladder. `full` fills the parent. */
-		size?: Measure;
+		width?: Measure;
 		/** Adds padding from the space ladder on all sides. */
 		padded?: boolean;
 		/** Centres the container in its parent. */
@@ -21,7 +21,7 @@
 	}
 
 	let {
-		size = 'lg',
+		width = 'measure-lg',
 		padded = false,
 		center = false,
 		as: tag = 'div',
@@ -31,18 +31,22 @@
 	}: Props = $props();
 
 	const measureClass: Record<Measure, string> = {
-		sm: 'measure-sm',
-		md: 'measure-md',
-		lg: 'measure-lg',
-		xl: 'measure-xl',
-		'2xl': 'measure-2xl',
-		full: 'wfull'
+		'measure-xs': 'measure-xs',
+		'measure-sm': 'measure-sm',
+		'measure-md': 'measure-md',
+		'measure-bs': 'measure-bs',
+		'measure-lg': 'measure-lg',
+		'measure-xl': 'measure-xl',
+		'measure-2xl': 'measure-2xl',
+		'measure-3xl': 'measure-3xl',
+		'measure-4xl': 'measure-4xl',
+		'measure-full': 'wfull'
 	};
 </script>
 
 <svelte:element
 	this={tag}
-	class={[measureClass[size], padded && 'pad-lg', center && 'centered', className]}
+	class={[measureClass[width], padded && 'pad-lg', center && 'centered', className]}
 	{...rest}
 >
 	{@render children?.()}

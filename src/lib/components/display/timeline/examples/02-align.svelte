@@ -1,4 +1,4 @@
-<!-- @example Alignment :: The same deploy, left-aligned and then alternating about the rail. -->
+<!-- @example Alignment :: The same deploy on the left edge, on the right edge, and alternating about the rail. -->
 <script lang="ts">
 	import { Timeline } from '@fractaldesign/fractalsvelte-ui';
 
@@ -16,7 +16,11 @@
 		<Timeline align="left" items={events} class="measure-md" />
 	</div>
 	<div class="box gap-xs">
+		<span class="text-sm text-muted">Right</span>
+		<Timeline align="right" items={events} class="measure-md" />
+	</div>
+	<div class="box gap-xs">
 		<span class="text-sm text-muted">Alternate</span>
-		<Timeline align="alternate" items={events} />
+		<Timeline alternate items={events} />
 	</div>
 </div>

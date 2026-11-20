@@ -5,24 +5,24 @@
 	import type { HTMLSelectAttributes } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luChevronDown } from '@fractaldesign/icons/lucide';
-	import { defaultSize, type Shape, type Size } from '../../../internal/tokens.js';
+	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
 	import { useFieldControl } from '../field/field.js';
 	import { focusFrame, frameClasses } from '../input/frame.js';
 	import { isNativeSelectGroup, type NativeSelectItem } from './options.js';
 
-	interface Props extends Omit<HTMLSelectAttributes, 'size' | 'value' | 'children'> {
+	interface Props extends Omit<HTMLSelectAttributes, 'size' | 'value' | 'children' | 'disabled'> {
 		/** The selected value. Bindable; works controlled and uncontrolled. */
 		value?: string;
 		/** Called with the new value whenever the selection changes. */
 		onValueChange?: (value: string) => void;
-		/** The control height. Text follows this unless `textSize` is set. @default 'md' */
+		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
 		/** The text scale, independent of the control height. Follows `size` when omitted. */
-		textSize?: Size;
+		textSize?: TextSize;
 		/** The corner shape. @default 'modern' */
 		shape?: Shape;
 		/** `outline` is a bordered field, `filled` a tinted one without a border, `ghost` is bare until hovered or focused. @default 'outline' */
-		variant?: 'outline' | 'filled' | 'ghost';
+		look?: 'outline' | 'filled' | 'ghost';
 		/** Marks the select invalid (red border, `aria-invalid`). Inside a `Field` it follows the field's error unless set. */
 		invalid?: boolean;
 		/** A disabled first option shown when no value is selected, such as "Choose a region". */
@@ -33,7 +33,9 @@
 		ref?: HTMLSelectElement | null;
 		/** Custom `<option>` and `<optgroup>` elements, used when `options` is omitted. */
 		children?: Snippet;
-	}
+			/** Blocks pointer and keyboard input, and dims the frame. */
+		disabled?: boolean | null;
+}
 
 	let {
 		value = $bindable(''),
@@ -41,7 +43,7 @@
 		size,
 		textSize,
 		shape,
-		variant,
+		look,
 		invalid,
 		placeholder,
 		options,
@@ -49,7 +51,7 @@
 		id,
 		required,
 		disabled,
-		class: klass,
+		class: className,
 		onchange,
 		'aria-describedby': describedby,
 		children,
@@ -57,15 +59,15 @@
 	}: Props = $props();
 
 	const uid = $props.id();
-	const control = useFieldControl(uid, () => ({ id, invalid, required, disabled, describedby, size, shape, variant }));
+	const control = useFieldControl(uid, () => ({ id, invalid, required, disabled, describedby, size, shape, look }));
 
 	const resolvedSize = $derived(size ?? control.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? control.shape ?? 'modern');
-	const resolvedVariant = $derived(variant ?? control.variant ?? 'outline');
+	const resolvedVariant = $derived(look ?? control.look ?? 'outline');
 
 	const classes = $derived([
-		frameClasses({ variant: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled }),
-		klass
+		frameClasses({ look: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled }),
+		className
 	]);
 
 	function set(next: string): void {

@@ -15,7 +15,7 @@
 		children?: Snippet;
 	}
 
-	let { src, alt = '', ratio, class: klass, children, ...rest }: Props = $props();
+	let { src, alt = '', ratio, class: className, children, ...rest }: Props = $props();
 
 	const frame = {
 		'16/9': 'frame-16-9',
@@ -25,7 +25,7 @@
 	};
 </script>
 
-<figure class={['bleed bg-panel relative overflow-hidden', ratio && frame[ratio], klass]} {...rest}>
+<figure class={['bleed bg-panel relative overflow-hidden', ratio && frame[ratio], className]} {...rest}>
 	{#if src}
 		<img class={ratio ? 'cover full fit-cover' : 'wfull'} {src} {alt} loading="lazy" />
 	{/if}

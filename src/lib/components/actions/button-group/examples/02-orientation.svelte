@@ -5,13 +5,13 @@
 
 <div class="row wrap gap-xl">
 	<ButtonGroup label="View range" orientation="horizontal">
-		<Button variant="outline" size="sm">Day</Button>
-		<Button variant="outline" size="sm">Week</Button>
-		<Button variant="outline" size="sm">Month</Button>
+		<Button variant="outline" size="h-lg">Day</Button>
+		<Button variant="outline" size="h-lg">Week</Button>
+		<Button variant="outline" size="h-lg">Month</Button>
 	</ButtonGroup>
 	<ButtonGroup label="Zoom" orientation="vertical">
-		<Button variant="outline" size="sm">Zoom in</Button>
-		<Button variant="outline" size="sm">Reset</Button>
-		<Button variant="outline" size="sm">Zoom out</Button>
+		<Button variant="outline" size="h-lg">Zoom in</Button>
+		<Button variant="outline" size="h-lg">Reset</Button>
+		<Button variant="outline" size="h-lg">Zoom out</Button>
 	</ButtonGroup>
 </div>

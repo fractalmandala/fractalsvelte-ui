@@ -11,7 +11,7 @@
 		children?: Snippet;
 	}
 
-	let { type = 'button', disabled, class: klass, children, ...rest }: Props = $props();
+	let { type = 'button', disabled, class: className, children, ...rest }: Props = $props();
 
 	const group = getInputGroupContext();
 </script>
@@ -23,7 +23,7 @@
 	shape="modern"
 	{type}
 	disabled={disabled ?? group.disabled}
-	class={['shrink-0', klass]}
+	class={['shrink-0', className]}
 	{...rest}
 >
 	{@render children?.()}

@@ -24,7 +24,7 @@
 		current,
 		orientation = 'horizontal',
 		label = 'Dock',
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -81,7 +81,7 @@
 	class={[
 		'row ycenter xcenter gap-sm pad-sm bg-surface glass border rim shad-lg modern',
 		vertical && 'column',
-		klass
+		className
 	]}
 	{@attach roving({
 		selector: '[data-dock-item]',
@@ -103,7 +103,7 @@
 			'bare relative motion',
 			origin,
 			'inline-flex xcenter ycenter square h-xl modern',
-			active ? 'text-primary' : 'text-secondary',
+			active ? '' : 'text-secondary',
 			item.disabled && 'disabled'
 		]}
 		{#if item.href && !item.disabled}

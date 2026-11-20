@@ -26,6 +26,7 @@ export const PATHS = {
 	genSprings: path.join(ROOT, 'scripts/gen-springs.ts'),
 	fractalstyler: path.join(ROOT, 'node_modules/@fractaldesign/fractalstyler'),
 	fsRegistry: path.join(ROOT, 'node_modules/@fractaldesign/fractalstyler/registry.json'),
+	stylerStyles: path.join(ROOT, 'node_modules/@fractaldesign/fractalstyler/src/lib/styles'),
 	fsDistStyles: path.join(ROOT, 'node_modules/@fractaldesign/fractalstyler/dist/styles'),
 	fsLintCli: path.join(ROOT, 'node_modules/@fractaldesign/fractalstyler/lint/cli.ts')
 };

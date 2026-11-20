@@ -11,9 +11,9 @@
 		children?: Snippet;
 	}
 
-	let { visuallyHidden = false, class: klass, children, ...rest }: Props = $props();
+	let { visuallyHidden = false, class: className, children, ...rest }: Props = $props();
 </script>
 
-<caption class={[visuallyHidden ? 'sr-only' : 'text-sm text-secondary weight-500', klass]} {...rest}>
+<caption class={[visuallyHidden ? 'sr-only' : 'text-sm text-secondary weight-500', className]} {...rest}>
 	{@render children?.()}
 </caption>

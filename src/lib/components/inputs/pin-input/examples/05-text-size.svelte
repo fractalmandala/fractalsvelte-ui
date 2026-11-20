@@ -4,9 +4,9 @@
 </script>
 
 <div class="box gap-sm">
-	<PinInput size="lg" textSize="xs" value="123456" aria-label="Extra-small type" />
-	<PinInput size="lg" textSize="sm" value="123456" aria-label="Small type" />
-	<PinInput size="lg" textSize="md" value="123456" aria-label="Medium type" />
-	<PinInput size="lg" textSize="lg" value="123456" aria-label="Large type" />
-	<PinInput size="lg" textSize="xl" value="123456" aria-label="Extra-large type" />
+	<PinInput size="h-lg" textSize="text-xs" value="123456" aria-label="Extra-small type" />
+	<PinInput size="h-lg" textSize="text-sm" value="123456" aria-label="Small type" />
+	<PinInput size="h-lg" textSize="text-md" value="123456" aria-label="Medium type" />
+	<PinInput size="h-lg" textSize="text-lg" value="123456" aria-label="Large type" />
+	<PinInput size="h-lg" textSize="text-xl" value="123456" aria-label="Extra-large type" />
 </div>

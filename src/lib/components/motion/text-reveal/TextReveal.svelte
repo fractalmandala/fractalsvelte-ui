@@ -26,7 +26,7 @@
 		step = 60,
 		trigger = 'mount',
 		as = 'p',
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -64,7 +64,7 @@
 
 <svelte:element
 	this={as}
-	class={[held && 'held', klass]}
+	class={[held && 'held', className]}
 	aria-label={text}
 	{@attach stagger({ step })}
 	{@attach trigger === 'inView' ? revealWhenVisible : undefined}

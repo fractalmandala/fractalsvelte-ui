@@ -5,34 +5,28 @@
 	import { Icon } from '@fractaldesign/icons';
 	import { luMonitor, luMoon, luSun } from '@fractaldesign/icons/lucide';
 	import { Button } from '../../actions/button/index.js';
-	import { roving } from '../../../internal/roving.js';
-	import { heightClass, textClass, type Size } from '../../../internal/tokens.js';
+	import { roving } from '../../../internal/helpers.js';
+import { type Size } from '../../../internal/tokens.js';
 	import { startViewTransition, vars } from '../../../motion/index.js';
 	import { theme, type ThemeMode } from '../../../theme/index.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLElement>, 'children' | 'role'> {
-		/** The control: a single `icon` button, a `switch`, or a `segmented` radio group. */
-		variant?: 'icon' | 'switch' | 'segmented';
-		/** The control height and text scale. */
+		form?: 'icon' | 'switch' | 'segmented';
 		size?: Size;
-		/** Adds the `system` (follow the OS) option: a third segment, or a third step when the icon button is pressed. The switch is always two-state. */
 		withSystem?: boolean;
-		/** The mode. Bindable. Leave it undefined to read and write the shared `theme`; pass a mode to control the component yourself. */
 		value?: ThemeMode;
-		/** Called with the new mode whenever the person changes it. */
 		onValueChange?: (value: ThemeMode) => void;
-		/** The accessible name of the control. */
 		label?: string;
 	}
 
 	let {
-		variant = 'icon',
-		size = 'md',
+		form = 'icon',
+		size = 'h-lg',
 		withSystem = false,
 		value = $bindable(),
 		onValueChange,
 		label = 'Dark mode',
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -52,7 +46,6 @@
 	];
 	const choices = $derived(withSystem ? options : options.filter((o) => o.mode !== 'system'));
 
-	/** The click point, or the control's centre for keyboard activation. */
 	function originOf(event: MouseEvent): MouseEvent | Element {
 		return event.detail === 0 && event.currentTarget instanceof Element ? event.currentTarget : event;
 	}
@@ -80,12 +73,12 @@
 	</span>
 {/snippet}
 
-{#if variant === 'icon'}
+{#if form === 'icon'}
 	<Button
 		{...rest}
 		variant="ghost"
 		{size}
-		class={['btn-icon', klass]}
+		class={['btn-icon', className]}
 		aria-label={withSystem ? `${label}: ${current}. Switch to ${cycle}` : label}
 		aria-pressed={withSystem ? undefined : dark}
 		title={withSystem ? `Mode: ${current}` : label}
@@ -93,18 +86,18 @@
 	>
 		{@render glyphs()}
 	</Button>
-{:else if variant === 'switch'}
+{:else if form === 'switch'}
 	<button
 		type="button"
 		role="switch"
 		aria-checked={dark}
 		aria-label={label}
-		class={['bare rocker track focus-ring', textClass[size], klass]}
+		class={['bare rocker track focus-ring', size, className]}
 		{@attach vars({ value: dark ? 1 : 0 })}
 		{...rest}
 		onclick={(event: MouseEvent) => change(resolved(!dark), event)}
 	>
-		<span class="thumb text-black"><span class="swap" aria-hidden="true">
+		<span class="thumb"><span class="swap" aria-hidden="true">
 			<Icon icon={luSun} class={!dark ? 'selected' : undefined} />
 			<Icon icon={luMoon} class={dark ? 'selected' : undefined} />
 		</span></span>
@@ -113,7 +106,7 @@
 	<div
 		role="radiogroup"
 		aria-label={label}
-		class={['choice-group', heightClass[size], textClass[size], klass]}
+		class={['choice-group', size, size, className]}
 		{@attach roving({ orientation: 'horizontal', onNavigate: (item) => item.click() })}
 		{...rest}
 	>

@@ -47,3 +47,10 @@
 /* A skinny block for barred spinners. Size follows the text scale. */
 .bar { width: 0.22em; height: 1em; border-radius: var(--radius-full); background-color: currentColor; }
 
+/* Progress animations for indeterminate linear fills and animated stripes. */
+@keyframes progress-indeterminate { 0% { left: -35%; width: 35%; } 100% { left: 100%; width: 35%; } }
+@keyframes progress-stripes { from { background-position: 1rem 0; } to { background-position: 0 0; } }
+.fill.indeterminate { width: 35%; animation: progress-indeterminate 1.4s var(--transout2) infinite; }
+.fill.stripes-anim { animation: progress-stripes 0.8s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .fill.indeterminate, .fill.stripes-anim { animation: none; } }
+

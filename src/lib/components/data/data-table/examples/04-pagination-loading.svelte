@@ -1,4 +1,4 @@
-<!-- @example Pages, density and loading :: page, pageSize and their callbacks; loading shows skeleton rows; size covers sm, md and lg. -->
+<!-- @example Pages, density and loading :: page, pageSize and their callbacks; loading shows skeleton rows; density covers compact, default and roomy. -->
 <script lang="ts">
 	import { Button, DataTable, type Column } from '@fractaldesign/fractalsvelte-ui';
 
@@ -35,8 +35,8 @@
 	let page = $state(1);
 	let pageSize = $state(4);
 	let loading = $state(false);
-	const sizes = ['sm', 'md', 'lg'] as const;
-	let size = $state<(typeof sizes)[number]>('sm');
+	const densities = ['compact', 'cozy', 'comfortable'] as const;
+	let density = $state<(typeof densities)[number]>('compact');
 
 	function onPageChange(next: number) {
 		page = next;
@@ -55,13 +55,13 @@
 
 <div class="box gap-sm">
 	<div class="row wrap gap-sm ycenter">
-		<Button variant="outline" size="sm" onclick={refresh} {loading}>Refresh</Button>
-		{#each sizes as value (value)}
-			<Button variant={size === value ? 'soft' : 'ghost'} size="sm" onclick={() => (size = value)}>
+		<Button variant="outline" size="h-sm" onclick={refresh} {loading}>Refresh</Button>
+		{#each densities as value (value)}
+			<Button variant={density === value ? 'secondary' : 'ghost'} size="h-sm" onclick={() => (density = value)}>
 				{value}
 			</Button>
 		{/each}
-		<Button variant="ghost" size="sm" onclick={() => onPageSizeChange(pageSize === 4 ? 8 : 4)}>
+		<Button variant="ghost" size="h-sm" onclick={() => onPageSizeChange(pageSize === 4 ? 8 : 4)}>
 			{pageSize} / page
 		</Button>
 	</div>
@@ -74,7 +74,7 @@
 		{pageSize}
 		{onPageSizeChange}
 		{loading}
-		{size}
+		{density}
 		caption="Audit log"
 		striped
 	/>

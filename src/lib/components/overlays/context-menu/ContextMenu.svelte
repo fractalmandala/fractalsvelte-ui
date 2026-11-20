@@ -3,7 +3,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { anchor, floating, popoverSync } from '../../../internal/floating.js';
+	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
 	import { roving } from '../../../internal/roving.js';
 	import { vars } from '../../../motion/index.js';
 	import { surfaceClass, type OverlaySurface } from '../dialog/dialog.js';
@@ -41,7 +41,7 @@
 		surface = 'glass',
 		trigger,
 		children,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -146,7 +146,7 @@
 	class={[
 		'floating pop enter-scale spring-snappy border rim shad-lg radius-lg pad-xs wmin-xs box gap-xs focus-none',
 		surfaceClass[surface],
-		klass
+		className
 	]}
 	{@attach floating(uid, 'var(--space-sm)')}
 	{@attach popoverSync(() => open, setOpen)}

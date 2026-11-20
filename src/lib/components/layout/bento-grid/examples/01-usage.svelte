@@ -3,7 +3,7 @@
 	import { BentoGrid, BentoItem } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
-<BentoGrid columns={4} gap="var(--space-md)" rowHeight="7rem">
+<BentoGrid columns={4} gap="gap-md" rowHeight="7rem">
 	<BentoItem colSpan={2} rowSpan={2} featured>
 		<span class="text-sm text-muted">Monthly recurring revenue</span>
 		<span class="text-lg weight-500">$184,200</span>

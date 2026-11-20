@@ -4,7 +4,7 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
-	import { heightClass, textClass, type Size, type Tone } from '../../../internal/tokens.js';
+	import { type Size, type Tone } from '../../../internal/tokens.js';
 	import { meterScale } from './meter.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -25,9 +25,13 @@
 		/** The thickness of a linear track, or the diameter of a ring, scaled with the text size. */
 		size?: Size;
 		/** `linear` is a bar; `ring` is a circular gauge with a label in the centre. */
-		variant?: 'linear' | 'ring';
+		form?: 'linear' | 'ring';
 		/** The stroke thickness of a ring, expressed through the text scale the ring already uses. */
 		thickness?: 'sm' | 'md' | 'lg';
+		/** Shows motion instead of a value: the track sweeps and no number is announced. */
+		indeterminate?: boolean;
+		/** Draws diagonal stripes across a linear fill. */
+		striped?: boolean;
 		/** A visible name for the meter, such as "Storage used". */
 		label?: string;
 		/** Shows the numeric value to the right of the label, in tabular numerals. */
@@ -46,14 +50,16 @@
 		high,
 		optimum,
 		tone,
-		size = 'md',
-		variant = 'linear',
+		size = 'h-lg',
+		form = 'linear',
 		thickness = 'md',
+		indeterminate = false,
+		striped = false,
 		label,
 		showValue = false,
 		valueText,
 		children,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -80,23 +86,27 @@
 	const scale = $derived(meterScale({ value, min, max, low, high, optimum }));
 	const resolvedTone = $derived(tone ?? regionTone[scale.region]);
 	const text = $derived(valueText ?? String(scale.value));
-	const colour = $derived({ value: scale.fraction, 'theme-color': toneVar[resolvedTone] });
+	const fillValue = $derived(indeterminate ? (form === 'ring' ? 0.25 : 0.35) : scale.fraction);
+	const colour = $derived({ value: fillValue, 'theme-color': toneVar[resolvedTone] });
 </script>
 
-{#if variant === 'ring'}
+{#if form === 'ring'}
 	<div
-		class={['relative inline-grid square', heightClass[size], klass]}
+		class={['relative inline-grid square', size, className]}
 		role="meter"
 		aria-label={label}
-		aria-valuemin={scale.min}
-		aria-valuemax={scale.max}
-		aria-valuenow={scale.value}
-		aria-valuetext={text}
+		aria-valuemin={indeterminate ? undefined : scale.min}
+		aria-valuemax={indeterminate ? undefined : scale.max}
+		aria-valuenow={indeterminate ? undefined : scale.value}
+		aria-valuetext={indeterminate ? undefined : text}
 		{...rest}
 	>
-		<div class={['ring full', thickClass[thickness]]} {@attach vars(colour)}></div>
+		<div
+			class={['ring full', thickClass[thickness], indeterminate && 'anim-spin']}
+			{@attach vars(colour)}
+		></div>
 		{#if children || text}
-			<div class={['cover box xcenter ycenter tabular-nums text-secondary', textClass[size]]}>
+			<div class={['cover box xcenter ycenter tabular-nums text-secondary', size]}>
 				{#if children}
 					{@render children()}
 				{:else}
@@ -106,7 +116,7 @@
 		{/if}
 	</div>
 {:else}
-	<div class={['box gap-xs wfull', textClass[size], klass]} {...rest}>
+	<div class={['box gap-xs wfull', size, className]} {...rest}>
 		{#if label || showValue}
 			<div class="row xbetween ycenter gap-sm">
 				{#if label}
@@ -121,12 +131,15 @@
 			class="track slim wfull overflow-hidden"
 			role="meter"
 			aria-label={label}
-			aria-valuemin={scale.min}
-			aria-valuemax={scale.max}
-			aria-valuenow={scale.value}
-			aria-valuetext={text}
+			aria-valuemin={indeterminate ? undefined : scale.min}
+			aria-valuemax={indeterminate ? undefined : scale.max}
+			aria-valuenow={indeterminate ? undefined : scale.value}
+			aria-valuetext={indeterminate ? undefined : text}
 		>
-			<div class="fill spring" {@attach vars(colour)}></div>
+			<div
+				class={['fill spring', striped && 'stripes', indeterminate && 'anim-slide']}
+				{@attach vars(colour)}
+			></div>
 		</div>
 	</div>
 {/if}

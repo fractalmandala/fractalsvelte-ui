@@ -3,8 +3,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { anchor, floating, popoverSync } from '../../../internal/floating.js';
-	import { placementClass, type Placement } from '../../../internal/tokens.js';
+	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
+	import { type Placement } from '../../../internal/tokens.js';
+import { placementClass } from '../../../internal/helpers.js';
 	import { surfaceClass, type OverlayContent, type OverlaySurface } from '../dialog/dialog.js';
 	import { enterFrom } from './hover-card.js';
 
@@ -49,7 +50,7 @@
 		surface = 'glass',
 		trigger,
 		children,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -130,7 +131,7 @@
 		surfaceClass[surface],
 		placementClass[placement],
 		enterFrom[placement],
-		klass
+		className
 	]}
 	{@attach floating(uid, 'var(--space-sm)')}
 	{@attach popoverSync(() => open, setOpen)}

@@ -2,6 +2,8 @@
 
 <script lang="ts" generics="T">
 	import type { Snippet } from 'svelte';
+	import { type Gap } from '../../../internal/tokens.js';
+import { gapValue } from '../../../internal/helpers.js';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
 	import {
@@ -15,8 +17,8 @@
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
 		/** How many columns to use, or a map resolved from the element's width against the system's `--bp-*` breakpoints. */
 		columns?: number | MasonryColumns;
-		/** The gap between columns and stacked items, as a CSS length. */
-		gap?: string;
+		/** The gap between columns and stacked items. */
+		gap?: Gap;
 		/** The items to place, in stable source order. */
 		items: T[];
 		/** The content of one item, called with the item and its index. */
@@ -25,9 +27,9 @@
 
 	let {
 		columns = 3,
-		gap = 'var(--space-md)',
+		gap = 'gap-md',
 		items,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -36,7 +38,7 @@
 	let packed = $state(false);
 	const cols = $derived(typeof columns === 'number' ? columns : (measured ?? columns.base ?? 1));
 
-	function observe(_cols: number, _count: number, _gap: string) {
+	function observe(_cols: number, _count: number, _gap: Gap) {
 		return (node: HTMLElement) => {
 			const native = supportsMasonry();
 			packed = !native;
@@ -92,8 +94,8 @@
 </script>
 
 <div
-	class={['masonry', packed && 'packed', klass]}
-	{@attach vars({ cols, gap })}
+	class={['masonry', packed && 'packed', className]}
+	{@attach vars({ cols, gap: gapValue(gap) })}
 	{@attach observe(cols, items.length, gap)}
 	{...rest}
 >

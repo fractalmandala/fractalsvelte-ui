@@ -5,9 +5,10 @@
 	import type { Attachment } from 'svelte/attachments';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { reducedMotion, vars } from '../../../motion/index.js';
+	import { type Gap } from '../../../internal/tokens.js';
+import { gapValue } from '../../../internal/helpers.js';
 
 	/** A step on the space ladder. */
-	type Gap = 'xs' | 'sm' | 'md' | 'bs' | 'lg' | 'xl' | '2xl' | '3xl';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		/** Which way the content travels. `up` and `down` need a container with a height. */
@@ -29,11 +30,11 @@
 	let {
 		direction = 'left',
 		speed = 48,
-		gap = 'lg',
+		gap = 'gap-lg',
 		pauseOnHover = true,
 		fade = false,
 		repeat = 2,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -71,9 +72,9 @@
 		pauseOnHover && 'pausable',
 		fade && !still && 'fade',
 		still && 'still',
-		klass
+		className
 	]}
-	{@attach vars({ gap: `var(--space-${gap})`, duration })}
+	{@attach vars({ gap: gapValue(gap), duration })}
 	{...rest}
 >
 	{#each copies as copy (copy)}

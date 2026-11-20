@@ -4,7 +4,7 @@
 </script>
 
 <div class="row wrap gap-sm ycenter">
-	<Kbd size="lg" textSize="sm" keys={['mod', 'K']} />
-	<Kbd size="lg" textSize="md" keys={['mod', 'K']} />
-	<Kbd size="lg" textSize="lg" keys={['mod', 'K']} />
+	<Kbd size="h-lg" textSize="text-sm" keys={['mod', 'K']} />
+	<Kbd size="h-lg" textSize="text-md" keys={['mod', 'K']} />
+	<Kbd size="h-lg" textSize="text-lg" keys={['mod', 'K']} />
 </div>

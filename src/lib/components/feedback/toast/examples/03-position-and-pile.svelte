@@ -15,9 +15,9 @@
 -->
 
 <div class="row wrap gap-sm">
-	<Button size="sm" onclick={() => toast('Deploy 27 reached all regions')}>Add a toast</Button>
-	<Button size="sm" variant="secondary" onclick={() => toast('Deploy 28 reached all regions')}>Add another</Button>
-	<Button size="sm" variant="secondary" onclick={() => toast('Deploy 29 reached all regions')}>And a third</Button>
+	<Button size="h-sm" onclick={() => toast('Deploy 27 reached all regions')}>Add a toast</Button>
+	<Button size="h-sm" variant="secondary" onclick={() => toast('Deploy 28 reached all regions')}>Add another</Button>
+	<Button size="h-sm" variant="secondary" onclick={() => toast('Deploy 29 reached all regions')}>And a third</Button>
 	<p class="text-sm text-muted">
 		Hover the pile to expand it. The usage example mounts the host at top-end.
 	</p>

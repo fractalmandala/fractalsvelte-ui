@@ -4,6 +4,6 @@
 </script>
 
 <div class="box measure-xs gap-sm">
-	<Divider orientation="horizontal" variant="subtle">or</Divider>
-	<Divider variant="dashed">Continue with</Divider>
+	<Divider orientation="horizontal" look="subtle">or</Divider>
+	<Divider look="dashed">Continue with</Divider>
 </div>

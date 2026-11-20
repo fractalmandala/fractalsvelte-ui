@@ -9,7 +9,7 @@
 	<Alert tone="info" title="Keyboard shortcuts" dismissible onDismiss={() => dismissed++}>
 		Press ? anywhere to see every shortcut.
 	</Alert>
-	<Alert tone="success" variant="outline" title="Import complete" dismissible onDismiss={() => dismissed++}>
+	<Alert tone="success" look="outline" title="Import complete" dismissible onDismiss={() => dismissed++}>
 		1,284 contacts were added to your audience.
 	</Alert>
 	<p class="text-sm text-muted tabular-nums">Dismissed {dismissed} of 2</p>

@@ -8,6 +8,7 @@
 
 <div class="measure-sm">
 	<Field label="Product labels" error={invalid ? 'Add at least one label.' : undefined}>
-		<TagsInput bind:value={labels} {invalid} placeholder="Add a label" />
+		<TagsInput value={['locked']} disabled />
+<TagsInput bind:value={labels} {invalid} placeholder="Add a label" />
 	</Field>
 </div>

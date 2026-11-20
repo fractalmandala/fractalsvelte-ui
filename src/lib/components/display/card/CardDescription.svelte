@@ -10,10 +10,10 @@
 		children?: Snippet;
 	}
 
-	let { class: klass, children, ...rest }: Props = $props();
+	let { class: className, children, ...rest }: Props = $props();
 	const card = getCardContext();
 </script>
 
-<p class={['text-secondary lh14', bodyClass[card.size], klass]} {...rest}>
+<p class={['text-secondary lh14', bodyClass[card.size], className]} {...rest}>
 	{@render children?.()}
 </p>

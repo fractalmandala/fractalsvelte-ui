@@ -6,7 +6,7 @@
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {}
 
-	let { class: klass, ...rest }: Props = $props();
+	let { class: className, ...rest }: Props = $props();
 
 	const toolbar = getToolbar();
 	const vertical = $derived(toolbar.orientation === 'horizontal');
@@ -15,6 +15,6 @@
 <div
 	role="separator"
 	aria-orientation={vertical ? 'vertical' : 'horizontal'}
-	class={[vertical ? 'bl mx-xs' : 'bt my-xs', klass]}
+	class={[vertical ? 'bl mx-xs' : 'bt my-xs', className]}
 	{...rest}
 ></div>

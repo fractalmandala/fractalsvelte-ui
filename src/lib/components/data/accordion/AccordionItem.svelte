@@ -20,7 +20,7 @@
 		children?: Snippet;
 	}
 
-	let { value, title, trigger, disabled = false, class: klass, children, ...rest }: Props = $props();
+	let { value, title, trigger, disabled = false, class: className, children, ...rest }: Props = $props();
 
 	const accordion = getAccordion();
 	const open = $derived(accordion.isOpen(value));
@@ -29,7 +29,7 @@
 	const headingTag = $derived(`h${accordion.headingLevel}`);
 </script>
 
-<div class={[itemClass[accordion.variant], klass]} {...rest}>
+<div class={[itemClass[accordion.look], className]} {...rest}>
 	<svelte:element this={headingTag}>
 		<button
 			id={triggerId}

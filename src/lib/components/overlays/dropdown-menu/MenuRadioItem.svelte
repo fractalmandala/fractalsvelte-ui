@@ -18,7 +18,7 @@
 		children?: Snippet;
 	}
 
-	let { value, shortcut, disabled = false, children, class: klass, ...rest }: Props = $props();
+	let { value, shortcut, disabled = false, children, class: className, ...rest }: Props = $props();
 
 	const radio = getMenuRadio();
 	const checked = $derived(radio.value() === value);
@@ -42,7 +42,7 @@
 	tabindex="-1"
 	aria-checked={checked}
 	aria-disabled={disabled || undefined}
-	class={['item', disabled && 'disabled', klass]}
+	class={['item', disabled && 'disabled', className]}
 	onclick={choose}
 	{onkeydown}
 	{...rest}

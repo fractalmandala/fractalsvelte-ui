@@ -19,7 +19,7 @@
 <div class="box gap-bs">
 	<div class="row wrap gap-sm">
 		{#each ['1', '2', '3', '4'] as const as next}
-			<Button variant={columns === next ? 'secondary' : 'ghost'} size="sm" onclick={() => (columns = next)}>
+			<Button variant={columns === next ? 'secondary' : 'ghost'} size="h-sm" onclick={() => (columns = next)}>
 				{next}
 			</Button>
 		{/each}

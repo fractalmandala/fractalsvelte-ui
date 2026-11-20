@@ -13,7 +13,7 @@
 	];
 </script>
 
-<ScrollArea orientation="vertical" maxHeight="md" scrollbar="auto" label="Changelog">
+<ScrollArea orientation="vertical" maxHeight="h-md" scrollbar="auto" label="Changelog">
 	<div class="box gap-bs pad-md">
 		{#each entries as entry}
 			<div class="box gap-xs">

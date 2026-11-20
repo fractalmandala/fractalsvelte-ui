@@ -20,7 +20,7 @@
 </script>
 
 <div class="box gap-md measure-md">
-	<Button variant="secondary" size="sm" onclick={push}>New update</Button>
+	<Button variant="secondary" size="h-sm" onclick={push}>New update</Button>
 	<AnimatedList items={notices} key={(notice) => notice.id} max={3} reverse>
 		{#snippet children(notice)}
 			<div class="pad-md bg-panel rim">

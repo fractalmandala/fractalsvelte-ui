@@ -15,7 +15,7 @@
 		children?: Snippet;
 	}
 
-	let { speed = 0.2, axis = 'y', class: klass, children, ...rest }: Props = $props();
+	let { speed = 0.2, axis = 'y', class: className, children, ...rest }: Props = $props();
 
 	/**
 	 * CSS scroll-driven animation (`animation-timeline: view()` + `.parallax-view`)
@@ -43,6 +43,6 @@
 	};
 </script>
 
-<div class={klass} {@attach layer(speed, axis)} {...rest}>
+<div class={className} {@attach layer(speed, axis)} {...rest}>
 	{@render children?.()}
 </div>

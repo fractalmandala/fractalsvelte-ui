@@ -6,22 +6,22 @@
 	import { luCheck } from '@fractaldesign/icons/lucide';
 	import { springFade, springScale } from '../../../motion/index.js';
 	import { roving } from '../../../internal/roving.js';
-	import { controlSize, type Size } from '../../../internal/tokens.js';
+	import { type Size, type TextSize } from '../../../internal/tokens.js';
 	import { valueKey, type ChipOption } from './options.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
 		/** The chips to choose from. */
 		options: ChipOption<T>[];
-		/** The chosen value, or an array of values when `type` is `multiple`. Two-way bindable. */
+		/** The chosen value, or an array of values when `multiple` is set. Two-way bindable. */
 		value?: T | T[] | null;
 		/** Called whenever the person changes the selection. */
 		onValueChange?: (value: T | T[] | null) => void;
-		/** `single` picks one chip; `multiple` toggles any number. */
-		type?: 'single' | 'multiple';
+		/** Toggles any number of chips instead of picking one. */
+		multiple?: boolean;
 		/** The chip height. Text follows this unless `textSize` is set. */
 		size?: Size;
 		/** The text scale, independent of the chip height. Follows `size` when omitted. */
-		textSize?: Size;
+		textSize?: TextSize;
 		/** Accessible name of the group. */
 		label?: string;
 		/** Blocks pointer and keyboard input. */
@@ -34,18 +34,17 @@
 		options,
 		value = $bindable(null),
 		onValueChange,
-		type = 'single',
-		size = 'md',
+		multiple = false,
+		size = 'h-lg',
 		textSize,
 		label,
 		disabled = false,
 		name,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
-	const multiple = $derived(type === 'multiple');
-	const selected = $derived<T[]>(
+		const selected = $derived<T[]>(
 		multiple ? (Array.isArray(value) ? value : []) : value === null || value === undefined || Array.isArray(value) ? [] : [value]
 	);
 	const isOn = (v: T) => selected.some((s) => Object.is(s, v));
@@ -72,7 +71,7 @@
 	role={role}
 	aria-label={label}
 	aria-disabled={disabled || undefined}
-	class={['row wrap ycenter gap-sm', disabled && 'disabled', klass]}
+	class={['row wrap ycenter gap-sm', disabled && 'disabled', className]}
 	{@attach roving({
 		selector: multiple ? '[role="checkbox"]' : '[role="radio"]',
 		orientation: 'horizontal',
@@ -92,7 +91,7 @@
 			disabled={disabled || option.disabled || undefined}
 			class={[
 				'button inline-flex gap-xs weight-500',
-				controlSize(size, textSize),
+				size, textSize,
 				'round',
 				on ? 'soft' : 'outline'
 			]}

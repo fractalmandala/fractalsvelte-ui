@@ -3,6 +3,9 @@
 .field .bare:disabled { cursor: not-allowed; }
 .field .bare::-webkit-search-cancel-button { display: none; }
 .field .bare::-webkit-search-decoration { display: none; }
+.field select.bare { appearance: none; -webkit-appearance: none; min-height: 0; }
+button.border-dashed { border: 1px dashed var(--border-strong); white-space: normal; }
+button.border-dashed.is-invalid { border-color: var(--danger); }
 
 /* A quiet fill that appears under the pointer; a framed control gives it up while it has focus. */
 .hover-fill:hover { background-color: var(--state-hover); }
@@ -27,3 +30,9 @@
 
 /* A surface under a dragged payload. */
 .drag-over { border-color: var(--theme-color); background-color: color-mix(in oklab, var(--theme-color) 8%, transparent); }
+
+/* Signature drawing canvas with optional baseline guide. */
+.signature-canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+.signature-guide { position: absolute; inset-inline: var(--space-lg); bottom: 22%; border-bottom: 1px dashed var(--border-strong); pointer-events: none; }
+.scrub-handle { cursor: ew-resize; user-select: none; touch-action: none; }
+.corner-tr { position: absolute; top: var(--space-xs); right: var(--space-xs); }

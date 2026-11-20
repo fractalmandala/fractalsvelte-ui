@@ -8,7 +8,7 @@
 <div class="grid-2 gap-bs">
 	{#each fades as fade (fade)}
 		<div class="relative overflow-hidden curved pad-xl box gap-sm bg-panel">
-			<Pattern variant="dots" {fade} size="0.9rem" />
+			<Pattern form="dots" {fade} tile="0.9rem" />
 			<p class="card-title">Fade {fade}</p>
 			<p class="card-desc text-secondary">The pattern keeps its tile size; only the mask changes.</p>
 		</div>

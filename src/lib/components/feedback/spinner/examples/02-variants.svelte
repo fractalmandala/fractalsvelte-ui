@@ -4,7 +4,7 @@
 </script>
 
 <div class="row ycenter gap-xl">
-	<Spinner variant="ring" label="Connecting" />
-	<Spinner variant="dots" label="Connecting" />
-	<Spinner variant="bars" label="Connecting" />
+	<Spinner form="ring" label="Connecting" />
+	<Spinner form="dots" label="Connecting" />
+	<Spinner form="bars" label="Connecting" />
 </div>

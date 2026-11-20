@@ -12,7 +12,7 @@
 		children?: Snippet;
 	}
 
-	let { label, class: klass, children, ...rest }: Props = $props();
+	let { label, class: className, children, ...rest }: Props = $props();
 
 	const carousel = getCarousel();
 	let node = $state<HTMLElement | null>(null);
@@ -30,7 +30,7 @@
 </script>
 
 <div
-	class={['slide', klass]}
+	class={['slide', className]}
 	role="group"
 	aria-roledescription="slide"
 	aria-label={label ?? (order >= 0 && total > 0 ? `Slide ${order + 1} of ${total}` : 'Slide')}

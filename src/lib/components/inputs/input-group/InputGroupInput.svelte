@@ -21,7 +21,7 @@
 		type = 'text',
 		required,
 		disabled,
-		class: klass,
+		class: className,
 		oninput,
 		'aria-describedby': describedby,
 		...rest
@@ -42,7 +42,7 @@
 
 <input
 	bind:this={ref}
-	class={['bare grow wmin0 hfull', klass]}
+	class={['bare grow wmin0 hfull', className]}
 	id={id ?? (group.id || undefined)}
 	{type}
 	{value}

@@ -4,23 +4,23 @@
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
 	import type { Attachment } from 'svelte/attachments';
 	import { vars } from '../../../motion/index.js';
-	import { defaultSize, type Shape, type Size } from '../../../internal/tokens.js';
+	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
 	import { useFieldControl } from '../field/field.js';
 	import { focusFrame, frameClasses } from '../input/frame.js';
 
-	interface Props extends Omit<HTMLTextareaAttributes, 'value' | 'rows' | 'maxlength' | 'children'> {
+	interface Props extends Omit<HTMLTextareaAttributes, 'value' | 'rows' | 'maxlength' | 'children' | 'disabled'> {
 		/** The text. Bindable; works controlled and uncontrolled. */
 		value?: string;
 		/** Called with the new text whenever it changes. */
 		onValueChange?: (value: string) => void;
-		/** The text scale. The height follows the content and `rows`. `textSize` overrides this. @default 'md' */
+		/** The text scale. The height follows the content and `rows`. `textSize` overrides this. @default 'lg' */
 		size?: Size;
 		/** The text scale, independent of the control height. Follows `size` when omitted. */
-		textSize?: Size;
+		textSize?: TextSize;
 		/** The corner shape. @default 'modern' */
 		shape?: Shape;
 		/** `outline` is a bordered field, `filled` a tinted one without a border, `ghost` is bare until hovered or focused. @default 'outline' */
-		variant?: 'outline' | 'filled' | 'ghost';
+		look?: 'outline' | 'filled' | 'ghost';
 		/** Marks the field invalid (red border, `aria-invalid`). Inside a `Field` it follows the field's error unless set. */
 		invalid?: boolean;
 		/** Grows the field with its text using CSS `field-sizing: content`, between `rows` and `maxRows` lines. */
@@ -37,7 +37,9 @@
 		resize?: 'none' | 'vertical' | 'horizontal' | 'both';
 		/** The underlying `<textarea>` element. Bindable. */
 		ref?: HTMLTextAreaElement | null;
-	}
+			/** Blocks pointer and keyboard input, and dims the frame. */
+		disabled?: boolean | null;
+}
 
 	let {
 		value = $bindable(''),
@@ -45,7 +47,7 @@
 		size,
 		textSize,
 		shape,
-		variant,
+		look,
 		invalid,
 		autosize = false,
 		rows = 3,
@@ -57,7 +59,7 @@
 		id,
 		required,
 		disabled,
-		class: klass,
+		class: className,
 		oninput,
 		'aria-describedby': describedby,
 		...rest
@@ -73,14 +75,14 @@
 		describedby: [describedby, counter ? counterId : null].filter(Boolean).join(' ') || null,
 		size,
 		shape,
-		variant
+		look
 	}));
 
 	const resolvedSize = $derived(size ?? control.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? control.shape ?? 'modern');
-	const resolvedVariant = $derived(variant ?? control.variant ?? 'outline');
+	const resolvedVariant = $derived(look ?? control.look ?? 'outline');
 
-	const frame = $derived(frameClasses({ variant: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled, content: true }));
+	const frame = $derived(frameClasses({ look: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled, content: true }));
 	const resizeClass = { none: 'resize-none', vertical: 'resize-y', horizontal: 'resize-x', both: 'resize-both' };
 	const length = $derived(value.length);
 	const atLimit = $derived(maxlength !== undefined && length >= maxlength);
@@ -101,7 +103,7 @@
 	}
 </script>
 
-<div class={['box gap-xs wfull', klass]}>
+<div class={['box gap-xs wfull', className]}>
 	<div role="presentation" class={frame} onpointerdown={(event) => focusFrame(event, ref)}>
 		<textarea
 			bind:this={ref}

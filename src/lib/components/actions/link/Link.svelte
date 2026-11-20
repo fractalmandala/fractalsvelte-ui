@@ -5,37 +5,40 @@
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luArrowUpRight } from '@fractaldesign/icons/lucide';
+	import type { TextColor, TextSize } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAnchorAttributes {
-		/** Where the link goes. */
 		href: string;
-		/** Marks the link as leaving the site: opens it in a new tab with a safe `rel`, adds an arrow icon and a screen-reader hint. */
 		external?: boolean;
-		/** The ink. `theme` is the accent colour, `plain` is the body ink that warms to the accent on hover, `subtle` is secondary ink that darkens on hover. */
-		variant?: 'theme' | 'plain' | 'subtle';
-		/** When the underline shows. */
+		look?: 'theme' | 'plain' | 'subtle';
 		underline?: 'hover' | 'always' | 'none';
-		/** The link text. */
+		textSize?: TextSize;
+		textColor?: TextColor;
 		children?: Snippet;
 	}
 
 	let {
 		href,
 		external = false,
-		variant = 'theme',
+		look = 'theme',
 		underline = 'hover',
+		textSize,
+		textColor,
 		target,
 		rel,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
 
 	const variants = { theme: 'link', plain: 'link-plain', subtle: 'link-subtle' } as const;
+	const resolvedTextColor = $derived(
+		textColor ?? (look === 'subtle' ? 'text-secondary' : look === 'plain' ? 'text-primary' : undefined)
+	);
 </script>
 
 <a
-	class={[variants[variant], underline !== 'none' && ['underline', underline], 'focus-ring', klass]}
+	class={['inline-flex ycenter', variants[look], underline !== 'none' && ['underline', underline], textSize, resolvedTextColor, 'focus-ring', className]}
 	{href}
 	target={external ? '_blank' : target}
 	rel={external ? 'noopener noreferrer' : rel}

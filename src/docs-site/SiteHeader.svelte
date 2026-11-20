@@ -5,7 +5,7 @@
 	import { luMenu, luMoon, luPalette, luSun, luX } from '@fractaldesign/icons/lucide';
 	import { SearchInput } from '@fractaldesign/fractalsvelte-ui';
 	import { theme, themes } from '@fractaldesign/fractalsvelte-ui/theme';
-	import { anchor, floating, popoverSync } from '../lib/internal/floating.js';
+	import { anchor, floating, popoverSync } from '../lib/internal/helpers.js';
 	import { headerLinks } from './nav.js';
 	import { searchComponents } from './search.js';
 	import { shell } from './shell.svelte.js';
@@ -96,7 +96,7 @@
 			<SearchInput
 				bind:value={query}
 				onValueChange={onQueryChange}
-				size="sm"
+				size="h-sm"
 				placeholder="Search components…"
 				aria-label="Search components"
 				role="combobox"
@@ -203,14 +203,7 @@
 				<span class="row xbetween"
 					><span>Hue</span><span class="tabular-nums">{Math.round(hue)}°</span></span
 				>
-				<input
-					type="range"
-					min="0"
-					max="360"
-					step="1"
-					value={hue}
-					class="wfull"
-					oninput={(e) => theme.set({ hue: Number(e.currentTarget.value) })}
+				<input type="range" min="0" max="360" step="1" value={hue} class="wfull" oninput={(e) => theme.set({ hue: Number(e.currentTarget.value) })}
 				/>
 			</label>
 		</div>

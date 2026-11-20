@@ -3,8 +3,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { anchor, floating, popoverSync } from '../../../internal/floating.js';
-	import { placementClass, type Placement } from '../../../internal/tokens.js';
+	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
+	import { type Placement } from '../../../internal/tokens.js';
+import { placementClass } from '../../../internal/helpers.js';
 	import type { OverlayTrigger } from '../dialog/dialog.js';
 	import { enterFrom, hintPopover, markWarm, openDelay } from './tooltip.js';
 
@@ -27,7 +28,7 @@
 		delay = 300,
 		closeDelay = 100,
 		trigger,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -106,10 +107,10 @@
 	id={uid}
 	role="tooltip"
 	class={[
-		'floating pop spring-snappy glass border rim shad-md radius-md px-sm py-xs max-w-xs pointer-none text-sm lh15 text-primary',
+		'floating pop spring-snappy glass border rim shad-md radius-md px-sm py-xs max-w-xs pointer-none text-sm lh15',
 		placementClass[placement],
 		enterFrom[placement],
-		klass
+		className
 	]}
 	{@attach floating(uid, 'var(--space-sm)')}
 	{@attach hintPopover()}

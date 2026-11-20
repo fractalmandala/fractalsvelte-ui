@@ -6,6 +6,7 @@
 </script>
 
 <div class="box gap-sm">
-	<Rating bind:value={score} label="Aurora typography pack" />
+	<Rating value={3} textSize="text-sm" label="Smaller type" />
+<Rating bind:value={score} label="Aurora typography pack" />
 	<p class="text-sm text-muted tabular-nums">{score} out of 5 — typography pack</p>
 </div>

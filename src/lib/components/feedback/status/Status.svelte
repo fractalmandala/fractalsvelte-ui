@@ -3,7 +3,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { textClass, toneText, type Size, type Tone } from '../../../internal/tokens.js';
+	import { type Size, type Tone } from '../../../internal/tokens.js';
+import { toneText } from '../../../internal/helpers.js';
 
 	interface Props extends HTMLAttributes<HTMLSpanElement> {
 		/** The meaning of the status. */
@@ -19,14 +20,14 @@
 	let {
 		tone = 'success',
 		pulse = false,
-		size = 'md',
+		size = 'h-lg',
 		children,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 </script>
 
-<span class={['row ycenter gap-sm', textClass[size], klass]} {...rest}>
+<span class={['row ycenter gap-sm', size, className]} {...rest}>
 	<span class={['relative inline-flex shrink-0', toneText[tone]]}>
 		{#if pulse}
 			<span class="dot absolute cover anim-ping" aria-hidden="true"></span>

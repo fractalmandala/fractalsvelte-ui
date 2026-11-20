@@ -4,19 +4,19 @@
 </script>
 
 <div class="box gap-sm measure-sm">
-	<Item variant="default">
+	<Item look="default">
 		<ItemContent>
 			<ItemTitle>Draft changelog</ItemTitle>
 			<ItemDescription>Waiting for review from the docs team.</ItemDescription>
 		</ItemContent>
 	</Item>
-	<Item variant="outline">
+	<Item look="outline">
 		<ItemContent>
 			<ItemTitle>Published changelog</ItemTitle>
 			<ItemDescription>Shipped with fractalsvelte-ui 0.4 this morning.</ItemDescription>
 		</ItemContent>
 	</Item>
-	<Item variant="muted">
+	<Item look="muted">
 		<ItemContent>
 			<ItemTitle>Archived changelog</ItemTitle>
 			<ItemDescription>Kept for the 0.3 release notes.</ItemDescription>

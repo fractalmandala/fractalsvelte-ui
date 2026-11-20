@@ -5,8 +5,11 @@ import { startViewTransition } from '../motion/view-transitions.js';
 export type ThemeMode = 'light' | 'dark' | 'system';
 /** The built-in named themes — each is three numbers in the stylesheet. */
 export type ThemeName = 'fractalsvelte' | 'aurora' | 'ocean' | 'ember' | 'rose' | 'lime' | 'amber' | 'mono';
-export type ThemeRadius = 'sharp' | 'soft' | 'round';
-export type ThemeDensity = 'compact' | 'cozy' | 'comfortable';
+import type { Density, Shape } from '../internal/tokens.js';
+
+
+/** The theme's density step — the shared ladder, `compact` · `cozy` · `comfortable`. */
+export type ThemeDensity = Density;
 export type ThemeMotion = 'off' | 'calm' | 'snappy' | 'playful';
 
 export interface ThemePreset {
@@ -37,7 +40,8 @@ export interface ThemeSettings {
 	hue: number | null;
 	chroma: number | null;
 	tint: number | null;
-	radius: ThemeRadius;
+	/** The theme's corner shape — the same five words a component's `shape` takes. */
+	shape: Shape;
 	density: ThemeDensity;
 	motion: ThemeMotion;
 }
@@ -48,7 +52,7 @@ export const defaultTheme: ThemeSettings = {
 	hue: null,
 	chroma: null,
 	tint: null,
-	radius: 'soft',
+	shape: 'modern',
 	density: 'cozy',
 	motion: 'snappy'
 };
@@ -66,7 +70,7 @@ export class ThemeState {
 	hue = $state<number | null>(null);
 	chroma = $state<number | null>(null);
 	tint = $state<number | null>(null);
-	radius = $state<ThemeRadius>(defaultTheme.radius);
+	shape = $state<Shape>(defaultTheme.shape);
 	density = $state<ThemeDensity>(defaultTheme.density);
 	motion = $state<ThemeMotion>(defaultTheme.motion);
 	/** What the OS asks for; updated by `initTheme`. */
@@ -95,7 +99,7 @@ export class ThemeState {
 			hue: this.hue,
 			chroma: this.chroma,
 			tint: this.tint,
-			radius: this.radius,
+			shape: this.shape,
 			density: this.density,
 			motion: this.motion
 		};
@@ -140,9 +144,11 @@ export class ThemeState {
 	apply(root: HTMLElement = document.documentElement): void {
 		root.dataset.mode = this.resolvedMode;
 		root.dataset.theme = this.theme;
-		root.dataset.radius = this.radius;
+		root.dataset.shape = this.shape;
 		root.dataset.density = this.density;
-		root.dataset.motion = this.motion;
+		// `snappy` is the base spring (--spring: var(--spring-snappy)), so it is absence.
+		if (this.motion === 'snappy') root.removeAttribute('data-motion');
+		else root.dataset.motion = this.motion;
 		const custom: Record<string, number | null> = { '--hue': this.hue, '--chroma': this.chroma, '--tint': this.tint };
 		for (const [name, value] of Object.entries(custom)) {
 			if (value === null) root.style.removeProperty(name);
@@ -204,5 +210,5 @@ export function initTheme(options: InitThemeOptions = {}): void {
  * stored theme before first paint, so there is no flash of the wrong mode.
  */
 export function themeInitScript(storageKey: string = STORAGE_KEY): string {
-	return `(function(){try{var s=JSON.parse(localStorage.getItem(${JSON.stringify(storageKey)})||'{}'),d=document.documentElement,m=s.mode||'system';d.dataset.mode=m==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):m;if(s.theme)d.dataset.theme=s.theme;if(s.radius)d.dataset.radius=s.radius;if(s.density)d.dataset.density=s.density;if(s.motion)d.dataset.motion=s.motion;['hue','chroma','tint'].forEach(function(k){if(s[k]!=null)d.style.setProperty('--'+k,s[k])})}catch(e){}})()`;
+	return `(function(){try{var s=JSON.parse(localStorage.getItem(${JSON.stringify(storageKey)})||'{}'),d=document.documentElement,m=s.mode||'system';d.dataset.mode=m==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):m;if(s.theme)d.dataset.theme=s.theme;if(s.shape)d.dataset.shape=s.shape;if(s.density)d.dataset.density=s.density;if(s.motion&&s.motion!=='snappy')d.dataset.motion=s.motion;['hue','chroma','tint'].forEach(function(k){if(s[k]!=null)d.style.setProperty('--'+k,s[k])})}catch(e){}})()`;
 }

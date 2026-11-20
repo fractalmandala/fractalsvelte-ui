@@ -13,10 +13,10 @@
 		children?: Snippet;
 	}
 
-	let { icon, class: klass, children, ...rest }: Props = $props();
+	let { icon, class: className, children, ...rest }: Props = $props();
 </script>
 
-<div class={['shrink-0 row ycenter xcenter text-secondary', klass]} {...rest}>
+<div class={['shrink-0 row ycenter xcenter text-secondary', className]} {...rest}>
 	{#if children}
 		{@render children()}
 	{:else if icon}

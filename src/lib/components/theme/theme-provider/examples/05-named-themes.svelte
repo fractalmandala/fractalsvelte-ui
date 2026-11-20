@@ -10,7 +10,7 @@
 	{#each names as name (name)}
 		<ThemeProvider theme={name} class="column gap-sm pad-bs radius-md border">
 			<span class="weight-600 text-sm tt-c">{name}</span>
-			<Button variant="themed" size="sm">Accent</Button>
+			<Button variant="themed" size="h-sm">Accent</Button>
 		</ThemeProvider>
 	{/each}
 </div>

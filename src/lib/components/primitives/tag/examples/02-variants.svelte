@@ -4,7 +4,7 @@
 </script>
 
 <div class="row wrap gap-sm ycenter">
-	<Tag variant="soft">Soft</Tag>
+	<Tag variant="secondary">Soft</Tag>
 	<Tag variant="primary">Primary</Tag>
 	<Tag variant="secondary">Secondary</Tag>
 	<Tag variant="themed">Themed</Tag>

@@ -19,7 +19,7 @@
 		</MenubarMenu>
 		<MenubarMenu value="insert">
 			{#snippet trigger({ props })}
-				<Button variant="ghost" size="sm" {...props}>Insert</Button>
+				<Button variant="ghost" size="h-sm" {...props}>Insert</Button>
 			{/snippet}
 			<MenuItem>Harbour mark</MenuItem>
 			<MenuItem>Tide table</MenuItem>

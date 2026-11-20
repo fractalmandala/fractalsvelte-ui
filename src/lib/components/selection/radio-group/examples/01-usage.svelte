@@ -5,6 +5,10 @@
 	let plan = $state('team');
 </script>
 
+<RadioGroup value="a" textSize="text-sm" aria-label="Smaller type">
+	<Radio value="a" label="Alpha" />
+	<Radio value="b" label="Beta" />
+</RadioGroup>
 <RadioGroup bind:value={plan} variant="default" aria-label="Billing plan">
 	<Radio value="solo" label="Solo" />
 	<Radio value="team" label="Team" />

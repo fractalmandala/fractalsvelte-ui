@@ -12,13 +12,13 @@
 		children?: Snippet;
 	}
 
-	let { level = 3, class: klass, children, ...rest }: Props = $props();
+	let { level = 3, class: className, children, ...rest }: Props = $props();
 	const card = getCardContext();
 </script>
 
 <svelte:element
 	this={`h${level}`}
-	class={['weight-600 lh12 ls-tight-bs text-primary', titleClass[card.size], klass]}
+	class={['weight-600 lh12 ls-tight-bs', titleClass[card.size], className]}
 	{...rest}
 >
 	{@render children?.()}

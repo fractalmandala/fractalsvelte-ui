@@ -23,7 +23,7 @@
 	<figure class="box gap-xs">
 		<p class="text-xs text-muted">de-DE, grouping</p>
 		<p class="text-xl weight-500">
-			<NumberTicker value={12840} locale="de-DE" variant="slot" />
+			<NumberTicker value={12840} locale="de-DE" form="slot" />
 		</p>
 	</figure>
 </div>

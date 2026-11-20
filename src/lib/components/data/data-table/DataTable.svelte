@@ -17,7 +17,8 @@
 		luSearch
 	} from '@fractaldesign/icons/lucide';
 	import { Button } from '../../actions/button/index.js';
-	import { anchor, floating } from '../../../internal/floating.js';
+	import { anchor, floating } from '../../../internal/helpers.js';
+	import type { Size } from '../../../internal/tokens.js';
 	import { createFlip, vars } from '../../../motion/index.js';
 	import {
 		Table,
@@ -28,7 +29,7 @@
 		TableHeader,
 		TableRow
 	} from '../table/index.js';
-	import type { TableSize } from '../table/table.js';
+	import type { Density } from '../table/table.js';
 	import {
 		cycleSort,
 		getValue,
@@ -91,12 +92,12 @@
 		striped?: boolean;
 		/** Lights a body row under the pointer. */
 		hoverable?: boolean;
-		/** Row density: `sm` is compact, `md` the default, `lg` airy. */
-		size?: TableSize;
+		/** Row density, on the shared ladder: `compact` · `cozy` · `comfortable`. */
+		density?: Density;
 		/** Keeps the header row in view while the body scrolls. Pair it with `maxHeight`. */
 		stickyHeader?: boolean;
-		/** Caps the height of the scroll container (any CSS length, e.g. `24rem`). */
-		maxHeight?: string;
+		/** Caps the height and scrolls the body: a ladder word (`lg`) or any CSS length (`24rem`). */
+		maxHeight?: Size | string;
 		/** Names the scroll region for assistive technology. */
 		label?: string;
 		/** Draws the hairline frame and surface fill around the table. */
@@ -131,14 +132,14 @@
 		onHiddenColumnsChange,
 		striped = false,
 		hoverable = true,
-		size = 'md',
+		density = 'cozy',
 		stickyHeader = false,
 		maxHeight,
 		label,
 		framed = true,
 		caption,
 		captionHidden = false,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -249,7 +250,7 @@
 	}
 </script>
 
-<div class={['box gap-sm', klass]} {@attach flip.attach} {...rest}>
+<div class={['box gap-sm', className]} {@attach flip.attach} {...rest}>
 	<div class="row xbetween ycenter gap-sm wrap">
 		<label class="row ycenter gap-sm grow">
 			<span class="sr-only">Filter {heading}</span>
@@ -306,7 +307,7 @@
 	<Table
 		{striped}
 		{hoverable}
-		{size}
+		{density}
 		{stickyHeader}
 		{maxHeight}
 		{label}
@@ -487,7 +488,7 @@
 		<div class="row gap-xs ycenter">
 			<Button
 				variant="ghost"
-				size="sm"
+				size="h-sm"
 				class="btn-icon"
 				icon={luChevronsLeft}
 				disabled={safePage <= 1}
@@ -496,7 +497,7 @@
 			/>
 			<Button
 				variant="ghost"
-				size="sm"
+				size="h-sm"
 				class="btn-icon"
 				icon={luChevronLeft}
 				disabled={safePage <= 1}
@@ -505,8 +506,8 @@
 			/>
 			{#each pages as n (n)}
 				<Button
-					variant={n === safePage ? 'soft' : 'ghost'}
-					size="sm"
+					variant={n === safePage ? 'secondary' : 'ghost'}
+					size="h-sm"
 					aria-label="Page {n}"
 					aria-current={n === safePage ? 'page' : undefined}
 					onclick={() => setPage(n)}
@@ -516,7 +517,7 @@
 			{/each}
 			<Button
 				variant="ghost"
-				size="sm"
+				size="h-sm"
 				class="btn-icon"
 				icon={luChevronRight}
 				disabled={safePage >= pageCount}
@@ -525,7 +526,7 @@
 			/>
 			<Button
 				variant="ghost"
-				size="sm"
+				size="h-sm"
 				class="btn-icon"
 				icon={luChevronsRight}
 				disabled={safePage >= pageCount}

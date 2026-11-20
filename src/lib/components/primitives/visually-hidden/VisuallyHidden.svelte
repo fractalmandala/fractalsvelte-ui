@@ -13,9 +13,9 @@
 		children?: Snippet;
 	}
 
-	let { as = 'span', focusable = false, class: klass, children, ...rest }: Props = $props();
+	let { as = 'span', focusable = false, class: className, children, ...rest }: Props = $props();
 
-	const classes = $derived(['sr-only', focusable && 'sr-only-focusable', klass]);
+	const classes = $derived(['sr-only', focusable && 'sr-only-focusable', className]);
 </script>
 
 <svelte:element this={as} class={classes} {...rest}>

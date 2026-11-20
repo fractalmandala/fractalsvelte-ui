@@ -5,12 +5,12 @@
 
 <ul class="box gap-sm measure-xs">
 	<li class="row ycenter ybetween text-secondary">
-		Inbox <Badge size="sm" variant="secondary">128</Badge>
+		Inbox <Badge size="h-sm" variant="secondary">128</Badge>
 	</li>
 	<li class="row ycenter ybetween text-secondary">
-		Drafts <Badge size="sm" variant="secondary">7</Badge>
+		Drafts <Badge size="h-sm" variant="secondary">7</Badge>
 	</li>
 	<li class="row ycenter ybetween text-secondary">
-		Needs review <Badge size="sm" variant="danger">12</Badge>
+		Needs review <Badge size="h-sm" variant="danger">12</Badge>
 	</li>
 </ul>

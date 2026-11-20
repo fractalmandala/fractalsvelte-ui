@@ -6,7 +6,7 @@
 
 	interface Props extends HTMLAttributes<HTMLSpanElement> {
 		/** The fill: the theme accent, an aurora of hue offsets, a warmer sunset, or a monochrome fade. */
-		variant?: 'theme' | 'aurora' | 'sunset' | 'mono';
+		look?: 'theme' | 'aurora' | 'sunset' | 'mono';
 		/** Sweeps the gradient slowly along the text. */
 		animated?: boolean;
 		/** The text the gradient fills. */
@@ -14,14 +14,14 @@
 	}
 
 	let {
-		variant = 'theme',
+		look = 'theme',
 		animated = false,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
 
-	const variantClass = {
+	const lookClass = {
 		theme: 'ink-theme',
 		aurora: 'ink-aurora',
 		sunset: 'ink-sunset',
@@ -29,6 +29,6 @@
 	};
 </script>
 
-<span class={['ink', variantClass[variant], animated && 'ink-flow', klass]} {...rest}>
+<span class={['ink', lookClass[look], animated && 'ink-flow', className]} {...rest}>
 	{@render children?.()}
 </span>

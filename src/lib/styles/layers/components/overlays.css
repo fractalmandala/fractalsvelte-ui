@@ -10,3 +10,17 @@
 
 /* A sheet pulled by a handle: while open, motion channels own translate so a drag can move it. */
 .dialog.sheet.motion[open] { translate: calc(var(--mx, 0) * 1px) calc(var(--my, 0) * 1px); }
+
+/* FloatingPanel: non-modal tool window positioned by --panel-x, --panel-y, --panel-w. */
+.floating-panel { position: fixed; top: 0; left: 0; z-index: var(--z-popover); width: var(--panel-w, 22rem); max-width: calc(100vw - 2rem); translate: calc(var(--panel-x, 24) * 1px) calc(var(--panel-y, 24) * 1px); }
+
+/* Tour spotlight cutout driven by --spot-x, --spot-y, --spot-w, --spot-h (px). */
+.tour-spot { position: fixed; top: calc(var(--spot-y, 0) * 1px); left: calc(var(--spot-x, 0) * 1px); width: calc(var(--spot-w, 0) * 1px); height: calc(var(--spot-h, 0) * 1px); border-radius: var(--radius-md); box-shadow: 0 0 0 100vmax var(--bg-backdrop), 0 0 0 2px var(--theme-color); pointer-events: none; z-index: var(--z-modal); transition: top var(--speed3) var(--transout2), left var(--speed3) var(--transout2), width var(--speed3) var(--transout2), height var(--speed3) var(--transout2); }
+
+/* Lightbox full-viewport media stage. */
+.lightbox-stage { max-width: 100vw; max-height: 100dvh; width: 100vw; height: 100dvh; margin: 0; border: none; background-color: transparent; color: var(--text-primary); }
+.lightbox-media { max-width: 88vw; max-height: 76dvh; object-fit: contain; transform: scale(var(--zoom, 1)); transition: transform calc(var(--spring-ms) * var(--motion-scale)) var(--spring); }
+
+/* Tour step card positioning driven by --card-x / --card-y (px) or centered fallback. */
+.tour-card { position: fixed; z-index: calc(var(--z-modal) + 1); width: var(--measure-sm); max-width: calc(100vw - 2rem); left: calc(var(--card-x, 24) * 1px); top: calc(var(--card-y, 24) * 1px); }
+.tour-card.centered { left: 50%; top: 50%; translate: -50% -50%; }

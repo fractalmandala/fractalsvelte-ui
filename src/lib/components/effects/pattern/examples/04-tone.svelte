@@ -14,7 +14,7 @@
 <div class="grid-2 gap-bs">
 	{#each tones as [tone, title, copy] (tone)}
 		<div class="relative overflow-hidden curved pad-xl box gap-sm bg-surface border-subtle">
-			<Pattern variant="grid" fade="edges" {tone} />
+			<Pattern form="grid" fade="edges" {tone} />
 			<p class="card-title">{title}</p>
 			<p class="card-desc text-secondary">{copy}</p>
 		</div>

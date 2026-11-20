@@ -8,8 +8,8 @@
 
 <div class="box gap-sm">
 	<div class="row gap-sm wrap">
-		<Button size="sm" variant="outline" onclick={() => (sizes = [20, 60, 20])}>Focus the editor</Button>
-		<Button size="sm" variant="ghost" onclick={() => (sizes = [25, 50, 25])}>Reset</Button>
+		<Button size="h-sm" variant="outline" onclick={() => (sizes = [20, 60, 20])}>Focus the editor</Button>
+		<Button size="h-sm" variant="ghost" onclick={() => (sizes = [25, 50, 25])}>Reset</Button>
 		<span class="text-sm text-muted tabular-nums">
 			{sizes.map((s) => Math.round(s)).join(' / ')} · {resizes} resizes
 		</span>

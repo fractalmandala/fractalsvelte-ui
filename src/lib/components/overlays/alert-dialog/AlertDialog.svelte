@@ -45,7 +45,7 @@
 		onCancel,
 		trigger: triggerSnippet,
 		children,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -93,11 +93,11 @@
 	{onOpenChange}
 	{title}
 	{description}
-	size="sm"
+	width="measure-sm"
 	dismissible={false}
 	closeButton={false}
 	role="alertdialog"
-	class={klass}
+	class={className}
 	{...rest}
 >
 	{#snippet trigger(api)}

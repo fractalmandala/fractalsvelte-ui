@@ -4,17 +4,17 @@
 </script>
 
 <div class="row wrap gap-sm ycenter">
-	<Button variant="primary">Primary</Button>
+	<Button variant="primary" class="text-inverse">Primary</Button>
 	<Button variant="secondary">Secondary</Button>
-	<Button variant="themed">Themed</Button>
-	<Button variant="soft">Soft</Button>
+	<Button variant="themed" class="text-inverse">Themed</Button>
+	<Button variant="secondary">Soft</Button>
 	<Button variant="outline">Outline</Button>
 	<Button variant="ghost">Ghost</Button>
 	<Button variant="link">Link</Button>
 </div>
 <div class="row wrap gap-sm ycenter">
-	<Button variant="info">Info</Button>
+	<Button variant="info" class="text-inverse">Info</Button>
 	<Button variant="success">Success</Button>
 	<Button variant="warning">Warning</Button>
-	<Button variant="danger">Danger</Button>
+	<Button variant="danger" class="text-inverse">Danger</Button>
 </div>

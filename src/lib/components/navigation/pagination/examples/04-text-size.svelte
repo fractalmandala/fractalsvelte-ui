@@ -4,9 +4,9 @@
 </script>
 
 <div class="box gap-sm">
-	<Pagination size="lg" textSize="xs" page={4} count={24} label="Extra-small type" />
-	<Pagination size="lg" textSize="sm" page={4} count={24} label="Small type" />
-	<Pagination size="lg" textSize="md" page={4} count={24} label="Medium type" />
-	<Pagination size="lg" textSize="lg" page={4} count={24} label="Large type" />
-	<Pagination size="lg" textSize="xl" page={4} count={24} label="Extra-large type" />
+	<Pagination size="h-lg" textSize="text-xs" page={4} count={24} label="Extra-small type" />
+	<Pagination size="h-lg" textSize="text-sm" page={4} count={24} label="Small type" />
+	<Pagination size="h-lg" textSize="text-md" page={4} count={24} label="Medium type" />
+	<Pagination size="h-lg" textSize="text-lg" page={4} count={24} label="Large type" />
+	<Pagination size="h-lg" textSize="text-xl" page={4} count={24} label="Extra-large type" />
 </div>

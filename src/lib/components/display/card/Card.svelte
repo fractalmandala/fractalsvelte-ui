@@ -4,14 +4,16 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLAnchorAttributes, HTMLAttributes } from 'svelte/elements';
 	import { hover, tilt as tiltAttachment, vars } from '../../../motion/index.js';
-	import { padClass, type Shape, type Size } from '../../../internal/tokens.js';
+	import { type Pad, type Shape, type Size } from '../../../internal/tokens.js';
 	import { gapClass, padToken, setCardContext } from './context.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
 		/** The surface treatment: `elevated` is raised with a lit edge, `outline` is a hairline, `filled` is a quiet panel, `ghost` has no surface until hovered, `glass` blurs what is behind it. */
-		variant?: 'elevated' | 'outline' | 'filled' | 'ghost' | 'glass';
+		look?: 'elevated' | 'outline' | 'filled' | 'ghost' | 'glass';
 		/** The padding and the gap between parts, and the type scale of the parts. */
 		size?: Size;
+		/** Padding override on the shared pad ladder. */
+		pad?: Pad;
 		/** The corner shape. */
 		shape?: Shape;
 		/** Makes the whole card a target: it lifts on hover, shows a focus ring and, without `href`, becomes a focusable article that activates on Enter and Space. */
@@ -29,15 +31,16 @@
 	}
 
 	let {
-		variant = 'elevated',
-		size = 'md',
-		shape = 'curved',
+		look = 'elevated',
+		size = 'h-lg',
+		pad = 'pad-bs',
+		shape = 'modern',
 		interactive = false,
 		href,
 		target,
 		tilt = false,
 		onclick,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -58,15 +61,15 @@
 
 	const live = $derived(interactive || href !== undefined);
 	const classes = $derived([
-		'card box overflow-hidden text-primary',
-		surface[variant],
-		padClass[size],
+		'card box overflow-hidden',
+		surface[look],
+		pad,
 		gapClass[size],
 		shape,
 		live && 'interactive focus-ring',
 		(live || tilt) && 'motion',
 		tilt && 'tilt',
-		klass
+		className
 	]);
 	const motion = $derived(tilt ? tiltAttachment() : live ? hover({ scale: 1, y: -3 }) : undefined);
 

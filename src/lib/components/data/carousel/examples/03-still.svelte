@@ -3,7 +3,7 @@
 	import { Carousel, CarouselSlide } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
-<Carousel autoplay={false} loop={false} perView={1} gap="var(--space-lg)" label="Release highlights" class="measure-md">
+<Carousel autoplay={false} loop={false} perView={1} gap="gap-lg" label="Release highlights" class="measure-md">
 	<CarouselSlide label="Sticky headers">
 		<div class="box gap-xs border modern bg-surface pad-bs">
 			<p class="weight-600">Sticky headers</p>

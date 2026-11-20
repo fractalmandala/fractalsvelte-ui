@@ -4,7 +4,7 @@
 </script>
 
 <div class="box gap-sm measure-sm">
-	{#each ['outline', 'filled', 'ghost'] as const as variant (variant)}
-		<Input {variant} value="Quarterly planning" aria-label={`${variant} input`} />
+	{#each ['outline', 'filled', 'ghost'] as const as look (look)}
+		<Input {look} value="Quarterly planning" aria-label={`${look} input`} />
 	{/each}
 </div>

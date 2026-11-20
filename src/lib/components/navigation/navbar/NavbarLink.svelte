@@ -13,12 +13,12 @@
 		children?: Snippet;
 	}
 
-	let { href, current = false, class: klass, children, ...rest }: Props = $props();
+	let { href, current = false, class: className, children, ...rest }: Props = $props();
 </script>
 
 <a
 	{href}
-	class={['nav-link', current ? 'text-primary weight-500' : 'text-secondary', klass]}
+	class={['nav-link', current ? ' weight-500' : 'text-secondary', className]}
 	aria-current={current ? 'page' : undefined}
 	{...rest}
 >

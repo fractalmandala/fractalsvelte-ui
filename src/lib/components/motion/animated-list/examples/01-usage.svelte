@@ -28,12 +28,12 @@
 </script>
 
 <div class="box gap-md measure-md">
-	<Button variant="secondary" size="sm" onclick={push}>New notice</Button>
+	<Button variant="secondary" size="h-sm" onclick={push}>New notice</Button>
 	<AnimatedList items={notices} key={(notice) => notice.id}>
 		{#snippet children(notice)}
 			<div class="row ycenter xbetween gap-sm pad-md bg-panel rim">
 				<p class="text-sm">{notice.text}</p>
-				<Button variant="ghost" size="sm" onclick={() => dismiss(notice.id)}>Dismiss</Button>
+				<Button variant="ghost" size="h-sm" onclick={() => dismiss(notice.id)}>Dismiss</Button>
 			</div>
 		{/snippet}
 	</AnimatedList>

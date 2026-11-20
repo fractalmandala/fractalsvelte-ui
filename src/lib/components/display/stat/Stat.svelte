@@ -6,7 +6,8 @@
 	import type { IconData } from '@fractaldesign/icons';
 	import { luMinus, luTrendingDown, luTrendingUp } from '@fractaldesign/icons/lucide';
 	import { SpringValue, inView } from '../../../motion/index.js';
-	import { toneText, type Tone } from '../../../internal/tokens.js';
+	import { type Tone } from '../../../internal/tokens.js';
+import { toneText } from '../../../internal/helpers.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
 		/** A short caption above the value, such as "Monthly recurring revenue". */
@@ -45,7 +46,7 @@
 		countUp = false,
 		format,
 		locale,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -87,7 +88,7 @@
 		}).format(delta);
 	});
 
-	const classes = $derived(['row', 'ycenter', 'gap-bs', klass]);
+	const classes = $derived(['row', 'ycenter', 'gap-bs', className]);
 </script>
 
 <div class={classes} {@attach inView({ onEnter: () => (visible = true) })} {...rest}>

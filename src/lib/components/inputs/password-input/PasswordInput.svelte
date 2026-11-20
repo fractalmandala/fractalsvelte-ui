@@ -5,29 +5,31 @@
 	import { Icon } from '@fractaldesign/icons';
 	import { luEye, luEyeOff } from '@fractaldesign/icons/lucide';
 	import { vars } from '../../../motion/index.js';
-	import type { Shape, Size } from '../../../internal/tokens.js';
+	import type { Shape, Size, TextSize } from '../../../internal/tokens.js';
 	import { Input } from '../input/index.js';
 
-	interface Props extends Omit<HTMLInputAttributes, 'size' | 'value' | 'type' | 'children'> {
+	interface Props extends Omit<HTMLInputAttributes, 'size' | 'value' | 'type' | 'children' | 'disabled'> {
 		/** The password. Bindable; works controlled and uncontrolled. */
 		value?: string;
 		/** Called with the new text whenever it changes. */
 		onValueChange?: (value: string) => void;
-		/** The control height. Text follows this unless `textSize` is set. @default 'md' */
+		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
 		/** The text scale, independent of the control height. Follows `size` when omitted. */
-		textSize?: Size;
+		textSize?: TextSize;
 		/** The corner shape. @default 'modern' */
 		shape?: Shape;
 		/** `outline` is a bordered field, `filled` a tinted one without a border, `ghost` is bare until hovered or focused. @default 'outline' */
-		variant?: 'outline' | 'filled' | 'ghost';
+		look?: 'outline' | 'filled' | 'ghost';
 		/** Marks the field invalid (red border, `aria-invalid`). Inside a `Field` it follows the field's error unless set. */
 		invalid?: boolean;
 		/** Shows a strength meter under the field, scored from the length and the mix of character classes. */
 		strength?: boolean;
 		/** The underlying `<input>` element. Bindable. */
 		ref?: HTMLInputElement | null;
-	}
+			/** Blocks pointer and keyboard input, and dims the frame. */
+		disabled?: boolean | null;
+}
 
 	let {
 		value = $bindable(''),
@@ -35,12 +37,12 @@
 		size,
 		textSize,
 		shape,
-		variant,
+		look,
 		invalid,
 		strength = false,
 		ref = $bindable(null),
 		id,
-		class: klass,
+		class: className,
 		onkeydown,
 		onkeyup,
 		onfocus,
@@ -106,7 +108,7 @@
 	</button>
 {/snippet}
 
-<div class={['box gap-xs wfull', klass]}>
+<div class={['box gap-xs wfull', className]}>
 	<Input
 		bind:value
 		bind:ref
@@ -114,7 +116,7 @@
 		{size}
 		{textSize}
 		{shape}
-		{variant}
+		{look}
 		{invalid}
 		{onValueChange}
 		type={revealed ? 'text' : 'password'}

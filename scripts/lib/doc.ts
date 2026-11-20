@@ -11,6 +11,8 @@ export interface DocEval {
 	value: { [key: string]: Static } | null;
 	error: string | null;
 	line: number | null;
+	/** Where the prose was found — a comments.md doc block, or doc.ts. */
+	file?: string | null;
 }
 
 class NotStatic extends Error {

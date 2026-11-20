@@ -3,7 +3,7 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
-	import { textClass, type Orientation, type Size } from '../../../internal/tokens.js';
+	import { type Orientation, type Size, type TextSize } from '../../../internal/tokens.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
 		/** The value, or a `[low, high]` pair for a range. Two-way bindable. */
@@ -24,6 +24,8 @@
 		format?: (value: number) => string;
 		/** The track thickness, thumb size and text scale. */
 		size?: Size;
+		/** The text scale, independent of the track. Follows `size` when omitted. */
+		textSize?: TextSize;
 		/** Accessible name of the slider; a range appends "minimum" and "maximum". */
 		label?: string;
 		/** Blocks pointer and keyboard input. */
@@ -43,12 +45,13 @@
 		marks = false,
 		showValue = false,
 		format,
-		size = 'md',
+		size = 'h-lg',
+		textSize,
 		label,
 		disabled = false,
 		name,
 		onValueChange,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -172,9 +175,9 @@
 		'relative select-none touch-none px-md py-md',
 		vertical ? 'inline-flex' : labelled ? 'wfull pb-xl' : 'wfull',
 		vertical && labelled && 'pr-2xl',
-		textClass[size],
+		textSize,
 		disabled && 'disabled',
-		klass
+		className
 	]}
 	onpointerdown={down}
 	onpointermove={move}
@@ -210,7 +213,7 @@
 				onkeydown={(e) => key(e, i)}
 			>
 				{#if showValue}
-					<span class="bubble bg-overlay border rim modern text-xs tabular-nums text-primary" aria-hidden="true">{show(v)}</span>
+					<span class="bubble bg-overlay border rim modern text-xs tabular-nums" aria-hidden="true">{show(v)}</span>
 				{/if}
 			</div>
 		{/each}

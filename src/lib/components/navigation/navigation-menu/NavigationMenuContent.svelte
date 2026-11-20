@@ -10,7 +10,7 @@
 		children?: Snippet;
 	}
 
-	let { children, class: klass, ...rest }: Props = $props();
+	let { children, class: className, ...rest }: Props = $props();
 
 	const nav = getNavigationMenu();
 	const item = getNavigationMenuItem();
@@ -42,7 +42,7 @@
 		id={item.contentId}
 		data-content={item.value}
 		data-active={active ? '' : undefined}
-		class={['pad-bs px-md', klass]}
+		class={['pad-bs px-md', className]}
 		{...rest}
 	>
 		{@render children?.()}

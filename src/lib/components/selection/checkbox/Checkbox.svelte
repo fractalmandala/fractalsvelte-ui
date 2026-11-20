@@ -6,9 +6,9 @@
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck, luMinus } from '@fractaldesign/icons/lucide';
 	import { springFade, springScale } from '../../../motion/index.js';
-	import { textClass, type Size } from '../../../internal/tokens.js';
+	import { type Size, type TextSize } from '../../../internal/tokens.js';
 
-	interface Props extends Omit<HTMLInputAttributes, 'type' | 'size' | 'children' | 'checked' | 'indeterminate' | 'name' | 'value'> {
+	interface Props extends Omit<HTMLInputAttributes, 'type' | 'size' | 'children' | 'checked' | 'indeterminate' | 'name' | 'value' | 'disabled'> {
 		/** Whether the box is checked. Two-way bindable. */
 		checked?: boolean;
 		/** Shows the mixed state: a dash instead of a check. Cleared by the next user toggle. Two-way bindable. */
@@ -19,6 +19,8 @@
 		description?: string;
 		/** The box and text scale. */
 		size?: Size;
+		/** The text scale, independent of the box. Follows `size` when omitted. */
+		textSize?: TextSize;
 		/** Marks the box as failing validation: a danger border and `aria-invalid`. */
 		invalid?: boolean;
 		/** The field name submitted with a form. */
@@ -29,20 +31,23 @@
 		onCheckedChange?: (checked: boolean) => void;
 		/** Rich label content, used in place of `label`. */
 		children?: Snippet;
-	}
+			/** Blocks pointer and keyboard input, and dims the label. */
+		disabled?: boolean | null;
+}
 
 	let {
 		checked = $bindable(false),
 		indeterminate = $bindable(false),
 		label,
 		description,
-		size = 'md',
+		size = 'h-lg',
+		textSize,
 		invalid = false,
 		name,
 		value,
 		disabled,
 		onCheckedChange,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -53,7 +58,7 @@
 </script>
 
 <label
-	class={['inline-flex gap-sm', description ? 'ytop' : 'ycenter', 'row', textClass[size], disabled ? 'disabled' : 'pointer', klass]}
+	class={['inline-flex gap-sm', description ? 'ytop' : 'ycenter', 'row', textSize, disabled ? 'disabled' : 'pointer', className]}
 >
 	<span class={['checkbox-box', description && 'mt-xs']}>
 		<input
@@ -77,7 +82,7 @@
 	</span>
 	{#if hasText}
 		<span class="column xleft gap-xs">
-			<span class="text-primary lh13 weight-500">{#if children}{@render children()}{:else}{label}{/if}</span>
+			<span class=" lh13 weight-500">{#if children}{@render children()}{:else}{label}{/if}</span>
 			{#if description}
 				<span id="{id}-desc" class="text-secondary text-sm lh14">{description}</span>
 			{/if}

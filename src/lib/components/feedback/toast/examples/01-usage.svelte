@@ -5,4 +5,4 @@
 
 <Toaster />
 
-<Button size="sm" onclick={() => toast('Draft saved to atlas.studio')}>Save draft</Button>
+<Button size="h-sm" onclick={() => toast('Draft saved to atlas.studio')}>Save draft</Button>

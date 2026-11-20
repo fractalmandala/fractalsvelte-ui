@@ -10,10 +10,10 @@
 		children?: Snippet;
 	}
 
-	let { class: klass, children, ...rest }: Props = $props();
+	let { class: className, children, ...rest }: Props = $props();
 	const card = getCardContext();
 </script>
 
-<div class={['box gap-sm text-secondary lh15', bodyClass[card.size], klass]} {...rest}>
+<div class={['box gap-sm text-secondary lh15', bodyClass[card.size], className]} {...rest}>
 	{@render children?.()}
 </div>

@@ -20,7 +20,7 @@
 		ratio = '16-9',
 		fit = 'cover',
 		shape = 'modern',
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -42,7 +42,7 @@
 		'scale-down': 'fit-scale-down'
 	};
 
-	const classes = $derived(['bg-panel', ratioClasses[ratio], shape, klass]);
+	const classes = $derived(['bg-panel', ratioClasses[ratio], shape, className]);
 	const mediaClass = $derived(['full', fitClasses[fit]].join(' '));
 </script>
 

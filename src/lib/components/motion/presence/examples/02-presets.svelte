@@ -10,7 +10,7 @@
 <div class="box gap-md measure-sm">
 	<div class="row wrap gap-sm">
 		{#each presets as name}
-			<Button variant={preset === name ? 'primary' : 'ghost'} size="sm" onclick={() => (preset = name)}>{name}</Button>
+			<Button variant={preset === name ? 'primary' : 'ghost'} size="h-sm" onclick={() => (preset = name)}>{name}</Button>
 		{/each}
 	</div>
 	<Button variant="secondary" onclick={() => (show = !show)}>{show ? 'Hide' : 'Show'}</Button>

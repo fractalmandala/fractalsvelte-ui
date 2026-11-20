@@ -2,31 +2,26 @@
 
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { roving } from '../../../internal/roving.js';
-	import { textClass, type Size } from '../../../internal/tokens.js';
+	import { roving } from '../../../internal/helpers.js';
+import { type Size } from '../../../internal/tokens.js';
 	import { vars } from '../../../motion/index.js';
 	import { theme, themes, type ThemeName } from '../../../theme/index.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The named theme. Bindable. Leave it undefined to read and write the shared `theme`. */
 		value?: ThemeName;
-		/** Called with the new theme whenever the person picks one. */
 		onValueChange?: (value: ThemeName) => void;
-		/** The swatch and label scale. */
 		size?: Size;
-		/** Draws the theme name under each swatch. */
 		showLabels?: boolean;
-		/** The accessible name of the group. */
 		label?: string;
 	}
 
 	let {
 		value = $bindable(),
 		onValueChange,
-		size = 'md',
+		size = 'h-lg',
 		showLabels = false,
 		label = 'Theme',
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -43,7 +38,7 @@
 <div
 	role="radiogroup"
 	aria-label={label}
-	class={['row wrap gap-sm', textClass[size], klass]}
+	class={['row wrap gap-sm', size, className]}
 	{@attach roving({ orientation: 'both', onNavigate: (item) => item.click() })}
 	{...rest}
 >

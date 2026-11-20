@@ -10,6 +10,6 @@
 
 <div class="row wrap gap-md ycenter">
 	{#each ['primary', 'secondary', 'themed', 'soft', 'outline', 'ghost', 'link', 'info', 'success', 'warning', 'danger'] as v (v)}
-		<SplitButton variant={v as never} size="sm" {items}>{v}</SplitButton>
+		<SplitButton variant={v as never} size="h-sm" {items}>{v}</SplitButton>
 	{/each}
 </div>

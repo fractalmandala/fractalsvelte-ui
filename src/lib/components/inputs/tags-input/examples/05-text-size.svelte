@@ -4,9 +4,9 @@
 </script>
 
 <div class="box gap-sm measure-sm">
-	<TagsInput size="lg" textSize="xs" value={['Letterpress']} aria-label="Extra-small type" />
-	<TagsInput size="lg" textSize="sm" value={['Letterpress']} aria-label="Small type" />
-	<TagsInput size="lg" textSize="md" value={['Letterpress']} aria-label="Medium type" />
-	<TagsInput size="lg" textSize="lg" value={['Letterpress']} aria-label="Large type" />
-	<TagsInput size="lg" textSize="xl" value={['Letterpress']} aria-label="Extra-large type" />
+	<TagsInput size="h-lg" textSize="text-xs" value={['Letterpress']} aria-label="Extra-small type" />
+	<TagsInput size="h-lg" textSize="text-sm" value={['Letterpress']} aria-label="Small type" />
+	<TagsInput size="h-lg" textSize="text-md" value={['Letterpress']} aria-label="Medium type" />
+	<TagsInput size="h-lg" textSize="text-lg" value={['Letterpress']} aria-label="Large type" />
+	<TagsInput size="h-lg" textSize="text-xl" value={['Letterpress']} aria-label="Extra-large type" />
 </div>

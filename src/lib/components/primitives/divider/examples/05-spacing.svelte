@@ -5,13 +5,19 @@
 
 <div class="box measure-sm">
 	<p class="text-sm text-muted">xs</p>
-	<Divider spacing="xs" />
+	<Divider spacing="h-xs" />
 	<p class="text-sm text-muted">sm</p>
-	<Divider spacing="sm" />
+	<Divider spacing="h-sm" />
 	<p class="text-sm text-muted">md</p>
-	<Divider spacing="md" />
+	<Divider spacing="h-md" />
 	<p class="text-sm text-muted">lg</p>
-	<Divider spacing="lg" />
+	<Divider spacing="h-lg" />
 	<p class="text-sm text-muted">xl</p>
-	<Divider spacing="xl" />
+	<Divider spacing="h-xl" />
+	<p class="text-sm text-muted">bs</p>
+	<Divider spacing="h-bs" />
+	<p class="text-sm text-muted">2xl</p>
+	<Divider spacing="h-2xl" />
+	<p class="text-sm text-muted">3xl</p>
+	<Divider spacing="h-3xl" />
 </div>

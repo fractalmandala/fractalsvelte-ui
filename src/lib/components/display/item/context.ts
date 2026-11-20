@@ -1,10 +1,10 @@
 import { createContext } from 'svelte';
-import type { Size } from '../../../internal/tokens.js';
+import type { Step } from '../../../internal/tokens.js';
 
 /** What an Item shares with its parts. */
 export interface ItemContext {
 	/** The item's size, read lazily so parts follow changes. */
-	readonly size: Size;
+	readonly size: Step;
 }
 
 const [read, write] = createContext<ItemContext>();
@@ -22,7 +22,7 @@ export function getItemContext(): ItemContext {
 }
 
 /** Type scale of the title at each size. */
-export const titleClass: Record<Size, string> = {
+export const titleClass: Record<Step, string> = {
 	xs: 'text-sm',
 	sm: 'text-sm',
 	md: 'text-md',
@@ -31,7 +31,7 @@ export const titleClass: Record<Size, string> = {
 };
 
 /** Padding of the row at each size. */
-export const itemPadClass: Record<Size, string> = {
+export const itemPadClass: Record<Step, string> = {
 	xs: 'pad-xs',
 	sm: 'pad-sm',
 	md: 'px-md py-sm',

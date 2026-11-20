@@ -8,5 +8,5 @@
 	<p class="text-sm text-muted">Docs</p>
 	<p class="card-title">Search that already knows the repo</p>
 	<p class="text-body-sm text-secondary">Ask for the deploy script, the billing webhook, or last week's incident write-up — answers cite the file.</p>
-	<Button variant="secondary" size="sm">Open the index</Button>
+	<Button variant="secondary" size="h-sm">Open the index</Button>
 </div>

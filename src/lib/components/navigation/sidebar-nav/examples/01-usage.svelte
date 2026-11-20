@@ -40,7 +40,7 @@
 
 <div class="row gap-md ytop">
 	<SidebarNav {items} current="/inbox" bind:collapsed onCollapsedChange={() => {}} label="Sidebar" />
-	<Button variant="ghost" size="sm" onclick={() => (collapsed = !collapsed)}>
+	<Button variant="ghost" size="h-sm" onclick={() => (collapsed = !collapsed)}>
 		{collapsed ? 'Expand' : 'Collapse'} rail
 	</Button>
 </div>

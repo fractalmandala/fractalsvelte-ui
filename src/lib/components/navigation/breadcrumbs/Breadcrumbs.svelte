@@ -23,7 +23,7 @@
 		separator = luChevronRight,
 		maxItems,
 		label = 'Breadcrumb',
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -60,7 +60,7 @@
 	});
 </script>
 
-<nav aria-label={label} class={klass} {...rest}>
+<nav aria-label={label} class={className} {...rest}>
 	<ol class="row ycenter wrap gap-xs">
 		{#each slots as slot, i (slot.kind === 'ellipsis' ? 'ellipsis' : `${slot.item.label}-${i}`)}
 			{#if i > 0}
@@ -89,7 +89,7 @@
 					</a>
 				</li>
 			{:else}
-				<li class="row ycenter gap-xs text-sm text-primary weight-500" aria-current="page">
+				<li class="row ycenter gap-xs text-sm weight-500" aria-current="page">
 					{#if slot.item.icon}
 						<Icon icon={slot.item.icon} />
 					{/if}

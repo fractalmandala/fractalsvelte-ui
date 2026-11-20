@@ -7,7 +7,7 @@
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'color'> {
 		/** Diameter of the pointer-following light, as a CSS length. */
-		size?: string;
+		radius?: string;
 		/** Strength of the light, from 0 (none) to 1 (strong). */
 		intensity?: number;
 		/** Colour of the light: the theme accent, or a neutral white highlight. */
@@ -17,10 +17,10 @@
 	}
 
 	let {
-		size = '40%',
+		radius = '40%',
 		intensity = 0.35,
 		color = 'theme',
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -29,9 +29,9 @@
 </script>
 
 <div
-	class={['light', 'card', 'box', 'bg-surface', 'border-subtle', 'curved', 'pad-lg', 'gap-sm', colorClass[color], klass]}
+	class={['light', 'card', 'box', 'bg-surface', 'border-subtle', 'curved', 'pad-lg', 'gap-sm', colorClass[color], className]}
 	{@attach pointer()}
-	{@attach vars({ 'light-size': size, 'light-intensity': intensity })}
+	{@attach vars({ 'light-size': radius, 'light-intensity': intensity })}
 	{...rest}
 >
 	{@render children?.()}

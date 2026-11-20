@@ -5,7 +5,7 @@
 
 <div class="box border modern rim shad-sm bg-surface pad-bs gap-sm">
 	<p class="text-sm weight-600">Plan limits</p>
-	<Table framed={false} size="sm" hoverable={false}>
+	<Table framed={false} density="compact" hoverable={false}>
 		<TableCaption visuallyHidden>Plan limits</TableCaption>
 		<TableHead>
 			<TableRow>

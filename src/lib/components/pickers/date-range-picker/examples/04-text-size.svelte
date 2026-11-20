@@ -6,9 +6,9 @@
 </script>
 
 <div class="box gap-sm measure-sm">
-	<DateRangePicker size="lg" textSize="xs" value={period} aria-label="Extra-small type" />
-	<DateRangePicker size="lg" textSize="sm" value={period} aria-label="Small type" />
-	<DateRangePicker size="lg" textSize="md" value={period} aria-label="Medium type" />
-	<DateRangePicker size="lg" textSize="lg" value={period} aria-label="Large type" />
-	<DateRangePicker size="lg" textSize="xl" value={period} aria-label="Extra-large type" />
+	<DateRangePicker size="h-lg" textSize="text-xs" value={period} aria-label="Extra-small type" />
+	<DateRangePicker size="h-lg" textSize="text-sm" value={period} aria-label="Small type" />
+	<DateRangePicker size="h-lg" textSize="text-md" value={period} aria-label="Medium type" />
+	<DateRangePicker size="h-lg" textSize="text-lg" value={period} aria-label="Large type" />
+	<DateRangePicker size="h-lg" textSize="text-xl" value={period} aria-label="Extra-large type" />
 </div>

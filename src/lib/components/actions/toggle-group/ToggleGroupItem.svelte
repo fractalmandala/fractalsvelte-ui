@@ -8,11 +8,8 @@
 	import { getToggleGroup } from './toggle-group.js';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'value' | 'children'> {
-		/** The value this item contributes to the group's `value` while it is on. */
 		value: string;
-		/** An icon drawn before the label. With no label, set `aria-label`. */
 		icon?: IconData;
-		/** The label. Omit it for an icon-only item. */
 		children?: Snippet;
 	}
 
@@ -28,6 +25,8 @@
 	onPressedChange={() => group.toggle(value)}
 	variant={group.variant}
 	size={group.size}
+	textSize={group.textSize}
+	textColor={group.textColor}
 	shape={group.shape}
 	disabled={disabled || group.disabled}
 	data-roving=""

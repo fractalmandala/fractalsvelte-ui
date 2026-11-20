@@ -39,7 +39,7 @@
 		from = 'first',
 		trigger = 'mount',
 		enter = 'fade',
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -91,6 +91,6 @@
 	const inViewAttach = $derived(trigger === 'inView' ? markIn() : undefined);
 </script>
 
-<div class={klass} {@attach staggerAttach} {@attach dressAttach} {@attach inViewAttach} {...rest}>
+<div class={className} {@attach staggerAttach} {@attach dressAttach} {@attach inViewAttach} {...rest}>
 	{@render children?.()}
 </div>

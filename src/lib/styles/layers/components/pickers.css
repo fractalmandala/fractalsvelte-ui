@@ -38,3 +38,16 @@
 .segment.empty { color: var(--text-muted); }
 .segment:focus.empty { color: var(--on-theme, var(--white-fixed)); }
 .segment[aria-disabled='true'] { cursor: not-allowed; }
+
+/* Image cropper viewport and draggable selection box (percent vars --crop-x/y/w/h). */
+.crop-stage { position: relative; overflow: hidden; touch-action: none; user-select: none; background-color: var(--bg-panel); min-height: 14rem; }
+.crop-img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; transform: scale(var(--zoom, 1)); }
+.crop-box { position: absolute; left: calc(var(--crop-x, 10) * 1%); top: calc(var(--crop-y, 10) * 1%); width: calc(var(--crop-w, 80) * 1%); height: calc(var(--crop-h, 80) * 1%); border: 2px solid var(--white-fixed); box-shadow: 0 0 0 100vmax color-mix(in oklab, oklch(0 0 0) 55%, transparent); cursor: move; }
+.crop-box.round { border-radius: var(--radius-full); }
+.crop-grid { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); pointer-events: none; }
+.crop-grid > span { border-right: 1px solid color-mix(in oklab, var(--white-fixed) 35%, transparent); border-bottom: 1px solid color-mix(in oklab, var(--white-fixed) 35%, transparent); }
+.crop-handle { position: absolute; width: 0.75rem; height: 0.75rem; border-radius: var(--radius-full); background-color: var(--white-fixed); border: 1px solid var(--border-strong); translate: -50% -50%; }
+.crop-nw { top: 0%; left: 0%; cursor: nwse-resize; }
+.crop-ne { top: 0%; left: 100%; cursor: nesw-resize; }
+.crop-sw { top: 100%; left: 0%; cursor: nesw-resize; }
+.crop-se { top: 100%; left: 100%; cursor: nwse-resize; }

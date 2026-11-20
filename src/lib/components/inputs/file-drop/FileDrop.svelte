@@ -28,6 +28,10 @@
 		maxSize?: number;
 		/** The most files the list may hold. Further files are rejected. */
 		maxFiles?: number;
+		/** Render image thumbnail previews for image files in the accepted list. */
+		showPreviews?: boolean;
+		/** Allow selecting directories via native folder picker (`webkitdirectory`). */
+		directory?: boolean;
 		/** Marks the drop zone invalid. Inside a `Field` it follows the field's error unless set. */
 		invalid?: boolean;
 		/** The contents of the drop zone, replacing the default prompt. */
@@ -41,9 +45,11 @@
 		multiple = true,
 		maxSize,
 		maxFiles,
+		showPreviews = false,
+		directory = false,
 		invalid,
 		id,
-		class: klass,
+		class: className,
 		children,
 		'aria-describedby': describedby,
 		...rest
@@ -66,6 +72,28 @@
 	let dragDepth = 0;
 
 	const list = $derived(files ?? []);
+	const dirAttrs = $derived(directory ? ({ webkitdirectory: '' } as Record<string, unknown>) : {});
+
+	let previewUrls = $state(new Map<File, string>());
+	$effect(() => {
+		if (!showPreviews) {
+			for (const url of previewUrls.values()) URL.revokeObjectURL(url);
+			if (previewUrls.size > 0) previewUrls = new Map();
+			return;
+		}
+		const next = new Map<File, string>();
+		for (const file of list) {
+			if (!file.type.startsWith('image/')) continue;
+			next.set(file, previewUrls.get(file) ?? URL.createObjectURL(file));
+		}
+		for (const [file, url] of previewUrls) {
+			if (!next.has(file)) URL.revokeObjectURL(url);
+		}
+		previewUrls = next;
+	});
+	$effect(() => () => {
+		for (const url of previewUrls.values()) URL.revokeObjectURL(url);
+	});
 
 	function formatSize(n: number): string {
 		if (n < 1024) return `${n} B`;
@@ -156,7 +184,7 @@
 	}
 </script>
 
-<div class={['box gap-sm wfull', klass]} aria-invalid={control.invalid || undefined} {...rest}>
+<div class={['box gap-sm wfull', className]} aria-invalid={control.invalid || undefined} {...rest}>
 	<button
 		type="button"
 		id={control.id}
@@ -206,13 +234,19 @@
 		disabled={control.disabled}
 		tabindex="-1"
 		aria-hidden="true"
+		{...dirAttrs}
 		onchange={(event) => consider(Array.from(event.currentTarget.files ?? []))}
 	/>
 	{#if list.length}
 		<ul id={listId} class="box gap-xs">
 			{#each list as file, index (`${file.name}-${file.size}-${file.lastModified}`)}
+				{@const preview = previewUrls.get(file)}
 				<li class="row ycenter gap-sm pad-sm radius-md border" transition:springScale={{ start: 0.96 }}>
-					<span class="text-muted shrink-0"><Icon icon={luFile} /></span>
+					{#if preview}
+						<img src={preview} alt="" class="h-xl square modern fit-cover shrink-0 border-subtle" />
+					{:else}
+						<span class="text-muted shrink-0"><Icon icon={luFile} /></span>
+					{/if}
 					<span class="box grow wmin0">
 						<span class="truncate">{file.name}</span>
 						<span class="text-xs text-muted tabular-nums">{formatSize(file.size)}</span>

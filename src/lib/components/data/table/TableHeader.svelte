@@ -5,8 +5,9 @@
 	import type { HTMLThAttributes } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
 	import { cellAlign, type TableAlign } from './table.js';
+	
 
-	interface Props extends HTMLThAttributes {
+	interface Props extends Omit<HTMLThAttributes, 'align'> {
 		/** Horizontal alignment of the header text. Match it to the column's cells. */
 		align?: TableAlign;
 		/** A numeric column: right-aligned, so it lines up with `numeric` cells. */
@@ -17,12 +18,12 @@
 		children?: Snippet;
 	}
 
-	let { align, numeric = false, width, scope = 'col', class: klass, children, ...rest }: Props = $props();
+	let { align, numeric = false, width, scope = 'col', class: className, children, ...rest }: Props = $props();
 
 </script>
 
 <th
-	class={[cellAlign(align, numeric), width && 'wvar', klass]}
+	class={[cellAlign(align, numeric), width && 'wvar', className]}
 	{scope}
 	{@attach vars({ w: width })}
 	{...rest}

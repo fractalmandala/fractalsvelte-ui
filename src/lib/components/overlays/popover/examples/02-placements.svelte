@@ -1,4 +1,4 @@
-<!-- @example Placements :: All eight placements, with an offset and a solid surface. -->
+<!-- @example Placements :: Every placement, with an offset and a solid surface. -->
 <script lang="ts">
 	import { Button, Popover, type Placement } from '@fractaldesign/fractalsvelte-ui';
 
@@ -10,7 +10,11 @@
 		'bottom-start',
 		'bottom-end',
 		'left',
-		'right'
+		'left-start',
+		'left-end',
+		'right',
+		'right-start',
+		'right-end'
 	];
 </script>
 
@@ -18,7 +22,7 @@
 	{#each placements as placement (placement)}
 		<Popover {placement} offset="var(--space-md)" surface="solid">
 			{#snippet target({ props })}
-				<Button variant="outline" size="sm" {...props}>{placement}</Button>
+				<Button variant="outline" size="h-sm" {...props}>{placement}</Button>
 			{/snippet}
 			<p class="text-sm text-secondary">Anchored to the {placement} of the button.</p>
 		</Popover>

@@ -22,3 +22,7 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+smriti-isms.md
+
+# Local snapshots (never commit: git already has these states)
+/priors

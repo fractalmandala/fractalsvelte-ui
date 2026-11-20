@@ -16,12 +16,12 @@
 
 <div class="box gap-md measure-sm">
 	<div class="row wrap gap-sm">
-		<Button variant={mode === 'sync' ? 'primary' : 'ghost'} size="sm" onclick={() => (mode = 'sync')}>sync</Button>
-		<Button variant={mode === 'wait' ? 'primary' : 'ghost'} size="sm" onclick={() => (mode = 'wait')}>wait</Button>
+		<Button variant={mode === 'sync' ? 'primary' : 'ghost'} size="h-sm" onclick={() => (mode = 'sync')}>sync</Button>
+		<Button variant={mode === 'wait' ? 'primary' : 'ghost'} size="h-sm" onclick={() => (mode = 'wait')}>wait</Button>
 	</div>
 	<div class="row wrap gap-sm">
 		{#each stories as item, i}
-			<Button variant={index === i ? 'secondary' : 'ghost'} size="sm" onclick={() => (index = i)}>{item.title}</Button>
+			<Button variant={index === i ? 'secondary' : 'ghost'} size="h-sm" onclick={() => (index = i)}>{item.title}</Button>
 		{/each}
 	</div>
 	<Presence show={true} key={story.key} {mode} enter="fly-up" exit="fly-down" onExitComplete={() => (finished += 1)}>

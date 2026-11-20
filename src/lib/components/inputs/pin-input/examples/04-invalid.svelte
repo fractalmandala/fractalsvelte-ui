@@ -8,6 +8,7 @@
 
 <div class="box gap-sm">
 	<Field label="Staff code" error={invalid ? 'That code is not recognised.' : undefined}>
-		<PinInput bind:value={code} {invalid} length={6} />
+		<PinInput length={6} value="123456" disabled />
+<PinInput bind:value={code} {invalid} length={6} />
 	</Field>
 </div>

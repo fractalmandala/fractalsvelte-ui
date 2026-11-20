@@ -2,7 +2,7 @@
 <script lang="ts">
 	import { Pagination } from '@fractaldesign/fractalsvelte-ui';
 
-	const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+	const sizes = ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const;
 	let page = $state(8);
 	let sized = $state(3);
 </script>

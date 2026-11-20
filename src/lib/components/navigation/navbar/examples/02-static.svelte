@@ -10,6 +10,6 @@
 	<NavbarLink href="/titles">Titles</NavbarLink>
 	<NavbarLink href="/authors">Authors</NavbarLink>
 	{#snippet actions()}
-		<Button variant="secondary" size="sm">Sign in</Button>
+		<Button variant="secondary" size="h-sm">Sign in</Button>
 	{/snippet}
 </Navbar>

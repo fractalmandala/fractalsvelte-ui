@@ -7,7 +7,7 @@
 </script>
 
 <div class="box gap-sm measure-sm">
-	<Item href="https://fractaldesign.dev/docs" target="_blank" variant="outline">
+	<Item href="https://fractaldesign.dev/docs" target="_blank" look="outline">
 		<ItemMedia icon={luBook} />
 		<ItemContent>
 			<ItemTitle>Documentation</ItemTitle>
@@ -15,7 +15,7 @@
 		</ItemContent>
 	</Item>
 	{#if !removed}
-		<Item interactive variant="outline" onclick={() => (removed = true)}>
+		<Item interactive look="outline" onclick={() => (removed = true)}>
 			<ItemMedia icon={luTrash} />
 			<ItemContent>
 				<ItemTitle>Move to trash</ItemTitle>

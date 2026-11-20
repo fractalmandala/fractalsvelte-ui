@@ -6,7 +6,7 @@
 </script>
 
 <div class="box gap-lg">
-	<ScrollProgress variant="bar" position="top" target="element" tone="info">
+	<ScrollProgress form="bar" position="top" target="element" tone="info">
 		<article class="box gap-sm pad-lg bg-panel">
 			<h3 class="text-lg weight-500">From the autumn catalogue</h3>
 			<p class="text-sm text-secondary">
@@ -28,7 +28,7 @@
 		{#each tones as tone (tone)}
 			<div class="box gap-xs xcenter">
 				<p class="text-xs text-muted">{tone}</p>
-				<ScrollProgress variant="ring" target="page" {tone} />
+				<ScrollProgress form="ring" target="page" {tone} />
 			</div>
 		{/each}
 	</div>

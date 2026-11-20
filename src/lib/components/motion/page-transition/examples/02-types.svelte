@@ -13,16 +13,16 @@
 <div class="box gap-md">
 	<div class="row gap-xs wrap">
 		{#each types as value (value)}
-			<Button variant={type === value ? 'secondary' : 'ghost'} size="sm" onclick={() => (type = value)}>{value}</Button>
+			<Button variant={type === value ? 'secondary' : 'ghost'} size="h-sm" onclick={() => (type = value)}>{value}</Button>
 		{/each}
 	</div>
-	<PageTransition {onNavigate} {type} key={`${type}-${page}`}>
+	<PageTransition {onNavigate} transition={type} key={`${type}-${page}`}>
 		<div class="box gap-xs pad-lg bg-panel">
 			<p class="text-lg weight-500">Panel {page + 1}</p>
 			<p class="text-sm text-secondary">Type {type}. In browsers without view transitions this panel springs; otherwise route transitions would use the View Transition API.</p>
-			<Button variant="outline" size="sm" onclick={() => (page = (page + 1) % 3)}>Next panel</Button>
+			<Button variant="outline" size="h-sm" onclick={() => (page = (page + 1) % 3)}>Next panel</Button>
 		</div>
 	</PageTransition>
 	<p class="text-xs text-muted">The hook-only form below passes type as a function of the navigation (back → slide-back).</p>
-	<PageTransition {onNavigate} type={fromNav} />
+	<PageTransition {onNavigate} transition={fromNav} />
 </div>

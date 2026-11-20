@@ -21,19 +21,19 @@
 		/** SvelteKit's `onNavigate` from `$app/navigation`. Omit when using only the keyed fallback. */
 		onNavigate?: OnNavigateLike;
 		/** A fixed transition type, or a function of the navigation (for example back → `slide-back`). */
-		type?: ViewTransitionType | ((navigation: { from: { url: URL } | null; to: { url: URL } | null; type: string; delta?: number }) => ViewTransitionType);
+		transition?: ViewTransitionType | ((navigation: { from: { url: URL } | null; to: { url: URL } | null; type: string; delta?: number }) => ViewTransitionType);
 		/** When set, children are keyed by this value so a spring can play when view transitions are unavailable. */
 		key?: string | number;
 		/** The page or panel content. Omit when the component is only wiring route transitions. */
 		children?: Snippet;
 	}
 
-	let { onNavigate, type = 'fade', key, class: klass, children, ...rest }: Props = $props();
+	let { onNavigate, transition = 'fade', key, class: className, children, ...rest }: Props = $props();
 
 	const options: ViewTransitionSetupOptions = {};
 
 	$effect(() => {
-		options.type = type;
+		options.type = transition;
 	});
 
 	$effect(() => {
@@ -48,7 +48,7 @@
 	});
 
 	const useKey = $derived(fallback && key !== undefined && !!children);
-	const resolvedType = $derived(typeof type === 'function' ? 'fade' : type);
+	const resolvedType = $derived(typeof transition === 'function' ? 'fade' : transition);
 
 	function enter(node: Element, params: SpringTransitionParams = {}) {
 		return fallbackIn(node, resolvedType, params);
@@ -70,7 +70,7 @@
 
 {#if children}
 	{#if useKey}
-		<div class={['overlap', klass]} {...rest}>
+		<div class={['overlap', className]} {...rest}>
 			{#key key}
 				<div in:enter out:exit>
 					{@render children()}
@@ -78,7 +78,7 @@
 			{/key}
 		</div>
 	{:else}
-		<div class={klass} {...rest}>
+		<div class={className} {...rest}>
 			{@render children()}
 		</div>
 	{/if}

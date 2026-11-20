@@ -6,7 +6,7 @@
 </script>
 
 <div class="box gap-md measure-sm">
-	<Button size="sm" variant="secondary" onclick={() => (loaded = !loaded)}>
+	<Button size="h-sm" variant="secondary" onclick={() => (loaded = !loaded)}>
 		{loaded ? 'Show placeholder' : 'Reveal article'}
 	</Button>
 	<Skeleton {loaded} lines={3}>

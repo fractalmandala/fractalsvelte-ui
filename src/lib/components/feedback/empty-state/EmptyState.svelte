@@ -5,7 +5,7 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import type { IconData } from '@fractaldesign/icons';
-	import { padClass, textClass, type Size } from '../../../internal/tokens.js';
+	import { type Pad, type Size, type TextSize } from '../../../internal/tokens.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
 		/** An icon drawn above the title. */
@@ -14,8 +14,12 @@
 		title?: string;
 		/** A short explanation, set under the title. */
 		description?: string;
-		/** The scale of the type, icon and padding. */
+		/** The scale of the icon. */
 		size?: Size;
+		/** Padding on the shared pad ladder. */
+		pad?: Pad;
+		/** Text scale on the shared text ladder. */
+		textSize?: TextSize;
 		/** An optional frame around the block: a hairline, or a dashed one. */
 		frame?: 'none' | 'bordered' | 'dashed';
 		/** Controls drawn under the description — usually the next action. */
@@ -28,20 +32,25 @@
 		icon,
 		title,
 		description,
-		size = 'md',
+		size = 'h-lg',
+		pad = 'pad-lg',
+		textSize,
 		frame = 'none',
 		actions,
 		children,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
 	const iconScale: Record<Size, string> = {
-		xs: 'text-lg',
-		sm: 'text-xl',
-		md: 'text-2xl',
-		lg: 'text-3xl',
-		xl: 'text-4xl'
+		'h-xs': 'text-bs',
+		'h-sm': 'text-lg',
+		'h-md': 'text-xl',
+		'h-bs': 'text-2xl',
+		'h-lg': 'text-3xl',
+		'h-xl': 'text-4xl',
+		'h-2xl': 'text-4xl',
+		'h-3xl': 'text-4xl'
 	};
 
 	const frameClass = $derived(
@@ -50,7 +59,7 @@
 </script>
 
 <div
-	class={['box xcenter gap-md ta-c', padClass[size], textClass[size], frameClass, klass]}
+	class={['box xcenter gap-md ta-c', pad, textSize, frameClass, className]}
 	{...rest}
 >
 	{#if icon}

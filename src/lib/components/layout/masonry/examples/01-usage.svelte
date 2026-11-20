@@ -21,7 +21,7 @@
 	];
 </script>
 
-<Masonry columns={3} gap="var(--space-md)" items={notes}>
+<Masonry columns={3} gap="gap-md" items={notes}>
 	{#snippet children(note)}
 		<div class="box gap-xs pad-md border-subtle radius-md bg-panel">
 			<span class="text-sm weight-500">{note.title}</span>

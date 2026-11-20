@@ -18,9 +18,9 @@
 
 <div class="box gap-sm">
 	<div class="row wrap gap-sm ycenter">
-		<Button variant="outline" size="sm" onclick={() => list?.scrollToIndex(0, { align: 'start' })}>Top</Button>
-		<Button variant="outline" size="sm" onclick={() => list?.scrollToIndex(4999, { align: 'center' })}>Row 5,000</Button>
-		<Button variant="outline" size="sm" onclick={() => list?.scrollToIndex(items.length - 1, { align: 'end' })}>Bottom</Button>
+		<Button variant="outline" size="h-sm" onclick={() => list?.scrollToIndex(0, { align: 'start' })}>Top</Button>
+		<Button variant="outline" size="h-sm" onclick={() => list?.scrollToIndex(4999, { align: 'center' })}>Row 5,000</Button>
+		<Button variant="outline" size="h-sm" onclick={() => list?.scrollToIndex(items.length - 1, { align: 'end' })}>Bottom</Button>
 	</div>
 	<VirtualList bind:this={list} {items} itemHeight={40} height={320} overscan={4} label="Audit events">
 		{#snippet children(item, index)}

@@ -6,12 +6,13 @@
 <div class="box gap-md">
 	<div class="row wrap gap-sm ycenter">
 		{#each ['primary', 'secondary', 'themed', 'soft', 'outline', 'ghost', 'link', 'info', 'success', 'warning', 'danger'] as v (v)}
-			<CopyButton text={v} variant={v as never} label={`Copy ${v}`} />
+			<CopyButton text="Disabled" variant="outline" disabled />
+	<CopyButton text={v} variant={v as never} label={`Copy ${v}`} />
 		{/each}
 	</div>
 	<div class="row wrap gap-sm ycenter">
-		{#each ['xs', 'sm', 'md', 'lg', 'xl'] as s (s)}
-			<CopyButton text={s} variant="outline" size={s as never} label={`Copy ${s}`} />
+		{#each ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as s (s)}
+			<CopyButton text={s} variant="primary" size={s as never} label={`Copy ${s}`} />
 		{/each}
 	</div>
 	<div class="row wrap gap-sm ycenter">

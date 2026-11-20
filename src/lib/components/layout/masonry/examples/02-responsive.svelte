@@ -12,7 +12,7 @@
 	];
 </script>
 
-<Masonry columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 4 }} gap="var(--space-sm)" items={shots}>
+<Masonry columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 4 }} gap="gap-sm" items={shots}>
 	{#snippet children(shot)}
 		<div class="box gap-xs pad-md border-subtle radius-md bg-panel">
 			<span class="text-sm weight-500">{shot.title}</span>

@@ -4,13 +4,13 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLDialogAttributes } from 'svelte/elements';
 	import { luX } from '@fractaldesign/icons/lucide';
-	import { dialogSync } from '../../../internal/floating.js';
+	import { dialogSync } from '../../../internal/helpers.js';
+	import type { Measure } from '../../../internal/tokens.js';
 	import { animate, drag, vars, type DragState } from '../../../motion/index.js';
 	import { Button } from '../../actions/button/index.js';
 	import {
 		dialogWidth,
 		surfaceClass,
-		type DialogSize,
 		type OverlayContent,
 		type OverlaySurface,
 		type OverlayTrigger
@@ -26,10 +26,10 @@
 		title?: string | Snippet;
 		/** A line under the heading. Wired as the accessible description (`aria-describedby`). */
 		description?: string | Snippet;
-		/** The edge the drawer is docked to. */
-		side?: DrawerSide;
+		/** The edge the drawer is docked to, as a placement. */
+		placement?: DrawerSide;
 		/** The width (left or right) or height (top or bottom), on the measure ladder. `full` fills the viewport. */
-		size?: DialogSize;
+		width?: Measure;
 		/** Whether the rest of the page is inert while the drawer is open. */
 		modal?: boolean;
 		/** Whether Esc and a click on the backdrop close the drawer. */
@@ -51,8 +51,8 @@
 		onOpenChange,
 		title,
 		description,
-		side = 'right',
-		size = 'md',
+		placement = 'right',
+		width = 'measure-md',
 		modal = true,
 		dismissible = true,
 		closeButton = true,
@@ -60,7 +60,7 @@
 		trigger,
 		children,
 		footer,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -94,7 +94,7 @@
 	});
 
 	const content: OverlayContent = { close };
-	const bottom = $derived(side === 'bottom');
+	const bottom = $derived(placement === 'bottom');
 
 	function onDragEnd(state: DragState) {
 		if (!panel) return;
@@ -128,16 +128,16 @@
 	{id}
 	class={[
 		'dialog sheet open-column sized pop radius-lg shad-2xl',
-		`at-${side}`,
-		sideEnter[side],
+		`at-${placement}`,
+		sideEnter[placement],
 		bottom && 'motion touch-none select-none',
 		surfaceClass[surface],
-		klass
+		className
 	]}
 	aria-labelledby={title ? titleId : undefined}
 	aria-describedby={description ? descId : undefined}
 	{@attach dialogSync(() => open, setOpen, { modal, dismissible })}
-	{@attach vars({ size: dialogWidth[size] })}
+	{@attach vars({ width: dialogWidth[width] })}
 	{@attach sheetDrag}
 	{...rest}
 >
@@ -150,7 +150,7 @@
 	{#if title || description}
 		<header class={['box gap-xs px-lg pt-lg pb-md', closeButton && 'pr-2xl']}>
 			{#if title}
-				<h2 id={titleId} class="text-lg weight-600 lh12 ls-tight-bs text-primary">{@render text(title)}</h2>
+				<h2 id={titleId} class="text-lg weight-600 lh12 ls-tight-bs">{@render text(title)}</h2>
 			{/if}
 			{#if description}
 				<p id={descId} class="text-sm lh15 text-secondary">{@render text(description)}</p>
@@ -168,6 +168,6 @@
 		</footer>
 	{/if}
 	{#if closeButton}
-		<Button variant="ghost" size="sm" icon={luX} class="btn-icon pin-tr text-muted" aria-label="Close" onclick={close} />
+		<Button variant="ghost" size="h-sm" icon={luX} class="btn-icon pin-tr text-muted" aria-label="Close" onclick={close} />
 	{/if}
 </dialog>

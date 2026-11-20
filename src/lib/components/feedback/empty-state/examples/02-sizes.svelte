@@ -5,9 +5,12 @@
 </script>
 
 <div class="box gap-lg">
-	<EmptyState size="xs" icon={luFolderOpen} title="No files" description="Drop a folder to start an index." />
-	<EmptyState size="sm" icon={luFolderOpen} title="No files" description="Drop a folder to start an index." />
-	<EmptyState size="md" icon={luFolderOpen} title="No files" description="Drop a folder to start an index." />
-	<EmptyState size="lg" icon={luFolderOpen} title="No files" description="Drop a folder to start an index." />
-	<EmptyState size="xl" icon={luFolderOpen} title="No files" description="Drop a folder to start an index." />
+	<EmptyState size="h-xs" icon={luFolderOpen} title="No files" description="Drop a folder to start an index." />
+	<EmptyState size="h-sm" icon={luFolderOpen} title="No files" description="Drop a folder to start an index." />
+	<EmptyState size="h-md" icon={luFolderOpen} title="No files" description="Drop a folder to start an index." />
+	<EmptyState size="h-lg" icon={luFolderOpen} title="No files" description="Drop a folder to start an index." />
+	<EmptyState size="h-xl" icon={luFolderOpen} title="No files" description="Drop a folder to start an index." />
+	<EmptyState size="h-bs" icon={luFolderOpen} title="No files" description="Drop a folder to start an index." />
+	<EmptyState size="h-2xl" icon={luFolderOpen} title="No files" description="Drop a folder to start an index." />
+	<EmptyState size="h-3xl" icon={luFolderOpen} title="No files" description="Drop a folder to start an index." />
 </div>

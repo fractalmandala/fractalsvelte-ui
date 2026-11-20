@@ -18,8 +18,8 @@
 		frame="bordered"
 	>
 		{#snippet actions()}
-			<Button size="sm">Invite member</Button>
-			<Button size="sm" variant="ghost">Copy invite link</Button>
+			<Button size="h-sm">Invite member</Button>
+			<Button size="h-sm" variant="ghost">Copy invite link</Button>
 		{/snippet}
 	</EmptyState>
 	<EmptyState

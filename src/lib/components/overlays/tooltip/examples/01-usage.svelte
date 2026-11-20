@@ -7,17 +7,17 @@
 <div class="row gap-xs">
 	<Tooltip content="Copy the share link">
 		{#snippet trigger({ props })}
-			<Button variant="ghost" size="sm" icon={luCopy} class="btn-icon" aria-label="Copy the share link" {...props} />
+			<Button variant="ghost" size="h-sm" icon={luCopy} class="btn-icon" aria-label="Copy the share link" {...props} />
 		{/snippet}
 	</Tooltip>
 	<Tooltip content="Rename this project">
 		{#snippet trigger({ props })}
-			<Button variant="ghost" size="sm" icon={luPencil} class="btn-icon" aria-label="Rename this project" {...props} />
+			<Button variant="ghost" size="h-sm" icon={luPencil} class="btn-icon" aria-label="Rename this project" {...props} />
 		{/snippet}
 	</Tooltip>
 	<Tooltip content="Delete “Harbour invoices”">
 		{#snippet trigger({ props })}
-			<Button variant="ghost" size="sm" icon={luTrash2} class="btn-icon text-danger" aria-label="Delete this project" {...props} />
+			<Button variant="ghost" size="h-sm" icon={luTrash2} class="btn-icon text-danger" aria-label="Delete this project" {...props} />
 		{/snippet}
 	</Tooltip>
 </div>

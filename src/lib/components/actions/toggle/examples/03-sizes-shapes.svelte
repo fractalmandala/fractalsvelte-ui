@@ -5,11 +5,14 @@
 
 <div class="box gap-md">
 	<div class="row wrap gap-sm ycenter">
-		<Toggle variant="outline" size="xs">Extra small</Toggle>
-		<Toggle variant="outline" size="sm">Small</Toggle>
-		<Toggle variant="outline" size="md">Medium</Toggle>
-		<Toggle variant="outline" size="lg">Large</Toggle>
-		<Toggle variant="outline" size="xl">Extra large</Toggle>
+		<Toggle variant="outline" size="h-xs">Extra small</Toggle>
+		<Toggle variant="outline" size="h-sm">Small</Toggle>
+		<Toggle variant="outline" size="h-md">Medium</Toggle>
+		<Toggle variant="outline" size="h-bs">Base</Toggle>
+		<Toggle variant="outline" size="h-lg">Large</Toggle>
+		<Toggle variant="outline" size="h-xl">Extra large</Toggle>
+		<Toggle variant="outline" size="h-2xl">2× large</Toggle>
+		<Toggle variant="outline" size="h-3xl">3× large</Toggle>
 	</div>
 	<div class="row wrap gap-sm ycenter">
 		<Toggle variant="outline" shape="rect">Rect</Toggle>

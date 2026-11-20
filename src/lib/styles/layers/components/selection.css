@@ -16,6 +16,8 @@
 .stout { height: 1.25em; }
 
 /* A thumb inset inside a 2:1 pill track, travelling edge to edge with --value. It follows a checked input sibling. */
+.track > .pop { transition: opacity var(--motionin1), transform var(--motionin1); }
+.track > .pop:not(.open) { opacity: 0; transform: scale(0.75); }
 .native:checked ~ .thumb { --value: 1; }
 .snug { height: calc(100% - 0.25em); left: calc(25% + var(--value, 0) * 50%); }
 
@@ -33,3 +35,9 @@
 .vertical .tick { top: auto; left: 50%; bottom: calc(var(--value, 0) * 100%); translate: -50% 50%; }
 .tick-label { position: absolute; top: 1.75em; left: 50%; translate: -50% 0; white-space: nowrap; }
 .vertical .tick-label { top: 50%; left: 1.75em; translate: 0 -50%; }
+
+/* AngleSlider dial geometry driven by --angle (deg). */
+.angle-dial { position: relative; display: grid; place-items: center; border-radius: var(--radius-full); touch-action: none; cursor: grab; user-select: none; }
+.angle-dial:active { cursor: grabbing; }
+.angle-dial-arm { position: absolute; inset: 0; transform: rotate(calc(var(--angle, 0) * 1deg)); pointer-events: none; }
+.angle-dial-dot { position: absolute; top: 0.25rem; left: 50%; translate: -50% 0; width: 0.5rem; height: 0.5rem; border-radius: var(--radius-full); background-color: var(--theme-color); }

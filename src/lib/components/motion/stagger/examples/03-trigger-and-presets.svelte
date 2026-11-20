@@ -11,9 +11,9 @@
 <div class="box gap-md">
 	<div class="row wrap gap-sm ycenter">
 		{#each presets as name}
-			<Button variant={enter === name ? 'primary' : 'ghost'} size="sm" onclick={() => (enter = name)}>{name}</Button>
+			<Button variant={enter === name ? 'primary' : 'ghost'} size="h-sm" onclick={() => (enter = name)}>{name}</Button>
 		{/each}
-		<Button variant="secondary" size="sm" onclick={() => (version += 1)}>Replay</Button>
+		<Button variant="secondary" size="h-sm" onclick={() => (version += 1)}>Replay</Button>
 	</div>
 	{#key `${enter}-${version}`}
 		<Stagger {enter} trigger="mount" step={70} class="box gap-sm">

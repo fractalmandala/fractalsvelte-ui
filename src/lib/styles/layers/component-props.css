@@ -1,0 +1,172 @@
+.primary {
+  background-color: var(--bg-button);
+  border: 1px solid var(--bg-button);
+}
+.primary:hover {
+  background-color: var(--bg-button-hover);
+  border: 1px solid var(--bg-button-hover);
+}
+.primary.selected {
+  background-color: var(--bg-button-active);
+  border: 1px solid var(--bg-button-active);
+}
+
+.secondary {
+  background-color: var(--bg-button-secondary);
+  border: 1px solid var(--bg-button-secondary);
+}
+.secondary:hover {
+  background-color: var(--bg-button-secondary-hover);
+  border: 1px solid var(--bg-button-secondary-hover);
+}
+.secondary.selected {
+  background-color: var(--bg-button-secondary-active);
+  border: 1px solid var(--bg-button-secondary-active);
+}
+
+.themed {
+  background-color: var(--theme-color);
+  border: 1px solid var(--theme-color);
+}
+.themed:hover {
+  background-color: var(--theme-color-down);
+  border: 1px solid var(--theme-color-down);
+}
+.themed.selected {
+  background-color: var(--theme-color-down);
+  border: 1px solid var(--theme-color-down);
+}
+
+.outline {
+  background-color: transparent;
+  border: 1px solid var(--border-strong);
+}
+.outline:hover {
+  border: 1px solid var(--theme-color);
+  color: var(--theme-color);
+}
+.outline.selected {
+  background-color: var(--state-selected);
+  border: 1px solid var(--border-strong);
+}
+
+.ghost {
+  background-color: transparent;
+  border: 1px solid transparent;
+}
+.ghost:hover {
+  background-color: var(--state-hover);
+}
+.ghost.selected {
+  background-color: var(--state-selected);
+}
+
+.link {
+  background-color: transparent;
+  border: 1px solid transparent;
+  text-decoration: none;
+  text-decoration-color: var(--theme-color);
+}
+.link:hover {
+  text-decoration: underline;
+}
+
+
+.info {
+  background-color: var(--info);
+  border: 1px solid var(--info);
+}
+
+.success {
+  background-color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.warning {
+  background-color: var(--warning);
+  border: 1px solid var(--warning);
+}
+
+.danger {
+  background-color: var(--danger);
+  border: 1px solid var(--danger);
+}
+.danger:hover {
+  background-color: var(--danger-hover);
+  border: 1px solid var(--danger-hover);
+}
+
+.msg.info { background-color: var(--info-00); border: 1px solid var(--info-25); color: var(--info-100); }
+.msg.success { background-color: var(--success-00); border: 1px solid var(--success-25); color: var(--success-100); }
+.msg.warning { background-color: var(--warning-00); border: 1px solid var(--warning-25); color: var(--warning-100); }
+.msg.danger { background-color: var(--danger-00); border: 1px solid var(--danger-25); color: var(--danger-100); }
+.msg.neutral { background-color: var(--neutral-00); border: 1px solid var(--neutral-25); color: var(--neutral-100); }
+
+/* With a size, the control keeps that size as its minimum height and grows with its content. */
+.hgrow.h-xs { height: auto; min-height: var(--h-xs); }
+.hgrow.h-sm { height: auto; min-height: var(--h-sm); }
+.hgrow.h-md { height: auto; min-height: var(--h-md); }
+.hgrow.h-bs { height: auto; min-height: var(--h-bs); }
+.hgrow.h-lg { height: auto; min-height: var(--h-lg); }
+.hgrow.h-xl { height: auto; min-height: var(--h-xl); }
+.hgrow.h-2xl { height: auto; min-height: var(--h-2xl); }
+.hgrow.h-3xl { height: auto; min-height: var(--h-3xl); }
+
+/* A pad prop owns all four insets of a disclosure trigger at every size, so the
+ * small-size inline inset in the base layer cannot win over it. */
+button.disclosure.pad-none:not(.btn-icon) { padding: 0; }
+button.disclosure.pad-xs:not(.btn-icon) { padding: var(--space-xs); }
+button.disclosure.pad-sm:not(.btn-icon) { padding: var(--space-sm); }
+button.disclosure.pad-md:not(.btn-icon) { padding: var(--space-md); }
+button.disclosure.pad-bs:not(.btn-icon) { padding: var(--space-bs); }
+button.disclosure.pad-lg:not(.btn-icon) { padding: var(--space-lg); }
+button.disclosure.pad-xl:not(.btn-icon) { padding: var(--space-xl); }
+button.disclosure.pad-2xl:not(.btn-icon) { padding: var(--space-2xl); }
+button.disclosure.pad-3xl:not(.btn-icon) { padding: var(--space-3xl); }
+
+/* fsui-unify: C21 C03 C09 */
+/* An unstyled native control — the starting point for composed ones. */
+.bare { appearance: none; -webkit-appearance: none; background: none; border: none; padding: 0; margin: 0; font: inherit; color: inherit; outline: none; min-width: 0; }
+
+/* A row in a menu, list, listbox, tree or command palette. */
+.item { display: flex; align-items: center; justify-content: flex-start; gap: var(--space-sm); width: 100%; min-height: var(--h-lg); padding: var(--space-xs) var(--space-sm); border: none; border-radius: var(--radius-md); background-color: transparent; color: var(--text-primary); font-size: var(--text-md); text-align: left; cursor: pointer; user-select: none; outline: none; transition: background-color var(--motionin1), color var(--motionin1); }
+.item:hover, .item:focus-visible, .item.highlighted { background-color: var(--state-hover); }
+.item.selected, .item[aria-selected='true'], .item[aria-current='page'], .item[aria-current='true'] { background-color: var(--state-selected); }
+.item.disabled, .item:disabled, .item[aria-disabled='true'] { opacity: 0.5; pointer-events: none; }
+
+/* Track, fill, thumb: a slider, a progress bar, a meter. The control sets
+ * --value (and --from for a range) between 0 and 1. Distinct from .track-v. */
+.track { position: relative; flex: none; background-color: var(--state-selected); border-radius: var(--radius-full); }
+.fill { position: absolute; inset-block: 0; left: calc(var(--from, 0) * 100%); width: calc((var(--value, 0) - var(--from, 0)) * 100%); border-radius: inherit; background-color: var(--theme-color); }
+.thumb { position: absolute; top: 50%; left: calc(var(--value, 0) * 100%); translate: -50% -50%; aspect-ratio: 1; border-radius: var(--radius-full); border: 1px solid var(--border-strong); background-color: var(--white-fixed); box-shadow: var(--shadow-sm); }
+.track.vertical .fill { inset-block: auto; inset-inline: 0; left: 0; width: auto; bottom: calc(var(--from, 0) * 100%); height: calc((var(--value, 0) - var(--from, 0)) * 100%); }
+.track.vertical .thumb { top: auto; left: 50%; bottom: calc(var(--value, 0) * 100%); translate: -50% 50%; }
+
+/* A ring that fills with --value: progress rings, countdowns. Its thickness follows the text size. */
+.ring { flex: none; aspect-ratio: 1; border-radius: var(--radius-full); background: conic-gradient(var(--theme-color) calc(var(--value, 0) * 360deg), var(--state-selected) 0); mask: radial-gradient(farthest-side, transparent calc(100% - 0.3em), black calc(100% - 0.3em + 1px)); -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 0.3em), black calc(100% - 0.3em + 1px)); }
+
+/* The sliding highlight behind the active tab or segment. JavaScript springs
+ * --ix --iy --iw --ih (pixels, unitless) to the active item's box. */
+.indicator { position: absolute; top: 0; left: 0; width: calc(var(--iw, 0) * 1px); height: calc(var(--ih, 0) * 1px); translate: calc(var(--ix, 0) * 1px) calc(var(--iy, 0) * 1px); pointer-events: none; }
+
+/* A chevron that turns when its owner opens. */
+.caret { flex: none; transition: rotate calc(var(--spring-ms) * var(--motion-scale)) var(--spring); }
+.caret.open { rotate: 180deg; }
+.caret.quarter.open { rotate: 90deg; }
+
+/* Tones re-point the accent, so .fill, .ring and .text-theme follow.
+ * Not the same as the filled .danger / .info variants. */
+.tone-neutral { --theme-color: var(--text-secondary); }
+.tone-info { --theme-color: var(--info); }
+.tone-success { --theme-color: var(--success); }
+.tone-warning { --theme-color: var(--warning); }
+.tone-danger { --theme-color: var(--danger); }
+
+/* A current-colour status dot — badges, pulses, wave indicators. */
+.dot { flex: none; width: 0.5em; height: 0.5em; border-radius: var(--radius-full); background-color: currentColor; }
+
+.elevated { background-color: var(--bg-surface); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-rim), var(--shadow-md);}
+.outlined { border: 1px solid var(--border)}
+.glass { border: 1px solid var(--border); box-shadow: var(--shadow-rim), var(--shadow-md); background-color: color-mix(in oklab, var(--bg-overlay) var(--glass-alpha), transparent); backdrop-filter: blur(var(--glass-blur)) saturate(1.6); -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.6);}
+.paneled { background-color: var(--bg-panel); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-rim), var(--shadow-md); }
+.overlayed { background-color: var(--bg-overlayed); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-rim), var(--shadow-md);}

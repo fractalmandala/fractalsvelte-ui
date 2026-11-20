@@ -1,13 +1,13 @@
-<!-- @example Sizes and shapes :: Three sizes on the control height ladder, and the five corner shapes from square to pill. -->
+<!-- @example Sizes and shapes :: Every step of the control height ladder, and the five corner shapes from square to pill. -->
 <script lang="ts">
 	import { Tag } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <div class="box gap-sm">
 	<div class="row wrap gap-sm ycenter">
-		<Tag size="sm" variant="outline">Small</Tag>
-		<Tag size="md" variant="outline">Medium</Tag>
-		<Tag size="lg" variant="outline">Large</Tag>
+		{#each ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const as size (size)}
+			<Tag {size} variant="outline">{size}</Tag>
+		{/each}
 	</div>
 	<div class="row wrap gap-sm ycenter">
 		<Tag shape="rect" variant="themed">Rect</Tag>

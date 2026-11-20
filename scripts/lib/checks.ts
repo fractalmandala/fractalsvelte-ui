@@ -7,6 +7,28 @@ import { parseTs } from './api.ts';
 import type { LayerBuild } from './css.ts';
 import { extractScripts, markupOf, matchJsBrace, skipQuoted, stringLiterals } from './svelte.ts';
 import { PATHS, closest, cssCodeLines, escapeRe, lineAt, listDir, readText, rel, walkFiles } from './util.ts';
+import {
+	ALIGNS,
+	DENSITIES,
+	GAPS,
+	MEASURES,
+	PLACEMENTS,
+	SHAPES,
+	SIZES,
+	TONES,
+	VARIANTS
+} from '@fractaldesign/fractalstyler/types';
+import {
+	ALIGNS as uiAligns,
+	DENSITIES as uiDensities,
+	GAPS as uiGaps,
+	MEASURES as uiMeasures,
+	PLACEMENTS as uiPlacements,
+	SHAPES as uiShapes,
+	SIZES as uiSizes,
+	TONES as uiTones,
+	VARIANTS as uiVariants
+} from '../../src/lib/internal/tokens.ts';
 
 export interface Diag {
 	rule: string;
@@ -380,7 +402,7 @@ export function checkComponent(a: ComponentAnalysis, ctx: GateContext): Diag[] {
 	// ── structure
 	if (!a.hasPrimary) err('folder/primary', f(a.primaryFile), null, `missing the primary component ${a.primaryFile}`, `create ${a.primaryFile} (PascalCase of the folder name)`);
 	if (!a.hasIndex) err('folder/index', f('index.ts'), null, 'missing index.ts', `export { default as ${a.name} } from './${a.primaryFile}';`);
-	if (!a.hasDoc) err('doc/missing', f('doc.ts'), null, 'missing doc.ts', "export default defineDoc({ … }) — see AGENTS.md 'doc.ts'");
+
 	if (a.examples.length === 0) err('examples/missing', f('examples/'), null, 'no examples', 'add examples/01-usage.svelte (the minimal usage)');
 	else if (!a.examples.some((e) => e.file.startsWith('01'))) err('examples/first', f('examples/01-usage.svelte'), null, 'example 01 is missing', 'name the minimal usage examples/01-usage.svelte');
 	for (const e of a.examples) {
@@ -418,9 +440,9 @@ export function checkComponent(a: ComponentAnalysis, ctx: GateContext): Diag[] {
 		}
 	}
 
-	// ── doc.ts (rule 3)
+	// ── the page prose (comments.md doc block, legacy doc.ts)
 	if (a.doc) {
-		const docFile = f('doc.ts');
+		const docFile = a.doc.file ?? f('doc.ts');
 		if (a.doc.error || !a.doc.value) {
 			err('doc/static', docFile, a.doc.line, a.doc.error ?? 'unreadable', 'pass a plain object literal (strings, arrays, objects) to defineDoc');
 		} else {
@@ -544,4 +566,174 @@ export function checkLibraryFiles(allow: Allowlist): Diag[] {
 	for (const full of files) out.push(...checkFile(full, allow));
 	out.push(...checkTokenMaps(allow));
 	return out;
+}
+
+// ── vocabulary ↔ stylesheet parity (the fractalstyler sync contract) ────────
+
+/**
+ * Two assertions per axis:
+ *   1. the UI's list equals fractalstyler's list — a rung added on one side and
+ *      forgotten on the other fails here;
+ *   2. every value resolves to a class (or a `[data-*]` rule) in the stylesheet.
+ * This is what catches "the axis gained a value and the CSS did not".
+ */
+export function checkVocabulary(allow: Allowlist): Diag[] {
+	const diags: Diag[] = [];
+	const file = 'src/lib/internal/tokens.ts';
+	const has = (cls: string) => isAllowed(cls, allow);
+
+	const same = (axis: string, ui: readonly string[], styler: readonly string[]) => {
+		const missing = styler.filter((v) => !ui.includes(v));
+		const extra = ui.filter((v) => !styler.includes(v));
+		if (!missing.length && !extra.length) return;
+		diags.push({
+			severity: 'error',
+			rule: 'vocabulary/drift',
+			file,
+			line: 1,
+			message: `${axis} drifted from fractalstyler${missing.length ? ` — missing ${missing.join(', ')}` : ''}${extra.length ? ` — extra ${extra.join(', ')}` : ''}`,
+			fix: `${axis}: make the tokens.ts list and fractalstyler's agree`
+		});
+	};
+
+	/** An attribute rule the stylesheet must carry, e.g. `[data-shape="round"]`. */
+	const needRule = (axis: string, value: string, rule: string) => {
+		if (stylerCss().includes(rule)) return;
+		diags.push({
+			severity: 'error',
+			rule: 'vocabulary/rule',
+			file: 'node_modules/@fractaldesign/fractalstyler/src/lib/styles/configurations.css',
+			line: 1,
+			message: `${axis} value "${value}" has no rule (looked for ${rule})`,
+			fix: `add ${rule} to the fractalstyler stylesheet`
+		});
+	};
+
+	const need = (axis: string, value: string, candidates: string[]) => {
+		if (candidates.some(has)) return;
+		diags.push({
+			severity: 'error',
+			rule: 'vocabulary/class',
+			file: 'node_modules/@fractaldesign/fractalstyler/src/lib/styles',
+			line: 1,
+			message: `${axis} value "${value}" has no class (looked for ${candidates.join(', ')})`,
+			fix: `either add the class to the stylesheet or drop ${value} from the ${axis} axis`
+		});
+	};
+
+	same('Size', uiSizes, SIZES);
+	same('Gap', uiGaps.filter(Boolean), GAPS);
+	same('Shape', uiShapes, SHAPES);
+	same('Variant', uiVariants, VARIANTS);
+	same('Tone', uiTones, TONES);
+	same('Align', uiAligns, ALIGNS);
+	same('Measure', uiMeasures, MEASURES);
+	same('Placement', uiPlacements, PLACEMENTS);
+	// The density word is shared: one set of three, everywhere it appears.
+	same('Density', uiDensities, DENSITIES);
+
+	// Every token value now carries its own prefix, so the class is the value itself —
+	// except the height ladder, which feeds the text, pad and max-height ladders.
+	const rung = (v: string) => v.replace(/^h-/, '');
+
+	for (const v of VARIANTS) need('Variant', v, [v]);
+	for (const v of SIZES) {
+		need('Size height', v, [v]);
+		need('Size text', v, [`text-${rung(v)}`]);
+		need('Size pad', v, [`pad-${rung(v)}`]);
+		need('Size max-height', v, [`max-h-${rung(v)}`]);
+	}
+	for (const v of GAPS) need('Gap', v, [v]);
+	for (const v of SHAPES) {
+		need('Shape', v, [v]);
+		needRule('Shape theme', v, `[data-shape="${v}"]`);
+	}
+	for (const v of TONES) need('Tone', v, [`text-${v}`, v]);
+	for (const v of MEASURES) need('Measure', v, v === 'measure-full' ? ['wfull'] : [v]);
+	// The alignment words are physical, one class per word: `ta-l` is
+	// `text-align: left` and must never stand in for anything else.
+	const justify: Record<string, string> = {
+		left: 'xleft',
+		center: 'xcenter',
+		right: 'xright',
+		between: 'xbetween'
+	};
+	const textAlign: Record<string, string> = { left: 'ta-l', center: 'ta-c', right: 'ta-r' };
+	for (const v of ALIGNS) {
+		need('Align justify', v, [justify[v]]);
+		if (textAlign[v]) need('Align text', v, [textAlign[v]]);
+	}
+	for (const v of PLACEMENTS) need('Placement', v, [`at-${v}`]);
+	return diags;
+}
+
+// ── axis attributes must exist on the component they are written on ────────
+//
+// `form`, `look` and `variant` are also plain HTML attributes, so Svelte's type
+// checker accepts `<Button form="ghost">` without a murmur while it styles
+// nothing. This catches that: an axis attribute on a component that does not
+// declare it is an error, not a silent no-op.
+
+let stylerCssCache: string | null = null;
+
+/** Concatenated fractalstyler stylesheet source, read once. */
+function stylerCss(): string {
+	if (stylerCssCache !== null) return stylerCssCache;
+	const dir = PATHS.stylerStyles;
+	const parts: string[] = [];
+	try {
+		for (const name of listDir(dir, 'file')) {
+			if (name.endsWith('.css')) parts.push(readText(path.join(dir, name)) ?? '');
+		}
+	} catch {
+		/* the class registry already errors when the package is missing */
+	}
+	stylerCssCache = parts.join('\n');
+	return stylerCssCache;
+}
+
+const AXIS_ATTRS = ['variant', 'look', 'form'] as const;
+
+export function checkAxisAttributes(): Diag[] {
+	const diags: Diag[] = [];
+	const raw = readText(PATHS.apiJson);
+	if (!raw) return diags;
+	let api: { components?: { parts?: { name: string; props?: { name: string }[] }[] }[] };
+	try {
+		api = JSON.parse(raw) as typeof api;
+	} catch {
+		return diags;
+	}
+	const declared = new Map<string, Set<string>>();
+	for (const c of api.components ?? [])
+		for (const part of c.parts ?? [])
+			declared.set(part.name, new Set((part.props ?? []).map((p) => p.name)));
+
+	const files = walkFiles(PATHS.lib, (n) => n.endsWith('.svelte')).filter(
+		(full) => rel(full).startsWith('src/lib/components/')
+	);
+	for (const full of files) {
+		const src = readText(full);
+		if (!src) continue;
+		for (const tag of src.matchAll(/<([A-Z][\w]*)((?:[^<>{}]|\{[^{}]*\})*?)\/?>/g)) {
+			const name = tag[1];
+			const props = declared.get(name);
+			if (!props) continue;
+			for (const axis of AXIS_ATTRS) {
+				if (props.has(axis)) continue;
+				// an attribute always has a `=` after its name; prose inside another attribute does not
+				if (!new RegExp(`(^|\\s)${axis}\\s*=`).test(` ${tag[2].replace(/\n/g, ' ')}`)) continue;
+				const at = lineAt(src, tag.index ?? 0);
+				diags.push({
+					severity: 'error',
+					rule: 'props/axis-attr',
+					file: rel(full),
+					line: at,
+					message: `<${name}> takes no \`${axis}\` prop — it would render nothing`,
+					fix: `use the prop ${name} declares (${[...props].filter((p) => AXIS_ATTRS.includes(p as never)).join(', ') || 'variant'})`
+				});
+			}
+		}
+	}
+	return diags;
 }

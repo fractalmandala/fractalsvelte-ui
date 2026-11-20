@@ -2,19 +2,19 @@
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { type Shape, type Size, type TextSize, type Variant } from '../../../internal/tokens.js';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import type { IconData } from '@fractaldesign/icons';
 	import { luX } from '@fractaldesign/icons/lucide';
-	import type { Shape, Variant } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** The visual style, from the shared variant axis. `soft` is the quiet default. */
+		/** The visual style, from the shared variant axis. */
 		variant?: Variant;
 		/** The token height. Text follows this unless `textSize` is set. */
-		size?: 'sm' | 'md' | 'lg';
+		size?: Size;
 		/** The text scale, independent of the tag height. Follows `size` when omitted. */
-		textSize?: 'sm' | 'md' | 'lg';
+		textSize?: TextSize;
 		/** The corner shape. */
 		shape?: Shape;
 		/** An icon drawn before the label. */
@@ -32,38 +32,28 @@
 	}
 
 	let {
-		variant = 'soft',
-		size = 'md',
+		variant = 'secondary',
+		size = 'h-bs',
 		textSize,
-		shape = 'mincurved',
+		shape = 'modern',
 		icon,
 		removable = false,
 		removeLabel = 'Remove',
 		onRemove,
 		href,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
 
-	const heightClasses = {
-		sm: 'h-md',
-		md: 'h-bs',
-		lg: 'h-lg'
-	};
-	const textClasses = {
-		sm: 'text-xs',
-		md: 'text-sm',
-		lg: 'text-md'
-	};
 
 	const classes = $derived([
 		'tag inline-flex xcenter gap-xs',
 		variant,
-		heightClasses[size], textClasses[textSize ?? size],
+		size, textSize,
 		shape,
 		href && 'link-plain focus-ring',
-		klass
+		className
 	]);
 </script>
 

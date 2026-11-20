@@ -28,7 +28,7 @@
 		loop = true,
 		surface = 'glass',
 		label = 'Application',
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -88,7 +88,7 @@
 	role="menubar"
 	aria-label={label}
 	aria-orientation="horizontal"
-	class={['row gap-xs', klass]}
+	class={['row gap-xs', className]}
 	{@attach roving({ ...menubarRoving, loop, onNavigate })}
 	{...rest}
 >

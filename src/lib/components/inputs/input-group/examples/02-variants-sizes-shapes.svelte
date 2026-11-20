@@ -4,15 +4,15 @@
 </script>
 
 <div class="box gap-sm measure-sm">
-	{#each ['outline', 'filled', 'ghost'] as const as variant (variant)}
-		<InputGroup {variant}>
+	{#each ['outline', 'filled', 'ghost'] as const as look (look)}
+		<InputGroup {look}>
 			<InputGroupAddon>
 				<InputGroupText>@</InputGroupText>
 			</InputGroupAddon>
-			<InputGroupInput value="ada" aria-label={`${variant} username`} />
+			<InputGroupInput value="ada" aria-label={`${look} username`} />
 		</InputGroup>
 	{/each}
-	{#each ['xs', 'sm', 'md', 'lg', 'xl'] as const as size (size)}
+	{#each ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const as size (size)}
 		<InputGroup {size}>
 			<InputGroupAddon>
 				<InputGroupText>kg</InputGroupText>

@@ -12,6 +12,6 @@
 </script>
 
 <div class="box gap-sm">
-	<ChipGroup type="single" {options} bind:value={region} label="Region" />
+	<ChipGroup  {options} bind:value={region} label="Region" />
 	<p class="text-sm text-muted">Filtering deployments in {region ?? 'every region'}</p>
 </div>

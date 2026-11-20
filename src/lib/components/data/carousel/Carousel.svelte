@@ -2,6 +2,8 @@
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { type Gap } from '../../../internal/tokens.js';
+import { gapValue } from '../../../internal/helpers.js';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luChevronLeft, luChevronRight } from '@fractaldesign/icons/lucide';
@@ -20,8 +22,8 @@
 		autoplay?: boolean | number;
 		/** How many slides are visible at once. */
 		perView?: number;
-		/** The gap between slides, any CSS length (e.g. `1rem` or `var(--space-md)`). */
-		gap?: string;
+		/** The gap between slides. */
+		gap?: Gap;
 		/** Names the carousel for assistive technology. */
 		label?: string;
 		/** The `CarouselSlide`s. */
@@ -34,9 +36,9 @@
 		loop = false,
 		autoplay = false,
 		perView = 1,
-		gap = 'var(--space-md)',
+		gap = 'gap-md',
 		label = 'Carousel',
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
@@ -226,7 +228,7 @@
 </script>
 
 <div
-	class={['box gap-sm', klass]}
+	class={['box gap-sm', className]}
 	role="region"
 	aria-roledescription="carousel"
 	aria-label={label}
@@ -242,7 +244,7 @@
 	<div class="row ycenter gap-sm">
 		<Button
 			variant="ghost"
-			size="sm"
+			size="h-sm"
 			class="btn-icon"
 			icon={luChevronLeft}
 			disabled={!canPrev}
@@ -253,7 +255,7 @@
 			class={['slides reel carousel-track grow', 'is-draggable', dragging && 'is-dragging']}
 			role="group"
 			aria-label="Slides"
-			{@attach vars({ 'per-view': perView, gap })}
+			{@attach vars({ 'per-view': perView, gap: gapValue(gap) })}
 			{@attach reelAttach}
 			onscroll={onScroll}
 			onpointerdown={onPointerDown}
@@ -262,7 +264,7 @@
 		</div>
 		<Button
 			variant="ghost"
-			size="sm"
+			size="h-sm"
 			class="btn-icon"
 			icon={luChevronRight}
 			disabled={!canNext}
@@ -281,7 +283,7 @@
 				onclick={() => setIndex(i)}
 				{@attach (el) => { dotEls[i] = el; queueMicrotask(measureIndicator); return () => { if (dotEls[i] === el) delete dotEls[i]; }; }}
 			>
-				<span class={['dot', i === safeIndex ? 'text-primary' : 'text-muted']}></span>
+				<span class={['dot', i === safeIndex ? '' : 'text-muted']}></span>
 			</button>
 		{/each}
 	</div>

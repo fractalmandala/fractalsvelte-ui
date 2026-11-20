@@ -4,14 +4,14 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLDialogAttributes } from 'svelte/elements';
 	import { luX } from '@fractaldesign/icons/lucide';
-	import { dialogSync } from '../../../internal/floating.js';
+	import { dialogSync } from '../../../internal/helpers.js';
+	import type { Measure } from '../../../internal/tokens.js';
 	import { vars } from '../../../motion/index.js';
 	import { Button } from '../../actions/button/index.js';
 	import {
 		dialogWidth,
 		surfaceClass,
 		type DialogScrollBehavior,
-		type DialogSize,
 		type OverlayContent,
 		type OverlaySurface,
 		type OverlayTrigger
@@ -27,7 +27,7 @@
 		/** A line under the heading. Wired as the accessible description (`aria-describedby`). */
 		description?: string | Snippet;
 		/** The width, on the measure ladder. `full` fills the viewport less a margin. */
-		size?: DialogSize;
+		width?: Measure;
 		/** Whether Esc and a click on the backdrop close the dialog. */
 		dismissible?: boolean;
 		/** Shows a close button in the top-right corner. */
@@ -49,7 +49,7 @@
 		onOpenChange,
 		title,
 		description,
-		size = 'md',
+		width = 'measure-md',
 		dismissible = true,
 		closeButton = true,
 		scrollBehavior = 'inside',
@@ -57,7 +57,7 @@
 		trigger,
 		children,
 		footer,
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
 
@@ -89,12 +89,17 @@
 	});
 
 	const outside = $derived(scrollBehavior === 'outside');
-	const outsideWidth: Record<DialogSize, string> = {
-		sm: 'measure-sm',
-		md: 'measure-md',
-		lg: 'measure-lg',
-		xl: 'measure-xl',
-		full: 'wfull'
+	const outsideWidth: Record<string, string> = {
+		'measure-xs': 'measure-xs',
+		'measure-sm': 'measure-sm',
+		'measure-md': 'measure-md',
+		'measure-bs': 'measure-bs',
+		'measure-lg': 'measure-lg',
+		'measure-xl': 'measure-xl',
+		'measure-2xl': 'measure-2xl',
+		'measure-3xl': 'measure-3xl',
+		'measure-4xl': 'measure-4xl',
+		'measure-full': 'wfull'
 	};
 	const content: OverlayContent = { close };
 </script>
@@ -107,7 +112,7 @@
 	{#if title || description}
 		<header class={['box gap-xs px-lg pt-lg pb-md', closeButton && 'pr-2xl']}>
 			{#if title}
-				<h2 id={titleId} class="text-lg weight-600 lh12 ls-tight-bs text-primary">{@render text(title)}</h2>
+				<h2 id={titleId} class="text-lg weight-600 lh12 ls-tight-bs">{@render text(title)}</h2>
 			{/if}
 			{#if description}
 				<p id={descId} class="text-sm lh15 text-secondary">{@render text(description)}</p>
@@ -132,7 +137,7 @@
 		</footer>
 	{/if}
 	{#if closeButton}
-		<Button variant="ghost" size="sm" icon={luX} class="btn-icon pin-tr text-muted" aria-label="Close" onclick={close} />
+		<Button variant="ghost" size="h-sm" icon={luX} class="btn-icon pin-tr text-muted" aria-label="Close" onclick={close} />
 	{/if}
 {/snippet}
 
@@ -141,7 +146,7 @@
 {#if outside}
 	<dialog
 		{id}
-		class={['dialog fullscreen scroll-y scroll-thin pop enter-up', klass]}
+		class={['dialog fullscreen scroll-y scroll-thin pop enter-up', className]}
 		aria-labelledby={title ? titleId : undefined}
 		aria-describedby={description ? descId : undefined}
 		{@attach dialogSync(() => open, setOpen, { dismissible })}
@@ -155,7 +160,7 @@
 				if (dismissible && event.target === event.currentTarget) close();
 			}}
 		>
-			<div class={['relative box ta-l radius-lg shad-2xl', surfaceClass[surface], outsideWidth[size]]}>
+			<div class={['relative box ta-l radius-lg shad-2xl', surfaceClass[surface], outsideWidth[width]]}>
 				{@render panel()}
 			</div>
 		</div>
@@ -166,13 +171,13 @@
 		class={[
 			'dialog open-column sized pop enter-scale radius-lg shad-2xl',
 			surfaceClass[surface],
-			size === 'full' && 'hfull',
-			klass
+			width === 'measure-full' && 'hfull',
+			className
 		]}
 		aria-labelledby={title ? titleId : undefined}
 		aria-describedby={description ? descId : undefined}
 		{@attach dialogSync(() => open, setOpen, { dismissible })}
-		{@attach vars({ size: dialogWidth[size] })}
+		{@attach vars({ size: dialogWidth[width] })}
 		{...rest}
 	>
 		{@render panel()}

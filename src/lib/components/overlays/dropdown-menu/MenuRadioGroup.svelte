@@ -14,7 +14,7 @@
 		children?: Snippet;
 	}
 
-	let { value = $bindable(''), onValueChange, children, class: klass, ...rest }: Props = $props();
+	let { value = $bindable(''), onValueChange, children, class: className, ...rest }: Props = $props();
 
 	const menu = getMenu();
 
@@ -30,6 +30,6 @@
 	});
 </script>
 
-<div role="group" class={['box', klass]} {...rest}>
+<div role="group" class={['box', className]} {...rest}>
 	{@render children?.()}
 </div>

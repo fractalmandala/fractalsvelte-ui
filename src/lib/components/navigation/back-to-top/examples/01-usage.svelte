@@ -2,8 +2,8 @@
 <script lang="ts">
 	import { BackToTop } from '@fractaldesign/fractalsvelte-ui';
 
-	const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
-	let size = $state<(typeof sizes)[number]>('md');
+	const sizes = ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const;
+	let size = $state<(typeof sizes)[number]>('h-md');
 </script>
 
 <div class="box gap-md">

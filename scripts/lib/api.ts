@@ -4,6 +4,8 @@
 import ts from 'typescript';
 import path from 'node:path';
 import type { ApiExample, ApiPart, ApiProp } from '../../src/lib/docs/api-types.ts';
+import { splitBody } from './comments.ts';
+import type { DocIndex } from './comments.ts';
 import { extractScripts } from './svelte.ts';
 import { PATHS, byCodepoint, listDir, readText } from './util.ts';
 
@@ -245,7 +247,7 @@ export function folderAliases(dir: string): Aliases {
 	return aliases;
 }
 
-export function analyzePart(name: string, file: string, src: string, folderTypes: Aliases): PartInfo {
+export function analyzePart(name: string, file: string, src: string, folderTypes: Aliases, docs: DocIndex | null = null): PartInfo {
 	const part: PartInfo = { name, file, inherits: [], props: [], hasProps: false, propsLine: 1, problems: [] };
 	const scripts = extractScripts(src);
 	const instance = scripts.find((s) => !s.module);
@@ -274,6 +276,7 @@ export function analyzePart(name: string, file: string, src: string, folderTypes
 	part.inherits = found.inherits;
 	part.propsLine = foundLine + foundIn.getLineAndCharacterOfPosition(found.node.getStart(foundIn)).line;
 	const destructured = findPropsDestructuring(sf);
+	const label = ts.isInterfaceDeclaration(found.node) ? 'interface Props' : 'type Props';
 
 	for (const m of found.members) {
 		const pname = memberName(m, foundIn);
@@ -287,7 +290,9 @@ export function analyzePart(name: string, file: string, src: string, folderTypes
 			const params = m.parameters.map((p) => norm(p.getText(foundIn))).join(', ');
 			typeText = `(${params}) => ${m.type ? norm(m.type.getText(foundIn)) : 'void'}`;
 		}
-		const { description, defaultTag } = jsdocOf(m, foundIn);
+		const doc = jsdocOf(m, foundIn);
+		const moved = doc.description ? null : docs?.get(`${file}\u0000${label}\u0000${pname}`);
+		const { description, defaultTag } = moved ? splitBody(moved) : doc;
 		const d = destructured.get(pname);
 		part.props.push({
 			name: pname,

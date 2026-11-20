@@ -11,10 +11,10 @@
 		children?: Snippet;
 	}
 
-	let { action, class: klass, children, ...rest }: Props = $props();
+	let { action, class: className, children, ...rest }: Props = $props();
 </script>
 
-<header class={['row xbetween ytop gap-bs', klass]} {...rest}>
+<header class={['row xbetween ytop gap-bs', className]} {...rest}>
 	<div class="box gap-xs grow wmin0">
 		{@render children?.()}
 	</div>

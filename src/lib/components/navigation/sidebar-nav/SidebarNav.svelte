@@ -15,6 +15,10 @@
 		collapsed?: boolean;
 		/** Called whenever the rail is collapsed or expanded. */
 		onCollapsedChange?: (collapsed: boolean) => void;
+		/** Keyboard shortcut letter paired with `Cmd`/`Ctrl` to toggle collapse (or `false` to disable). */
+		shortcut?: string | false;
+		/** Open state on narrow/mobile viewports where the sidebar presents as a slide-over drawer; bindable. */
+		mobileOpen?: boolean;
 		/** Accessible name of the navigation. */
 		label?: string;
 	}
@@ -23,11 +27,27 @@
 		items,
 		current,
 		collapsed = $bindable(false),
-		onCollapsedChange: _onCollapsedChange,
+		onCollapsedChange,
+		shortcut = 'b',
+		mobileOpen = $bindable(false),
 		label = 'Sidebar',
-		class: klass,
+		class: className,
 		...rest
 	}: Props = $props();
+
+	function handleShortcut(event: KeyboardEvent) {
+		if (!shortcut) return;
+		if (!(event.metaKey || event.ctrlKey) || event.altKey) return;
+		if (event.key.toLowerCase() !== shortcut.toLowerCase()) return;
+		const target = event.target as HTMLElement | null;
+		if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+			return;
+		}
+		event.preventDefault();
+		const next = !collapsed;
+		collapsed = next;
+		onCollapsedChange?.(next);
+	}
 
 	let openGroups = $state<Record<string, boolean>>({});
 
@@ -153,9 +173,20 @@
 	{/if}
 {/snippet}
 
+<svelte:window onkeydown={handleShortcut} />
+
+{#if mobileOpen}
+	<div role="presentation" class="rail-backdrop" onclick={() => (mobileOpen = false)}></div>
+{/if}
+
 <nav
 	aria-label={label}
-	class={['rail spring spring-snappy column pad-sm gap-xs bg-surface br', collapsed && 'collapsed', klass]}
+	class={[
+		'rail spring spring-snappy column pad-sm gap-xs bg-surface br',
+		collapsed && 'collapsed',
+		mobileOpen && 'mobile-drawer mobile-open',
+		className
+	]}
 	{...rest}
 >
 	{#each items as item, i (item.href ?? item.label ?? i)}

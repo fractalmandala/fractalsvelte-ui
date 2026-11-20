@@ -2,7 +2,7 @@
 <script lang="ts">
 	import { Tabs, TabList, Tab, TabPanel } from '@fractaldesign/fractalsvelte-ui';
 
-	const variants = ['underline', 'pill', 'enclosed'] as const;
+	const forms = ['underline', 'pill', 'enclosed'] as const;
 	const labels = {
 		underline: 'Underline',
 		pill: 'Pill',
@@ -12,10 +12,10 @@
 </script>
 
 <div class="box gap-xl">
-	{#each variants as variant (variant)}
+	{#each forms as form (form)}
 		<div class="box gap-sm">
-			<p class="text-sm text-muted weight-500">{labels[variant]}</p>
-			<Tabs bind:value={values[variant]} {variant}>
+			<p class="text-sm text-muted weight-500">{labels[form]}</p>
+			<Tabs bind:value={values[form]} {form}>
 				<TabList>
 					<Tab value="read">Reading</Tab>
 					<Tab value="queue">Up next</Tab>

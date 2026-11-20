@@ -9,7 +9,7 @@
 		/** Seconds for one full rotation of the gradient border. */
 		speed?: number;
 		/** Colour of the rotating border: the theme accent, a hue-swept rainbow, or a quieter wash. */
-		variant?: 'theme' | 'rainbow' | 'subtle';
+		look?: 'theme' | 'rainbow' | 'subtle';
 		/** When true, the border always rotates; when false, it rotates only on hover or focus within. */
 		active?: boolean;
 		/** The card's content. */
@@ -18,14 +18,14 @@
 
 	let {
 		speed = 8,
-		variant = 'theme',
+		look = 'theme',
 		active = false,
-		class: klass,
+		class: className,
 		children,
 		...rest
 	}: Props = $props();
 
-	const variantClass = { theme: 'ring-theme', rainbow: 'ring-rainbow', subtle: 'ring-subtle' };
+	const lookClass = { theme: 'ring-theme', rainbow: 'ring-rainbow', subtle: 'ring-subtle' };
 </script>
 
 <div
@@ -41,8 +41,8 @@
 		'curved',
 		'pad-lg',
 		'gap-sm',
-		variantClass[variant],
-		klass
+		lookClass[look],
+		className
 	]}
 	{@attach vars({ spin: speed })}
 	{...rest}

@@ -23,7 +23,7 @@
 		children?: Snippet;
 	}
 
-	let { icon, shortcut, disabled = false, inset = false, href, onclick, children, class: klass, ...rest }: Props = $props();
+	let { icon, shortcut, disabled = false, inset = false, href, onclick, children, class: className, ...rest }: Props = $props();
 
 	const menu = getMenu();
 
@@ -46,7 +46,7 @@
 		}
 	}
 
-	const classes = $derived(['item', disabled && 'disabled', klass]);
+	const classes = $derived(['item', disabled && 'disabled', className]);
 </script>
 
 {#if href && !disabled}

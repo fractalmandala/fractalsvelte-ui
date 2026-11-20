@@ -1,4 +1,4 @@
-<!-- @example Placements and delays :: All eight placements, with a slower open delay and a snippet for the hint itself. -->
+<!-- @example Placements and delays :: Every placement, with a slower open delay and a snippet for the hint itself. -->
 <script lang="ts">
 	import { Button, Tooltip, type Placement } from '@fractaldesign/fractalsvelte-ui';
 
@@ -10,7 +10,11 @@
 		'bottom-start',
 		'bottom-end',
 		'left',
-		'right'
+		'left-start',
+		'left-end',
+		'right',
+		'right-start',
+		'right-end'
 	];
 </script>
 
@@ -18,7 +22,7 @@
 	{#each placements as placement (placement)}
 		<Tooltip {placement} delay={500} closeDelay={200}>
 			{#snippet trigger({ props })}
-				<Button variant="outline" size="sm" {...props}>{placement}</Button>
+				<Button variant="outline" size="h-sm" {...props}>{placement}</Button>
 			{/snippet}
 			{#snippet content()}
 				Anchored <span class="font-mono">{placement}</span>

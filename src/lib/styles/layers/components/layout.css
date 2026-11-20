@@ -13,9 +13,11 @@
 .splitter:hover { background-color: var(--border-strong); }
 .splitter:focus-visible, .splitter.active { background-color: var(--theme-color); box-shadow: 0 0 0 1px var(--theme-color); }
 
-/* Bento: track count, row height and gap from --cols, --row-h, --gap.
- * Children span with --cspan / --rspan. A narrow container collapses to one column. */
-.bento { display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); grid-auto-rows: var(--row-h, 8rem); gap: var(--gap, var(--space-md)); container-type: inline-size; }
+/* Bento: track count and row height from --cols, --row-h.
+ * Children span with --cspan / --rspan. A narrow container collapses to one column.
+ * The container box is a wrapper: a container query cannot style its own container. */
+.bento-wrap { container-type: inline-size; width: 100%; }
+.bento { display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); grid-auto-rows: var(--row-h, 8rem); }
 .bento > .span { grid-column: span var(--cspan, 1); grid-row: span var(--rspan, 1); min-width: 0; min-height: 0; }
 @container (max-width: 28rem) {
 	.bento { grid-template-columns: minmax(0, 1fr); }
@@ -23,12 +25,12 @@
 }
 
 /* Masonry: native CSS grid masonry when supported; .packed is the JS fallback. */
-.masonry { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: var(--gap, var(--space-md)); }
+.masonry { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); width: 100%; }
 @supports (grid-template-rows: masonry) {
 	.masonry { grid-template-rows: masonry; }
 }
 .masonry.packed { position: relative; height: calc(var(--extent, 0) * 1px); }
-.masonry.packed > .placed { position: absolute; top: 0; inset-inline-start: 0; width: calc((100% - (var(--cols, 3) - 1) * var(--gap, 0px)) / var(--cols, 3)); translate: calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px); }
+.masonry.packed > .placed { position: absolute; top: 0; inset-inline-start: 0; width: var(--w, auto); translate: calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px); }
 
 /* Edge fades on a scroller: JS writes --fade-* to the fade length, or 0 when that edge is reached. */
 .fade-y { mask-image: linear-gradient(to bottom, transparent, black var(--fade-top, 0px), black calc(100% - var(--fade-bottom, 0px)), transparent); }
@@ -50,3 +52,19 @@
 
 /* Centres a measure-width container in its parent. */
 .centered { margin-inline: auto; }
+
+/* A region capped by --max-height, for a maxHeight that is a raw CSS length. */
+.capped { max-height: var(--max-height, none); }
+
+/* Bleed: negative margin breakout along inline/block axes or full viewport width. */
+.bleed-inline { margin-inline: calc(var(--bleed-x, 0rem) * -1); }
+.bleed-block { margin-block: calc(var(--bleed-y, 0rem) * -1); }
+.bleed-full { width: 100vw; max-width: 100vw; margin-inline: calc(50% - 50vw); }
+
+/* SimpleGrid: equal columns or responsive auto-fit tracks via --cols / --min-col. */
+.simple-grid { display: grid; grid-template-columns: repeat(var(--cols, 1), minmax(0, 1fr)); }
+.simple-grid.auto-fit { grid-template-columns: repeat(auto-fit, minmax(min(var(--min-col, 14rem), 100%), 1fr)); }
+
+/* Stack dividers: hairlines between stacked siblings. */
+.stack-divided.column > :not(:first-child) { padding-top: var(--space-sm); border-top: 1px solid var(--border-subtle); }
+.stack-divided.row > :not(:first-child) { padding-left: var(--space-sm); border-left: 1px solid var(--border-subtle); }
