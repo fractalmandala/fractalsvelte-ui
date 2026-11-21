@@ -1,30 +1,23 @@
 <!-- @component A portrait that falls back from an image to initials, then to an icon, with an optional status dot. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
-	import type { IconData } from '@fractaldesign/icons';
+	import type {  IconData  } from '@fractaldesign/icons';
 	import { luUser } from '@fractaldesign/icons/lucide';
 	import { vars } from '../../../motion/index.js';
-	import { avatarSizeClass, hueFromName, initialsFromName, type AvatarSize } from './avatar.js';
-	import { getAvatarContext, type AvatarShape, type AvatarStatus } from './context.js';
+	import { hueFromName, initialsFromName } from './avatar.js';
+	import { getAvatarContext, type AvatarStatus } from './context.js';
+	import type { Shape, Size } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** The portrait. When it fails to load, the avatar falls back to initials, then to the icon. */
 		src?: string;
-		/** Alternative text for the portrait. Defaults to `name`. */
 		alt?: string;
-		/** The person's name. Used for initials, the deterministic hue, and the accessible label. */
 		name?: string;
-		/** The avatar's size. Inherited from an enclosing `AvatarGroup` when omitted. */
-		size?: AvatarSize;
-		/** The corner treatment: a circle, a rounded square, or a square. Inherited from an enclosing `AvatarGroup` when omitted. */
-		shape?: AvatarShape;
-		/** A presence indicator at the bottom-right corner. */
+		size?: Size;
+		shape?: Shape;
 		status?: AvatarStatus;
-		/** The fallback icon used when there is no image and no name to draw initials from. */
 		icon?: IconData;
-		/** Called whenever the portrait image transitions between loading, loaded, and error states. */
 		onStatusChange?: (status: 'loading' | 'loaded' | 'error') => void;
 	}
 
@@ -33,7 +26,7 @@
 		alt,
 		name,
 		size,
-		shape = 'circle',
+		shape = 'round',
 		status,
 		icon = luUser,
 		onStatusChange,
@@ -42,8 +35,8 @@
 	}: Props = $props();
 
 	const group = getAvatarContext();
-	const resolvedSize = $derived(size ?? group?.size ?? 'md');
-	const resolvedShape = $derived(shape ?? group?.shape ?? 'circle');
+	const resolvedSize = $derived(size ?? group?.size ?? 'h-lg');
+	const resolvedShape = $derived(shape ?? group?.shape ?? 'round');
 	const initials = $derived(name ? initialsFromName(name) : '');
 	const hue = $derived(name ? hueFromName(name) : undefined);
 
@@ -78,8 +71,7 @@
 			.join(', ')
 	);
 
-	const shapeClass = { circle: 'round', rounded: 'rounded', square: 'square' } as const;
-	const classes = $derived(['avatar', avatarSizeClass[resolvedSize as AvatarSize], shapeClass[resolvedShape], className]);
+		const classes = $derived(['avatar', resolvedSize, resolvedShape, className]);
 </script>
 
 <span

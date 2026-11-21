@@ -1,37 +1,26 @@
 <!-- @component A search field with a leading icon, a clear button, a loading state, and an optional keyboard shortcut. -->
 
 <script lang="ts">
-	import type { HTMLInputAttributes } from 'svelte/elements';
+	import type {  HTMLInputAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luLoaderCircle, luSearch } from '@fractaldesign/icons/lucide';
-	import type { Shape, Size, TextSize } from '../../../internal/tokens.js';
+	import type {  Shape, Size, TextColor, TextSize, Variant  } from '../../../internal/tokens.js';
 	import { Input } from '../input/index.js';
 
 	interface Props extends Omit<HTMLInputAttributes, 'size' | 'value' | 'type' | 'children' | 'disabled'> {
-		/** The query. Bindable; works controlled and uncontrolled. */
 		value?: string;
-		/** Called with the new text whenever it changes, including when it is cleared. */
 		onValueChange?: (value: string) => void;
-		/** Called with the current query after typing settles (250ms), and immediately when Enter is pressed. */
 		onSearch?: (value: string) => void;
-		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
-		/** The text scale, independent of the control height. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** The corner shape. @default 'modern' */
+		textColor?: TextColor;
 		shape?: Shape;
-		/** `outline` is a bordered field, `filled` a tinted one without a border, `ghost` is bare until hovered or focused. @default 'outline' */
-		look?: 'outline' | 'filled' | 'ghost';
-		/** Marks the field invalid (red border, `aria-invalid`). Inside a `Field` it follows the field's error unless set. */
+		variant?: Variant;
 		invalid?: boolean;
-		/** Shows a spinning indicator at the end of the field — for a search that is in flight. */
 		loading?: boolean;
-		/** A keyboard hint shown while the field is empty, and a shortcut that focuses the field when that key is pressed. */
 		shortcut?: string;
-		/** The underlying `<input>` element. Bindable. */
 		ref?: HTMLInputElement | null;
-			/** Blocks pointer and keyboard input, and dims the frame. */
-		disabled?: boolean | null;
+			disabled?: boolean | null;
 }
 
 	let {
@@ -40,8 +29,9 @@
 		onSearch,
 		size,
 		textSize,
+		textColor = 'text-muted',
 		shape,
-		look,
+		variant = 'ghost',
 		invalid,
 		loading = false,
 		shortcut,
@@ -51,6 +41,9 @@
 		onkeydown,
 		...rest
 	}: Props = $props();
+
+	const shortcutSize = $derived(size ?? 'h-md');
+	const shortcutText = $derived(textSize ?? 'text-xs');
 
 	let timer: ReturnType<typeof setTimeout> | undefined;
 
@@ -92,9 +85,9 @@
 
 {#snippet trailing()}
 	{#if loading}
-		<Icon icon={luLoaderCircle} class="anim-spin text-muted shrink-0" />
+		<Icon icon={luLoaderCircle} class={['anim-spin shrink-0', textColor]} />
 	{:else if shortcut && value === ''}
-		<kbd class="kbd h-md text-xs">{shortcut}</kbd>
+		<kbd class={['kbd', shortcutSize, shortcutText]}>{shortcut}</kbd>
 	{/if}
 {/snippet}
 
@@ -105,7 +98,7 @@
 	{size}
 	{textSize}
 	{shape}
-	{look}
+	{variant}
 	{invalid}
 	class={className}
 	type="search"

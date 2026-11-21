@@ -1,20 +1,18 @@
 <!-- @component The host that renders the pile. Mount once near the root of the app. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Measure, Placement  } from '../../../internal/tokens.js';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { createFlip, drag, springFly, vars, type DragState } from '../../../motion/index.js';
 	import Toast from './Toast.svelte';
 	import { claimToaster, toast, toaster, type ToastItem } from './toast.svelte.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Where the pile sits in the viewport. */
-		position?: 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end';
-		/** The number of toasts shown at once. Older ones wait until a slot is free. */
+		position?: Placement;
 		max?: number;
-		/** Default auto-dismiss time, in milliseconds. `0` keeps toasts until they are dismissed. Overridden per toast. */
 		duration?: number;
-		/** When true, the pile stays expanded. When false, it stacks and expands on hover or focus. */
 		expand?: boolean;
+		measure?: Measure;
 	}
 
 	let {
@@ -22,11 +20,12 @@
 		max = 3,
 		duration = 4000,
 		expand = false,
+		measure = 'measure-sm',
 		class: className,
 		...rest
 	}: Props = $props();
 
-	const layerClass: Record<NonNullable<Props['position']>, string> = {
+	const layerClass: Partial<Record<Placement, string>> = {
 		top: 'at-top',
 		'top-start': 'at-top-start',
 		'top-end': 'at-top-end',
@@ -66,21 +65,28 @@
 		return () => claim.release();
 	});
 
+	// The host is a manual popover, so it is in the top layer. It belongs there only
+	// while something is in it: open on the first toast, closed after the last is gone.
 	$effect(() => {
 		const node = layer;
 		if (!node || !isHost) return;
+		const occupied = visible.length > 0;
 		try {
-			node.showPopover();
+			if (occupied && !node.matches(':popover-open')) node.showPopover();
+			else if (!occupied && node.matches(':popover-open')) node.hidePopover();
 		} catch {
-			// already open, or the Popover API is missing
+			// the Popover API is not there; the layer still lays out
 		}
-		return () => {
-			try {
-				node.hidePopover();
-			} catch {
-				// already closed
-			}
-		};
+	});
+
+	$effect(() => () => {
+		const node = layer;
+		if (!node) return;
+		try {
+			if (node.matches(':popover-open')) node.hidePopover();
+		} catch {
+			// already closed
+		}
 	});
 
 
@@ -94,7 +100,7 @@
 
 	function arm(item: ToastItem) {
 		const dur = item.duration ?? duration;
-		if (dur <= 0 || item.tone === 'loading' || timers.has(item.id)) return;
+		if (dur <= 0 || item.loading || timers.has(item.id)) return;
 		const started = Date.now();
 		const id = window.setTimeout(() => void dismiss(item.id), dur);
 		timers.set(item.id, { remaining: dur, started, id });
@@ -165,7 +171,7 @@
 		{...rest}
 	>
 		<div
-			class={['pile measure-sm', fromTop && 'from-top', opened && 'open', 'gap-sm']}
+			class={['pile', measure, fromTop && 'from-top', opened && 'open', 'gap-sm']}
 			role="region"
 			aria-label="Notifications"
 			tabindex="-1"
@@ -189,6 +195,7 @@
 				>
 					<Toast
 						tone={item.tone}
+						loading={item.loading}
 						message={item.message}
 						description={item.description}
 						action={item.action}

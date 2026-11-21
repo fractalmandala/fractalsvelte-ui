@@ -5,7 +5,7 @@
 
 <Card class="measure-sm">
 	<CardTitle>Release highlights</CardTitle>
-	<Bleed inline="gap-bs">
+	<Bleed inline="bs">
 		<div class="bg-panel bt bb pad-md text-sm text-secondary">
 			Edge-to-edge callout band inside a padded container.
 		</div>

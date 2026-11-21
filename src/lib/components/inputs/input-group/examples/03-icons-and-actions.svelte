@@ -10,7 +10,7 @@
 
 <div class="measure-sm">
 	<InputGroup>
-		<InputGroupAddon align="start">
+		<InputGroupAddon align="start" gap="gap-sm">
 			<Icon icon={luSearch} class="text-muted" />
 		</InputGroupAddon>
 		<InputGroupInput
@@ -20,7 +20,7 @@
 			onValueChange={() => changes++}
 		/>
 		<InputGroupAddon align="end">
-			<InputGroupButton aria-label="Clear search" onclick={() => (query = '')}>
+			<InputGroupButton aria-label="Clear search" buttonProps={{ variant: 'secondary' }} onclick={() => (query = '')}>
 				<Icon icon={luX} />
 			</InputGroupButton>
 		</InputGroupAddon>

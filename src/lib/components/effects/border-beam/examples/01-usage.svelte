@@ -3,7 +3,7 @@
 	import { BorderBeam, Button } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
-<div class="relative overflow-hidden card box bg-surface border-subtle curved pad-lg gap-sm measure-sm">
+<div class="relative overflow-hidden box bg-surface border-subtle curved pad-lg gap-sm measure-sm">
 	<BorderBeam />
 	<p class="text-sm text-muted">Docs</p>
 	<p class="card-title">Search that already knows the repo</p>

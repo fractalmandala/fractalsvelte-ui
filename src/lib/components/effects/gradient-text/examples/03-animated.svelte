@@ -5,9 +5,9 @@
 
 <div class="box gap-md">
 	<p class="page-title">
-		<GradientText look="aurora" animated>Still compiling the preview</GradientText>
+		<GradientText gradient="aurora" animated>Still compiling the preview</GradientText>
 	</p>
 	<p class="page-heading-lg">
-		<GradientText look="theme" animated={false}>A still fill, for a heading that should not move.</GradientText>
+		<GradientText gradient="theme" animated={false}>A still fill, for a heading that should not move.</GradientText>
 	</p>
 </div>

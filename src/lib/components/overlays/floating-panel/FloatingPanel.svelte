@@ -1,43 +1,32 @@
 <!-- @component Non-modal draggable, collapsible, and pinnable floating tool panel. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  ComponentProps, Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { luMaximize2, luMinus, luPin, luPinOff, luX } from '@fractaldesign/icons/lucide';
 	import { IconButton } from '../../actions/icon-button/index.js';
-	import type { Shape, Surface } from '../../../internal/tokens.js';
+	import type {  Pad, Shape, Surface, TextSize  } from '../../../internal/tokens.js';
 	import { vars } from '../../../motion/index.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLElement>, 'title' | 'children'> {
-		/** Controls whether the panel is mounted/visible; bindable. */
 		open?: boolean;
-		/** Called when open state changes (for example via the close button or Escape). */
 		onOpenChange?: (open: boolean) => void;
-		/** Title shown in the draggable header bar. */
 		title: string;
-		/** Horizontal viewport offset in pixels; bindable. */
 		x?: number;
-		/** Vertical viewport offset in pixels; bindable. */
 		y?: number;
-		/** CSS panel width (for example `'22rem'`). */
 		width?: string;
-		/** Collapses the body and footer while keeping the header bar visible; bindable. */
 		minimized?: boolean;
-		/** Shows a pin button that locks panel dragging. */
 		pinnable?: boolean;
-		/** Prevents dragging when `true`; bindable. */
 		pinned?: boolean;
-		/** Shows a close button in the header. */
 		closable?: boolean;
-		/** Surface styling on the shared surface axis. */
+		pinButtonProps?: Partial<ComponentProps<typeof IconButton>>;
+		minimizeButtonProps?: Partial<ComponentProps<typeof IconButton>>;
+		closeButtonProps?: Partial<ComponentProps<typeof IconButton>>;
 		surface?: Surface;
-		/** Corner shape. */
 		shape?: Shape;
-		/** Panel body content. */
+		textSize?: TextSize;
 		children?: Snippet;
-		/** Extra controls rendered beside the window buttons in the header. */
 		headerActions?: Snippet;
-		/** Optional panel footer action row. */
 		footer?: Snippet;
 	}
 
@@ -52,8 +41,12 @@
 		pinnable = false,
 		pinned = $bindable(false),
 		closable = true,
+		pinButtonProps,
+		minimizeButtonProps,
+		closeButtonProps,
 		surface = 'elevated',
 		shape = 'curved',
+		textSize = 'text-sm',
 		children,
 		headerActions,
 		footer,
@@ -103,7 +96,7 @@
 		role="dialog"
 		aria-modal="false"
 		aria-label={title}
-		class={['floating-panel box pad-none overflow-hidden shad-lg', surface, shape, className]}
+		class={['floating-panel box pad-none overflow-hidden', surface, shape, className]}
 		{@attach vars({ 'panel-x': x, 'panel-y': y, 'panel-w': width })}
 		{...rest}
 	>
@@ -111,13 +104,13 @@
 			role="toolbar"
 			tabindex="-1"
 			aria-label={`${title} window controls`}
-			class={['row ycenter xbetween gap-sm px-md py-sm bb bg-panel', !pinned && (dragging ? 'grabbing' : 'grab')]}
+			class={['row ycenter xbetween gap-sm px-md py-sm bb', !pinned && (dragging ? 'grabbing' : 'grab')]}
 			onpointerdown={onHeaderPointerDown}
 			onpointermove={onHeaderPointerMove}
 			onpointerup={onHeaderPointerUp}
 			onpointercancel={onHeaderPointerUp}
 		>
-			<span class="text-sm weight-600 truncate">{title}</span>
+			<span class={['weight-600 truncate', textSize]}>{title}</span>
 			<div class="row ycenter gap-xs shrink-0">
 				{#if headerActions}
 					{@render headerActions()}
@@ -130,6 +123,7 @@
 						label={pinned ? 'Unpin panel' : 'Pin panel position'}
 						aria-pressed={pinned}
 						onclick={() => (pinned = !pinned)}
+						{...pinButtonProps}
 					/>
 				{/if}
 				<IconButton
@@ -139,19 +133,20 @@
 					label={minimized ? 'Expand panel' : 'Minimize panel'}
 					aria-expanded={!minimized}
 					onclick={() => (minimized = !minimized)}
+					{...minimizeButtonProps}
 				/>
 				{#if closable}
-					<IconButton variant="ghost" size="h-sm" icon={luX} label="Close panel" onclick={close} />
+					<IconButton variant="ghost" size="h-sm" icon={luX} label="Close panel" onclick={close} {...closeButtonProps} />
 				{/if}
 			</div>
 		</header>
 
 		{#if !minimized}
-			<div class="pad-md scroll-y">
+			<div class={['scroll-y', 'pad-md']}>
 				{@render children?.()}
 			</div>
 			{#if footer}
-				<footer class="px-md py-sm bt bg-panel row xright gap-sm">
+				<footer class="px-md py-sm bt row xright gap-sm">
 					{@render footer()}
 				</footer>
 			{/if}

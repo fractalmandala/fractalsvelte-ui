@@ -1,21 +1,15 @@
-/** One sampled pointer position on the pad. */
 export interface SignaturePadPoint {
 	x: number;
 	y: number;
 	pressure?: number | null;
 }
 
-/** How the ribbon is drawn. */
 export interface SignatureStrokeOptions {
-	/** Stroke width at full pressure, in px. Default 2. */
 	size?: number;
-	/** How much the ribbon narrows at low pressure, 0–1. Default 0.5. */
 	thinning?: number;
-	/** Derive pressure from the distance between samples when the device reports none. Default true. */
 	simulatePressure?: boolean;
 }
 
-/** A point on the ribbon outline, `[x, y]`. */
 export type StrokePoint = [number, number];
 
 const average = (a: number, b: number): number => (a + b) / 2;
@@ -34,12 +28,6 @@ function pressureAt(
 	return clamp(1 - distance / 40, 0.15, 1);
 }
 
-/**
- * The outline of the stroke through `points`: the left-hand samples, then the right-hand samples
- * reversed, which `getSvgPathFromStroke` closes into one filled ribbon. `smoothing` and `streamline`
- * are accepted for parity with the Zag props but the ribbon is smoothed by the mid-point quads in
- * `getSvgPathFromStroke` rather than by extra resampling.
- */
 export function getStroke(
 	points: readonly SignaturePadPoint[],
 	options: SignatureStrokeOptions = {}
@@ -71,7 +59,6 @@ export function getStroke(
 	return left.concat(right.reverse());
 }
 
-/** Serializes an outline into the closed `M`/`Q`/`T` path string Zag draws, verbatim. */
 export function getSvgPathFromStroke(points: readonly StrokePoint[], closed = true): string {
 	const len = points.length;
 	if (len < 4) return '';

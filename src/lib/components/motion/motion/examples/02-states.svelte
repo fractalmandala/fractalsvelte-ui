@@ -5,7 +5,7 @@
 
 <Motion
 	as="div"
-	class="card rim shad-md pad-lg measure-sm"
+	class="rim shad-md pad-lg measure-sm"
 	tabindex={0}
 	initial={{ y: 0, scale: 1 }}
 	animate={{ y: 0, scale: 1 }}

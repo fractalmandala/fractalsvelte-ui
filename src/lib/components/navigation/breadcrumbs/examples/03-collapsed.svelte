@@ -6,6 +6,10 @@
 
 <Breadcrumbs
 	maxItems={4}
+	textSize="text-md"
+	textColor="text-secondary"
+	size="h-lg"
+	shape="curved"
 	items={[
 		{ label: 'Atlas', href: '/', icon: luHouse },
 		{ label: 'North Atlantic', href: '/north-atlantic' },

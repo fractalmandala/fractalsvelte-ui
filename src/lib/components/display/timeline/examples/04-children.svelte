@@ -5,7 +5,16 @@
 </script>
 
 <Timeline class="measure-md">
-	<TimelineItem title="Build passed" time="06:04" icon={luCircleCheck} tone="success">
+	<TimelineItem
+		title="Build passed"
+		time="06:04"
+		icon={luCircleCheck}
+		tone="success"
+		textSize="text-md"
+		textColor="text-primary"
+		childTextColor="text-secondary"
+		shape="modern"
+	>
 		<p class="text-sm text-secondary">The gate finished in 47 seconds.</p>
 	</TimelineItem>
 	<TimelineItem

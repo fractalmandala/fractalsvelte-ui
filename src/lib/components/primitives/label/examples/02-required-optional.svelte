@@ -1,4 +1,4 @@
-<!-- @example Required and optional :: Mark the fields that must be filled with required, and the ones that may be left empty with optional. -->
+<!-- @example Required and optional :: Mark the fields that must be filled with required, and the ones that may be left empty with optional, in its own ink. -->
 <script lang="ts">
 	import { Label } from '@fractaldesign/fractalsvelte-ui';
 </script>
@@ -9,7 +9,7 @@
 		<input id="work-email" class="input h-lg" type="email" required autocomplete="email" />
 	</div>
 	<div class="box gap-xs">
-		<Label for="company" optional>Company</Label>
+		<Label for="company" optional textColor="text-secondary">Company</Label>
 		<input id="company" class="input h-lg" type="text" autocomplete="organization" />
 	</div>
 </form>

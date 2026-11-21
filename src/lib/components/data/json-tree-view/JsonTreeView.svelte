@@ -1,7 +1,7 @@
 <!-- @component Collapsible JSON and JavaScript value inspector with syntax highlighting and value copy. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { SvelteSet } from 'svelte/reactivity';
 	import {
 		jsonToTree,
@@ -9,21 +9,20 @@
 		type JsonNode,
 		type JsonNodePreviewOptions
 	} from './json.js';
+	import { type Pad, type Shape, type Surface, type TextSize } from '../../../internal/tokens.js';
 	import JsonNodeRow from './JsonNodeRow.svelte';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Any JSON-serialisable value or plain object to inspect. */
 		data: unknown;
-		/** How many nesting levels start expanded automatically. */
 		defaultExpandedDepth?: number;
-		/** Label displayed for the root entry. */
 		rootName?: string;
-		/** Sort plain object keys alphabetically before displaying. */
 		sortKeys?: boolean;
-		/** Show a copy button on each node row. */
 		copyable?: boolean;
-		/** Truncate long string previews beyond this character length. */
 		maxStringLength?: number;
+		surface?: Surface;
+		shape?: Shape;
+		pad?: Pad;
+		textSize?: TextSize;
 	}
 
 	let {
@@ -33,6 +32,10 @@
 		sortKeys = false,
 		copyable = true,
 		maxStringLength = 60,
+		surface = 'elevated',
+		shape = 'modern',
+		pad = 'pad-sm',
+		textSize = 'text-sm',
 		class: className,
 		...rest
 	}: Props = $props();
@@ -104,7 +107,7 @@
 <div
 	role="tree"
 	aria-label={`${rootName} JSON tree`}
-	class={['font-mono text-sm outlined modern bg-surface pad-sm overflow-auto', className]}
+	class={['font-mono scroll-y', surface, shape, pad, textSize, className]}
 	{...rest}
 >
 	<JsonNodeRow

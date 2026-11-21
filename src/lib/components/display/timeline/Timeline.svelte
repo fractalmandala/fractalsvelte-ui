@@ -1,35 +1,26 @@
 <!-- @component A vertical list of events on a rail, with staggered spring reveals. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import type { IconData } from '@fractaldesign/icons';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  IconData  } from '@fractaldesign/icons';
 	import { stagger } from '../../../motion/index.js';
-	import type { Tone } from '../../../internal/tokens.js';
+	import type {  Tone, TextAlign  } from '../../../internal/tokens.js';
 
 	import TimelineItem from './TimelineItem.svelte';
 
 	interface TimelineEvent {
-		/** The heading for this event. */
 		title: string;
-		/** Optional supporting copy. */
 		description?: string;
-		/** When the event happened, shown as a quiet timestamp. */
 		time?: string;
-		/** An icon drawn in the rail instead of the default dot. */
 		icon?: IconData;
-		/** Colour of the rail marker. */
 		tone?: Tone;
 	}
 
 	interface Props extends HTMLAttributes<HTMLOListElement> {
-		/** The events to render. When omitted, `children` (usually `TimelineItem`s) are used. */
 		items?: TimelineEvent[];
-		/** Which side of the rail the bodies sit on. */
-		align?: 'left' | 'right';
-		/** Swings the bodies to both sides of the rail, alternating item by item. */
+		align?: TextAlign;
 		alternate?: boolean;
-		/** Custom items, used when `items` is omitted. */
 		children?: Snippet;
 	}
 

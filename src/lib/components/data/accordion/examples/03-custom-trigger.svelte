@@ -5,7 +5,7 @@
 	let value = $state<string | null>('changelog');
 </script>
 
-<Accordion bind:value  look="flush" collapsible headingLevel={4}>
+<Accordion bind:value  grouping="flush" collapsible headingLevel={4}>
 	<AccordionItem value="changelog">
 		{#snippet trigger()}
 			<span class="box">

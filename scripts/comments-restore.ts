@@ -6,7 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { commentsPath, componentFolders, insertDocs, readComments, writeSource } from './lib/comments.ts';
-import { readText } from './lib/util.ts';
+import { PATHS, readText } from './lib/util.ts';
 
 const argv = process.argv.slice(2);
 const [kit = null, name = null] = (argv.find((a) => !a.startsWith('-')) ?? '')
@@ -14,12 +14,23 @@ const [kit = null, name = null] = (argv.find((a) => !a.startsWith('-')) ?? '')
 	.replace(/\/+$/, '')
 	.split('/');
 const scope = { kit: kit || null, name: name || null };
+
+/** A plain folder under `src/lib` — not a kit, but it carries prose too. */
+function foldersUnderLib(): { kit: string | null; slug: string; dir: string; relDir: string }[] {
+	const plain = ['internal', 'motion', 'theme', 'docs'];
+	const wanted = plain.filter((d) => (kit ? kit === d : false));
+	return wanted.map((d) => ({
+		kit: null,
+		slug: d,
+		dir: path.join(PATHS.lib, d),
+		relDir: `src/lib/${d}`
+	}));
+}
 const dryRun = argv.includes('--dry-run');
 const clean = argv.includes('--clean');
 
-const folders = componentFolders().filter(
-	(f) => (!scope.kit || f.kit === scope.kit) && (!scope.name || f.slug === scope.name)
-);
+const extra = foldersUnderLib();
+const folders = [...componentFolders().filter((f) => (!scope.kit || f.kit === scope.kit) && (!scope.name || f.slug === scope.name)), ...extra];
 if (!folders.length) {
 	console.log('usage: pnpm comments:restore [kit[/name]] [--dry-run]');
 	process.exit(2);

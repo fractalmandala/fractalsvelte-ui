@@ -5,28 +5,21 @@
  * QR Code generator (MIT). See THIRD_PARTY_NOTICES.md.
  */
 
-/** Error-correction level, lowest to highest redunancy. */
 export type QrCodeEcc = 'L' | 'M' | 'Q' | 'H';
 
 interface EccLevel {
-	/** Row index into the two per-block tables. */
 	table: number;
-	/** The three format bits this level writes. */
 	formatBits: number;
 }
 
-/** One run of encoded text in a single mode. */
 interface Segment {
 	mode: number[];
 	numChars: number;
 	bits: number[];
 }
 
-/** What `qrEncode` returns: the module matrix plus how it was decided. */
 export interface QrMatrix {
-	/** Rows and columns, border included. */
 	size: number;
-	/** `data[row][col]` — true is a dark module. */
 	data: boolean[][];
 	version: number;
 	maskPattern: number;
@@ -34,17 +27,11 @@ export interface QrMatrix {
 }
 
 export interface QrEncodeOptions {
-	/** Error correction. Default `L`. */
 	ecc?: QrCodeEcc;
-	/** Use the highest level that still fits. Default `false`. */
 	boostEcc?: boolean;
-	/** Default 1. */
 	minVersion?: number;
-	/** Default 40. */
 	maxVersion?: number;
-	/** -1 picks the best mask by penalty. Default -1. */
 	maskPattern?: number;
-	/** Quiet zone, in modules. Default 1. */
 	border?: number;
 }
 
@@ -599,7 +586,6 @@ function buildSymbol(
 	return new QrSymbol(version, level, codewords, mask);
 }
 
-/** Encode `value` into a QR module matrix. */
 export function qrEncode(value: string, encoding: QrEncodeOptions = {}): QrMatrix {
 	const {
 		ecc = 'L',
@@ -662,7 +648,6 @@ export function qrEncode(value: string, encoding: QrEncodeOptions = {}): QrMatri
 	};
 }
 
-/** Serialize the dark modules of a matrix into a single SVG path. */
 export function qrPatternPath(matrix: QrMatrix, pixelSize: number): string {
 	const paths: string[] = [];
 

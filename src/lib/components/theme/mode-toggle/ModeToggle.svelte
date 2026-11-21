@@ -1,7 +1,7 @@
 <!-- @component Switches between light, dark and system mode with a circular reveal from the click point. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luMonitor, luMoon, luSun } from '@fractaldesign/icons/lucide';
 	import { Button } from '../../actions/button/index.js';
@@ -75,9 +75,9 @@ import { type Size } from '../../../internal/tokens.js';
 
 {#if form === 'icon'}
 	<Button
-		{...rest}
 		variant="ghost"
 		{size}
+		{...rest}
 		class={['btn-icon', className]}
 		aria-label={withSystem ? `${label}: ${current}. Switch to ${cycle}` : label}
 		aria-pressed={withSystem ? undefined : dark}

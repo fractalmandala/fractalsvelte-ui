@@ -15,7 +15,7 @@
 	</div>
 	<Button variant="secondary" onclick={() => (show = !show)}>{show ? 'Hide' : 'Show'}</Button>
 	<Presence {show} enter={preset} exit={preset} spring="snappy">
-		<div class="card rim shad-md pad-lg">
+		<div class="rim shad-md pad-lg">
 			<p class="text-sm text-muted">{preset}</p>
 			<p class="weight-500">The Saturday magazine cover</p>
 		</div>

@@ -12,4 +12,5 @@
 `;
 </script>
 
-<Code form="block" code={source} lang="ts" filename="formatUsd.ts" />
+<Code
+		copyButtonProps={{ variant: 'secondary' }} form="block" code={source} lang="ts" filename="formatUsd.ts" shape="modern" />

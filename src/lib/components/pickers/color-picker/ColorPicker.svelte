@@ -1,29 +1,29 @@
 <!-- @component A saturation-brightness area, hue slider and optional alpha slider for picking a CSS colour, in hex, rgb or oklch. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luPipette } from '@fractaldesign/icons/lucide';
 	import { vars } from '../../../motion/index.js';
-	
+	import { type Gap, type Measure, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
+	import { frameClasses } from '../../inputs/input/frame.js';
 	import { equalHsv, formatColor, formatSolid, parseColor, type ColorFormat, type Hsv } from './color.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The colour as a CSS string in the current `format`. Bindable. */
 		value?: string;
-		/** Called whenever the person changes the colour. */
 		onValueChange?: (value: string) => void;
-		/** The CSS notation used for `value` and the text field. */
 		format?: ColorFormat;
-		/** Quick-pick colours listed under the sliders. */
 		swatches?: string[];
-		/** Shows an alpha slider and includes alpha in the CSS string. */
 		alpha?: boolean;
-		/** Blocks pointer and keyboard input. */
+		measure?: Measure;
+		size?: Size;
+		trackSize?: Size;
+		thumbSize?: Size;
+		shape?: Shape;
+		textSize?: TextSize;
+		gap?: Gap;
 		disabled?: boolean;
-		/** The name of the hidden input that carries the CSS colour in a form submission. */
 		name?: string;
-		/** Accessible name of the picker. */
 		label?: string;
 	}
 
@@ -33,6 +33,13 @@
 		format = 'hex',
 		swatches,
 		alpha = false,
+		measure = 'measure-xs',
+		size = 'h-lg',
+		trackSize = 'h-sm',
+		thumbSize = 'h-md',
+		shape = 'modern',
+		textSize = 'text-md',
+		gap = 'gap-sm',
 		disabled = false,
 		name,
 		label,
@@ -276,7 +283,7 @@
 </script>
 
 <div
-	class={['box gap-sm measure-xs text-md', disabled && 'disabled', className]}
+	class={['box', gap, measure, textSize, disabled && 'disabled', className]}
 	{@attach vars({ angle: hsv.h, color: css, 'color-solid': solid })}
 	{...rest}
 >
@@ -290,14 +297,14 @@
 		aria-valuenow={Math.round(hsv.s * 100)}
 		aria-valuetext={`Saturation ${Math.round(hsv.s * 100)}%, brightness ${Math.round(hsv.v * 100)}%`}
 		aria-disabled={disabled || undefined}
-		class={['plane relative wfull frame-3-2 modern overflow-hidden', disabled ? 'disabled' : 'pointer touch-none']}
+		class={['plane relative wfull frame-3-2 overflow-hidden', shape, disabled ? 'disabled' : 'pointer touch-none']}
 		onpointerdown={planeDown}
 		onpointermove={planeMove}
 		onpointerup={up}
 		onpointercancel={up}
 		onkeydown={planeKey}
 	>
-		<div class="thumb free h-md border" {@attach vars({ vx, vy })}></div>
+		<div class={['thumb free', thumbSize]} {@attach vars({ vx, vy })}></div>
 	</div>
 
 	<div
@@ -310,14 +317,14 @@
 		aria-valuenow={Math.round(hsv.h)}
 		aria-valuetext={`${Math.round(hsv.h)} degrees`}
 		aria-disabled={disabled || undefined}
-		class={['track spectrum relative wfull h-sm', disabled ? 'disabled' : 'pointer touch-none']}
+		class={['track spectrum relative wfull', trackSize, disabled ? 'disabled' : 'pointer touch-none']}
 		onpointerdown={hueDown}
 		onpointermove={hueMove}
 		onpointerup={up}
 		onpointercancel={up}
 		onkeydown={hueKey}
 	>
-		<div class="thumb h-md" {@attach vars({ value: hsv.h / 360 })}></div>
+		<div class={['thumb', thumbSize]} {@attach vars({ value: hsv.h / 360 })}></div>
 	</div>
 
 	{#if alpha}
@@ -331,33 +338,35 @@
 			aria-valuenow={Math.round(hsv.a * 100)}
 			aria-valuetext={`${Math.round(hsv.a * 100)}%`}
 			aria-disabled={disabled || undefined}
-			class={['track alpha-fade relative wfull h-sm', disabled ? 'disabled' : 'pointer touch-none']}
+			class={['track alpha-fade relative wfull', trackSize, disabled ? 'disabled' : 'pointer touch-none']}
 			onpointerdown={alphaDown}
 			onpointermove={alphaMove}
 			onpointerup={up}
 			onpointercancel={up}
 			onkeydown={alphaKey}
 		>
-			<div class="thumb h-md" {@attach vars({ value: hsv.a })}></div>
+			<div class={['thumb', thumbSize]} {@attach vars({ value: hsv.a })}></div>
 		</div>
 	{/if}
 
 	<div class="row ycenter gap-sm">
-		<div class="swatch square h-xl modern shrink-0 border" {@attach vars({ color: css })} aria-hidden="true"></div>
-		<input
-			type="text"
-			class="input grow bg-input border modern h-lg text-sm font-mono"
-			spellcheck="false"
-			autocomplete="off"
-			aria-label={label ? `${label} colour value` : 'Colour value'}
-			{disabled}
-			value={draft}
-			oninput={(e) => (draft = (e.currentTarget as HTMLInputElement).value)}
-			onchange={applyText}
-			onkeydown={(e) => e.key === 'Enter' && applyText()}
-		/>
+		<div class={['swatch square shrink-0 border', size, shape]} {@attach vars({ color: css })} aria-hidden="true"></div>
+		<div class={[...frameClasses({ variant: 'outline', size, textSize, shape, invalid: false, disabled }), 'grow wmin0']}>
+			<input
+				type="text"
+				class="bare grow wmin0 hfull font-mono"
+				spellcheck="false"
+				autocomplete="off"
+				aria-label={label ? `${label} colour value` : 'Colour value'}
+				{disabled}
+				value={draft}
+				oninput={(e) => (draft = (e.currentTarget as HTMLInputElement).value)}
+				onchange={applyText}
+				onkeydown={(e) => e.key === 'Enter' && applyText()}
+			/>
+		</div>
 		{#if hasEye}
-			<button type="button" class="button btn-icon ghost modern h-lg" aria-label="Pick a colour from the screen" {disabled} onclick={eyeDrop}>
+			<button type="button" class={['button btn-icon ghost', size, shape]} aria-label="Pick a colour from the screen" {disabled} onclick={eyeDrop}>
 				<Icon icon={luPipette} />
 			</button>
 		{/if}
@@ -368,7 +377,7 @@
 			{#each swatches as colour (colour)}
 				<button
 					type="button"
-					class={['cell swatch focus-ring h-lg', swatchOn(colour) && 'selected']}
+					class={['cell swatch focus-ring', size, swatchOn(colour) && 'selected']}
 					aria-label={colour}
 					aria-pressed={swatchOn(colour)}
 					{disabled}

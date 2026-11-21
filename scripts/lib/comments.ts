@@ -379,7 +379,19 @@ export function readComments(dir: string): DocEntry[] | null {
 }
 
 export function writeComments(dir: string, relDir: string, entries: DocEntry[]): void {
-	fs.writeFileSync(commentsPath(dir), renderMarkdown(relDir, entries), 'utf8');
+	const existing = readText(commentsPath(dir));
+	// merge: an annotation already recorded stays recorded, and a new one wins
+	const key = (e: DocEntry) => `${e.file}\u0000${e.label}\u0000${e.path}`;
+	const merged = new Map<string, DocEntry>();
+	for (const e of readComments(dir) ?? []) merged.set(key(e), e);
+	for (const e of entries) merged.set(key(e), e);
+	entries = [...merged.values()];
+	// The page prose lives in the same file as a `<!-- doc … -->` block; stripping
+	// more annotations into it must not throw that away.
+	const prose = existing?.match(/<!--\s*doc[\s\S]*?-->/)?.[0];
+	const body = renderMarkdown(relDir, entries);
+	const text = prose ? body.replace(MARKER, `${MARKER}\n\n${prose}`) : body;
+	fs.writeFileSync(commentsPath(dir), text, 'utf8');
 }
 
 export function writeSource(file: string, text: string): void {

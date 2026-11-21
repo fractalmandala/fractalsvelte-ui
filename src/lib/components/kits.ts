@@ -1,4 +1,3 @@
-/** The kits, in documentation order. A kit is a folder in `src/lib/components`. */
 export interface Kit {
 	id: string;
 	title: string;

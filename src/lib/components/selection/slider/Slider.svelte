@@ -1,38 +1,28 @@
 <!-- @component A single-value or range slider with pointer drag, full keyboard control and a springing thumb. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
-	import { type Orientation, type Size, type TextSize } from '../../../internal/tokens.js';
+	import { type ChildTextSize, type Orientation, type Shape, type Size, type Surface, type TextColor, type TextSize } from '../../../internal/tokens.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The value, or a `[low, high]` pair for a range. Two-way bindable. */
 		value?: number | [number, number];
-		/** The smallest value. */
 		min?: number;
-		/** The largest value. */
 		max?: number;
-		/** The increment values snap to, for pointer and keyboard alike. */
 		step?: number;
-		/** Lays the track out left to right (`horizontal`) or bottom to top (`vertical`). */
 		orientation?: Orientation;
-		/** Draws ticks: `true` for one per step, or a list of positions with optional labels. */
 		marks?: boolean | { value: number; label?: string }[];
-		/** Shows the current value in a bubble above the thumb on hover, focus and drag. */
 		showValue?: boolean;
-		/** Formats the value for the bubble and for assistive technology. */
 		format?: (value: number) => string;
-		/** The track thickness, thumb size and text scale. */
 		size?: Size;
-		/** The text scale, independent of the track. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** Accessible name of the slider; a range appends "minimum" and "maximum". */
+		childTextSize?: ChildTextSize;
+		childTextColor?: TextColor;
+		shape?: Shape;
+		surface?: Surface;
 		label?: string;
-		/** Blocks pointer and keyboard input. */
 		disabled?: boolean;
-		/** The field name; a hidden input per thumb submits the value with a form. */
 		name?: string;
-		/** Called whenever the value changes, with the new value. */
 		onValueChange?: (value: number | [number, number]) => void;
 	}
 
@@ -47,6 +37,10 @@
 		format,
 		size = 'h-lg',
 		textSize,
+		childTextSize = 'text-xs',
+		childTextColor = 'text-muted',
+		shape = 'modern',
+		surface = 'overlayed',
 		label,
 		disabled = false,
 		name,
@@ -188,11 +182,11 @@
 	<div bind:this={track} class={['track slim', vertical ? 'track-v vertical' : 'wfull', disabled ? 'disabled' : 'pointer']}>
 		<div
 			class={['fill', !dragging && 'glide', 'spring-bouncy']}
-			{@attach vars({ value: frac(vals[vals.length - 1]), from: range ? frac(vals[0]) : 0 })}
+			{@attach vars({ value: frac(vals[vals.length - 1]) })}
 		></div>
 		{#each ticks as tick (tick.value)}
 			<span class="tick" {@attach vars({ value: frac(tick.value) })}>
-				{#if tick.label}<span class="tick-label text-xs text-muted tabular-nums">{tick.label}</span>{/if}
+				{#if tick.label}<span class={['tick-label tabular-nums', childTextSize, childTextColor]}>{tick.label}</span>{/if}
 			</span>
 		{/each}
 		{#each vals as v, i (i)}
@@ -213,7 +207,7 @@
 				onkeydown={(e) => key(e, i)}
 			>
 				{#if showValue}
-					<span class="bubble bg-overlay border rim modern text-xs tabular-nums" aria-hidden="true">{show(v)}</span>
+					<span class={['bubble tabular-nums', surface, shape, childTextSize]} aria-hidden="true">{show(v)}</span>
 				{/if}
 			</div>
 		{/each}

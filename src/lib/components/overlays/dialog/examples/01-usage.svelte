@@ -3,7 +3,7 @@
 	import { Button, Dialog } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
-<Dialog surface="solid" title="Invite teammates" description="They will get an email with a link to join the Northwind workspace.">
+<Dialog surface="overlayed" title="Invite teammates" description="They will get an email with a link to join the Northwind workspace." closeButtonProps={{ variant: 'secondary' }}>
 	{#snippet trigger({ props })}
 		<Button {...props}>Invite teammates</Button>
 	{/snippet}

@@ -4,7 +4,17 @@
 </script>
 
 <div class="grid-2 gap-xl">
-	<Stat label="New subscribers" value={1840} delta={12.5} trend="up" hint="vs last week" />
+	<Stat
+		label="New subscribers"
+		value={1840}
+		delta={12.5}
+		trend="up"
+		hint="vs last week"
+		textSize="text-2xl"
+		childTextSize="text-md"
+		textColor="text-secondary"
+		iconTextSize="text-lg"
+	/>
 	<Stat label="Churned seats" value={46} delta={-3.1} trend="down" hint="vs last week" />
 	<Stat label="Active workspaces" value={312} delta={0} trend="flat" hint="No change this week" />
 	<Stat

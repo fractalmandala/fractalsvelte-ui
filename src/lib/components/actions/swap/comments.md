@@ -44,8 +44,9 @@ The JSDoc for this folder’s source lives here. `pnpm comments:restore` puts it
 - `size` :: Square control size on the shared size ladder.
 - `textSize` :: The text/icon scale, independent of the control height.
 - `textColor` :: The icon colour. Defaults to `text-inverse` on dark variants, `text-primary` on light ones.
-- `shape` :: Corner shape.
-- `disabled` :: Disables toggling.
+- `alignContent` :: How the icon sits across the button on the container-alignment axis. @default 'xcenter'
+- `shape` :: The corner shape of the square button, from `rect` to fully rounded. @default 'modern'
+- `disabled` :: Keeps the current state: clicks are ignored and the button dims.
 - `label` :: Accessible label describing the toggle action.
 - `on` :: Content displayed when `active` is true.
 - `off` :: Content displayed when `active` is false.

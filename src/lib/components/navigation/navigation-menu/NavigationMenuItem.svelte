@@ -1,21 +1,19 @@
 <!-- @component A trigger that opens a flyout panel, identified by a value. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import type { OverlayTrigger } from '../../overlays/dialog/dialog.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  OverlayTrigger  } from '../../overlays/dialog/dialog.js';
+	import type { Size, TextColor } from '../../../internal/tokens.js';
 	import { getNavigationMenu, setNavigationMenuItem } from './navigation-menu.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The value this item contributes to the menu when its panel is open. */
 		value: string;
-		/** The default trigger label. Ignored when `trigger` is provided. */
 		label?: string;
-		/** The button that opens the panel. Spread `props` onto your own button. */
 		trigger?: Snippet<[OverlayTrigger]>;
-		/** Disables the trigger and prevents the panel from opening. */
 		disabled?: boolean;
-		/** The `NavigationMenuContent` for this item. */
+		size?: Size;
+		textColor?: TextColor;
 		children?: Snippet;
 	}
 
@@ -24,6 +22,8 @@
 		label = '',
 		trigger,
 		disabled = false,
+		size = 'h-lg',
+		textColor = 'text-secondary',
 		children,
 		class: className,
 		...rest
@@ -109,8 +109,9 @@
 			aria-disabled={disabled || undefined}
 			disabled={disabled || undefined}
 			class={[
-				'bare relative z-raised row ycenter gap-sm px-md h-lg weight-500 focus-ring select-none',
-				open ? '' : 'text-secondary'
+				'bare relative z-raised row ycenter gap-sm px-md weight-500 focus-ring select-none',
+				size,
+				open ? '' : textColor
 			]}
 			onclick={onClick}
 			onkeydown={onKeydown}

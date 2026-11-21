@@ -1,10 +1,10 @@
 <!-- @component Freehand signature pad on a high-DPI canvas with pressure strokes, baseline guide, and PNG export. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luRotateCcw } from '@fractaldesign/icons/lucide';
-	import type { Shape } from '../../../internal/tokens.js';
+	import type {  Shape, Size, Surface, TextColor  } from '../../../internal/tokens.js';
 	import {
 		getStroke,
 		getSvgPathFromStroke,
@@ -12,23 +12,17 @@
 	} from './signature-pad-stroke.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Recorded SVG path strings for each completed stroke; bindable. */
 		paths?: string[];
-		/** Called whenever the stroke list updates (draw or clear). */
 		onPathsChange?: (paths: string[]) => void;
-		/** Called after lifting the pointer with a PNG data URL of the signature. */
 		onEnd?: (dataUrl: string) => void;
-		/** Nominal stroke width multiplier. */
 		lineWidth?: number;
-		/** Show a clear action button in the top-right corner when ink exists. */
 		showClear?: boolean;
-		/** Draw a dashed signature baseline guide inside the pad. */
 		showGuide?: boolean;
-		/** Corner shape. */
 		shape?: Shape;
-		/** Disables drawing and clearing. */
+		surface?: Surface;
+		size?: Size;
+		textColor?: TextColor;
 		disabled?: boolean;
-		/** Accessible label describing what is being signed. */
 		label?: string;
 	}
 
@@ -40,6 +34,9 @@
 		showClear = true,
 		showGuide = true,
 		shape = 'modern',
+		surface = 'elevated',
+		size = 'h-sm',
+		textColor = 'text-muted',
 		disabled = false,
 		label = 'Signature pad',
 		class: className,
@@ -136,7 +133,8 @@
 
 <div
 	class={[
-		'relative frame-3-2 bg-surface border overflow-hidden',
+		'relative frame-3-2 overflow-hidden',
+		surface,
 		shape,
 		disabled && 'disabled',
 		className
@@ -158,7 +156,7 @@
 	{#if showClear && paths.length > 0 && !disabled}
 		<button
 			type="button"
-			class="button btn-icon ghost h-sm modern corner-tr text-muted"
+			class={['button btn-icon ghost corner-tr', size, shape, textColor]}
 			aria-label="Clear signature"
 			onclick={clear}
 		>

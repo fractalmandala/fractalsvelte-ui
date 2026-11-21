@@ -1,14 +1,12 @@
 <!-- @component The card heading, at a configurable level. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { getCardContext, titleClass } from './context.js';
 
 	interface Props extends HTMLAttributes<HTMLHeadingElement> {
-		/** The heading level, 1 to 6. Pick the one that fits the page outline. */
 		level?: 1 | 2 | 3 | 4 | 5 | 6;
-		/** The title text. */
 		children?: Snippet;
 	}
 

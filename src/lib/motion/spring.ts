@@ -1,41 +1,13 @@
-/**
- * The spring solver — pure maths, no DOM, no imports.
- *
- * This module is imported both by the library (the JS spring engine, the
- * Svelte transitions) and by `scripts/gen-springs.ts` under plain Node, which
- * is why it imports nothing and uses only erasable TypeScript syntax.
- *
- * Model: a damped harmonic oscillator `m·x'' = −k·(x − to) − c·x'`, solved
- * analytically for the under-, critically- and over-damped cases.
- */
-
-/** Physical spring parameters. Units are SI-like: time in seconds, mass 1 by convention. */
 export interface SpringConfig {
-	/** Spring constant `k` — higher is faster and tighter. */
 	stiffness: number;
-	/** Damping coefficient `c` — higher removes more oscillation. Critical damping is `2·√(k·m)`. */
 	damping: number;
-	/** Mass `m` — higher is heavier and slower. */
 	mass: number;
 }
 
-/** The named spring presets shared by CSS (`--spring-<name>`) and JS. */
 export type SpringPreset = 'gentle' | 'snappy' | 'bouncy' | 'stiff' | 'slow';
 
-/** A preset name, or a partial config merged over the `snappy` preset. */
 export type SpringInput = SpringPreset | Partial<SpringConfig>;
 
-/**
- * The preset table, in physical units with mass 1.
- *
- * | preset | feel | settle | overshoot |
- * |:--|:--|:--|:--|
- * | `stiff`  | very fast, no overshoot          | ≈ 225 ms | none |
- * | `snappy` | quick, near-critically damped    | ≈ 355 ms | < 1 % |
- * | `gentle` | soft                             | ≈ 560 ms | < 1 % |
- * | `bouncy` | playful, visible overshoot       | ≈ 690 ms | ≈ 15 % |
- * | `slow`   | deliberate, large surfaces       | ≈ 900 ms | none |
- */
 export const springs: Record<SpringPreset, SpringConfig> = {
 	gentle: { stiffness: 240, damping: 26, mass: 1 },
 	snappy: { stiffness: 670, damping: 44, mass: 1 },
@@ -44,15 +16,8 @@ export const springs: Record<SpringPreset, SpringConfig> = {
 	slow: { stiffness: 90, damping: 19, mass: 1 }
 };
 
-/** Default rest threshold, as a fraction of the travelled distance. */
 const REST_DELTA = 0.002;
 
-/**
- * Resolve a preset name or partial config into a complete {@link SpringConfig}.
- * Partial configs are merged over the `snappy` preset; non-positive or
- * non-finite values fall back to the preset's.
- * @param input A preset name or partial config. Defaults to `'snappy'`.
- */
 export function resolveSpring(input?: SpringInput): SpringConfig {
 	if (input === undefined) return springs.snappy;
 	if (typeof input === 'string') return springs[input] ?? springs.snappy;
@@ -66,7 +31,6 @@ export function resolveSpring(input?: SpringInput): SpringConfig {
 	};
 }
 
-/** Displacement and velocity of the oscillator (relative to `to`) at time `t`. */
 function solve(config: SpringConfig, t: number, from: number, to: number, velocity: number): [number, number] {
 	const { stiffness: k, damping: c, mass: m } = config;
 	const x0 = from - to;
@@ -107,40 +71,16 @@ function solve(config: SpringConfig, t: number, from: number, to: number, veloci
 	return [C1 * e1 + C2 * e2, C1 * r1 * e1 + C2 * r2 * e2];
 }
 
-/**
- * Analytic damped-harmonic-oscillator position at time `t` (seconds),
- * handling the under-, critically- and over-damped cases exactly.
- * @param config The physical spring.
- * @param t Time in seconds since release.
- * @param from Start position. Defaults to `0`.
- * @param to Target (rest) position. Defaults to `1`.
- * @param velocity Initial velocity in units per second. Defaults to `0`.
- */
 export function springPosition(config: SpringConfig, t: number, from = 0, to = 1, velocity = 0): number {
 	return to + solve(config, t, from, to, velocity)[0];
 }
 
-/**
- * Analytic velocity (units per second) of the oscillator at time `t` (seconds).
- * @param config The physical spring.
- * @param t Time in seconds since release.
- * @param from Start position. Defaults to `0`.
- * @param to Target (rest) position. Defaults to `1`.
- * @param velocity Initial velocity in units per second. Defaults to `0`.
- */
 export function springVelocity(config: SpringConfig, t: number, from = 0, to = 1, velocity = 0): number {
 	return solve(config, t, from, to, velocity)[1];
 }
 
 const durationCache = new Map<string, number>();
 
-/**
- * Settle time in milliseconds for a unit move (0 → 1, at rest): the first
- * moment after which the position stays within `restDelta` of the target and
- * the velocity stays below `restDelta × 10` per second. Results are cached.
- * @param input A preset name or partial config. Defaults to `'snappy'`.
- * @param restDelta Rest threshold as a fraction of the distance. Defaults to `0.002`.
- */
 export function springDuration(input?: SpringInput, restDelta = REST_DELTA): number {
 	const config = resolveSpring(input);
 	const key = `${config.stiffness}|${config.damping}|${config.mass}|${restDelta}`;
@@ -159,7 +99,6 @@ export function springDuration(input?: SpringInput, restDelta = REST_DELTA): num
 	return ms;
 }
 
-/** Perpendicular distance from point p to the segment a–b (in normalised plot space). */
 function segmentDistance(p: [number, number], a: [number, number], b: [number, number]): number {
 	const dx = b[0] - a[0];
 	const dy = b[1] - a[1];
@@ -170,7 +109,6 @@ function segmentDistance(p: [number, number], a: [number, number], b: [number, n
 	return Math.hypot(p[0] - (a[0] + u * dx), p[1] - (a[1] + u * dy));
 }
 
-/** Ramer–Douglas–Peucker simplification: keep only points that matter. */
 function simplify(points: [number, number][], epsilon: number): [number, number][] {
 	if (points.length < 3) return points;
 	const keep = new Array<boolean>(points.length).fill(false);
@@ -198,20 +136,11 @@ function simplify(points: [number, number][], epsilon: number): [number, number]
 	return points.filter((_, i) => keep[i]);
 }
 
-/** Format a number with fixed precision and no trailing zeros (`-0` → `0`). */
 function fmt(n: number, digits: number): string {
 	const s = n.toFixed(digits).replace(/\.?0+$/, '');
 	return s === '-0' ? '0' : s;
 }
 
-/**
- * A CSS `linear()` easing sampled from the spring, plus its settle duration —
- * true spring curves in plain CSS transitions and animations. Output is
- * deterministic: values to 3 decimals, stops to 2, redundant points dropped.
- * @param input A preset name or partial config. Defaults to `'snappy'`.
- * @param samples Number of samples over the duration before simplification. Defaults to `40`.
- * @returns `{ easing: 'linear(…)', duration: <ms> }`.
- */
 export function springEasing(input?: SpringInput, samples = 40): { easing: string; duration: number } {
 	const config = resolveSpring(input);
 	const duration = springDuration(config);
@@ -231,12 +160,6 @@ export function springEasing(input?: SpringInput, samples = 40): { easing: strin
 	return { easing: `linear(${stops.join(', ')})`, duration };
 }
 
-/**
- * An easing function `(t: 0..1) => value` that follows the spring (it may
- * overshoot 1). Pair it with {@link springDuration} of the same input — e.g.
- * for Svelte transitions. `ease(0) === 0` and `ease(1) === 1` exactly.
- * @param input A preset name or partial config. Defaults to `'snappy'`.
- */
 export function springEase(input?: SpringInput): (t: number) => number {
 	const config = resolveSpring(input);
 	const seconds = springDuration(config) / 1000;

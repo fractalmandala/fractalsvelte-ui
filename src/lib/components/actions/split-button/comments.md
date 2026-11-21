@@ -71,6 +71,7 @@ The JSDoc for this folder’s source lives here. `pnpm comments:restore` puts it
 - `textSize` :: The text scale, independent of the control height. Follows `size` when omitted.
 - `textColor` :: The text colour. Defaults to `text-inverse` on dark variants, `text-primary` on light ones.
 - `shape` :: The corner shape of the outer corners.
+- `surface` :: The surface of the menu that opens from the chevron. @default 'glass'
 - `icon` :: An icon drawn before the primary label.
 - `placement` :: Where the menu opens relative to the whole control.
 - `menuLabel` :: The accessible name of the chevron button.

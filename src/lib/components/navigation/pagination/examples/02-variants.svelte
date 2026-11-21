@@ -11,7 +11,7 @@
 		<div class="box gap-sm">
 			<p class="text-sm text-muted weight-500">{form}</p>
 			<Pagination page={3} total={10} disabled />
-<Pagination bind:page {form} count={18} />
+<Pagination bind:page {form} count={18} textColor="text-muted" childTextColor="text-secondary" />
 		</div>
 	{/each}
 </div>

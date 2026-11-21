@@ -3,18 +3,12 @@
 // headers, formdata, url, arraybuffer, dataview, weak collections, iterables, typed arrays, react
 // elements, node buffers) are left out; everything a JSON or plain JavaScript value needs is here.
 
-/** A path from the root of the inspected value: keys and indices. */
 export type JsonKeyPath = (string | number)[];
 
-/** How much of a value a collapsed row shows. */
 export interface JsonNodePreviewOptions {
-	/** How many items a preview lists before it trails off. */
 	maxPreviewItems: number;
-	/** Strings longer than this are cut with an ellipsis. */
 	collapseStringsAfterLength: number;
-	/** Arrays longer than this are grouped into ranges. */
 	groupArraysAfterLength: number;
-	/** Also list non-enumerable own properties. */
 	showNonenumerable: boolean;
 }
 
@@ -36,20 +30,16 @@ export type JsonNodeType =
 	| 'map'
 	| 'circular';
 
-/** One row of the tree. */
 export interface JsonNode {
-	/** The inspected value at this path. */
 	value: unknown;
 	type: JsonNodeType;
 	keyPath: JsonKeyPath;
 	children?: JsonNode[];
 	constructorName?: string;
-	/** True for a property that would not show in `Object.keys` — the row is dimmed. */
 	isNonEnumerable?: boolean;
 	propertyDescriptor?: PropertyDescriptor;
 }
 
-/** The little element tree a preview renders into. */
 export interface JsonElement {
 	type: 'text' | 'element';
 	value?: string;
@@ -104,17 +94,14 @@ function hash(value: string): string {
 	return (result >>> 0).toString(36);
 }
 
-/** Is this path the synthetic root (`['$']`)? */
 export function isRootKeyPath(keyPath: JsonKeyPath): boolean {
 	return keyPath.length === 1 && keyPath[0] === ROOT_KEY;
 }
 
-/** The DOM id of a row: its path joined with dots. */
 export function keyPathToId(keyPath: JsonKeyPath): string {
 	return keyPath.join('.');
 }
 
-/** The label of a row: its last key, or `''` for the root. */
 export function keyPathToKey(
 	keyPath: JsonKeyPath,
 	opts?: { excludeRoot?: boolean }
@@ -125,17 +112,14 @@ export function keyPathToKey(
 	return String(keyPath[keyPath.length - 1]);
 }
 
-/** A stable short id for a row, used for expansion state. */
 export function nodeToValue(node: JsonNode): string {
 	return hash(keyPathToId(node.keyPath));
 }
 
-/** The human label of a row. */
 export function nodeToString(node: JsonNode): string {
 	return keyPathToKey(node.keyPath) || 'root';
 }
 
-/** The tree's single root row, wrapping `data`. */
 export function getRootNode(data: unknown, opts?: Partial<JsonNodePreviewOptions>): JsonNode {
 	return {
 		value: '',
@@ -174,7 +158,6 @@ interface JsonDataType {
 	node: (ctx: JsonTypeContext) => JsonNode;
 }
 
-/** Walk `data` into rows, depth-first, guarding against cycles and runaway depth. */
 export function jsonToTree(data: unknown, props: JsonToTreeProps = {}): JsonNode {
 	const { visited = new WeakSet<object>(), keyPath = [ROOT_KEY], depth = 0 } = props;
 	const options = props.options ?? DEFAULT_PREVIEW_OPTIONS;
@@ -705,7 +688,6 @@ function errorStackToElement(stack: string): JsonElement {
 	);
 }
 
-/** The preview markup for one row. */
 export function jsonNodeToElement(
 	node: JsonNode,
 	opts?: Partial<JsonNodePreviewOptions>
@@ -729,7 +711,6 @@ export function jsonNodeToElement(
 	return element;
 }
 
-/** The type name a screen reader announces for a row. */
 export function getNodeTypeDescription(
 	node: JsonNode,
 	opts?: Partial<JsonNodePreviewOptions>
@@ -759,7 +740,6 @@ function getDescriptorInfo(descriptor: PropertyDescriptor): string {
 	return parts.length > 0 ? parts.join(', ') : 'non-enumerable';
 }
 
-/** The sentence a screen reader reads for a row. */
 export function getAccessibleDescription(
 	node: JsonNode,
 	opts?: Partial<JsonNodePreviewOptions>

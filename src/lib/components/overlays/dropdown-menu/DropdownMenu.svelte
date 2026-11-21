@@ -1,28 +1,21 @@
 <!-- @component A menu button with roving focus, typeahead and nested submenus, on the Popover API. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
-	import { type Placement } from '../../../internal/tokens.js';
-import { placementClass } from '../../../internal/helpers.js';
-	import { roving } from '../../../internal/roving.js';
-	import { surfaceClass, type OverlaySurface, type OverlayTrigger } from '../dialog/dialog.js';
+	import type { Surface } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import { anchor, floating, popoverSync, roving } from '../../../internal/helpers.js';
+	import { type Pad, type Placement } from '../../../internal/tokens.js';
+	import {type OverlayTrigger} from '../dialog/dialog.js';
 	import { enterFrom } from '../popover/popover.js';
 	import { menuRoving, setMenu } from './menu.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** Whether the menu is open. Bind it, or let the trigger drive it. */
 		open?: boolean;
-		/** Called whenever the menu opens or closes. */
 		onOpenChange?: (open: boolean) => void;
-		/** Where the menu sits relative to the trigger. */
 		placement?: Placement;
-		/** The menu fill: frosted glass, or opaque. */
-		surface?: OverlaySurface;
-		/** The button that opens the menu. Spread `props` onto your own button. */
+		surface?: Surface;
 		trigger?: Snippet<[OverlayTrigger]>;
-		/** The items, labels, separators and submenus. */
 		children?: Snippet;
 	}
 
@@ -113,9 +106,10 @@ import { placementClass } from '../../../internal/helpers.js';
 	role="menu"
 	tabindex="-1"
 	class={[
-		'floating pop spring-snappy border rim shad-lg radius-lg pad-xs wmin-xs box gap-xs focus-none',
-		surfaceClass[surface],
-		placementClass[placement],
+		'floating pop spring-snappy radius-lg wmin-xs box gap-xs focus-none',
+		'pad-xs',
+		surface,
+		`at-${`placement`}`,
 		enterFrom[placement],
 		className
 	]}

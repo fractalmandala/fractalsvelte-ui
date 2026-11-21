@@ -1,34 +1,27 @@
 <!-- @component A password field with a reveal toggle, an optional strength meter, and a Caps Lock hint. -->
 
 <script lang="ts">
-	import type { HTMLInputAttributes } from 'svelte/elements';
+	import type {   HTMLInputAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luEye, luEyeOff } from '@fractaldesign/icons/lucide';
 	import { vars } from '../../../motion/index.js';
-	import type { Shape, Size, TextSize } from '../../../internal/tokens.js';
+	import type { Gap,  ChildTextSize, Shape, Size, TextColor, TextSize, Variant   } from '../../../internal/tokens.js';
 	import { Input } from '../input/index.js';
 
 	interface Props extends Omit<HTMLInputAttributes, 'size' | 'value' | 'type' | 'children' | 'disabled'> {
-		/** The password. Bindable; works controlled and uncontrolled. */
 		value?: string;
-		/** Called with the new text whenever it changes. */
 		onValueChange?: (value: string) => void;
-		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
-		/** The text scale, independent of the control height. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** The corner shape. @default 'modern' */
+		textColor?: TextColor;
+		childTextSize?: ChildTextSize;
 		shape?: Shape;
-		/** `outline` is a bordered field, `filled` a tinted one without a border, `ghost` is bare until hovered or focused. @default 'outline' */
-		look?: 'outline' | 'filled' | 'ghost';
-		/** Marks the field invalid (red border, `aria-invalid`). Inside a `Field` it follows the field's error unless set. */
+		variant?: Variant;
 		invalid?: boolean;
-		/** Shows a strength meter under the field, scored from the length and the mix of character classes. */
 		strength?: boolean;
-		/** The underlying `<input>` element. Bindable. */
+		gap?: Gap;
 		ref?: HTMLInputElement | null;
-			/** Blocks pointer and keyboard input, and dims the frame. */
-		disabled?: boolean | null;
+			disabled?: boolean | null;
 }
 
 	let {
@@ -36,8 +29,10 @@
 		onValueChange,
 		size,
 		textSize,
+		textColor = 'text-muted',
+		childTextSize = 'text-xs',
 		shape,
-		look,
+		variant,
 		invalid,
 		strength = false,
 		ref = $bindable(null),
@@ -47,10 +42,14 @@
 		onkeyup,
 		onfocus,
 		onblur,
+		gap = 'gap-xs',
 		...rest
+
 	}: Props = $props();
 
 	const uid = $props.id();
+	const revealSize = $derived(size ?? 'h-md');
+	const hintText = $derived(textSize ?? 'text-sm');
 	const meterId = `${uid}-strength`;
 	const capsId = `${uid}-caps`;
 
@@ -59,6 +58,7 @@
 	let focused = $state(false);
 
 	const score = $derived(scorePassword(value));
+	const toneInk = { danger: 'tone-danger', warning: 'tone-warning', success: 'tone-success' } as const;
 	const showCaps = $derived(capsOn && focused && !revealed);
 	const describedby = $derived(
 		[showCaps ? capsId : null, strength ? meterId : null].filter((v): v is string => Boolean(v)).join(' ') || undefined
@@ -95,7 +95,7 @@
 {#snippet toggle()}
 	<button
 		type="button"
-		class="bare row ycenter xcenter shrink-0 square h-md radius-full text-muted hover-fill press"
+		class={['bare row ycenter xcenter shrink-0 square radius-full hover-fill press', revealSize, textColor]}
 		aria-label={revealed ? 'Hide password' : 'Show password'}
 		aria-pressed={revealed}
 		tabindex="-1"
@@ -108,7 +108,7 @@
 	</button>
 {/snippet}
 
-<div class={['box gap-xs wfull', className]}>
+<div class={['box', gap, 'wfull', className]}>
 	<Input
 		bind:value
 		bind:ref
@@ -116,7 +116,7 @@
 		{size}
 		{textSize}
 		{shape}
-		{look}
+		{variant}
 		{invalid}
 		{onValueChange}
 		type={revealed ? 'text' : 'password'}
@@ -138,7 +138,7 @@
 		{...rest}
 	/>
 	{#if showCaps}
-		<p id={capsId} class="text-sm text-warning">Caps Lock is on.</p>
+		<p id={capsId} class={[hintText, 'tone-warning text-theme']}>Caps Lock is on.</p>
 	{/if}
 	{#if strength}
 		<div id={meterId} class="box gap-xs">
@@ -152,9 +152,9 @@
 				aria-valuetext={score.label}
 				{@attach vars({ value: score.value })}
 			>
-				<span class={['fill', score.tone === 'danger' ? 'tone-danger' : score.tone === 'warning' ? 'tone-warning' : 'tone-success']}></span>
+				<span class={['fill', toneInk[score.tone]]}></span>
 			</div>
-			<p class={['text-xs', score.tone === 'danger' ? 'text-danger' : score.tone === 'warning' ? 'text-warning' : 'text-success']}>
+			<p class={[childTextSize, toneInk[score.tone], 'text-theme']}>
 				{score.label}
 			</p>
 		</div>

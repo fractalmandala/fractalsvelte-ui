@@ -1,29 +1,23 @@
 <!-- @component A nested submenu that opens to the side, with arrow-key open and close. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon, type IconData } from '@fractaldesign/icons';
 	import { luChevronRight } from '@fractaldesign/icons/lucide';
-	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
-	import { roving } from '../../../internal/roving.js';
-	import { surfaceClass, type OverlaySurface } from '../dialog/dialog.js';
+	import { anchor, floating, popoverSync, roving } from '../../../internal/helpers.js';
+		import type { ChildTextColor, Pad, TextColor, Surface } from '../../../internal/tokens.js';
 	import { menuRoving } from './menu.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** Whether the submenu is open. Bind it, or let hover and arrow keys drive it. */
 		open?: boolean;
-		/** Called whenever the submenu opens or closes. */
 		onOpenChange?: (open: boolean) => void;
-		/** An icon drawn before the label. */
 		icon?: IconData;
-		/** The row's label. */
 		label?: string;
-		/** Disables the submenu trigger. */
 		disabled?: boolean;
-		/** The submenu fill: frosted glass, or opaque. */
-		surface?: OverlaySurface;
-		/** The items of the submenu. */
+		textColor?: TextColor;
+		childTextColor?: ChildTextColor;
+		surface?: Surface;
 		children?: Snippet;
 	}
 
@@ -33,6 +27,8 @@
 		icon,
 		label,
 		disabled = false,
+		textColor = 'text-secondary',
+		childTextColor = 'text-muted',
 		surface = 'glass',
 		children,
 		class: className,
@@ -112,10 +108,10 @@
 		onkeydown={onTriggerKeydown}
 	>
 		{#if icon}
-			<Icon {icon} class="text-secondary shrink-0" />
+			<Icon {icon} class={['shrink-0', textColor]} />
 		{/if}
 		<span class="grow truncate">{label}</span>
-		<Icon icon={luChevronRight} class="text-muted shrink-0" />
+		<Icon icon={luChevronRight} class={['shrink-0', childTextColor]} />
 	</div>
 
 	<div
@@ -125,8 +121,9 @@
 		role="menu"
 		tabindex="-1"
 		class={[
-			'floating at-right-start pop enter-right spring-snappy border rim shad-lg radius-lg pad-xs wmin-xs box gap-xs focus-none',
-			surfaceClass[surface]
+			'floating at-right-start pop enter-right spring-snappy radius-lg wmin-xs box gap-xs focus-none',
+			'pad-xs',
+			surface
 		]}
 		{@attach floating(uid, 'var(--space-xs)')}
 		{@attach popoverSync(() => open, setOpen)}

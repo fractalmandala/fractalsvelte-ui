@@ -1,14 +1,12 @@
 <!-- @component One slide in the rail, with an optional accessible label. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { getCarousel } from './carousel.svelte.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** An accessible name for this slide, announced with its position. */
 		label?: string;
-		/** The slide content. */
 		children?: Snippet;
 	}
 

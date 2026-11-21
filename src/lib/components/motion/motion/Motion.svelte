@@ -1,9 +1,9 @@
 <!-- @component A declarative spring element: states layer and animate() springs between them. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { Attachment } from 'svelte/attachments';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  Attachment  } from 'svelte/attachments';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import {
 		animate,
 		inView,
@@ -25,27 +25,16 @@
 	const interaction = new WeakMap<HTMLElement, Interaction>();
 
 	interface Props extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
-		/** The element to render. */
 		as?: MotionTag;
-		/** The starting motion values, applied instantly before the first spring. */
 		initial?: MotionValues;
-		/** The resting motion values. Reactive: a change springs from the current position, keeping velocity. */
 		animate?: MotionValues;
-		/** Motion values applied while the pointer hovers the element. */
 		whileHover?: MotionValues;
-		/** Motion values applied while the element is pressed, by pointer or by Enter/Space. */
 		whilePress?: MotionValues;
-		/** Motion values applied while the element or a descendant has focus. */
 		whileFocus?: MotionValues;
-		/** Motion values applied while the element is in view. When set, the element stays at `initial` until it enters the viewport. */
 		whileInView?: MotionValues;
-		/** The spring used for every state change. */
 		spring?: SpringInput;
-		/** Delay in milliseconds before the first spring (and before `whileInView` enters). Hover, press and focus are immediate. */
 		delay?: number;
-		/** Called when a spring settles, is stopped, or is taken over by a newer one. */
 		onAnimationEnd?: () => void;
-		/** The content. */
 		children?: Snippet;
 	}
 

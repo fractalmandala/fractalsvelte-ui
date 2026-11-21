@@ -1,5 +1,3 @@
-/** Segmented date and time field helpers. Owned by date-field; imported by the range and time fields. */
-
 import {
 	addDays,
 	addMonths,
@@ -26,18 +24,15 @@ export type PartType = EditableType | 'literal';
 
 export interface FieldPart {
 	type: PartType;
-	/** Literal text; unused for editable parts. */
 	text: string;
 }
 
-/** A civil date that may still be missing segments. */
 export interface PartialDate {
 	y: number | null;
 	m: number | null;
 	d: number | null;
 }
 
-/** A civil time that may still be missing segments. Hours are always 0–23. */
 export interface PartialTime {
 	h: number | null;
 	m: number | null;
@@ -184,7 +179,6 @@ export function segmentWidth(type: EditableType): number {
 	return type === 'year' ? 4 : type === 'dayPeriod' ? 3 : 2;
 }
 
-/** Localized AM or PM (or the locale's equivalent) for a 24-hour hour. */
 export function dayPeriodText(locale: string | undefined, hour: number | null): string {
 	const sample = hour == null || hour < 12 ? 6 : 18;
 	return (
@@ -328,7 +322,6 @@ function isTimeComplete(value: PartialTime, granularity: TimeGranularity): boole
 	return value.s != null;
 }
 
-/** Step a date segment. An empty segment fills from `placeholder` first (no skip past it). */
 export function stepDate(
 	value: PartialDate,
 	type: 'year' | 'month' | 'day',
@@ -384,7 +377,6 @@ function clampPartialDate(value: PartialDate, granularity: DateGranularity, min?
 	};
 }
 
-/** Step a time segment. Hour steps the underlying 0–23 value so 11 AM → 12 PM flips the period. */
 export function stepTime(
 	value: PartialTime,
 	type: 'hour' | 'minute' | 'second' | 'dayPeriod',
@@ -497,7 +489,6 @@ export interface TypeResult<T> {
 	advance: boolean;
 }
 
-/** Type a digit into a numeric segment. `buffer` is the digits typed since the segment was focused. */
 export function typeDigit<T extends PartialDate | PartialTime>(
 	kind: 'date' | 'time',
 	value: T,
@@ -549,7 +540,6 @@ export function clearSegment<T extends PartialDate | PartialTime>(
 	return setTimeSegment(value as PartialTime, type as 'hour' | 'minute' | 'second', null, hourCycle, granularity as TimeGranularity) as T;
 }
 
-/** Map a typed character to a day-period value (0 = AM, 1 = PM), or null if it is not a period key. */
 export function periodFromKey(key: string, locale: string | undefined): 0 | 1 | null {
 	const lower = key.toLowerCase();
 	if (lower === 'a') return 0;

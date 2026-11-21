@@ -1,20 +1,15 @@
 <!-- @component Breaks out of parent padding along horizontal, vertical, or full-viewport axes. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import { type Gap } from '../../../internal/tokens.js';
-import { gapValue } from '../../../internal/helpers.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import { type Space } from '../../../internal/tokens.js';
 	import { vars } from '../../../motion/index.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Negative inline margin on the gap ladder. */
-		inline?: Gap;
-		/** Negative block margin on the gap ladder. */
-		block?: Gap;
-		/** Expand across the full viewport width regardless of container width. */
+		inline?: Space;
+		block?: Space;
 		full?: boolean;
-		/** Content breaking past container bounds. */
 		children?: Snippet;
 	}
 
@@ -38,8 +33,8 @@ import { gapValue } from '../../../internal/helpers.js';
 <div
 	class={classes}
 	{@attach vars({
-		'bleed-x': inline ? gapValue(inline) : undefined,
-		'bleed-y': block ? gapValue(block) : undefined
+		'bleed-x': inline ? `var(--space-${inline})` : undefined,
+		'bleed-y': block ? `var(--space-${block})` : undefined
 	})}
 	{...rest}
 >

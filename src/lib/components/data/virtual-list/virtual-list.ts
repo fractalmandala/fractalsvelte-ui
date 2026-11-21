@@ -1,10 +1,7 @@
-/** The imperative handle of a VirtualList, from `bind:this`. */
 export interface VirtualListHandle {
-	/** Scroll so the item at `index` is aligned in the viewport. */
 	scrollToIndex: (index: number, options?: { align?: 'start' | 'center' | 'end' }) => void;
 }
 
-/** Find the first index whose span contains `offset` in a prefix-sum array. */
 export function indexAtOffset(prefixes: number[], offset: number): number {
 	let lo = 0;
 	let hi = prefixes.length - 2;

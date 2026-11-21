@@ -66,13 +66,13 @@
 			/>
 		</ToolbarGroup>
 		<ToolbarSeparator />
-		<ToolbarGroup label="Zoom" attached={false}>
+		<ToolbarGroup label="Zoom" attached={false} gap="gap-sm">
 			<Button variant="ghost" size="h-sm" onclick={() => (zoom = 'fit')}>Fit</Button>
 			<Button variant="ghost" size="h-sm" onclick={() => (zoom = 'page')}>Page</Button>
 		</ToolbarGroup>
 	</Toolbar>
 
-	<Toolbar orientation="vertical" label="Atlas zoom">
+	<Toolbar orientation="vertical" label="Atlas zoom" gap="gap-sm">
 		<Button variant="outline" size="h-sm" onclick={() => (zoom = 'in')}>Zoom in</Button>
 		<ToolbarSeparator />
 		<Button variant="outline" size="h-sm" onclick={() => (zoom = 'out')}>Zoom out</Button>

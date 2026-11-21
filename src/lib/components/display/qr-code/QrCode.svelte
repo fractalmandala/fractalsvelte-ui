@@ -1,27 +1,25 @@
 <!-- @component Renders a deterministic QR code matrix onto a high-DPI canvas with optional center overlay. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Shape } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  AlignContent, Pad, Shape, Surface, TextColor, TextSize  } from '../../../internal/tokens.js';
 	import { vars } from '../../../motion/index.js';
 	import { qrEncode, type QrCodeEcc } from './qr-encode.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Text or URL encoded in the QR symbol. */
 		value: string;
-		/** Reed–Solomon error correction level. */
 		ecc?: QrCodeEcc;
-		/** Logical pixel size per QR module. */
 		pixelSize?: number;
-		/** Blank margin modules around the symbol. */
 		quietZone?: number;
-		/** Corner shape around the QR container. */
 		shape?: Shape;
-		/** Accessible label describing the encoded destination. */
 		label?: string;
-		/** Optional centered logo or badge snippet (use high `ecc` like `'H'`). */
+		alignContent?: AlignContent;
 		overlay?: Snippet;
+		surface?: Surface;
+		overlaySurface?: Surface;
+		textSize?: TextSize;
+		textColor?: TextColor;
 	}
 
 	let {
@@ -31,7 +29,12 @@
 		quietZone = 2,
 		shape = 'modern',
 		label,
+		alignContent = 'xcenter',
 		overlay,
+		surface = 'elevated',
+		overlaySurface = 'elevated',
+		textSize = 'text-xs',
+		textColor = 'text-danger',
 		class: className,
 		...rest
 	}: Props = $props();
@@ -62,12 +65,14 @@
 		if (!ctx) return;
 
 		const cs = getComputedStyle(el);
-		const bg = cs.backgroundColor || 'white';
-		const fg = cs.color || 'black';
+		const bg = cs.backgroundColor;
+		const fg = cs.color || 'currentColor';
 
 		ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-		ctx.fillStyle = bg;
-		ctx.fillRect(0, 0, size, size);
+		if (bg) {
+			ctx.fillStyle = bg;
+			ctx.fillRect(0, 0, size, size);
+		}
 
 		ctx.fillStyle = fg;
 		for (let r = 0; r < matrix.size; r++) {
@@ -83,20 +88,20 @@
 <div
 	role="img"
 	aria-label={label ?? `QR code for ${value}`}
-	class={['relative inline-flex row xcenter ycenter bg-surface border overflow-hidden', shape, className]}
+	class={['relative inline-flex row ycenter overflow-hidden', alignContent, surface, shape, className]}
 	{...rest}
 >
 	{#if encoded.error}
-		<div class="pad-md text-xs text-danger">{encoded.error}</div>
+		<div class={['pad-md', textSize, textColor]}>{encoded.error}</div>
 	{:else}
 		<canvas
 			bind:this={canvas}
-			class="block wvar square bg-surface"
+			class="block wvar square"
 			{@attach vars({ w: `${logicalSize}px` })}
 		></canvas>
 		{#if overlay}
 			<div class="cover row xcenter ycenter pointer-none">
-				<div class="bg-surface pad-xs modern border-subtle">
+				<div class={[overlaySurface, 'pad-xs', shape]}>
 					{@render overlay()}
 				</div>
 			</div>

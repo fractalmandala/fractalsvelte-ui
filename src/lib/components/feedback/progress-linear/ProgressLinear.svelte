@@ -1,32 +1,25 @@
 <!-- @component Horizontal progress indicator with determinate, indeterminate, and striped states. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
-	import { type Shape, type Size, type Tone } from '../../../internal/tokens.js';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import { type ChildTextColor, type Gap, type Shape, type Size, type TextColor, type TextSize, type Tone } from '../../../internal/tokens.js';
 	import { vars } from '../../../motion/index.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Current progress value, or `null`/`undefined` for indeterminate motion. */
 		value?: number | null;
-		/** Lower bound of the range. */
 		min?: number;
-		/** Upper bound of the range. */
 		max?: number;
-		/** Semantic color accent. */
 		tone?: Tone;
-		/** Scale controlling label text and track thickness. */
 		size?: Size;
-		/** Track and fill corner shape. */
 		shape?: Shape;
-		/** Draw diagonal stripes across the fill bar. */
+		gap?: Gap;
+		textSize?: TextSize;
+		textColor?: TextColor;
+		childTextColor?: ChildTextColor;
 		striped?: boolean;
-		/** Animate the diagonal stripes along the fill. */
 		animated?: boolean;
-		/** Display formatted progress percentage beside the label. */
 		showValue?: boolean;
-		/** Visible label and accessible name for the progress bar. */
 		label?: string;
-		/** Optional formatter for the displayed value readout. */
 		formatValue?: (value: number, pct: number) => string;
 	}
 
@@ -37,6 +30,10 @@
 		tone = 'info',
 		size = 'h-bs',
 		shape = 'round',
+		gap = 'gap-xs',
+		textSize = 'text-sm',
+		textColor = 'text-secondary',
+		childTextColor = 'text-muted',
 		striped = false,
 		animated = false,
 		showValue = false,
@@ -59,14 +56,14 @@
 	const toneCls = $derived(tone === 'neutral' ? undefined : `tone-${tone}`);
 </script>
 
-<div class={['box gap-xs wfull', size, className]} {...rest}>
+<div class={['box wfull', gap, size, className]} {...rest}>
 	{#if label || (showValue && !indeterminate)}
 		<div class="row xbetween ycenter gap-sm">
 			{#if label}
-				<span class="text-sm text-secondary weight-500">{label}</span>
+				<span class={['weight-500', textSize, textColor]}>{label}</span>
 			{/if}
 			{#if showValue && !indeterminate}
-				<span class="text-sm text-muted tabular-nums">{readout}</span>
+				<span class={['tabular-nums', textSize, childTextColor]}>{readout}</span>
 			{/if}
 		</div>
 	{/if}

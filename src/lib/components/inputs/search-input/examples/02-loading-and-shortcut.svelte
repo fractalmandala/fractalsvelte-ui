@@ -1,4 +1,4 @@
-<!-- @example Loading and shortcut :: A spinner while results load, and a / key that focuses the field. -->
+<!-- @example Loading and shortcut :: A spinner in its own ink while results load, and a / key that focuses the field. -->
 <script lang="ts">
 	import { SearchInput } from '@fractaldesign/fractalsvelte-ui';
 
@@ -18,6 +18,7 @@
 		bind:value={query}
 		{loading}
 		shortcut="/"
+		textColor="text-secondary"
 		placeholder="Search invoices"
 		aria-label="Search invoices"
 		onValueChange={() => {}}

@@ -1,43 +1,32 @@
 <!-- @component Moves through a long list a page at a time, as buttons or as real links. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
-	import type { IconData } from '@fractaldesign/icons';
+	import type {   HTMLAttributes  } from 'svelte/elements';
+	import type {  IconData  } from '@fractaldesign/icons';
 	import { Icon } from '@fractaldesign/icons';
 	import { luChevronLeft, luChevronRight, luChevronsLeft, luChevronsRight, luEllipsis } from '@fractaldesign/icons/lucide';
-	import { type Size, type TextSize } from '../../../internal/tokens.js';
+	import { type Gap, type Size, type TextColor, type TextSize } from '../../../internal/tokens.js';
 	import { pageSlots } from './pages.js';
 
-	/** How the control is drawn. */
 	type PaginationVariant = 'numbers' | 'simple' | 'compact';
 
 	interface Props extends Omit<HTMLAttributes<HTMLElement>, 'disabled'> {
-		/** The current page, 1-based. Two-way bindable. */
 		page?: number;
-		/** Called whenever the current page changes. */
 		onPageChange?: (page: number) => void;
-		/** The number of pages. Used when `total` is not provided. */
 		count?: number;
-		/** The total number of items, divided by `pageSize` to get the page count. */
 		total?: number;
-		/** Items per page, used with `total`. */
 		pageSize?: number;
-		/** How many page numbers to show on each side of the current page. */
 		siblings?: number;
-		/** How many page numbers to keep at each end of the range. */
 		boundaries?: number;
-		/** `numbers` shows a range of pages; `simple` shows the position in words; `compact` shows only the current page. */
+		gap?: Gap;
 		form?: PaginationVariant;
-		/** The control height. Text follows this unless `textSize` is set. */
 		size?: Size;
-		/** The text scale, independent of the control height. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** Builds an `href` for a page, so the control renders links instead of buttons. */
+		textColor?: TextColor;
+		childTextColor?: TextColor;
 		href?: (page: number) => string;
-		/** Accessible name of the navigation. */
 		label?: string;
-			/** Dims the control and blocks every page button. */
-		disabled?: boolean | null;
+			disabled?: boolean | null;
 }
 
 	let {
@@ -51,10 +40,14 @@
 		form = 'numbers',
 		size = 'h-lg',
 		textSize,
+		textColor = 'text-secondary',
+		childTextColor = 'text-muted',
 		href,
 		label = 'Pagination',
 		class: className,
+		gap = 'gap-xs',
 		...rest
+
 	}: Props = $props();
 
 	const pages = $derived(
@@ -96,14 +89,14 @@
 	{/if}
 {/snippet}
 
-<nav aria-label={label} class={['row ycenter wrap gap-xs', className]} {...rest}>
+<nav aria-label={label} class={['row ycenter wrap', gap, className]} {...rest}>
 	{@render control(1, 'First page', luChevronsLeft)}
 	{@render control(current - 1, 'Previous page', luChevronLeft)}
 
 	{#if form === 'numbers'}
 		{#each slots as slot, i (typeof slot === 'number' ? slot : `e-${i}`)}
 			{#if slot === 'ellipsis'}
-				<span class={['inline-flex xcenter ycenter text-muted', size, textSize]} aria-hidden="true">
+				<span class={['inline-flex xcenter ycenter', childTextColor, size, textSize]} aria-hidden="true">
 					<Icon icon={luEllipsis} />
 				</span>
 			{:else if href}
@@ -129,13 +122,13 @@
 			{/if}
 		{/each}
 	{:else if form === 'simple'}
-		<p class={['text-secondary tabular-nums px-sm', size, textSize, 'row ycenter']} aria-live="polite">
+		<p class={['tabular-nums px-sm', textColor, size, textSize, 'row ycenter']} aria-live="polite">
 			Page {current} of {pages}
 		</p>
 	{:else}
-		<p class={['text-secondary tabular-nums px-sm', size, textSize, 'row ycenter']} aria-live="polite">
+		<p class={['tabular-nums px-sm', textColor, size, textSize, 'row ycenter']} aria-live="polite">
 			{current}
-			<span class="text-muted">/</span>
+			<span class={childTextColor}>/</span>
 			{pages}
 		</p>
 	{/if}

@@ -1,32 +1,34 @@
 <!-- @component Semantic native <fieldset> and <legend> container for grouping related form fields. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLFieldsetAttributes } from 'svelte/elements';
-	import type { Gap, Pad, Shape, Surface } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLFieldsetAttributes  } from 'svelte/elements';
+	import type { 
+		ChildTextColor,
+		ChildTextSize,
+		Gap,
+		Pad,
+		Shape,
+		Surface,
+		TextColor,
+		TextSize
+	 } from '../../../internal/tokens.js';
 
 	interface Props extends Omit<HTMLFieldsetAttributes, 'disabled'> {
-		/** Group heading rendered inside `<legend>`. */
 		legend?: string;
-		/** Supporting explanation shown below the legend. */
 		description?: string;
-		/** Validation error displayed underneath the group fields. */
 		error?: string;
-		/** Container surface style on the shared surface axis. */
 		surface?: Surface;
-		/** Corner shape. */
 		shape?: Shape;
-		/** Internal padding override on the shared pad ladder. */
-		pad?: Pad;
-		/** Spacing between group sections on the shared gap ladder. */
 		gap?: Gap;
-		/** Natively disables all descendant form controls. */
+		pad?: Pad;
+		textSize?: TextSize;
+		textColor?: TextColor;
+		childTextSize?: ChildTextSize;
+		childTextColor?: ChildTextColor;
 		disabled?: boolean;
-		/** Marks the group invalid even without an inline `error` string. */
 		invalid?: boolean;
-		/** Form fields inside the group. */
 		children?: Snippet;
-		/** Optional action or summary footer below fields. */
 		footer?: Snippet;
 	}
 
@@ -36,8 +38,12 @@
 		error,
 		surface = 'outlined',
 		shape = 'modern',
-		pad = 'pad-bs',
 		gap = 'gap-md',
+		pad = 'pad-bs',
+		textSize = 'text-sm',
+		textColor = 'text-primary',
+		childTextSize,
+		childTextColor,
 		disabled = false,
 		invalid = false,
 		class: className,
@@ -48,7 +54,9 @@
 
 	const uid = $props.id();
 	const errorId = $derived(error ? `${uid}-error` : undefined);
-	const descId = $derived(description ? `${uid}-desc` : undefined);
+	const descriptionInk = $derived(childTextColor ?? 'text-secondary');
+	const errorInk = $derived(childTextColor ?? 'text-danger');
+	const descId = $derived(description ? `${uid}card-desc` : undefined);
 	const describedBy = $derived([descId, errorId].filter(Boolean).join(' ') || undefined);
 </script>
 
@@ -60,16 +68,16 @@
 	{...rest}
 >
 	{#if legend}
-		<legend class="text-sm weight-600 px-xs">{legend}</legend>
+		<legend class={[textSize, textColor, 'weight-600 px-xs']}>{legend}</legend>
 	{/if}
 	{#if description}
-		<p id={descId} class="text-sm text-secondary">{description}</p>
+		<p id={descId} class={[childTextSize ?? textSize, descriptionInk]}>{description}</p>
 	{/if}
 	<div class={['box', gap]}>
 		{@render children?.()}
 	</div>
 	{#if error}
-		<p id={errorId} role="alert" class="text-xs text-danger">{error}</p>
+		<p id={errorId} role="alert" class={[childTextSize ?? textSize, errorInk]}>{error}</p>
 	{/if}
 	{#if footer}
 		<div class="pt-xs">

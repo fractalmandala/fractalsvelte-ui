@@ -14,7 +14,7 @@
 
 <Reorder bind:items key={(item) => item.id} axis="y" onReorder={(next) => (items = next)}>
 	{#snippet children(item, { dragging, handleProps })}
-		<div class={['card', 'rim', 'shad-sm', 'pad-sm', 'row', 'ycenter', 'gap-sm', dragging && 'shad-lg']}>
+		<div class={['bg-surface', 'border', 'radius-md', 'rim', 'shad-sm', 'pad-sm', 'row', 'ycenter', 'gap-sm', dragging && 'shad-lg']}>
 			<span class={handleProps.class} role="button" tabindex={-1} aria-label="Reorder" onpointerdown={handleProps.onpointerdown}>
 				<Icon icon={luGripVertical} />
 			</span>

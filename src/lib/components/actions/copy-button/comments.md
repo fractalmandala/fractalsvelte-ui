@@ -36,3 +36,21 @@
 -->
 
 The JSDoc for this folder’s source lives here. `pnpm comments:restore` puts it back.
+
+## CopyButton.svelte
+
+### `interface Props`
+
+- `text` :: What is written to the clipboard, exactly as given — the raw command or token, not the label drawn beside it.
+- `label` :: The name of the action: it is the accessible name of an icon-only button and the tooltip of every one, and the copy state swaps it.
+- `copiedLabel` :: What the button says for `timeout` milliseconds after a copy — the visible text of a labelled button, and the tooltip of an icon-only one.
+- `timeout` :: How long the confirmation holds, in milliseconds. Longer for something a user needs to read, such as a label the copy replaces.
+- `onCopy` :: Called with the copied text after the write, for a toast, an analytics event, or dismissing the field the value came from.
+- `variant` :: The visual weight of the trigger, from the same set as Button; `secondary` by default so a copy affordance stays quiet beside its value.
+- `size` :: The height from the shared ladder, matching the control or row the button sits in.
+- `textSize` :: The label's text scale, set apart from the height for a labelled copy trigger.
+- `textColor` :: The ink of the glyph and label. Left unset it follows the variant.
+- `childTextColor` :: The ink of the confirming check after a copy; the success tone by default, so the change of state is visible on any variant.
+- `shape` :: The corner shape; `rect` by default, so an icon-only trigger reads as a small square tool beside its text.
+- `children` :: A visible label. Giving one drops the icon-only `aria-label`, and it is replaced by `copiedLabel` after a copy.
+- `disabled` :: Removes the trigger from interaction when the value is not there to copy.

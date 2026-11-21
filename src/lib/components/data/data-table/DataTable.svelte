@@ -1,8 +1,8 @@
 <!-- @component A data grid with client-side sort, filter, selection, pagination and expandable rows. -->
 
 <script lang="ts" generics="T extends object">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  ComponentProps, Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import {
 		luCheck,
@@ -18,7 +18,7 @@
 	} from '@fractaldesign/icons/lucide';
 	import { Button } from '../../actions/button/index.js';
 	import { anchor, floating } from '../../../internal/helpers.js';
-	import type { Size } from '../../../internal/tokens.js';
+	import type {  ChildTextColor, ChildTextSize, Gap, Measure, Pad, Shape, Size, Surface, TextColor, TextSize  } from '../../../internal/tokens.js';
 	import { createFlip, vars } from '../../../motion/index.js';
 	import {
 		Table,
@@ -29,7 +29,7 @@
 		TableHeader,
 		TableRow
 	} from '../table/index.js';
-	import type { Density } from '../table/table.js';
+	import type {  Density  } from '../table/table.js';
 	import {
 		cycleSort,
 		getValue,
@@ -46,66 +46,50 @@
 	} from './table-state.svelte.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** The column definitions, in display order. */
 		columns: Column<T>[];
-		/** The full row set; sorting, filtering and paging happen on the client. */
 		rows: T[];
-		/** A field or function that returns a stable unique id for each row. */
 		rowKey: keyof T | ((row: T) => string);
-		/** The active multi-column sort. Shift-click a header to add a column. */
 		sort?: SortRule[];
-		/** Called when the sort changes, with the next sort. */
 		onSortChange?: (sort: SortRule[]) => void;
-		/** Global filter text, matched against every column (or a column's `filter`). */
 		filter?: string;
-		/** Called when the filter text changes. */
 		onFilterChange?: (filter: string) => void;
-		/** The selected row keys. */
 		selection?: Set<string>;
-		/** Called when the selection changes, with the next set of keys. */
 		onSelectionChange?: (selection: Set<string>) => void;
-		/** The 1-based current page. */
 		page?: number;
-		/** Called when the current page changes. */
 		onPageChange?: (page: number) => void;
-		/** How many rows to show per page. */
 		pageSize?: number;
-		/** Called when the page size changes. */
 		onPageSizeChange?: (pageSize: number) => void;
-		/** Replaces the body with skeleton rows while data is loading. */
 		loading?: boolean;
-		/** Shown in place of the body when no rows match. */
 		empty?: Snippet;
-		/** Called when a body row is clicked, except on its controls. */
 		onRowClick?: (row: T, event: MouseEvent) => void;
-		/** Rendered in an expandable detail row under each body row. */
 		detail?: Snippet<[T]>;
-		/** The keys of rows whose detail is open. */
 		expanded?: Set<string>;
-		/** Called when a detail row is opened or closed. */
 		onExpandedChange?: (expanded: Set<string>) => void;
-		/** Keys of columns currently hidden. Seeded from each column's `hidden` flag. */
 		hiddenColumns?: Set<string>;
-		/** Called when the user toggles a column's visibility. */
 		onHiddenColumnsChange?: (hidden: Set<string>) => void;
-		/** Shades every other body row. */
 		striped?: boolean;
-		/** Lights a body row under the pointer. */
 		hoverable?: boolean;
-		/** Row density, on the shared ladder: `compact` · `cozy` · `comfortable`. */
 		density?: Density;
-		/** Keeps the header row in view while the body scrolls. Pair it with `maxHeight`. */
 		stickyHeader?: boolean;
-		/** Caps the height and scrolls the body: a ladder word (`lg`) or any CSS length (`24rem`). */
 		maxHeight?: Size | string;
-		/** Names the scroll region for assistive technology. */
 		label?: string;
-		/** Draws the hairline frame and surface fill around the table. */
 		framed?: boolean;
-		/** A visible caption above the table; falls back to `label` when omitted. */
 		caption?: string;
-		/** Hides the caption visually while keeping it as the table's accessible name. */
 		captionHidden?: boolean;
+		surface?: Surface;
+		menuSurface?: Surface;
+		shape?: Shape;
+		measure?: Measure;
+		gap?: Gap;
+		size?: Size;
+		skeletonSize?: Size;
+		textSize?: TextSize;
+		metaTextSize?: TextSize;
+		childTextSize?: ChildTextSize;
+		textColor?: TextColor;
+		childTextColor?: ChildTextColor;
+		stepButtonProps?: ComponentProps<typeof Button>;
+		pageButtonProps?: ComponentProps<typeof Button>;
 	}
 
 	let {
@@ -139,6 +123,20 @@
 		framed = true,
 		caption,
 		captionHidden = false,
+		surface = 'outlined',
+		menuSurface = 'glass',
+		shape = 'modern',
+		measure = 'measure-xs',
+		gap = 'gap-sm',
+		size = 'h-lg',
+		skeletonSize = 'h-md',
+		textSize = 'text-md',
+		metaTextSize = 'text-sm',
+		childTextSize = 'text-xs',
+		textColor = 'text-secondary',
+		childTextColor = 'text-muted',
+		stepButtonProps,
+		pageButtonProps,
 		class: className,
 		...rest
 	}: Props = $props();
@@ -250,14 +248,14 @@
 	}
 </script>
 
-<div class={['box gap-sm', className]} {@attach flip.attach} {...rest}>
+<div class={['box', gap, className]} {@attach flip.attach} {...rest}>
 	<div class="row xbetween ycenter gap-sm wrap">
 		<label class="row ycenter gap-sm grow">
 			<span class="sr-only">Filter {heading}</span>
-			<span class="row ycenter gap-sm border modern bg-input grow field pad-sm">
-				<Icon icon={luSearch} class="text-muted shrink-0" />
+			<span class={['row ycenter gap-sm grow field', surface, shape, 'pad-sm']}>
+				<Icon icon={luSearch} class={['shrink-0', childTextColor]} />
 				<input
-					class="input bare grow h-lg text-md"
+					class={['input bare grow', size, textSize]}
 					type="search"
 					placeholder="Filter {heading.toLowerCase()}"
 					value={filter}
@@ -268,7 +266,7 @@
 		<div class="relative">
 			<button
 				type="button"
-				class="button ghost modern h-lg text-sm gap-sm"
+				class={['button ghost gap-sm', shape, size, metaTextSize]}
 				popovertarget="{uid}-columns"
 				aria-haspopup="dialog"
 				aria-expanded={columnsOpen}
@@ -279,12 +277,12 @@
 			</button>
 			<div
 				id="{uid}-columns"
-				class="floating at-bottom-end pop enter-scale glass rim shad-sm border modern pad-sm measure-xs"
+				class={['floating at-bottom-end pop enter-scale', menuSurface, shape, 'pad-sm', measure]}
 				popover="auto"
 				{@attach floating(uid)}
 				ontoggle={(event) => (columnsOpen = event.newState === 'open')}
 			>
-				<p class="text-xs text-secondary weight-600 pad-sm">Visible columns</p>
+				<p class={[childTextSize, textColor, 'weight-600', 'pad-sm']}>Visible columns</p>
 				{#each columns as col (col.key)}
 					<label class="item">
 						<span class="checkbox-box">
@@ -345,7 +343,7 @@
 						{#if col.sortable}
 							<button
 								type="button"
-								class="bare row ycenter gap-sm pointer focus-ring text-xs weight-600"
+								class={['bare row ycenter gap-sm pointer focus-ring weight-600', childTextSize]}
 								onclick={(event) => onSortClick(col.key, event)}
 							>
 								{#if typeof col.header === 'string'}
@@ -386,7 +384,7 @@
 						{#each visibleColumns as col, c (col.key)}
 							<TableCell>
 								<span
-									class="block h-md modern bg-input anim-pulse wvar"
+									class={['block bone anim-pulse', skeletonSize, shape]}
 									{@attach vars({ w: ['40%', '70%', '55%', '85%'][(i + c) % 4] })}
 								></span>
 							</TableCell>
@@ -395,7 +393,7 @@
 				{/each}
 			{:else if paged.length === 0}
 				<TableRow>
-					<TableCell class="data-table-empty text-secondary" colspan={colCount}>
+					<TableCell class={['data-table-empty', textColor]} colspan={colCount}>
 						{#if empty}
 							{@render empty()}
 						{:else}
@@ -467,7 +465,7 @@
 									class={['collapse spring spring-snappy', open && 'open']}
 								>
 									<div>
-										<div class="pad-bs">{@render detail(row)}</div>
+										<div>{@render detail(row)}</div>
 									</div>
 								</div>
 							</TableCell>
@@ -479,7 +477,7 @@
 	</Table>
 
 	<div class="row xbetween ycenter gap-sm wrap">
-		<p class="text-sm text-muted tabular-nums">
+		<p class={[metaTextSize, childTextColor, 'tabular-nums']}>
 			{from}–{to} of {sorted.length}
 			{#if selection.size > 0}
 				· {selection.size} selected
@@ -489,20 +487,22 @@
 			<Button
 				variant="ghost"
 				size="h-sm"
-				class="btn-icon"
 				icon={luChevronsLeft}
 				disabled={safePage <= 1}
 				aria-label="First page"
 				onclick={() => setPage(1)}
+				{...stepButtonProps}
+				class="btn-icon {stepButtonProps?.class ?? ''}"
 			/>
 			<Button
 				variant="ghost"
 				size="h-sm"
-				class="btn-icon"
 				icon={luChevronLeft}
 				disabled={safePage <= 1}
 				aria-label="Previous page"
 				onclick={() => setPage(safePage - 1)}
+				{...stepButtonProps}
+				class="btn-icon {stepButtonProps?.class ?? ''}"
 			/>
 			{#each pages as n (n)}
 				<Button
@@ -511,6 +511,7 @@
 					aria-label="Page {n}"
 					aria-current={n === safePage ? 'page' : undefined}
 					onclick={() => setPage(n)}
+					{...pageButtonProps}
 				>
 					{n}
 				</Button>
@@ -518,20 +519,22 @@
 			<Button
 				variant="ghost"
 				size="h-sm"
-				class="btn-icon"
 				icon={luChevronRight}
 				disabled={safePage >= pageCount}
 				aria-label="Next page"
 				onclick={() => setPage(safePage + 1)}
+				{...stepButtonProps}
+				class="btn-icon {stepButtonProps?.class ?? ''}"
 			/>
 			<Button
 				variant="ghost"
 				size="h-sm"
-				class="btn-icon"
 				icon={luChevronsRight}
 				disabled={safePage >= pageCount}
 				aria-label="Last page"
 				onclick={() => setPage(pageCount)}
+				{...stepButtonProps}
+				class="btn-icon {stepButtonProps?.class ?? ''}"
 			/>
 		</div>
 	</div>

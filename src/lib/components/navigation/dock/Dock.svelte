@@ -1,22 +1,23 @@
 <!-- @component A macOS-style dock whose items magnify by pointer proximity, driven by springs. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { animate, reducedMotion } from '../../../motion/index.js';
-	import { roving } from '../../../internal/roving.js';
-	import type { Orientation } from '../../../internal/tokens.js';
-	import type { DockItem } from './items.js';
+	import { roving } from '../../../internal/helpers.js';
+	import type {  AlignContent, Gap, Orientation, Pad, Shape, Surface  } from '../../../internal/tokens.js';
+	import type {  DockItem  } from './items.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** The items, in order. */
 		items: DockItem[];
-		/** The current item's value, used to set `aria-current`. */
 		current?: string;
-		/** Lays the dock out along the bottom or along the start edge. */
 		orientation?: Orientation;
-		/** Accessible name of the navigation. */
 		label?: string;
+		surface?: Surface;
+		shape?: Shape;
+		pad?: Pad;
+		gap?: Gap;
+		alignContent?: AlignContent;
 	}
 
 	let {
@@ -24,6 +25,11 @@
 		current,
 		orientation = 'horizontal',
 		label = 'Dock',
+		surface = 'glass',
+		shape = 'modern',
+		pad = 'pad-sm',
+		gap = 'gap-sm',
+		alignContent = 'xcenter',
 		class: className,
 		...rest
 	}: Props = $props();
@@ -79,8 +85,12 @@
 	bind:this={root}
 	aria-label={label}
 	class={[
-		'row ycenter xcenter gap-sm pad-sm bg-surface glass border rim shad-lg modern',
-		vertical && 'column',
+		vertical ? 'column' : 'row ycenter',
+		alignContent,
+		gap,
+		surface,
+		pad,
+		shape,
 		className
 	]}
 	{@attach roving({

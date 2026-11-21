@@ -1,4 +1,4 @@
-<!-- @example States, sizes and forms :: sizes, shapes, min and max, invalid, disabled, readonly, and a named range in a form. -->
+<!-- @example States, sizes and forms :: sizes, shapes, frames, the ink of the dash, min and max, invalid, disabled, readonly, and a named range in a form. -->
 <script lang="ts">
 	import { TimeRangeField, type TimeRange } from '@fractaldesign/fractalsvelte-ui';
 
@@ -40,6 +40,17 @@
 		{#each shapes as shape (shape)}
 			<TimeRangeField value={{ start: '09:00', end: '17:30' }} {shape} aria-label={`Opening hours (${shape})`} />
 		{/each}
+	</div>
+	<div class="box gap-sm measure-sm">
+		{#each ['outline', 'ghost', 'secondary'] as const as variant (variant)}
+			<TimeRangeField value={{ start: '09:00', end: '17:30' }} {variant} aria-label={`Opening hours (${variant} frame)`} />
+		{/each}
+		<TimeRangeField
+			value={{ start: '09:00', end: '17:30' }}
+			variant="ghost"
+			childTextColor="text-secondary"
+			aria-label="Opening hours with a quieter dash"
+		/>
 	</div>
 	<TimeRangeField value={{ start: '09:00', end: '17:30' }} disabled aria-label="Locked opening hours" />
 	<TimeRangeField value={{ start: '09:00', end: '17:30' }} readonly aria-label="Published opening hours" />

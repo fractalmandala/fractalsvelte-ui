@@ -1,9 +1,9 @@
 <!-- @component One toggle in the group. Its `value` joins the group value while it is on. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import type { IconData } from '@fractaldesign/icons';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLButtonAttributes  } from 'svelte/elements';
+	import type {  IconData  } from '@fractaldesign/icons';
 	import Toggle from '../toggle/Toggle.svelte';
 	import { getToggleGroup } from './toggle-group.js';
 

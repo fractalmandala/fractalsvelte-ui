@@ -7,6 +7,6 @@
 	<span>Draft</span>
 	<Divider orientation="vertical" spacing="h-xs" />
 	<span>Published</span>
-	<Divider orientation="vertical" look="strong" spacing="h-xs" />
+	<Divider orientation="vertical" line="strong" spacing="h-xs" />
 	<span>Archived</span>
 </div>

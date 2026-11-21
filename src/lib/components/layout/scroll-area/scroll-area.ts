@@ -1,6 +1,5 @@
 const fade = 'var(--space-lg)';
 
-/** Writes edge-fade custom properties from the element's current scroll position. */
 export function attachFades(axes: { y: boolean; x: boolean }): (node: HTMLElement) => () => void {
 	return (node) => {
 		const write = (): void => {

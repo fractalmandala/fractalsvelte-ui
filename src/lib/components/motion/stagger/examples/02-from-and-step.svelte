@@ -18,7 +18,7 @@
 	{#key `${from}-${version}`}
 		<Stagger {from} step={80} enter="scale" class="row wrap gap-sm">
 			{#each desks as desk}
-				<div class="card rim shad-sm pad-sm">
+				<div class="rim shad-sm pad-sm">
 					<span class="text-sm weight-500">{desk}</span>
 				</div>
 			{/each}

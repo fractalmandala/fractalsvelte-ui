@@ -1,44 +1,34 @@
 <!-- @component A custom single or multiple choice list that opens from a field, with groups, icons and typeahead. -->
 
 <script lang="ts" generics="T">
-	import type { HTMLButtonAttributes } from 'svelte/elements';
+	import type {  HTMLButtonAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck, luChevronDown, luX } from '@fractaldesign/icons/lucide';
-	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
-	import { roving } from '../../../internal/roving.js';
-	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
+	import { anchor, floating, popoverSync, roving } from '../../../internal/helpers.js';
+	import { defaultSize, type ChildTextSize, type Pad, type Shape, type Size, type Surface, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
 import { getFieldContext } from '../../inputs/field/field.js';
+	import { frameClasses } from '../../inputs/input/frame.js';
 	import { groupOptions, valueKey, type SelectOption } from './options.js';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'value' | 'children' | 'type' | 'name' | 'form' | 'disabled'> {
-		/** The choices. Options sharing a `group` are listed together under that heading. */
 		options: SelectOption<T>[];
-		/** The chosen value — an array of values when `multiple` is set. Bindable. */
 		value?: T | T[] | null;
-		/** Called with the new value whenever the person changes it. */
 		onValueChange?: (value: T | T[] | null) => void;
-		/** Lets the person choose any number of options; `value` becomes an array and the list stays open. */
 		multiple?: boolean;
-		/** The text shown while nothing is chosen. */
 		placeholder?: string;
-		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
-		/** The text scale, independent of the control height. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** The corner shape of the field. @default 'modern' */
+		childTextSize?: ChildTextSize;
+		childTextColor?: TextColor;
 		shape?: Shape;
-		/** Marks the field as failing validation: a danger border and `aria-invalid`. */
+		variant?: Variant;
+		surface?: Surface;
 		invalid?: boolean;
-		/** Shows a button that clears the value. */
 		clearable?: boolean;
-		/** The name of the hidden input(s) that carry the value in a form submission. */
 		name?: string;
-		/** Whether the list is showing. Bindable. */
 		open?: boolean;
-		/** Called when the list opens or closes. */
 		onOpenChange?: (open: boolean) => void;
-			/** Blocks opening the list and dims the field. */
-		disabled?: boolean | null;
+			disabled?: boolean | null;
 }
 
 	let {
@@ -49,7 +39,11 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		placeholder = 'Select…',
 		size,
 		textSize,
+		childTextSize = 'text-xs',
+		childTextColor = 'text-muted',
 		shape,
+		variant,
+		surface = 'glass',
 		invalid,
 		clearable = false,
 		name,
@@ -64,7 +58,20 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	const fieldCtx = getFieldContext();
 	const resolvedSize = $derived(size ?? fieldCtx?.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? fieldCtx?.shape ?? 'modern');
+	const resolvedVariant = $derived<Variant>(variant ?? fieldCtx?.variant ?? 'outline');
 	const resolvedInvalid = $derived(invalid ?? fieldCtx?.invalid ?? false);
+	const frame = $derived([
+		...frameClasses({
+			variant: resolvedVariant,
+			size: resolvedSize,
+			textSize,
+			shape: resolvedShape,
+			invalid: resolvedInvalid,
+			disabled: Boolean(disabled)
+		}),
+		'font-sans relative anchor xright',
+		className
+	]);
 
 	const uid = $props.id();
 	const triggerId = $derived(idProp ?? `${uid}-trigger`);
@@ -108,7 +115,6 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		trigger?.focus();
 	}
 
-	/** Move focus into the list: the chosen option, else the first (or last) enabled one. */
 	function focusInitial(from: 'start' | 'end' = 'start') {
 		if (!list) return;
 		const items = Array.from(list.querySelectorAll<HTMLElement>('[role="option"]:not([aria-disabled="true"])'));
@@ -157,14 +163,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 </script>
 
 <div
-	class={[
-		'field anchor relative row ycenter xright bg-input border',
-		resolvedSize, textSize,
-		resolvedShape,
-		resolvedInvalid && 'is-invalid',
-		disabled && 'disabled',
-		className
-	]}
+	class={frame}
 	aria-invalid={resolvedInvalid || undefined}
 	{@attach anchor(uid)}
 >
@@ -182,27 +181,27 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		{...rest}
 	>
 		{#if !multiple && chosen[0]?.icon}
-			<Icon icon={chosen[0].icon} class="text-secondary shrink-0" />
+			<Icon icon={chosen[0].icon} class={['shrink-0', childTextColor]} />
 		{/if}
-		<span class={['truncate grow', !hasValue && 'text-muted']}>
+		<span class={['truncate grow', !hasValue && childTextColor]}>
 			{hasValue ? chosen.map((o) => o.label).join(', ') : placeholder}
 		</span>
 		{#if multiple && chosen.length > 1}
-			<span class="text-xs text-muted tabular-nums shrink-0">{chosen.length}</span>
+			<span class={['tabular-nums shrink-0', childTextSize, childTextColor]}>{chosen.length}</span>
 		{/if}
 	</button>
 	<span class="relative z-raised row ycenter gap-xs pr-sm pointer-none">
 		{#if clearable && hasValue && !disabled}
 			<button
 				type="button"
-				class="pointer-auto btn-icon h-md ghost round text-muted"
+				class={['pointer-auto btn-icon ghost', resolvedSize, resolvedShape, childTextColor]}
 				aria-label="Clear selection"
 				onclick={clear}
 			>
 				<Icon icon={luX} />
 			</button>
 		{/if}
-		<Icon icon={luChevronDown} class={['caret text-muted', open && 'open']} />
+		<Icon icon={luChevronDown} class={['caret', childTextColor, open && 'open']} />
 	</span>
 </div>
 
@@ -215,7 +214,10 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	aria-labelledby={triggerId}
 	aria-multiselectable={multiple || undefined}
 	class={[
-		'floating at-bottom-start match-anchor pop enter-down spring-snappy glass border rim shad-lg modern pad-xs scroll-y scroll-thin box gap-xs focus-none',
+		'floating at-bottom-start match-anchor pop enter-down spring-snappy scroll-y scroll-thin box gap-xs focus-none',
+		surface,
+		resolvedShape,
+		'pad-xs',
 		textSize
 	]}
 	onkeydown={onListKeydown}
@@ -226,7 +228,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	{#each groups as g, gi (g.group ?? `__${gi}`)}
 		<div role="group" aria-labelledby={g.group ? `${uid}-g${gi}` : undefined} class="box">
 			{#if g.group}
-				<div id={`${uid}-g${gi}`} class="text-xs text-muted weight-500 px-sm pt-sm pb-xs select-none">{g.group}</div>
+				<div id={`${uid}-g${gi}`} class={['weight-500 px-sm pt-sm pb-xs select-none', childTextSize, childTextColor]}>{g.group}</div>
 			{/if}
 			{#each g.options as option (valueKey(option.value))}
 				{@const on = isSelected(option.value)}
@@ -240,12 +242,12 @@ import { getFieldContext } from '../../inputs/field/field.js';
 					onkeydown={(event) => onOptionKeydown(event, option)}
 				>
 					{#if option.icon}
-						<Icon icon={option.icon} class="text-secondary shrink-0" />
+						<Icon icon={option.icon} class={['shrink-0', childTextColor]} />
 					{/if}
 					<span class="box grow wmin0">
 						<span class="truncate">{option.label}</span>
 						{#if option.description}
-							<span class="text-xs text-muted truncate">{option.description}</span>
+							<span class={['truncate', childTextSize, childTextColor]}>{option.description}</span>
 						{/if}
 					</span>
 					{#if on}
@@ -255,7 +257,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 			{/each}
 		</div>
 	{:else}
-		<div class="px-sm py-sm text-sm text-muted">No options</div>
+		<div class={['px-sm py-sm', childTextSize, childTextColor]}>No options</div>
 	{/each}
 </div>
 

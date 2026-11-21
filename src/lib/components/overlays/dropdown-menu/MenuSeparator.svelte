@@ -1,7 +1,7 @@
 <!-- @component A hairline between groups of items. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 
 	interface Props extends HTMLAttributes<HTMLHRElement> {}
 

@@ -1,13 +1,12 @@
 <!-- @component Copies text to the clipboard and confirms it with a spring-morphed check. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLButtonAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLButtonAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck, luCopy } from '@fractaldesign/icons/lucide';
 	import { springScale } from '../../../motion/index.js';
-	import { defaultTextColor } from '../../../internal/helpers.js';
-	import type { Shape, Size, TextColor, TextSize, Variant } from '../../../internal/tokens.js';
+	import type {  ChildTextColor, Shape, Size, TextColor, TextSize, Variant  } from '../../../internal/tokens.js';
 	import Button from '../button/Button.svelte';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'children' | 'disabled'> {
@@ -20,6 +19,7 @@
 		size?: Size;
 		textSize?: TextSize;
 		textColor?: TextColor;
+		childTextColor?: ChildTextColor;
 		shape?: Shape;
 		children?: Snippet;
 		disabled?: boolean | null;
@@ -35,6 +35,7 @@
 		size = 'h-lg',
 		textSize = 'text-sm',
 		textColor,
+		childTextColor = 'text-success',
 		shape = 'rect',
 		class: className,
 		onclick,
@@ -44,7 +45,6 @@
 
 	let copied = $state(false);
 	let timer: ReturnType<typeof setTimeout> | undefined;
-	const resolvedTextColor = $derived(textColor ?? defaultTextColor(variant));
 
 	$effect(() => () => clearTimeout(timer));
 
@@ -67,7 +67,6 @@
 	{variant}
 	{size}
 	{textSize}
-	textColor={resolvedTextColor}
 	{shape}
 	class={[!children && 'btn-icon', className]}
 	aria-label={children ? undefined : label}
@@ -79,7 +78,7 @@
 		{#if copied}{copiedLabel}{:else}{@render children()}{/if}
 	{:else if copied}
 		<span class="inline-flex" in:springScale={{ spring: 'bouncy', start: 0.4 }}>
-			<Icon icon={luCheck} class="text-success" />
+			<Icon icon={luCheck} class={childTextColor} />
 		</span>
 	{:else}
 		<Icon icon={luCopy} />

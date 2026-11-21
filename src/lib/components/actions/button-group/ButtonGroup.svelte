@@ -1,9 +1,9 @@
 <!-- @component Joins related buttons into one segmented control, or spaces them evenly. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Orientation, Gap, Shape } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  Orientation, Gap, Shape  } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		label?: string;

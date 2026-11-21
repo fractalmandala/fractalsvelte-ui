@@ -1,4 +1,4 @@
-<!-- @example Usage :: Mentioning teammates with `@` or running slash commands with `/` in a message composer. -->
+<!-- @example Usage :: Mentioning teammates with `@` or running slash commands with `/` in a message composer, with its own popup surface, inset and type scales. -->
 <script lang="ts">
 	import { TriggerMenu, type TriggerConfig } from '@fractaldesign/fractalsvelte-ui';
 
@@ -26,5 +26,14 @@
 </script>
 
 <div class="column gap-sm measure-sm wfull">
-	<TriggerMenu {triggers} bind:value={text} multiline rows={3} />
+	<TriggerMenu
+		{triggers}
+		bind:value={text}
+		multiline
+		rows={3}
+		surface="glass"
+		textSize="text-md"
+		childTextSize="text-xs"
+		childTextColor="text-secondary"
+	/>
 </div>

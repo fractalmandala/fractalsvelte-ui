@@ -1,27 +1,24 @@
 <!-- @component A top app bar with a brand, links and actions, glass on scroll, and a small-screen menu. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luMenu } from '@fractaldesign/icons/lucide';
 	import { anchor, floating } from '../../../internal/helpers.js';
+	import type { Measure, Pad, Shape, Surface } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** The mark or title at the start of the bar. */
 		brand?: Snippet;
-		/** The primary links, usually `NavbarLink`s. */
 		children?: Snippet;
-		/** Trailing actions — a search, an account menu, a sign-in button. */
 		actions?: Snippet;
-		/** Pins the bar to the top of the viewport as the page scrolls. */
 		sticky?: boolean;
-		/** Adds a glass surface once the page has been scrolled. */
 		glassOnScroll?: boolean;
-		/** Accessible name of the navigation. */
 		label?: string;
-		/** Accessible name of the small-screen menu button. */
 		menuLabel?: string;
+		menuSurface?: Surface;
+		menuMeasure?: Measure;
+		shape?: Shape;
 	}
 
 	let {
@@ -32,6 +29,9 @@
 		glassOnScroll = true,
 		label = 'Site',
 		menuLabel = 'Open menu',
+		menuSurface = 'glass',
+		menuMeasure = 'measure-xs',
+		shape = 'modern',
 		class: className,
 		...rest
 	}: Props = $props();
@@ -83,7 +83,7 @@
 			<div class="md-hide">
 				<button
 					type="button"
-					class="button btn-icon ghost modern no-scaling inline-flex"
+					class={['button btn-icon ghost no-scaling inline-flex', shape]}
 					popovertarget={menuId}
 					aria-label={menuLabel}
 					aria-haspopup="dialog"
@@ -94,10 +94,10 @@
 				<div
 					id={menuId}
 					popover="auto"
-					class="floating at-bottom-end pop enter-down spring-snappy glass border rim shad-lg modern pad-sm measure-xs"
+					class={['floating at-bottom-end pop enter-down spring-snappy', menuSurface, 'pad-sm', menuMeasure, shape]}
 					{@attach floating(uid)}
 				>
-					<nav class="column gap-xs pad-xs" aria-label={label}>
+					<nav class={['column gap-xs', 'pad-xs']} aria-label={label}>
 						{@render children?.()}
 						{#if actions}
 							<div class="bt pt-sm mt-xs row ycenter gap-sm wrap">{@render actions()}</div>

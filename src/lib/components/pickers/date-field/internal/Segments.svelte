@@ -51,33 +51,19 @@
 
 	interface Props {
 
-		/** `'date'` renders year/month/day segments; `'time'` renders hour/minute/second and optional AM/PM. */
 		kind: 'date' | 'time';
-		/** The ISO value, or `null` while any required segment is empty. */
 		value?: string | null;
-		/** Called whenever a complete ISO value is committed or the field becomes incomplete. */
 		onValueChange?: (value: string | null) => void;
-		/** The earliest selectable ISO date or time. */
 		min?: string;
-		/** The latest selectable ISO date or time. */
 		max?: string;
-		/** BCP 47 locale for segment order, literals and AM/PM. */
 		locale?: string;
-		/** How complete a date must be to commit. */
 		dateGranularity?: DateGranularity;
-		/** How complete a time must be to commit. */
 		timeGranularity?: TimeGranularity;
-		/** 12-hour (with AM/PM) or 24-hour clock. Defaults from the locale. */
 		hourCycle?: HourCycle;
-		/** ISO date or time used when a person first increments an empty segment. */
 		placeholder?: string;
-		/** When true, segments cannot be focused. */
 		disabled?: boolean;
-		/** When true, segments are focusable but not editable. */
 		readonly?: boolean;
-		/** Marks every spinbutton as invalid. */
 		invalid?: boolean;
-		/** Accessible name for this group of segments, used when the parent is a range side. */
 		label?: string;
 	}
 

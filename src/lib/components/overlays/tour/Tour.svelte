@@ -1,30 +1,35 @@
 <!-- @component Multi-step guided product tour with target spotlighting and anchored walkthrough card. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  ComponentProps  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { luX } from '@fractaldesign/icons/lucide';
 	import { Button } from '../../actions/button/index.js';
 	import { IconButton } from '../../actions/icon-button/index.js';
 	import { vars } from '../../../motion/index.js';
+	import type { ChildTextColor, ChildTextSize, Pad, Shape, Surface, TextColor, TextSize } from '../../../internal/tokens.js';
 	import { resolveTourTarget, type TourStep } from './tour.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Ordered tour steps with target selectors and guidance copy. */
 		steps: TourStep[];
-		/** Whether the tour overlay is visible; bindable. */
 		open?: boolean;
-		/** Called when the tour opens or closes. */
 		onOpenChange?: (open: boolean) => void;
-		/** Zero-based index of the active step; bindable. */
 		current?: number;
-		/** Called whenever the active step changes. */
 		onCurrentChange?: (step: number) => void;
-		/** Called when finishing the final step. */
 		onComplete?: () => void;
-		/** Called when skipping or dismissing the tour early. */
 		onSkip?: () => void;
-		/** Highlight the active target element inside a spotlight cutout. */
 		spotlight?: boolean;
+		surface?: Surface;
+		shape?: Shape;
+		textSize?: TextSize;
+		childTextSize?: ChildTextSize;
+		metaTextSize?: TextSize;
+		childTextColor?: ChildTextColor;
+		textColor?: TextColor;
+		closeButtonProps?: Partial<ComponentProps<typeof IconButton>>;
+		skipButtonProps?: ComponentProps<typeof Button>;
+		backButtonProps?: ComponentProps<typeof Button>;
+		nextButtonProps?: ComponentProps<typeof Button>;
 	}
 
 	let {
@@ -36,6 +41,17 @@
 		onComplete,
 		onSkip,
 		spotlight = true,
+		surface = 'elevated',
+		shape = 'curved',
+		textSize = 'text-bs',
+		childTextSize = 'text-sm',
+		metaTextSize = 'text-xs',
+		childTextColor = 'text-secondary',
+		textColor = 'text-muted',
+		closeButtonProps,
+		skipButtonProps,
+		backButtonProps,
+		nextButtonProps,
 		class: className,
 		...rest
 	}: Props = $props();
@@ -163,7 +179,10 @@
 		aria-modal="false"
 		aria-labelledby="tour-step-title"
 		class={[
-			'tour-card box gap-md elevated curved shad-lg pad-md',
+			'tour-card box gap-md',
+			surface,
+			shape,
+			'pad-md',
 			!cardPos && 'centered',
 			className
 		]}
@@ -171,24 +190,24 @@
 		{...rest}
 	>
 		<div class="row ycenter xbetween gap-sm">
-			<span class="text-xs weight-500 text-muted tabular-nums">
+			<span class={['weight-500 tabular-nums', metaTextSize, textColor]}>
 				Step {safeIndex + 1} of {total}
 			</span>
-			<IconButton variant="ghost" size="h-xs" icon={luX} label="Close tour" onclick={skip} />
+			<IconButton variant="ghost" size="h-xs" icon={luX} label="Close tour" onclick={skip} {...closeButtonProps} />
 		</div>
 
 		<div class="box gap-xs">
-			<h3 id="tour-step-title" class="text-bs weight-600">{step.title}</h3>
-			<p class="text-sm text-secondary">{step.description}</p>
+			<h3 id="tour-step-title" class={['weight-600', textSize]}>{step.title}</h3>
+			<p class={[childTextSize, childTextColor]}>{step.description}</p>
 		</div>
 
 		<div class="row ycenter xbetween gap-sm">
-			<Button variant="ghost" size="h-sm" onclick={skip}>Skip</Button>
+			<Button variant="ghost" size="h-sm" onclick={skip} {...skipButtonProps}>Skip</Button>
 			<div class="row ycenter gap-xs">
 				{#if !isFirst}
-					<Button variant="outline" size="h-sm" onclick={() => goTo(safeIndex - 1)}>Back</Button>
+					<Button variant="outline" size="h-sm" onclick={() => goTo(safeIndex - 1)} {...backButtonProps}>Back</Button>
 				{/if}
-				<Button variant="themed" size="h-sm" onclick={next}>
+				<Button variant="themed" size="h-sm" onclick={next} {...nextButtonProps}>
 					{isLast ? 'Done' : 'Next'}
 				</Button>
 			</div>

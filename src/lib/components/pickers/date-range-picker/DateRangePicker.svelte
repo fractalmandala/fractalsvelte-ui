@@ -1,59 +1,44 @@
 <!-- @component A field that opens a two-month range calendar, with hover preview and optional presets. -->
 
 <script lang="ts">
-	import type { HTMLButtonAttributes } from 'svelte/elements';
+	import type {  HTMLButtonAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCalendar, luX } from '@fractaldesign/icons/lucide';
 	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
-	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
+	import { defaultSize, type ChildTextSize, type Pad, type Shape, type Size, type Surface, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
 import { getFieldContext } from '../../inputs/field/field.js';
+	import { frameClasses } from '../../inputs/input/frame.js';
 	import Calendar from '../calendar/Calendar.svelte';
 	import { formatIso, type DateFormat, type DateRange } from '../calendar/dates.js';
 
 	interface RangePreset {
-		/** The visible name of the preset, e.g. "Last 7 days". */
 		label: string;
-		/** The inclusive start and end ISO dates the preset writes to `value`. */
 		value: { start: string; end: string };
 	}
 
 	interface Props extends Omit<HTMLButtonAttributes, 'value' | 'children' | 'type' | 'name' | 'form' | 'disabled'> {
-		/** The inclusive start and end dates as ISO `YYYY-MM-DD`, either of which may be `null`. Bindable. */
 		value?: DateRange;
-		/** Called whenever the person changes the range. */
 		onValueChange?: (value: DateRange) => void;
-		/** The earliest selectable ISO date. */
 		min?: string;
-		/** The latest selectable ISO date. */
 		max?: string;
-		/** How each date is shown in the field. */
 		format?: DateFormat;
-		/** Shows a button that clears the range. */
 		clearable?: boolean;
-		/** Quick-pick ranges listed above the calendar. */
 		presets?: RangePreset[];
-		/** BCP 47 locale for formatting and calendar labels. */
 		locale?: string;
-		/** Day the week starts on, 0 = Sunday through 6 = Saturday. */
 		weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
-		/** The text scale, independent of the control height. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** The corner shape of the field. @default 'modern' */
+		childTextSize?: ChildTextSize;
+		childTextColor?: TextColor;
 		shape?: Shape;
-		/** Marks the field as failing validation: a danger border and `aria-invalid`. */
+		variant?: Variant;
+		surface?: Surface;
 		invalid?: boolean;
-		/** The text shown while no range is chosen. */
 		placeholder?: string;
-		/** The name of the hidden inputs (`-start` and `-end` suffixes) that carry the range in a form. */
 		name?: string;
-		/** Whether the calendar is showing. Bindable. */
 		open?: boolean;
-		/** Called when the calendar opens or closes. */
 		onOpenChange?: (open: boolean) => void;
-			/** Blocks opening the calendar and dims the field. */
-		disabled?: boolean | null;
+			disabled?: boolean | null;
 }
 
 	let {
@@ -68,7 +53,11 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		weekStartsOn = 0,
 		size,
 		textSize,
+		childTextSize = 'text-sm',
+		childTextColor = 'text-muted',
 		shape,
+		variant,
+		surface = 'glass',
 		invalid,
 		placeholder = 'Start date – End date',
 		name,
@@ -84,6 +73,19 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	const resolvedSize = $derived(size ?? fieldCtx?.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? fieldCtx?.shape ?? 'modern');
 	const resolvedInvalid = $derived(invalid ?? fieldCtx?.invalid ?? false);
+	const resolvedVariant = $derived<Variant>(variant ?? fieldCtx?.variant ?? 'outline');
+	const frame = $derived([
+		...frameClasses({
+			variant: resolvedVariant,
+			size: resolvedSize,
+			textSize,
+			shape: resolvedShape,
+			invalid: resolvedInvalid,
+			disabled: Boolean(disabled)
+		}),
+		'font-sans relative anchor xright',
+		className
+	]);
 
 	const uid = $props.id();
 	const triggerId = $derived(idProp ?? `${uid}-trigger`);
@@ -156,14 +158,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 </script>
 
 <div
-	class={[
-		'field anchor relative row ycenter xright bg-input border',
-		resolvedSize, textSize,
-		resolvedShape,
-		resolvedInvalid && 'is-invalid',
-		disabled && 'disabled',
-		className
-	]}
+	class={frame}
 	aria-invalid={resolvedInvalid || undefined}
 	{@attach anchor(uid)}
 >
@@ -180,15 +175,15 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		onclick={() => setOpen(!open)}
 		{...rest}
 	>
-		<span class={['truncate grow ta-l', !hasValue && 'text-muted']}>{hasValue ? display : placeholder}</span>
+		<span class={['truncate grow ta-l', !hasValue && childTextColor]}>{hasValue ? display : placeholder}</span>
 	</button>
 	<span class="relative z-raised row ycenter gap-xs pr-sm pointer-none">
 		{#if clearable && hasValue && !disabled}
-			<button type="button" class="pointer-auto btn-icon h-md ghost round text-muted" aria-label="Clear dates" onclick={clear}>
+			<button type="button" class={['pointer-auto btn-icon ghost', resolvedSize, resolvedShape, childTextColor]} aria-label="Clear dates" onclick={clear}>
 				<Icon icon={luX} />
 			</button>
 		{/if}
-		<Icon icon={luCalendar} class="text-muted" />
+		<Icon icon={luCalendar} class={[childTextColor]} />
 	</span>
 </div>
 
@@ -198,14 +193,14 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	role="dialog"
 	tabindex="-1"
 	aria-label="Choose a date range"
-	class="floating at-bottom-start pop enter-down spring-snappy glass border rim shad-lg modern pad-bs box gap-sm focus-none"
+	class={['floating at-bottom-start pop enter-down spring-snappy box gap-sm focus-none', surface, resolvedShape, 'pad-bs']}
 	{@attach floating(uid)}
 	{@attach popoverSync(() => open, setOpen)}
 >
 	{#if presets?.length}
 		<div class="row wrap gap-xs">
 			{#each presets as preset (preset.label)}
-				<button type="button" class="button ghost h-bs text-sm modern" onclick={() => applyPreset(preset)}>
+				<button type="button" class={['button ghost', resolvedSize, childTextSize, resolvedShape]} onclick={() => applyPreset(preset)}>
 					{preset.label}
 				</button>
 			{/each}

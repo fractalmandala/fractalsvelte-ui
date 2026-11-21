@@ -1,15 +1,9 @@
-/** Civil dates as year / month / day integers. No timezone-sensitive Date arithmetic. */
-
 export interface Ymd {
-	/** Full year, e.g. 2026. */
 	y: number;
-	/** Month, 1–12. */
 	m: number;
-	/** Day of the month, 1–31. */
 	d: number;
 }
 
-/** An inclusive range of ISO dates, used by the calendar in `range` mode. */
 export interface DateRange {
 	start: string | null;
 	end: string | null;
@@ -19,7 +13,6 @@ export type CalendarValue = string | null | string[] | DateRange;
 
 const ISO = /^(\d{4})-(\d{2})-(\d{2})$/;
 
-/** Sakamoto offsets — weekday of the first of each month in a non-leap year, Monday-adjusted in `weekday`. */
 const SAKAMOTO = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4] as const;
 
 export function isLeap(y: number): boolean {
@@ -42,7 +35,6 @@ export function isValid(date: Ymd): boolean {
 	);
 }
 
-/** Parse an ISO `YYYY-MM-DD` string into a civil date, or `null` if it is not a real day. */
 export function parseIso(iso: string): Ymd | null {
 	const match = ISO.exec(iso);
 	if (!match) return null;
@@ -50,12 +42,10 @@ export function parseIso(iso: string): Ymd | null {
 	return isValid(date) ? date : null;
 }
 
-/** Format a civil date as `YYYY-MM-DD`. */
 export function toIso(date: Ymd): string {
 	return `${String(date.y).padStart(4, '0')}-${String(date.m).padStart(2, '0')}-${String(date.d).padStart(2, '0')}`;
 }
 
-/** Day of week: 0 = Sunday, 6 = Saturday. Pure integer math (Sakamoto). */
 export function weekday(date: Ymd): number {
 	const y = date.y - (date.m < 3 ? 1 : 0);
 	return (y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) + SAKAMOTO[date.m - 1] + date.d) % 7;
@@ -114,7 +104,6 @@ export function startOfMonth(date: Ymd): Ymd {
 	return { y: date.y, m: date.m, d: 1 };
 }
 
-/** Today's civil date in the runtime's local zone — the one calendar users mean by "today". */
 export function today(): Ymd {
 	const now = new Date();
 	return { y: now.getFullYear(), m: now.getMonth() + 1, d: now.getDate() };
@@ -122,11 +111,9 @@ export function today(): Ymd {
 
 export interface CalendarCell extends Ymd {
 	iso: string;
-	/** The cell belongs to the previous or next month, filling out the week. */
 	outside: boolean;
 }
 
-/** Six weeks of cells for a month view, always 42 long so the grid does not jump. */
 export function monthCells(view: Ymd, weekStartsOn: number): CalendarCell[] {
 	const first = startOfMonth(view);
 	const lead = (weekday(first) - weekStartsOn + 7) % 7;
@@ -139,14 +126,12 @@ export function monthCells(view: Ymd, weekStartsOn: number): CalendarCell[] {
 	return cells;
 }
 
-/** Short weekday labels for a week that starts on `weekStartsOn`, in `locale`. */
 export function weekdayLabels(locale: string | undefined, weekStartsOn: number): string[] {
 	const fmt = new Intl.DateTimeFormat(locale, { weekday: 'short', timeZone: 'UTC' });
 	// 2021-08-01 was a Sunday, in UTC.
 	return Array.from({ length: 7 }, (_, i) => fmt.format(new Date(Date.UTC(2021, 7, 1 + ((weekStartsOn + i) % 7)))));
 }
 
-/** "November 2026" (or the equivalent in `locale`). */
 export function monthTitle(view: Ymd, locale?: string): string {
 	return new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(
 		new Date(Date.UTC(view.y, view.m - 1, 1))
@@ -161,7 +146,6 @@ const FORMAT: Record<DateFormat, Intl.DateTimeFormatOptions> = {
 	long: { year: 'numeric', month: 'long', day: 'numeric' }
 };
 
-/** Format an ISO date as a local civil date in `locale`. */
 export function formatIso(iso: string, locale?: string, format: DateFormat = 'medium'): string {
 	const date = parseIso(iso);
 	if (!date) return iso;
@@ -201,7 +185,6 @@ function yearOf(n: number): number {
 	return n < 70 ? 2000 + n : 1900 + n;
 }
 
-/** Parse a typed date: ISO, locale-ordered numerics, or a month name plus day and year. */
 export function parseInput(text: string, locale?: string): Ymd | null {
 	const trimmed = text.trim();
 	if (!trimmed) return null;
@@ -242,33 +225,22 @@ export function isRangeValue(value: CalendarValue): value is DateRange {
 	return typeof value === 'object' && value !== null && !Array.isArray(value) && 'start' in value && 'end' in value;
 }
 
-/** Whether `iso` lies in the inclusive range [start, end], both ISO or null. */
 export function inRange(iso: string, start: string | null, end: string | null): boolean {
 	if (!start || !end) return false;
 	return start <= iso && iso <= end;
 }
 
-/** Sort two ISO dates so `start` ≤ `end`. */
 export function orderedRange(a: string, b: string): DateRange {
 	return a <= b ? { start: a, end: b } : { start: b, end: a };
 }
 
-
-/** Civil time as hour / minute / second integers, 24-hour, no timezone. */
 export interface Hms {
-	/** Hour, 0–23. */
 	h: number;
-	/** Minute, 0–59. */
 	m: number;
-	/** Second, 0–59. */
 	s: number;
 }
 
-/** An inclusive range of ISO times, used by the time range field. */
-export interface TimeRange {
-	start: string | null;
-	end: string | null;
-}
+export type TimeRange = DateRange;
 
 const TIME_ISO = /^(\d{2}):(\d{2})(?::(\d{2}))?$/;
 
@@ -286,7 +258,6 @@ export function isValidTime(time: Hms): boolean {
 	);
 }
 
-/** Parse an ISO `HH:mm` or `HH:mm:ss` string into a civil time, or `null` if it is not a real time. */
 export function parseTimeIso(iso: string): Hms | null {
 	const match = TIME_ISO.exec(iso);
 	if (!match) return null;
@@ -296,7 +267,6 @@ export function parseTimeIso(iso: string): Hms | null {
 
 export type TimeGranularity = 'hour' | 'minute' | 'second';
 
-/** Format a civil time as `HH:00`, `HH:mm`, or `HH:mm:ss` according to `granularity`. */
 export function toTimeIso(time: Hms, granularity: TimeGranularity = 'minute'): string {
 	const hh = String(time.h).padStart(2, '0');
 	const mm = String(granularity === 'hour' ? 0 : time.m).padStart(2, '0');
@@ -304,10 +274,3 @@ export function toTimeIso(time: Hms, granularity: TimeGranularity = 'minute'): s
 	return `${hh}:${mm}`;
 }
 
-/** Compare two ISO times. Missing or invalid strings compare as 0 against each other. */
-export function compareTime(a: string, b: string): number {
-	const left = parseTimeIso(a);
-	const right = parseTimeIso(b);
-	if (!left || !right) return 0;
-	return left.h - right.h || left.m - right.m || left.s - right.s;
-}

@@ -1,31 +1,22 @@
 <!-- @component Springs its contents in when they scroll into view. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { Attachment } from 'svelte/attachments';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  Attachment  } from 'svelte/attachments';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { animate, inView, reducedMotion, setMotion, type MotionValues, type SpringInput } from '../../../motion/index.js';
 
 	type RevealDirection = 'up' | 'down' | 'left' | 'right';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The side the element springs in from. */
 		from?: RevealDirection;
-		/** How far the element starts from rest, in pixels. */
 		distance?: number;
-		/** The starting scale. `1` leaves scale unchanged. */
 		scale?: number;
-		/** The starting blur, in pixels. `0` leaves the image sharp. */
 		blur?: number;
-		/** Delay in milliseconds after the element enters the viewport. */
 		delay?: number;
-		/** When true, the entrance plays once and does not reverse on leave. */
 		once?: boolean;
-		/** Visible fraction of the element that counts as in view. */
 		amount?: number;
-		/** The spring used for the entrance (and the exit, when `once` is false). */
 		spring?: SpringInput;
-		/** The content that is revealed. */
 		children?: Snippet;
 	}
 

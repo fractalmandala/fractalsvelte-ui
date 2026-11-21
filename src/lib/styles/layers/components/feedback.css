@@ -22,7 +22,16 @@
 .overlap > * { grid-area: 1 / 1; }
 
 /* A pile of cards: items carry --depth (0 at the front); at rest they fan back behind the front card, and .open lays them out in a column. --front-h is the front card's height. */
-.pile { --dir: -1; --peek: var(--space-md); --step: 0.05; position: relative; display: grid; grid-template-columns: minmax(0, 1fr); align-items: end; }
+.pile { 
+	--dir: -1; 
+	--peek: var(--space-md); 
+	--step: 0.05; 
+	position: relative; 
+	display: grid; 
+	grid-template-columns: minmax(0, 1fr); 
+	align-items: end; 
+}
+
 .pile.from-top { --dir: 1; align-items: start; }
 .pile > * { grid-area: 1 / 1; z-index: calc(10 - var(--depth, 0)); transform-origin: center bottom; transform: translateY(calc(min(var(--depth, 0), 2) * var(--peek) * var(--dir))) scale(calc(1 - min(var(--depth, 0), 2) * var(--step))); }
 .pile.from-top > * { transform-origin: center top; }

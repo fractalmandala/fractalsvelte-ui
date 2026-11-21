@@ -1,41 +1,30 @@
 <!-- @component Two segmented date fields in one frame, for typing a start and an end date in locale order. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
-	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import { defaultSize, type Shape, type Size, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
 import { getFieldContext } from '../../inputs/field/field.js';
-	import type { DateRange } from '../calendar/dates.js';
+	import { frameClasses } from '../../inputs/input/frame.js';
+	import type {  DateRange  } from '../calendar/dates.js';
 	import Segments from '../date-field/internal/Segments.svelte';
-	import type { DateGranularity } from '../date-field/segments.js';
+	import type {  DateGranularity  } from '../date-field/segments.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The inclusive start and end dates as ISO `YYYY-MM-DD`, either of which may be `null`. Bindable. */
 		value?: DateRange;
-		/** Called whenever the person changes either side of the range. */
 		onValueChange?: (value: DateRange) => void;
-		/** The earliest selectable ISO date, applied to both sides. */
 		min?: string;
-		/** The latest selectable ISO date, applied to both sides. */
 		max?: string;
-		/** BCP 47 locale for segment order, literals and placeholders. */
 		locale?: string;
-		/** How complete each date must be to commit. Year commits `YYYY-01-01`; month commits `YYYY-MM-01`. */
 		granularity?: DateGranularity;
-		/** ISO date used when a person first increments an empty segment. Defaults to today. */
 		placeholder?: string;
-		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
-		/** The text scale, independent of the control height. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** The corner shape of the field. @default 'modern' */
 		shape?: Shape;
-		/** Marks the field as failing validation: a danger border and `aria-invalid`. */
+		variant?: Variant;
+		childTextColor?: TextColor;
 		invalid?: boolean;
-		/** Prevents edits; segments remain focusable. */
 		readonly?: boolean;
-		/** Prevents focus and edits. */
 		disabled?: boolean;
-		/** The name of the hidden inputs (`-start` and `-end` suffixes) that carry the range in a form. */
 		name?: string;
 	}
 
@@ -50,6 +39,8 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		size,
 		textSize,
 		shape,
+		variant,
+		childTextColor = 'text-muted',
 		invalid,
 		readonly = false,
 		name,
@@ -63,6 +54,19 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	const resolvedSize = $derived(size ?? fieldCtx?.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? fieldCtx?.shape ?? 'modern');
 	const resolvedInvalid = $derived(invalid ?? fieldCtx?.invalid ?? false);
+	const resolvedVariant = $derived<Variant>(variant ?? fieldCtx?.variant ?? 'outline');
+	const frame = $derived([
+		...frameClasses({
+			variant: resolvedVariant,
+			size: resolvedSize,
+			textSize,
+			shape: resolvedShape,
+			invalid: resolvedInvalid,
+			disabled: Boolean(disabled)
+		}),
+		'font-sans tabular-nums',
+		className
+	]);
 
 	const range = $derived(value ?? { start: null, end: null });
 
@@ -82,14 +86,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 <div
 	{id}
 	role="group"
-	class={[
-		'field relative row ycenter bg-input border px-md font-sans tabular-nums',
-		resolvedSize, textSize,
-		resolvedShape,
-		resolvedInvalid && 'is-invalid',
-		disabled && 'disabled',
-		className
-	]}
+	class={frame}
 	aria-disabled={disabled || undefined}
 	{...rest}
 >
@@ -107,7 +104,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		invalid={resolvedInvalid}
 		label="Start"
 	/>
-	<span class="text-muted px-xs" aria-hidden="true">–</span>
+	<span class={[childTextColor]} aria-hidden="true">–</span>
 	<Segments
 		kind="date"
 		value={range.end}

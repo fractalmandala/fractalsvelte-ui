@@ -1,26 +1,24 @@
 <!-- @component A vertical navigation tree with groups, badges and an icon-only rail that springs to width. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luChevronRight } from '@fractaldesign/icons/lucide';
-	import type { SidebarItem } from './items.js';
+	import type { ChildTextSize, Pad, Shape, Size, Surface } from '../../../internal/tokens.js';
+	import type {  SidebarItem  } from './items.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** The navigation tree: links, groups and separators. */
 		items: SidebarItem[];
-		/** The current page's href, used to set `aria-current`. */
 		current?: string;
-		/** Whether the rail is icon-only. Two-way bindable; its width springs between states. */
 		collapsed?: boolean;
-		/** Called whenever the rail is collapsed or expanded. */
 		onCollapsedChange?: (collapsed: boolean) => void;
-		/** Keyboard shortcut letter paired with `Cmd`/`Ctrl` to toggle collapse (or `false` to disable). */
 		shortcut?: string | false;
-		/** Open state on narrow/mobile viewports where the sidebar presents as a slide-over drawer; bindable. */
 		mobileOpen?: boolean;
-		/** Accessible name of the navigation. */
 		label?: string;
+		size?: Size;
+		shape?: Shape;
+		childTextSize?: ChildTextSize;
+		surface?: Surface;
 	}
 
 	let {
@@ -31,6 +29,10 @@
 		shortcut = 'b',
 		mobileOpen = $bindable(false),
 		label = 'Sidebar',
+		size = 'h-md',
+		shape = 'round',
+		childTextSize = 'text-xs',
+		surface = 'elevated',
 		class: className,
 		...rest
 	}: Props = $props();
@@ -100,7 +102,7 @@
 			{#if !collapsed}
 				<span class="grow truncate">{item.label}</span>
 				{#if item.badge !== undefined}
-					<span class="badge soft round text-xs h-md px-sm tabular-nums shrink-0">{item.badge}</span>
+					<span class={['badge state-selected px-sm tabular-nums shrink-0', shape, childTextSize, size]}>{item.badge}</span>
 				{/if}
 			{:else}
 				<span class="hint hint-right">{item.label}</span>
@@ -114,7 +116,7 @@
 			{#if !collapsed}
 				<span class="grow truncate">{item.label}</span>
 				{#if item.badge !== undefined}
-					<span class="badge soft round text-xs h-md px-sm tabular-nums shrink-0">{item.badge}</span>
+					<span class={['badge state-selected px-sm tabular-nums shrink-0', shape, childTextSize, size]}>{item.badge}</span>
 				{/if}
 			{:else if item.label}
 				<span class="hint hint-right">{item.label}</span>
@@ -147,7 +149,7 @@
 			{/if}
 			<span class="grow truncate ta-l">{item.label}</span>
 			{#if item.badge !== undefined}
-				<span class="badge soft round text-xs h-md px-sm tabular-nums shrink-0">{item.badge}</span>
+				<span class={['badge state-selected px-sm tabular-nums shrink-0', shape, childTextSize, size]}>{item.badge}</span>
 			{/if}
 			<span class={['caret quarter spring spring-snappy', open && 'open']}>
 				<Icon icon={luChevronRight} />
@@ -182,7 +184,9 @@
 <nav
 	aria-label={label}
 	class={[
-		'rail spring spring-snappy column pad-sm gap-xs bg-surface br',
+		'rail spring spring-snappy column gap-xs br',
+		surface,
+		'pad-sm',
 		collapsed && 'collapsed',
 		mobileOpen && 'mobile-drawer mobile-open',
 		className

@@ -1,4 +1,4 @@
-<!-- @example Global shortcut :: shortcut="mod+k" toggles the palette from anywhere, with a glass surface, a custom empty state and custom footer hints. -->
+<!-- @example Global shortcut :: shortcut="mod+k" toggles the palette from anywhere, with a glass surface, its own inset and type scales, a custom empty state and custom footer hints. -->
 <script lang="ts">
 	import { luCopy, luPencil, luStar, luTrash2 } from '@fractaldesign/icons/lucide';
 	import { Button, CommandPalette, type Command } from '@fractaldesign/fractalsvelte-ui';
@@ -24,6 +24,11 @@
 	{commands}
 	shortcut="mod+k"
 	surface="glass"
+	textSize="text-lg"
+	childTextSize="text-xs"
+	bodyTextSize="text-md"
+	textColor="text-secondary"
+	childTextColor="text-muted"
 	placeholder="Type a command…"
 	onOpenChange={(next) => {
 		if (next) log = 'Palette open — try typing “star”';

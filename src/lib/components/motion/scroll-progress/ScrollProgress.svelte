@@ -1,21 +1,16 @@
 <!-- @component A reading-progress bar or ring, bound to the page or to an element as it passes through the viewport. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { scrollProgress } from '../../../motion/index.js';
-	import type { Tone } from '../../../internal/tokens.js';
+	import type {  Tone, Placement  } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** A bar along the edge of the viewport, or a ring that fills with the same progress. */
 		form?: 'bar' | 'ring';
-		/** Where a `bar` sits — the top or the bottom of the viewport. Ignored by the ring. */
-		position?: 'top' | 'bottom';
-		/** `page` tracks the document scroll; `element` tracks this component's passage through the viewport. */
+		position?: Placement;
 		target?: 'page' | 'element';
-		/** The colour of the fill or ring. */
 		tone?: Tone;
-		/** Content whose passage is tracked when `target` is `element`. */
 		children?: Snippet;
 	}
 

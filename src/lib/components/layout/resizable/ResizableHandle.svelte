@@ -1,24 +1,25 @@
 <!-- @component The draggable, focusable separator between two panes. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luGripHorizontal, luGripVertical } from '@fractaldesign/icons/lucide';
+	import type {  Surface, TextColor  } from '../../../internal/tokens.js';
 	import { getResizable } from './resizable.svelte.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Draws a small grip on the handle so it reads as draggable. */
 		withGrip?: boolean;
+		surface?: Surface;
+		textColor?: TextColor;
 	}
 
-	let { withGrip = false, class: className, ...rest }: Props = $props();
+	let { withGrip = false, surface = 'elevated', textColor = 'text-muted', class: className, ...rest }: Props = $props();
 
 	const group = getResizable();
 	const ordinal = group.nextHandle();
 	let el: HTMLElement | undefined = $state();
 	let active = $state(false);
 
-	/** Handle n sits after pane n — read from the DOM once mounted, so late panes keep it right. */
 	const index = $derived.by(() => {
 		const panes = group.panes;
 		if (!el) return ordinal;
@@ -93,7 +94,9 @@
 	ondblclick={() => group.reset(index)}
 >
 	{#if withGrip}
-		<span class="grid center bg-surface border radius-sm shad-xs shrink-0 pointer-none z-raised h-sm square text-muted">
+		<span
+			class={['grid center radius-sm shrink-0 pointer-none z-raised h-sm square', surface, textColor]}
+		>
 			<Icon icon={horizontal ? luGripVertical : luGripHorizontal} />
 		</span>
 	{/if}

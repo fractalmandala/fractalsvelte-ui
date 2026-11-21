@@ -1,48 +1,35 @@
 <!-- @component An edge-docked sheet on a native <dialog>, with a drag-to-dismiss handle on the bottom edge. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLDialogAttributes } from 'svelte/elements';
+	import type {  ComponentProps, Snippet  } from 'svelte';
+	import type {  HTMLDialogAttributes  } from 'svelte/elements';
 	import { luX } from '@fractaldesign/icons/lucide';
 	import { dialogSync } from '../../../internal/helpers.js';
-	import type { Measure } from '../../../internal/tokens.js';
+	import type { ChildTextColor, ChildTextSize, Measure, Placement, TextSize, Surface } from '../../../internal/tokens.js';
 	import { animate, drag, vars, type DragState } from '../../../motion/index.js';
 	import { Button } from '../../actions/button/index.js';
-	import {
-		dialogWidth,
-		surfaceClass,
-		type OverlayContent,
-		type OverlaySurface,
-		type OverlayTrigger
-	} from '../dialog/dialog.js';
-	import { sideEnter, type DrawerSide } from './drawer.js';
+	import {type OverlayContent,
+		type OverlayTrigger} from '../dialog/dialog.js';
+	import { sideEnter } from './drawer.js';
 
 	interface Props extends Omit<HTMLDialogAttributes, 'title' | 'open' | 'children'> {
-		/** Whether the drawer is open. Bind it, or let the `trigger` drive it. */
 		open?: boolean;
-		/** Called whenever the drawer opens or closes. */
 		onOpenChange?: (open: boolean) => void;
-		/** The heading. Wired as the accessible name (`aria-labelledby`). */
 		title?: string | Snippet;
-		/** A line under the heading. Wired as the accessible description (`aria-describedby`). */
 		description?: string | Snippet;
-		/** The edge the drawer is docked to, as a placement. */
-		placement?: DrawerSide;
-		/** The width (left or right) or height (top or bottom), on the measure ladder. `full` fills the viewport. */
+		placement?: Placement;
 		width?: Measure;
-		/** Whether the rest of the page is inert while the drawer is open. */
+		textSize?: TextSize;
+		childTextSize?: ChildTextSize;
+		bodyTextSize?: TextSize;
+		childTextColor?: ChildTextColor;
 		modal?: boolean;
-		/** Whether Esc and a click on the backdrop close the drawer. */
 		dismissible?: boolean;
-		/** Shows a close button in the top-right corner. */
 		closeButton?: boolean;
-		/** The panel fill: opaque, or frosted glass. */
-		surface?: OverlaySurface;
-		/** Renders the element that opens the drawer. Spread `props` onto your own button. */
+		closeButtonProps?: ComponentProps<typeof Button>;
+		surface?: Surface;
 		trigger?: Snippet<[OverlayTrigger]>;
-		/** The body. Receives `close`. */
 		children?: Snippet<[OverlayContent]>;
-		/** The action row at the bottom, aligned to the end. Receives `close`. */
 		footer?: Snippet<[OverlayContent]>;
 	}
 
@@ -53,10 +40,15 @@
 		description,
 		placement = 'right',
 		width = 'measure-md',
+		textSize = 'text-lg',
+		childTextSize = 'text-sm',
+		bodyTextSize = 'text-md',
+		childTextColor = 'text-secondary',
 		modal = true,
 		dismissible = true,
 		closeButton = true,
-		surface = 'solid',
+		closeButtonProps,
+		surface = 'overlayed',
 		trigger,
 		children,
 		footer,
@@ -65,8 +57,8 @@
 	}: Props = $props();
 
 	const id = $props.id();
-	const titleId = `${id}-title`;
-	const descId = `${id}-desc`;
+	const titleId = `${id}card-title`;
+	const descId = `${id}card-desc`;
 
 	let panel: HTMLDialogElement | undefined;
 
@@ -127,17 +119,16 @@
 	bind:this={panel}
 	{id}
 	class={[
-		'dialog sheet open-column sized pop radius-lg shad-2xl',
+		'dialog sheet open-column sized pop radius-lg',
 		`at-${placement}`,
-		sideEnter[placement],
+		sideEnter(placement),
 		bottom && 'motion touch-none select-none',
-		surfaceClass[surface],
+		surface,
 		className
 	]}
 	aria-labelledby={title ? titleId : undefined}
 	aria-describedby={description ? descId : undefined}
 	{@attach dialogSync(() => open, setOpen, { modal, dismissible })}
-	{@attach vars({ width: dialogWidth[width] })}
 	{@attach sheetDrag}
 	{...rest}
 >
@@ -150,15 +141,15 @@
 	{#if title || description}
 		<header class={['box gap-xs px-lg pt-lg pb-md', closeButton && 'pr-2xl']}>
 			{#if title}
-				<h2 id={titleId} class="text-lg weight-600 lh12 ls-tight-bs">{@render text(title)}</h2>
+				<h2 id={titleId} class={['weight-600 lh12 ls-tight-bs', textSize]}>{@render text(title)}</h2>
 			{/if}
 			{#if description}
-				<p id={descId} class="text-sm lh15 text-secondary">{@render text(description)}</p>
+				<p id={descId} class={['lh15', childTextSize, childTextColor]}>{@render text(description)}</p>
 			{/if}
 		</header>
 	{/if}
 	{#if children}
-		<div class={['px-lg text-md lh15 text-secondary grow min0 scroll-y scroll-thin', !(title || description) && !bottom && 'pt-lg', !footer && 'pb-lg']}>
+		<div class={['px-lg lh15 grow min0 scroll-y scroll-thin', bodyTextSize, childTextColor, !(title || description) && !bottom && 'pt-lg', !footer && 'pb-lg']}>
 			{@render children(content)}
 		</div>
 	{/if}
@@ -168,6 +159,15 @@
 		</footer>
 	{/if}
 	{#if closeButton}
-		<Button variant="ghost" size="h-sm" icon={luX} class="btn-icon pin-tr text-muted" aria-label="Close" onclick={close} />
+		<Button
+			variant="ghost"
+			size="h-sm"
+			textColor="text-muted"
+			icon={luX}
+			aria-label="Close"
+			onclick={close}
+			{...closeButtonProps}
+			class={['btn-icon pin-tr', closeButtonProps?.class]}
+		/>
 	{/if}
 </dialog>

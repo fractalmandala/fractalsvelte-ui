@@ -1,10 +1,10 @@
 <!-- @component A set of toggles where one or several can be on, with arrow-key navigation. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { roving } from '../../../internal/helpers.js';
-import type { Orientation, Shape, Size, TextColor, TextSize, Variant } from '../../../internal/tokens.js';
+import type {  Gap, Orientation, Shape, Size, TextColor, TextSize, Variant  } from '../../../internal/tokens.js';
 	import { setToggleGroup } from './toggle-group.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
@@ -15,6 +15,7 @@ import type { Orientation, Shape, Size, TextColor, TextSize, Variant } from '../
 		size?: Size;
 		textSize?: TextSize;
 		textColor?: TextColor;
+		gap?: Gap;
 		shape?: Shape;
 		orientation?: Orientation;
 		attached?: boolean;
@@ -31,6 +32,7 @@ import type { Orientation, Shape, Size, TextColor, TextSize, Variant } from '../
 		size = 'h-lg',
 		textSize,
 		textColor,
+		gap = 'gap-sm',
 		shape = 'modern',
 		orientation = 'horizontal',
 		attached = true,
@@ -86,7 +88,7 @@ import type { Orientation, Shape, Size, TextColor, TextSize, Variant } from '../
 	role="group"
 	aria-label={label}
 	class={[
-		attached ? 'button-group' : vertical ? 'box gap-sm' : 'row wrap gap-sm',
+		attached ? 'button-group' : vertical ? ['box', gap] : ['row wrap', gap],
 		attached && vertical && 'vertical',
 		className
 	]}

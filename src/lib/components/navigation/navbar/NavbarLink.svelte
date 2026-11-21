@@ -1,24 +1,23 @@
 <!-- @component A header link, with an optional current-page state. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAnchorAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAnchorAttributes  } from 'svelte/elements';
+	import type {  TextColor  } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAnchorAttributes {
-		/** The destination of the link. */
 		href: string;
-		/** Marks this link as the current page. */
 		current?: boolean;
-		/** The link label. */
+		textColor?: TextColor;
 		children?: Snippet;
 	}
 
-	let { href, current = false, class: className, children, ...rest }: Props = $props();
+	let { href, current = false, textColor = 'text-secondary', class: className, children, ...rest }: Props = $props();
 </script>
 
 <a
 	{href}
-	class={['nav-link', current ? ' weight-500' : 'text-secondary', className]}
+	class={['nav-link', current ? ' weight-500' : textColor, className]}
 	aria-current={current ? 'page' : undefined}
 	{...rest}
 >

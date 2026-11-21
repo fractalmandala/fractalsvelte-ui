@@ -1,19 +1,19 @@
 <!-- @component The panel shown when its tab is selected. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { springFade } from '../../../motion/index.js';
+	import type { Pad } from '../../../internal/tokens.js';
 	import { getTabs } from './tabs.svelte.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** The value of the `Tab` this panel belongs to. */
 		value: string;
-		/** The panel content. */
+		pad?: Pad;
 		children?: Snippet;
 	}
 
-	let { value, class: className, children, ...rest }: Props = $props();
+	let { value, pad = 'pad-md', class: className, children, ...rest }: Props = $props();
 
 	const tabs = getTabs();
 	const selected = $derived(tabs.value() === value);
@@ -28,7 +28,7 @@
 			role="tabpanel"
 			aria-labelledby={tabId}
 			tabindex="0"
-			class={['pad-bs focus-ring', className]}
+			class={[pad, 'focus-ring', className]}
 			transition:springFade
 			{...rest}
 		>
@@ -41,7 +41,7 @@
 		role="tabpanel"
 		aria-labelledby={tabId}
 		tabindex="0"
-		class={['pad-bs focus-ring', className]}
+		class={[pad, 'focus-ring', className]}
 		{...rest}
 	>
 		{@render children?.()}

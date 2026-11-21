@@ -4,7 +4,7 @@
 </script>
 
 <Drawer
-	surface="solid"
+	surface="overlayed"
 	title="Add a collaborator"
 	description="They will be able to comment on “Harbour invoices” and leave reviews."
 >

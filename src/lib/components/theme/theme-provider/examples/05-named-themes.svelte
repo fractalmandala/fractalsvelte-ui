@@ -1,7 +1,7 @@
 <!-- @example Named themes :: Every built-in theme is just three numbers; pick one by name. -->
 <script lang="ts">
 	import { Button, ThemeProvider } from '@fractaldesign/fractalsvelte-ui';
-	import type { ThemeName } from '@fractaldesign/fractalsvelte-ui/theme';
+	import type {  ThemeName  } from '@fractaldesign/fractalsvelte-ui/theme';
 
 	const names: ThemeName[] = ['fractalsvelte', 'aurora', 'ocean', 'ember', 'rose', 'lime', 'amber', 'mono'];
 </script>

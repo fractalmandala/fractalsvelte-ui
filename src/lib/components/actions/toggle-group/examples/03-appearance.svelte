@@ -8,7 +8,7 @@
 		<ToggleGroupItem value="monthly">Monthly</ToggleGroupItem>
 		<ToggleGroupItem value="yearly">Yearly</ToggleGroupItem>
 	</ToggleGroup>
-	<ToggleGroup label="Density" variant="secondary" size="h-lg" shape="curved" value="comfortable" attached={false}>
+	<ToggleGroup label="Density" variant="secondary" size="h-lg" shape="curved" value="comfortable" gap="gap-md" attached={false}>
 		<ToggleGroupItem value="compact">Compact</ToggleGroupItem>
 		<ToggleGroupItem value="comfortable">Comfortable</ToggleGroupItem>
 		<ToggleGroupItem value="spacious">Spacious</ToggleGroupItem>

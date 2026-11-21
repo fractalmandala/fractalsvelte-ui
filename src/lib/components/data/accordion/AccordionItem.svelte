@@ -1,22 +1,18 @@
 <!-- @component One disclosure: a heading trigger and a spring-height panel, identified by value. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luChevronDown } from '@fractaldesign/icons/lucide';
 	import { getAccordion, itemClass } from './accordion.svelte.js';
+	import { } from '../../../internal/helpers.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** A unique value for this item, used by the accordion's `value`. */
 		value: string;
-		/** The trigger label. Ignored when `trigger` is provided. */
 		title?: string;
-		/** Custom trigger content, rendered inside the heading button. */
 		trigger?: Snippet;
-		/** When true, the item cannot be opened. */
 		disabled?: boolean;
-		/** The panel content. */
 		children?: Snippet;
 	}
 
@@ -29,7 +25,7 @@
 	const headingTag = $derived(`h${accordion.headingLevel}`);
 </script>
 
-<div class={[itemClass[accordion.look], className]} {...rest}>
+<div class={[itemClass[accordion.grouping], accordion.surface, className]} {...rest}>
 	<svelte:element this={headingTag}>
 		<button
 			id={triggerId}
@@ -55,7 +51,7 @@
 	</svelte:element>
 	<div id={panelId} class={['collapse spring spring-snappy', open && 'open']} role="region" aria-labelledby={triggerId}>
 		<div>
-			<div class="pad-bs">{@render children?.()}</div>
+			<div class="pad-md">{@render children?.()}</div>
 		</div>
 	</div>
 </div>

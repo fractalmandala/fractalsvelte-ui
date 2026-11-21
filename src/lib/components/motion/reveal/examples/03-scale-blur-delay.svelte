@@ -7,7 +7,7 @@
 	<p class="text-sm text-muted">Scroll to the photograph caption below.</p>
 	<div class="pad-xl"></div>
 	<Reveal from="up" distance={16} scale={0.96} blur={8} delay={160} amount={0.3} spring="gentle">
-		<article class="card rim shad-md pad-lg">
+		<article class="rim shad-md pad-lg">
 			<p class="text-sm text-muted">Plate 14</p>
 			<p class="weight-500">The linotype bay, night shift</p>
 			<p class="text-sm text-secondary">Held 160 ms, then sprung from a soft scale and an 8-pixel blur.</p>

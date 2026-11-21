@@ -6,9 +6,9 @@
 </script>
 
 <div class="box gap-sm measure-md">
-	{#each ['outline', 'filled', 'ghost'] as const as look (look)}
+	{#each ['outline', 'secondary', 'ghost'] as const as variant (variant)}
 		<Textarea value="Read-only note" disabled />
-<Textarea {look} rows={1} value={look} aria-label={look} />
+<Textarea {variant} rows={1} value={variant} aria-label={variant} />
 	{/each}
 	{#each ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const as size (size)}
 		<Textarea {size} rows={1} value={`Size ${size}`} aria-label={`Size ${size}`} />

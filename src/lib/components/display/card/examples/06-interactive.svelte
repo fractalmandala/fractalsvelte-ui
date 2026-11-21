@@ -18,7 +18,7 @@
 			<CardDescription>Opened {opened} times</CardDescription>
 		</CardHeader>
 	</Card>
-	<Card tilt look="glass">
+	<Card tilt surface="glass">
 		<CardHeader>
 			<CardTitle>Hover and lean</CardTitle>
 			<CardDescription>Springs back when you leave</CardDescription>

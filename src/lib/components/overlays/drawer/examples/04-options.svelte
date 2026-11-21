@@ -1,4 +1,4 @@
-<!-- @example Glass, non-modal and locked :: A glass surface, a non-modal sheet that leaves the page interactive, and a drawer that only its own buttons can close. -->
+<!-- @example Glass, non-modal and locked :: A glass surface with its own title, description and body type scales, a non-modal sheet that leaves the page interactive, and a drawer that only its own buttons can close. -->
 <script lang="ts">
 	import { Button, Drawer } from '@fractaldesign/fractalsvelte-ui';
 
@@ -8,9 +8,14 @@
 <div class="row wrap gap-sm">
 	<Drawer
 		surface="glass"
+		textSize="text-lg"
+		childTextSize="text-sm"
+		bodyTextSize="text-md"
+		childTextColor="text-secondary"
 		modal={false}
 		title="Inspector"
 		description="The page behind stays interactive."
+		closeButtonProps={{ variant: 'secondary', size: 'h-md' }}
 		onOpenChange={(next) => (log = next ? 'Inspector open' : 'Inspector closed')}
 	>
 		{#snippet trigger({ props })}

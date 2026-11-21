@@ -1,31 +1,27 @@
 <!-- @component A compact single choice among a short list of segments, with a spring-driven sliding indicator. -->
 
 <script lang="ts" generics="T">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { animate } from '../../../motion/index.js';
-	import { roving } from '../../../internal/roving.js';
-	import { type Size, type TextSize } from '../../../internal/tokens.js';
+	import { roving } from '../../../internal/helpers.js';
+	import { type Pad, type Shape, type Size, type Surface, type TextColor, type TextSize } from '../../../internal/tokens.js';
 	import { valueKey, type SegmentOption } from './options.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The segments to choose from. */
 		options: SegmentOption<T>[];
-		/** The chosen value. Two-way bindable. */
 		value?: T | null;
-		/** Called whenever the person chooses a segment. */
 		onValueChange?: (value: T | null) => void;
-		/** The segment height. Text follows this unless `textSize` is set. */
 		size?: Size;
-		/** The text scale, independent of the segment height. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** Stretches the control to the full width of its container, with equal segments. */
+		childTextColor?: TextColor;
+		shape?: Shape;
+		surface?: Surface;
+		pad?: Pad;
+		indicatorSurface?: Surface;
 		block?: boolean;
-		/** Accessible name of the group. */
 		label?: string;
-		/** Blocks pointer and keyboard input. */
 		disabled?: boolean;
-		/** The field name; a hidden input submits the value with a form. */
 		name?: string;
 	}
 
@@ -35,6 +31,11 @@
 		onValueChange,
 		size = 'h-lg',
 		textSize,
+		childTextColor = 'text-secondary',
+		shape = 'modern',
+		surface = 'elevated',
+		pad = 'pad-xs',
+		indicatorSurface = 'overlayed',
 		block = false,
 		label,
 		disabled = false,
@@ -105,7 +106,8 @@
 	aria-label={label}
 	aria-disabled={disabled || undefined}
 	class={[
-		'relative inline-flex row ycenter pad-xs bg-input border modern',
+		'relative inline-flex row ycenter',
+		pad, shape, surface,
 		block && 'wfull',
 		disabled && 'disabled',
 		className
@@ -119,7 +121,7 @@
 	})}
 	{...rest}
 >
-	<div bind:this={indicator} class="indicator modern bg-overlay rim shad-xs" aria-hidden="true"></div>
+	<div bind:this={indicator} class={['indicator', shape, indicatorSurface]} aria-hidden="true"></div>
 	{#each options as option (valueKey(option.value))}
 		{@const on = Object.is(value, option.value)}
 		<button
@@ -134,7 +136,7 @@
 				'bare relative z-raised row ycenter xcenter gap-sm px-md weight-500 focus-ring select-none',
 				size, textSize,
 				block && 'grow',
-				on ? '' : 'text-secondary'
+				on ? '' : childTextColor
 			]}
 			onclick={() => !option.disabled && commit(option.value)}
 		>

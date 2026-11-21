@@ -1,41 +1,37 @@
 <!-- @component An on/off switch with a real sliding thumb that overshoots as it settles. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLInputAttributes } from 'svelte/elements';
-	import { type Size, type TextSize } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLInputAttributes  } from 'svelte/elements';
+	import { type ChildTextSize, type Gap, type Shape, type Size, type TextColor, type TextSize } from '../../../internal/tokens.js';
 
 	interface Props extends Omit<HTMLInputAttributes, 'type' | 'size' | 'children' | 'checked' | 'name' | 'value' | 'role' | 'disabled'> {
-		/** Whether the switch is on. Two-way bindable. */
 		checked?: boolean;
-		/** The track and text scale. */
 		size?: Size;
-		/** The text scale of the label, independent of the control. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** The visible label. */
+		childTextSize?: ChildTextSize;
+		childTextColor?: TextColor;
+		shape?: Shape;
+		gap?: Gap;
 		label?: string;
-		/** Secondary text under the label, in a quieter ink. */
 		description?: string;
-		/** Which side of the switch the label sits on. */
 		align?: 'start' | 'end';
-		/** Marks the switch as failing validation: a danger border and `aria-invalid`. */
 		invalid?: boolean;
-		/** The field name submitted with a form. */
 		name?: string;
-		/** The value submitted with a form when on. */
 		value?: string;
-		/** Called after the user flips the switch, with the new state. */
 		onCheckedChange?: (checked: boolean) => void;
-		/** Rich label content, used in place of `label`. */
 		children?: Snippet;
-			/** Blocks pointer and keyboard input, and dims the label. */
-		disabled?: boolean | null;
+			disabled?: boolean | null;
 }
 
 	let {
 		checked = $bindable(false),
 		size = 'h-lg',
 		textSize,
+		childTextSize = 'text-sm',
+		childTextColor = 'text-secondary',
+		shape = 'round',
+		gap = 'gap-md',
 		label,
 		description,
 		align = 'end',
@@ -53,21 +49,10 @@
 	const hasText = $derived(Boolean(label || description || children));
 </script>
 
-{#snippet text()}
-	{#if hasText}
-		<span class="column xleft gap-xs">
-			<span class=" lh13 weight-500">{#if children}{@render children()}{:else}{label}{/if}</span>
-			{#if description}
-				<span id="{id}-desc" class="text-secondary text-sm lh14">{description}</span>
-			{/if}
-		</span>
-	{/if}
-{/snippet}
-
-<label class={['inline-flex row gap-md', description ? 'ytop' : 'ycenter', textSize, disabled ? 'disabled' : 'pointer', className]}>
+<label class={['inline-flex row', gap, description ? 'ytop' : 'ycenter', textSize, disabled ? 'disabled' : 'pointer', className]}>
 	{#if align === 'start'}{@render text()}{/if}
 	<span class={['track pill relative shrink-0', invalid && 'border is-invalid', description && 'mt-xs']}>
-		<span class={['cover themed round pop spring-bouncy', checked && 'open']}></span>
+		<span class={['cover themed pop spring-bouncy', shape, checked && 'open']}></span>
 		<input
 			type="checkbox"
 			role="switch"
@@ -85,3 +70,14 @@
 	</span>
 	{#if align === 'end'}{@render text()}{/if}
 </label>
+
+{#snippet text()}
+	{#if hasText}
+		<span class="column xleft gap-xs">
+			<span class=" lh13 weight-500">{#if children}{@render children()}{:else}{label}{/if}</span>
+			{#if description}
+				<span id="{id}-desc" class={['lh14', childTextColor, childTextSize]}>{description}</span>
+			{/if}
+		</span>
+	{/if}
+{/snippet}

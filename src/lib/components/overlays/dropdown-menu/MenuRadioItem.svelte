@@ -1,24 +1,34 @@
 <!-- @component A radio item; choosing it selects the value and closes the menu. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck } from '@fractaldesign/icons/lucide';
+	import type { ChildTextColor, ChildTextSize, Size } from '../../../internal/tokens.js';
 	import { getMenuRadio } from './menu.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The value this item represents. */
 		value: string;
-		/** A keyboard shortcut, shown at the trailing edge. */
 		shortcut?: string;
-		/** Disables the item. */
+		size?: Size;
+		childTextSize?: ChildTextSize;
+		childTextColor?: ChildTextColor;
 		disabled?: boolean;
-		/** The label. */
 		children?: Snippet;
 	}
 
-	let { value, shortcut, disabled = false, children, class: className, ...rest }: Props = $props();
+	let {
+		value,
+		shortcut,
+		size = 'h-md',
+		childTextSize = 'text-xs',
+		childTextColor = 'text-muted',
+		disabled = false,
+		children,
+		class: className,
+		...rest
+	}: Props = $props();
 
 	const radio = getMenuRadio();
 	const checked = $derived(radio.value() === value);
@@ -47,13 +57,13 @@
 	{onkeydown}
 	{...rest}
 >
-	<span class="box xcenter ycenter h-md square shrink-0">
+	<span class={['box xcenter ycenter square shrink-0', size]}>
 		{#if checked}
 			<Icon icon={luCheck} class="text-theme" />
 		{/if}
 	</span>
 	<span class="grow truncate">{@render children?.()}</span>
 	{#if shortcut}
-		<kbd class="kbd shrink-0 font-mono text-xs text-muted">{shortcut}</kbd>
+		<kbd class={['kbd shrink-0 font-mono', childTextSize, childTextColor]}>{shortcut}</kbd>
 	{/if}
 </div>

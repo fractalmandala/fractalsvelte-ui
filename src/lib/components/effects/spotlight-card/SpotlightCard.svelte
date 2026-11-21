@@ -1,18 +1,19 @@
 <!-- @component A card lit by a soft radial light that follows the pointer, on the surface and along the border. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type { Gap, Pad, Shape, Surface } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { pointer, vars } from '../../../motion/index.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'color'> {
-		/** Diameter of the pointer-following light, as a CSS length. */
 		radius?: string;
-		/** Strength of the light, from 0 (none) to 1 (strong). */
 		intensity?: number;
-		/** Colour of the light: the theme accent, or a neutral white highlight. */
 		color?: 'theme' | 'neutral';
-		/** The card's content. */
+		surface?: Surface;
+		shape?: Shape;
+		pad?: Pad;
+		gap?: Gap;
 		children?: Snippet;
 	}
 
@@ -20,6 +21,10 @@
 		radius = '40%',
 		intensity = 0.35,
 		color = 'theme',
+		surface = 'elevated',
+		shape = 'curved',
+		pad = 'pad-lg',
+		gap = 'gap-sm',
 		class: className,
 		children,
 		...rest
@@ -29,7 +34,7 @@
 </script>
 
 <div
-	class={['light', 'card', 'box', 'bg-surface', 'border-subtle', 'curved', 'pad-lg', 'gap-sm', colorClass[color], className]}
+	class={['light', 'box', surface, shape, pad, gap, colorClass[color], className]}
 	{@attach pointer()}
 	{@attach vars({ 'light-size': radius, 'light-intensity': intensity })}
 	{...rest}

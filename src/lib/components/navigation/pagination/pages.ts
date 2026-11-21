@@ -1,10 +1,5 @@
-/** A page number, or a gap in the range. */
 export type PageSlot = number | 'ellipsis';
 
-/**
- * The visible page numbers around `page`, with `siblings` on each side and
- * `boundaries` kept at each end, collapsing the rest into ellipses.
- */
 export function pageSlots(page: number, count: number, siblings: number, boundaries: number): PageSlot[] {
 	const total = Math.max(0, Math.floor(count));
 	if (total === 0) return [];

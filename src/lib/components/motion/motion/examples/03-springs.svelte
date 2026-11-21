@@ -15,7 +15,7 @@
 		{#each presets as preset}
 			<div class="row ycenter gap-md">
 				<span class="text-sm text-muted">{preset}</span>
-				<Motion class="card rim shad-sm pad-sm" animate={{ x: shifted ? 160 : 0 }} spring={preset}>
+				<Motion class="rim shad-sm pad-sm" animate={{ x: shifted ? 160 : 0 }} spring={preset}>
 					<span class="text-sm weight-500">{preset}</span>
 				</Motion>
 			</div>

@@ -1,21 +1,22 @@
 <!-- @component A trail of links from the site root to the current page, with an optional collapsing ellipsis. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
-	import type { IconData } from '@fractaldesign/icons';
+	import type {  IconData  } from '@fractaldesign/icons';
 	import { luChevronRight, luEllipsis } from '@fractaldesign/icons/lucide';
-	import type { BreadcrumbItem } from './items.js';
+	import { type Shape, type Size, type TextColor, type TextSize } from '../../../internal/tokens.js';
+	import type {  BreadcrumbItem  } from './items.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** The trail, in order from the root to the current page. */
 		items: BreadcrumbItem[];
-		/** The icon drawn between crumbs. */
 		separator?: IconData;
-		/** When the trail is longer than this, collapse the middle behind an ellipsis. */
 		maxItems?: number;
-		/** Accessible name of the navigation. */
 		label?: string;
+		size?: Size;
+		shape?: Shape;
+		textSize?: TextSize;
+		textColor?: TextColor;
 	}
 
 	let {
@@ -23,6 +24,10 @@
 		separator = luChevronRight,
 		maxItems,
 		label = 'Breadcrumb',
+		size = 'h-md',
+		shape = 'modern',
+		textSize = 'text-sm',
+		textColor = 'text-muted',
 		class: className,
 		...rest
 	}: Props = $props();
@@ -64,7 +69,7 @@
 	<ol class="row ycenter wrap gap-xs">
 		{#each slots as slot, i (slot.kind === 'ellipsis' ? 'ellipsis' : `${slot.item.label}-${i}`)}
 			{#if i > 0}
-				<li class="row ycenter text-muted shrink-0" aria-hidden="true">
+				<li class={['row ycenter shrink-0', textColor]} aria-hidden="true">
 					<Icon icon={separator} />
 				</li>
 			{/if}
@@ -72,7 +77,7 @@
 				<li>
 					<button
 						type="button"
-						class="bare button btn-icon ghost modern h-md text-sm inline-flex"
+						class={['bare button btn-icon ghost inline-flex', size, shape, textSize]}
 						aria-label="Show all breadcrumbs"
 						onclick={() => (expanded = true)}
 					>
@@ -81,7 +86,7 @@
 				</li>
 			{:else if slot.item.href && !slot.current}
 				<li>
-					<a href={slot.item.href} class="link-subtle focus-ring row ycenter gap-xs text-sm">
+					<a href={slot.item.href} class={['link-subtle focus-ring row ycenter gap-xs', textSize]}>
 						{#if slot.item.icon}
 							<Icon icon={slot.item.icon} />
 						{/if}
@@ -89,7 +94,7 @@
 					</a>
 				</li>
 			{:else}
-				<li class="row ycenter gap-xs text-sm weight-500" aria-current="page">
+				<li class={['row ycenter gap-xs weight-500', textSize]} aria-current="page">
 					{#if slot.item.icon}
 						<Icon icon={slot.item.icon} />
 					{/if}

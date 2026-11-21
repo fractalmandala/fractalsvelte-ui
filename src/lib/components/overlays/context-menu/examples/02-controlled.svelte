@@ -1,4 +1,4 @@
-<!-- @example Controlled and solid :: bind:open with onOpenChange, and a solid surface. -->
+<!-- @example Controlled and solid :: bind:open with onOpenChange, a solid surface and a wider inset. -->
 <script lang="ts">
 	import { ContextMenu, MenuCheckboxItem, MenuItem, MenuRadioGroup, MenuRadioItem, MenuSeparator } from '@fractaldesign/fractalsvelte-ui';
 
@@ -7,7 +7,7 @@
 	let status = $state('open');
 </script>
 
-<ContextMenu bind:open surface="solid" onOpenChange={(next) => (open = next)}>
+<ContextMenu bind:open surface="overlayed" onOpenChange={(next) => (open = next)}>
 	{#snippet trigger({ props })}
 		<button type="button" class="box gap-xs pad-bs radius-lg border bg-surface ta-l" {...props}>
 			<p class="weight-600 text-primary">Harbour invoices</p>

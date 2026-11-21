@@ -1,29 +1,19 @@
 <!-- @component An infinite scrolling strip of content, with edge fades, pause on hover, and a static fallback under reduced motion. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { Attachment } from 'svelte/attachments';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  Attachment  } from 'svelte/attachments';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { reducedMotion, vars } from '../../../motion/index.js';
 	import { type Gap } from '../../../internal/tokens.js';
-import { gapValue } from '../../../internal/helpers.js';
-
-	/** A step on the space ladder. */
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Which way the content travels. `up` and `down` need a container with a height. */
 		direction?: 'left' | 'right' | 'up' | 'down';
-		/** Travel speed in pixels per second. The loop length is measured, so a long strip and a short one move at the same pace. */
 		speed?: number;
-		/** The space between items, and between one copy of the content and the next — a step on the space ladder. */
 		gap?: Gap;
-		/** Pauses the strip while the pointer is over it or keyboard focus is inside it. */
 		pauseOnHover?: boolean;
-		/** Fades the two edges the content enters and leaves through. */
 		fade?: boolean;
-		/** How many copies of the content the track holds (at least 2). Raise it when the content is much shorter than the strip. */
 		repeat?: number;
-		/** The items. Rendered once for assistive technology; the copies are hidden from it and inert. */
 		children?: Snippet;
 	}
 
@@ -40,10 +30,10 @@ import { gapValue } from '../../../internal/helpers.js';
 	}: Props = $props();
 
 	const vertical = $derived(direction === 'up' || direction === 'down');
+	const reverse = $derived(direction === 'right' || direction === 'down');
 	const still = $derived(reducedMotion.current);
 	const copies = $derived(still ? [0] : Array.from({ length: Math.max(2, Math.round(repeat)) }, (_, i) => i));
 
-	/** One loop's travel: a copy's length plus one gap, in px. */
 	let distance = $state(0);
 
 	const measure: Attachment<HTMLElement> = (group) => {
@@ -68,13 +58,13 @@ import { gapValue } from '../../../internal/helpers.js';
 	class={[
 		'marquee',
 		vertical && 'vertical',
-		(direction === 'right' || direction === 'down') && 'reverse',
+		reverse && 'reverse',
 		pauseOnHover && 'pausable',
 		fade && !still && 'fade',
 		still && 'still',
 		className
 	]}
-	{@attach vars({ gap: gapValue(gap), duration })}
+	{@attach vars({ duration })}
 	{...rest}
 >
 	{#each copies as copy (copy)}

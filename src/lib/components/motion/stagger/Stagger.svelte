@@ -1,9 +1,9 @@
 <!-- @component Reveals its children in sequence, staggered from first, last or centre. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { Attachment } from 'svelte/attachments';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  Attachment  } from 'svelte/attachments';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { inView, stagger } from '../../../motion/index.js';
 
 	type EnterPreset = 'fade' | 'scale' | 'fly-up' | 'fly-down' | 'fly-left' | 'fly-right' | 'blur' | 'slide';
@@ -22,15 +22,10 @@
 	};
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** Delay in milliseconds between each child. Written to the `--stagger` channel. */
 		step?: number;
-		/** Where the stagger originates: the first child, the last, or the middle. */
 		from?: StaggerFrom;
-		/** When the entrance plays: immediately on mount, or when the group scrolls into view. */
 		trigger?: StaggerTrigger;
-		/** The enter preset applied to each child, via `.anim-in` or `.reveal` and the matching `.enter-*` class. */
 		enter?: EnterPreset;
-		/** The children to number and reveal. Direct element children receive `--i`. */
 		children?: Snippet;
 	}
 

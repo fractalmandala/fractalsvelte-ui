@@ -1,34 +1,33 @@
 <!-- @component Interactive countdown or stopwatch timer with start, pause, and reset controls. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type { ComponentProps } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { luPause, luPlay, luRotateCcw } from '@fractaldesign/icons/lucide';
 	import { Button } from '../../actions/button/index.js';
 	import { IconButton } from '../../actions/icon-button/index.js';
-	import { type Size } from '../../../internal/tokens.js';
+	import { type Gap, type Size } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Timer direction: count down from `duration` or count up from zero. */
 		mode?: 'countdown' | 'stopwatch';
-		/** Initial countdown length (in milliseconds). */
 		duration?: number;
-		/** Start running automatically on mount. */
 		autoStart?: boolean;
-		/** Tick cadence in milliseconds. */
 		interval?: number;
-		/** Always display the hours segment even when under 1 hour. */
 		showHours?: boolean;
-		/** Render Start/Pause and Reset controls beside the readout. */
 		showControls?: boolean;
-		/** Readout text scale on the shared size ladder. */
 		size?: Size;
-		/** Called when a countdown reaches zero. */
+		gap?: Gap;
 		onComplete?: () => void;
-		/** Called on each tick with the current elapsed or remaining milliseconds. */
 		onTick?: (ms: number) => void;
+		startButtonProps?: Partial<ComponentProps<typeof Button>>;
+		pauseButtonProps?: Partial<ComponentProps<typeof Button>>;
+		resetButtonProps?: Partial<ComponentProps<typeof IconButton>>;
 	}
 
 	let {
+		startButtonProps,
+		pauseButtonProps,
+		resetButtonProps,
 		mode = 'countdown',
 		duration = 60_000,
 		autoStart = false,
@@ -36,6 +35,7 @@
 		showHours = false,
 		showControls = true,
 		size = 'h-xl',
+		gap = 'gap-md',
 		onComplete,
 		onTick,
 		class: className,
@@ -105,7 +105,7 @@
 	});
 </script>
 
-<div class={['inline-flex row ycenter gap-md', className]} {...rest}>
+<div class={['inline-flex row ycenter', gap, className]} {...rest}>
 	<span
 		role="timer"
 		aria-live="off"
@@ -116,13 +116,13 @@
 	{#if showControls}
 		<div class="row ycenter gap-xs">
 			{#if running}
-				<Button variant="outline" size="h-sm" icon={luPause} onclick={pause}>Pause</Button>
+				<Button variant="outline" size="h-sm" icon={luPause} onclick={pause} {...pauseButtonProps}>Pause</Button>
 			{:else}
-				<Button variant="secondary" size="h-sm" icon={luPlay} onclick={start}>
+				<Button variant="secondary" size="h-sm" icon={luPlay} onclick={start} {...startButtonProps}>
 					{completed ? 'Restart' : 'Start'}
 				</Button>
 			{/if}
-			<IconButton variant="ghost" size="h-sm" icon={luRotateCcw} label="Reset timer" onclick={reset} />
+			<IconButton variant="ghost" size="h-sm" icon={luRotateCcw} label="Reset timer" onclick={reset} {...resetButtonProps} />
 		</div>
 	{/if}
 </div>

@@ -4,15 +4,15 @@
 </script>
 
 <div class="grid-3 gap-bs">
-	<GlowCard look="theme" active>
+	<GlowCard ring="theme" active>
 		<p class="card-title">Theme</p>
 		<p class="card-desc text-secondary">The accent and its lighter step travel around the edge.</p>
 	</GlowCard>
-	<GlowCard look="rainbow" active>
+	<GlowCard ring="rainbow" active>
 		<p class="card-title">Rainbow</p>
 		<p class="card-desc text-secondary">Hues walk around the current theme hue, at the same chroma.</p>
 	</GlowCard>
-	<GlowCard look="subtle" active>
+	<GlowCard ring="subtle" active>
 		<p class="card-title">Subtle</p>
 		<p class="card-desc text-secondary">A quieter wash, for cards that should almost not glow.</p>
 	</GlowCard>

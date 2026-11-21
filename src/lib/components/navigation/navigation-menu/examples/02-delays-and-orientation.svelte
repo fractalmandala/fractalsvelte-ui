@@ -22,7 +22,7 @@
 			orientation="horizontal"
 			label="Atlas desk"
 		>
-			<NavigationMenuItem value="products">
+			<NavigationMenuItem value="products" size="h-md" textColor="text-muted">
 				{#snippet trigger({ props })}
 					<Button variant="ghost" size="h-sm" {...props}>Products</Button>
 				{/snippet}
@@ -38,12 +38,12 @@
 					<p class="text-sm text-secondary">The archive opens again in March.</p>
 				</NavigationMenuContent>
 			</NavigationMenuItem>
-			<NavigationMenuLink href="/atlas/docs" current>Docs</NavigationMenuLink>
+			<NavigationMenuLink href="/atlas/docs" size="h-md" current>Docs</NavigationMenuLink>
 		</NavigationMenu>
 		<span class="text-sm text-muted">{value ? `${value} is open` : 'Every panel is closed'}</span>
 	</div>
 
-	<NavigationMenu orientation="vertical" surface="solid" label="Atlas sections">
+	<NavigationMenu orientation="vertical" surface="overlayed" gap="gap-sm" label="Atlas sections">
 		<NavigationMenuItem value="charts" label="Charts">
 			<NavigationMenuContent>
 				<div class="box gap-xs pad-xs">

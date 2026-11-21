@@ -1,32 +1,27 @@
 <!-- @component A set of filter chips for a single choice or any number of them, with optional icons and counts. -->
 
 <script lang="ts" generics="T">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck } from '@fractaldesign/icons/lucide';
 	import { springFade, springScale } from '../../../motion/index.js';
-	import { roving } from '../../../internal/roving.js';
-	import { type Size, type TextSize } from '../../../internal/tokens.js';
+	import { roving } from '../../../internal/helpers.js';
+	import { type ChildTextSize, type Gap, type Shape, type Size, type TextColor, type TextSize } from '../../../internal/tokens.js';
 	import { valueKey, type ChipOption } from './options.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The chips to choose from. */
 		options: ChipOption<T>[];
-		/** The chosen value, or an array of values when `multiple` is set. Two-way bindable. */
 		value?: T | T[] | null;
-		/** Called whenever the person changes the selection. */
 		onValueChange?: (value: T | T[] | null) => void;
-		/** Toggles any number of chips instead of picking one. */
 		multiple?: boolean;
-		/** The chip height. Text follows this unless `textSize` is set. */
 		size?: Size;
-		/** The text scale, independent of the chip height. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** Accessible name of the group. */
+		childTextSize?: ChildTextSize;
+		childTextColor?: TextColor;
+		shape?: Shape;
+		gap?: Gap;
 		label?: string;
-		/** Blocks pointer and keyboard input. */
 		disabled?: boolean;
-		/** The field name; hidden input(s) submit the value with a form. */
 		name?: string;
 	}
 
@@ -37,6 +32,10 @@
 		multiple = false,
 		size = 'h-lg',
 		textSize,
+		childTextSize = 'text-xs',
+		childTextColor = 'text-muted',
+		shape = 'round',
+		gap = 'gap-sm',
 		label,
 		disabled = false,
 		name,
@@ -71,7 +70,7 @@
 	role={role}
 	aria-label={label}
 	aria-disabled={disabled || undefined}
-	class={['row wrap ycenter gap-sm', disabled && 'disabled', className]}
+	class={['row wrap ycenter', gap, disabled && 'disabled', className]}
 	{@attach roving({
 		selector: multiple ? '[role="checkbox"]' : '[role="radio"]',
 		orientation: 'horizontal',
@@ -91,9 +90,8 @@
 			disabled={disabled || option.disabled || undefined}
 			class={[
 				'button inline-flex gap-xs weight-500',
-				size, textSize,
-				'round',
-				on ? 'soft' : 'outline'
+				size, textSize, shape,
+				on ? 'state-selected' : 'outline'
 			]}
 			onclick={() => toggle(option)}
 		>
@@ -106,7 +104,7 @@
 			{/if}
 			{option.label}
 			{#if option.count !== undefined}
-				<span class="text-xs text-muted tabular-nums">{option.count}</span>
+				<span class={['tabular-nums', childTextSize, childTextColor]}>{option.count}</span>
 			{/if}
 		</button>
 	{/each}

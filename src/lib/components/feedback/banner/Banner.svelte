@@ -1,43 +1,42 @@
 <!-- @component A full-width announcement for the page or the site, optionally pinned and remembered when dismissed. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
-	import type { IconData } from '@fractaldesign/icons';
+	import type {  IconData  } from '@fractaldesign/icons';
 	import { luCircleAlert, luCircleCheck, luInfo, luTriangleAlert, luX } from '@fractaldesign/icons/lucide';
 	import { springSlide } from '../../../motion/index.js';
-	import { type Tone } from '../../../internal/tokens.js';
-import { toneText } from '../../../internal/helpers.js';
+	import { type ChildTextSize, type Gap, type Size, type TextSize, type Tone } from '../../../internal/tokens.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
-		/** The meaning of the announcement. `danger` and `warning` are announced assertively; the rest politely. */
 		tone?: Tone;
-		/** Pins the banner to the top of the scrollport as the page moves. */
 		sticky?: boolean;
-		/** A short heading, set before the message. */
+		size?: Size;
+		gap?: Gap;
+		textSize?: TextSize;
+		childTextSize?: ChildTextSize;
 		title?: string;
-		/** The leading icon. Defaults to one that matches the tone; pass `false` for none. */
 		icon?: IconData | false;
-		/** Shows a close button. The banner springs closed when it is pressed. */
+		iconSize?: TextSize;
 		dismissible?: boolean;
-		/** When set, a dismissal is stored in `localStorage` under this key and the banner stays hidden on later visits. */
 		storageKey?: string;
-		/** Called after the banner has been dismissed. */
 		onDismiss?: () => void;
-		/** The label of the action link. Shown when `href` is set. */
 		action?: string;
-		/** The destination of the action link. */
 		href?: string;
-		/** The announcement. */
 		children?: Snippet;
 	}
 
 	let {
 		tone = 'info',
 		sticky = false,
+		size = 'h-bs',
+		gap = 'gap-md',
+		textSize = 'text-md',
+		childTextSize = 'text-sm',
 		title,
 		icon,
+		iconSize = 'text-bs',
 		dismissible = false,
 		storageKey,
 		onDismiss,
@@ -90,30 +89,30 @@ import { toneText } from '../../../internal/helpers.js';
 
 {#if ready && open}
 	<div
-		class={['banner h-bs row ycenter gap-md wfull', 'msg', tone, sticky && 'sticky-top', className]}
+		class={['banner row ycenter wfull', gap, size, 'msg', tone, sticky && 'sticky-top', className]}
 		role={role ?? (urgent ? 'alert' : 'region')}
 		aria-label={!role && !urgent ? 'Announcement' : undefined}
 		out:springSlide
 		{...rest}
 	>
 		{#if glyph}
-			<span class={['shrink-0 text-bs lh14', toneText[tone]]}>
+			<span class={['shrink-0 lh14', iconSize, `text-${`tone`}`]}>
 				<Icon icon={glyph} />
 			</span>
 		{/if}
 		<div class="box grow wmin0 gap-xs">
 			{#if title}
-				<p class="weight-600 text-md lh14">{title}</p>
+				<p class={['weight-600 lh14', textSize]}>{title}</p>
 			{/if}
 			{#if children}
-				<div class="text-sm lh15">{@render children()}</div>
+				<div class={['lh15', childTextSize]}>{@render children()}</div>
 			{/if}
 		</div>
 		{#if href && action}
-			<a class="link shrink-0 text-sm weight-500" {href}>{action}</a>
+			<a class={['link shrink-0 weight-500', childTextSize]} {href}>{action}</a>
 		{/if}
 		{#if dismissible}
-			<button type="button" class="dismiss focus-ring text-bs" aria-label="Dismiss" onclick={dismiss}>
+			<button type="button" class={['dismiss focus-ring', iconSize]} aria-label="Dismiss" onclick={dismiss}>
 				<Icon icon={luX} />
 			</button>
 		{/if}

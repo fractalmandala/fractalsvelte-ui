@@ -8,7 +8,7 @@
 <div class="box gap-md">
 	<Motion
 		as="article"
-		class="card rim shad-md pad-lg"
+		class="rim shad-md pad-lg"
 		initial={{ y: 20, opacity: 0 }}
 		animate={{ y: 0, opacity: 1 }}
 		spring="gentle"
@@ -24,7 +24,7 @@
 		<div class="pad-xl"></div>
 		<Motion
 			as="article"
-			class="card rim shad-md pad-lg"
+			class="rim shad-md pad-lg"
 			initial={{ y: 28, opacity: 0 }}
 			animate={{ y: 0, opacity: 1 }}
 			whileInView={{ y: 0, opacity: 1, scale: 1 }}

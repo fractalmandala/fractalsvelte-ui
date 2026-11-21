@@ -1,12 +1,11 @@
 <!-- @component A host that presents confirm() calls as alert dialogs. Mount one at the root of the app. -->
 
 <script lang="ts">
-	import type { HTMLDialogAttributes } from 'svelte/elements';
+	import type {  HTMLDialogAttributes  } from 'svelte/elements';
 	import AlertDialog from './AlertDialog.svelte';
 	import { settleConfirm, subscribeConfirmer, type ConfirmRequest } from './confirm.js';
 
 	interface Props extends Omit<HTMLDialogAttributes, 'title' | 'open' | 'children'> {
-		/** Reserved for the host element; the confirmer itself has no visual props of its own. */
 		class?: string;
 	}
 

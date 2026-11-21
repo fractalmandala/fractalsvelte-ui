@@ -1,11 +1,10 @@
 <!-- @component A vertical stack of items. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** The items in the stack. */
 		children?: Snippet;
 	}
 

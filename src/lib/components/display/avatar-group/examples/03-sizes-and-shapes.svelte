@@ -12,14 +12,14 @@
 </script>
 
 <div class="box gap-lg">
-	{#each ['xs', 'sm', 'md', 'lg', 'xl'] as const as size}
+	{#each ['h-xs', 'h-sm', 'h-md', 'h-lg', 'h-xl'] as const as size}
 		<div class="row ycenter gap-bs">
 			<span class="text-sm text-muted">{size}</span>
 			<AvatarGroup {size} items={team} max={4} />
 		</div>
 	{/each}
 	<div class="row wrap ycenter gap-xl">
-		{#each ['circle', 'rounded', 'square'] as const as shape}
+		{#each ['round', 'curved', 'rect'] as const as shape}
 			<div class="box gap-xs">
 				<span class="text-sm text-muted">{shape}</span>
 				<AvatarGroup {shape} items={team} max={4} />

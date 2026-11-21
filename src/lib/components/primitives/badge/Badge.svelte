@@ -1,26 +1,19 @@
 <!-- @component A small status or count label on the shared variant and shape axes. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import type {  Snippet  } from 'svelte';
 	import { type Shape, type Size, type TextSize, type Variant } from '../../../internal/tokens.js';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
-	import type { IconData } from '@fractaldesign/icons';
+	import type {  IconData  } from '@fractaldesign/icons';
 
 	interface Props extends HTMLAttributes<HTMLSpanElement> {
-		/** The visual style, from the shared variant axis. */
 		variant?: Variant;
-		/** The label height. Text follows this unless `textSize` is set. */
 		size?: Size;
-		/** The text scale, independent of the badge height. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** The corner shape. Pills are the default. */
 		shape?: Shape;
-		/** Draws a small dot in the current ink before the label, for live or status state. */
 		dot?: boolean;
-		/** An icon drawn before the label. */
 		icon?: IconData;
-		/** The label or the count. */
 		children?: Snippet;
 	}
 

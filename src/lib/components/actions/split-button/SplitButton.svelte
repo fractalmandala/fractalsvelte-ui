@@ -1,16 +1,16 @@
 <!-- @component A primary action with an attached menu of related alternatives. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLButtonAttributes } from 'svelte/elements';
+	import { anchor, floating, roving } from '../../../internal/helpers.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLButtonAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
-	import type { IconData } from '@fractaldesign/icons';
+	import type {  IconData  } from '@fractaldesign/icons';
 	import { luChevronDown } from '@fractaldesign/icons/lucide';
-	import { anchor, defaultTextColor, floating, placementClass, roving } from '../../../internal/helpers.js';
-	import { type Shape, type Size, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
+	import { type Placement, type Shape, type Size, type Surface, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
 import Button from '../button/Button.svelte';
 	import IconButton from '../icon-button/IconButton.svelte';
-	import type { SplitButtonItem, SplitButtonPlacement } from './split-button.js';
+	import type {  SplitButtonItem  } from './split-button.js';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'children' | 'disabled'> {
 		items: SplitButtonItem[];
@@ -19,8 +19,9 @@ import Button from '../button/Button.svelte';
 		textSize?: TextSize;
 		textColor?: TextColor;
 		shape?: Shape;
+		surface?: Surface;
 		icon?: IconData;
-		placement?: SplitButtonPlacement;
+		placement?: Placement;
 		menuLabel?: string;
 		loading?: boolean;
 		children?: Snippet;
@@ -34,6 +35,7 @@ import Button from '../button/Button.svelte';
 		textSize,
 		textColor,
 		shape = 'modern',
+		surface = 'glass',
 		icon,
 		placement = 'bottom-end',
 		menuLabel = 'More actions',
@@ -44,7 +46,6 @@ import Button from '../button/Button.svelte';
 		...rest
 	}: Props = $props();
 
-	const resolvedTextColor = $derived(textColor ?? defaultTextColor(variant));
 	const id = $props.id();
 	let menu = $state<HTMLElement>();
 	let open = $state(false);
@@ -72,7 +73,7 @@ import Button from '../button/Button.svelte';
 </script>
 
 <div role="group" class={['split-button anchor', shape, className]} {@attach anchor(id)}>
-	<Button {variant} {size} {textSize} textColor={resolvedTextColor} {shape} {icon} {loading} {disabled} {...rest}>
+	<Button {variant} {size} {textSize} {shape} {icon} {loading} {disabled} {...rest}>
 		{@render children?.()}
 	</Button>
 	<IconButton
@@ -81,7 +82,6 @@ import Button from '../button/Button.svelte';
 		{variant}
 		{size}
 		{textSize}
-		textColor={resolvedTextColor}
 		{shape}
 		{disabled}
 		popovertarget="{id}-menu"
@@ -99,8 +99,10 @@ import Button from '../button/Button.svelte';
 	aria-label={menuLabel}
 	tabindex="-1"
 	class={[
-		'floating match-anchor pop glass rim shad-lg border-subtle radius-bs pad-xs box gap-xs',
-		placementClass[placement]
+		'floating match-anchor pop radius-bs box gap-xs',
+		surface,
+		'pad-xs',
+		`at-${`placement`}`
 	]}
 	bind:this={menu}
 	ontoggle={onToggle}
@@ -112,7 +114,7 @@ import Button from '../button/Button.svelte';
 		<button
 			type="button"
 			role="menuitem"
-			class={['item', item.danger && 'text-danger']}
+			class={['item', item.danger && 'tone-danger text-theme']}
 			disabled={item.disabled}
 			onclick={() => choose(item)}
 		>

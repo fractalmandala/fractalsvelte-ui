@@ -1,40 +1,36 @@
 <!-- @component A drag-and-drop zone with click-to-browse, a file list, and clear reasons when a file is rejected. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luFile, luUpload, luX } from '@fractaldesign/icons/lucide';
 	import { springScale } from '../../../motion/index.js';
+	import type { ChildTextSize, Gap, Pad, Shape, Size, Surface, TextColor, TextSize } from '../../../internal/tokens.js';
 	import { useFieldControl } from '../field/field.js';
 
 	interface Rejection {
-		/** The file that was refused. */
 		file: File;
-		/** Why it was refused. */
 		reason: string;
 	}
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The accepted files. Bindable; works controlled and uncontrolled. */
 		files?: File[];
-		/** Called with the accepted list whenever it changes. */
 		onFiles?: (files: File[]) => void;
-		/** A native `accept` string — MIME types, `image/*` wildcards, or extensions such as `.pdf`. */
 		accept?: string;
-		/** Allows more than one file. When false, a new file replaces the current one. */
 		multiple?: boolean;
-		/** The largest file size in bytes. Larger files are rejected. */
 		maxSize?: number;
-		/** The most files the list may hold. Further files are rejected. */
 		maxFiles?: number;
-		/** Render image thumbnail previews for image files in the accepted list. */
 		showPreviews?: boolean;
-		/** Allow selecting directories via native folder picker (`webkitdirectory`). */
 		directory?: boolean;
-		/** Marks the drop zone invalid. Inside a `Field` it follows the field's error unless set. */
 		invalid?: boolean;
-		/** The contents of the drop zone, replacing the default prompt. */
+		size?: Size;
+		gap?: Gap;
+		shape?: Shape;
+		surface?: Surface;
+		textSize?: TextSize;
+		textColor?: TextColor;
+		childTextSize?: ChildTextSize;
 		children?: Snippet;
 	}
 
@@ -48,6 +44,13 @@
 		showPreviews = false,
 		directory = false,
 		invalid,
+		size = 'h-xl',
+		gap = 'gap-sm',
+		shape = 'modern',
+		surface = 'outlined',
+		textSize = 'text-sm',
+		textColor = 'text-muted',
+		childTextSize = 'text-xs',
 		id,
 		class: className,
 		children,
@@ -77,8 +80,9 @@
 	let previewUrls = $state(new Map<File, string>());
 	$effect(() => {
 		if (!showPreviews) {
+			if (previewUrls.size === 0) return;
 			for (const url of previewUrls.values()) URL.revokeObjectURL(url);
-			if (previewUrls.size > 0) previewUrls = new Map();
+			previewUrls = new Map();
 			return;
 		}
 		const next = new Map<File, string>();
@@ -86,10 +90,13 @@
 			if (!file.type.startsWith('image/')) continue;
 			next.set(file, previewUrls.get(file) ?? URL.createObjectURL(file));
 		}
+		let changed = next.size !== previewUrls.size;
 		for (const [file, url] of previewUrls) {
-			if (!next.has(file)) URL.revokeObjectURL(url);
+			if (next.has(file)) continue;
+			URL.revokeObjectURL(url);
+			changed = true;
 		}
-		previewUrls = next;
+		if (changed) previewUrls = next;
 	});
 	$effect(() => () => {
 		for (const url of previewUrls.values()) URL.revokeObjectURL(url);
@@ -184,12 +191,13 @@
 	}
 </script>
 
-<div class={['box gap-sm wfull', className]} aria-invalid={control.invalid || undefined} {...rest}>
+<div class={['box', gap, 'wfull', className]} aria-invalid={control.invalid || undefined} {...rest}>
 	<button
 		type="button"
 		id={control.id}
 		class={[
-			'bare box xcenter gap-sm wfull pad-lg radius-lg border-dashed pointer',
+			'bare box xcenter gap-sm wfull radius-lg border-dashed pointer',
+			'pad-lg',
 			over && 'drag-over',
 			control.invalid && 'is-invalid',
 			control.disabled && 'disabled'
@@ -206,12 +214,12 @@
 		{#if children}
 			{@render children()}
 		{:else}
-			<span class="row ycenter xcenter square h-xl radius-full state-selected text-theme">
+			<span class={['row ycenter xcenter square radius-full state-selected text-theme', size]}>
 				<Icon icon={luUpload} />
 			</span>
 			<span class="box xcenter gap-xs">
 				<span class="weight-500">Drop files here or click to browse</span>
-				<span class="text-sm text-muted">
+				<span class={[textSize, textColor]}>
 					{#if accept || maxSize || maxFiles}
 						{[
 							accept,
@@ -241,19 +249,19 @@
 		<ul id={listId} class="box gap-xs">
 			{#each list as file, index (`${file.name}-${file.size}-${file.lastModified}`)}
 				{@const preview = previewUrls.get(file)}
-				<li class="row ycenter gap-sm pad-sm radius-md border" transition:springScale={{ start: 0.96 }}>
+				<li class={['row ycenter gap-sm pad-sm radius-md', surface]} transition:springScale={{ start: 0.96 }}>
 					{#if preview}
-						<img src={preview} alt="" class="h-xl square modern fit-cover shrink-0 border-subtle" />
+						<img src={preview} alt="" class={['square fit-cover shrink-0 border-subtle', size, shape]} />
 					{:else}
-						<span class="text-muted shrink-0"><Icon icon={luFile} /></span>
+						<span class={[textColor, 'shrink-0']}><Icon icon={luFile} /></span>
 					{/if}
 					<span class="box grow wmin0">
 						<span class="truncate">{file.name}</span>
-						<span class="text-xs text-muted tabular-nums">{formatSize(file.size)}</span>
+						<span class={[childTextSize, 'tabular-nums', textColor]}>{formatSize(file.size)}</span>
 					</span>
 					<button
 						type="button"
-						class="bare row ycenter xcenter shrink-0 square h-md radius-full text-muted hover-fill press"
+						class={['bare row ycenter xcenter shrink-0 square h-md radius-full hover-fill press', textColor]}
 						aria-label={`Remove ${file.name}`}
 						disabled={control.disabled}
 						onclick={() => remove(index)}
@@ -267,7 +275,7 @@
 	{#if rejections.length}
 		<ul id={rejectId} class="box gap-xs">
 			{#each rejections as item (`${item.file.name}-${item.reason}`)}
-				<li class="text-sm text-danger">{item.reason}</li>
+				<li class={[textSize, 'tone-danger text-theme']}>{item.reason}</li>
 			{/each}
 		</ul>
 	{/if}

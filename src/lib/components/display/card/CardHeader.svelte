@@ -1,20 +1,21 @@
 <!-- @component Groups the title and description, with an optional trailing action. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  AlignContent, Gap  } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** A control placed at the trailing edge, such as a menu button or a status tag. */
 		action?: Snippet;
-		/** The title and description. */
+		gap?: Gap;
+		alignContent?: AlignContent;
 		children?: Snippet;
 	}
 
-	let { action, class: className, children, ...rest }: Props = $props();
+	let { action, gap = 'gap-bs', alignContent = 'xbetween', class: className, children, ...rest }: Props = $props();
 </script>
 
-<header class={['row xbetween ytop gap-bs', className]} {...rest}>
+<header class={['row ytop', gap, alignContent, className]} {...rest}>
 	<div class="box gap-xs grow wmin0">
 		{@render children?.()}
 	</div>

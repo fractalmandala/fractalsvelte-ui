@@ -1,26 +1,21 @@
 <!-- @component A keyboard-focusable scroll region with thin themed scrollbars and edge fades that appear only when there is more to scroll. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import { maxHeightStyle } from '../../../internal/helpers.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
 	import { type Size } from '../../../internal/tokens.js';
-import { maxHeightClass, maxHeightStyle } from '../../../internal/helpers.js';
 	import { attachFades } from './scroll-area.js';
 
 	type Orientation = 'vertical' | 'horizontal' | 'both';
 	type Scrollbar = 'auto' | 'hover' | 'hidden';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Which axes can scroll. */
 		orientation?: Orientation;
-		/** Caps the height of the region: a ladder word (`lg`) or any CSS length (`24rem`). */
 		maxHeight?: Size | string;
-		/** When the scrollbar is shown: always when there is overflow, on hover and focus, or never. */
 		scrollbar?: Scrollbar;
-		/** Accessible name of the region. The region is keyboard-focusable so it can be scrolled from the keyboard. */
 		label?: string;
-		/** The scrollable content. */
 		children?: Snippet;
 	}
 
@@ -55,7 +50,7 @@ import { maxHeightClass, maxHeightStyle } from '../../../internal/helpers.js';
 	class={[
 		'wfull focus-ring',
 		overflowClass[orientation],
-		maxHeightClass(maxHeight),
+		maxHeight && `max-h-${String(maxHeight).replace(/^h-/, '')}`,
 		maxHeight && 'capped',
 		barClass[scrollbar],
 		fadeY && 'fade-y',

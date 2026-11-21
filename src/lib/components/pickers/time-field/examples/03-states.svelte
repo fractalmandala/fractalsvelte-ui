@@ -1,4 +1,4 @@
-<!-- @example States, sizes and forms :: sizes, shapes, min and max, invalid, disabled, readonly, and a named field in a form. -->
+<!-- @example States, sizes and forms :: sizes, shapes, frames, min and max, invalid, disabled, readonly, and a named field in a form. -->
 <script lang="ts">
 	import { TimeField } from '@fractaldesign/fractalsvelte-ui';
 
@@ -39,6 +39,11 @@
 	<div class="box gap-sm measure-xs">
 		{#each shapes as shape (shape)}
 			<TimeField value="09:30" {shape} aria-label={`Session starts (${shape})`} />
+		{/each}
+	</div>
+	<div class="box gap-sm measure-xs">
+		{#each ['outline', 'ghost', 'secondary'] as const as variant (variant)}
+			<TimeField value="09:30" {variant} aria-label={`Session starts (${variant} frame)`} />
 		{/each}
 	</div>
 	<TimeField value="09:30" disabled aria-label="Locked start time" />

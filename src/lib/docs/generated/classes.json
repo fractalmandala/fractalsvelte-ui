@@ -78,46 +78,16 @@
 		"declarations": "border-radius: 50%"
 	},
 	{
-		"class": "avatar-lg",
-		"file": "components/display.css",
-		"selector": ".avatar-lg",
-		"declarations": "--avatar-size: var(--h-2xl)"
-	},
-	{
-		"class": "avatar-md",
-		"file": "components/display.css",
-		"selector": ".avatar-md",
-		"declarations": "--avatar-size: var(--h-xl)"
-	},
-	{
 		"class": "avatar-more",
 		"file": "components-base.css",
 		"selector": ".avatar-group.circle > .avatar-more",
 		"declarations": "border-radius: 50%"
 	},
 	{
-		"class": "avatar-sm",
-		"file": "components/display.css",
-		"selector": ".avatar-sm",
-		"declarations": "--avatar-size: var(--h-lg)"
-	},
-	{
 		"class": "avatar-status",
 		"file": "components/display.css",
 		"selector": ".avatar-status",
 		"declarations": "position: absolute; right: 4%; bottom: 4%; font-size: calc(var(--avatar-size) * 0.5); box-shadow: 0 0 0 2px var(--avatar-ring, var(--bg-surface))"
-	},
-	{
-		"class": "avatar-xl",
-		"file": "components/display.css",
-		"selector": ".avatar-xl",
-		"declarations": "--avatar-size: var(--h-3xl)"
-	},
-	{
-		"class": "avatar-xs",
-		"file": "components/display.css",
-		"selector": ".avatar-xs",
-		"declarations": "--avatar-size: var(--h-bs)"
 	},
 	{
 		"class": "axis-x",
@@ -458,8 +428,8 @@
 	{
 		"class": "danger",
 		"file": "component-props.css",
-		"selector": ".danger",
-		"declarations": "background-color: var(--danger); border: 1px solid var(--danger)"
+		"selector": ":where(.themed, .info, .success, .warning, .danger)",
+		"declarations": "color: var(--text-white)"
 	},
 	{
 		"class": "data-table",
@@ -562,6 +532,36 @@
 		"file": "components/layout.css",
 		"selector": ".sentinel.end",
 		"declarations": "margin-top: -1px"
+	},
+	{
+		"class": "enter-down",
+		"file": "components/motion.css",
+		"selector": ".enter-down",
+		"declarations": "--enter-x: 0; --enter-y: -0.5rem"
+	},
+	{
+		"class": "enter-left",
+		"file": "components/motion.css",
+		"selector": ".enter-left",
+		"declarations": "--enter-x: 0.5rem; --enter-y: 0"
+	},
+	{
+		"class": "enter-right",
+		"file": "components/motion.css",
+		"selector": ".enter-right",
+		"declarations": "--enter-x: -0.5rem; --enter-y: 0"
+	},
+	{
+		"class": "enter-scale",
+		"file": "components/motion.css",
+		"selector": ".enter-scale",
+		"declarations": "--enter-scale: 0.96"
+	},
+	{
+		"class": "enter-up",
+		"file": "components/motion.css",
+		"selector": ".enter-up",
+		"declarations": "--enter-x: 0; --enter-y: 0.5rem"
 	},
 	{
 		"class": "fade",
@@ -846,6 +846,12 @@
 		"declarations": "display: block; width: 100%; height: 100%; object-fit: cover"
 	},
 	{
+		"class": "in",
+		"file": "components/motion.css",
+		"selector": ".reveal.in",
+		"declarations": "opacity: 1; translate: none; transition: opacity var(--speed3, 300ms) var(--spring-easing, ease-out), translate var(--speed3, 300ms) var(--spring-easing, ease-out)"
+	},
+	{
 		"class": "in-range",
 		"file": "components/pickers.css",
 		"selector": ".cell.in-range",
@@ -872,8 +878,8 @@
 	{
 		"class": "info",
 		"file": "component-props.css",
-		"selector": ".info",
-		"declarations": "background-color: var(--info); border: 1px solid var(--info)"
+		"selector": ":where(.themed, .info, .success, .warning, .danger)",
+		"declarations": "color: var(--text-white)"
 	},
 	{
 		"class": "ink",
@@ -1405,9 +1411,9 @@
 	},
 	{
 		"class": "pop",
-		"file": "components/selection.css",
-		"selector": ".track > .pop",
-		"declarations": "transition: opacity var(--motionin1), transform var(--motionin1)"
+		"file": "components/motion.css",
+		"selector": ".pop",
+		"declarations": "opacity: 1; translate: none; scale: none; transition: opacity calc(var(--speed2, 200ms) * var(--motion-scale, 1)), translate calc(var(--speed2, 200ms) * var(--motion-scale, 1)) var(--spring-easing, ease-out), scale calc(var(--speed2, 200ms) * var(--motion-scale, 1)) var(--spring-easing, ease-out); transition-behavior: allow-discrete"
 	},
 	{
 		"class": "preview",
@@ -1418,8 +1424,8 @@
 	{
 		"class": "primary",
 		"file": "component-props.css",
-		"selector": ".primary",
-		"declarations": "background-color: var(--bg-button); border: 1px solid var(--bg-button)"
+		"selector": ":where(.primary)",
+		"declarations": "color: var(--text-inverse)"
 	},
 	{
 		"class": "quarter",
@@ -1510,6 +1516,12 @@
 		"file": "components/inputs.css",
 		"selector": ".resize-y",
 		"declarations": "resize: vertical"
+	},
+	{
+		"class": "reveal",
+		"file": "components/motion.css",
+		"selector": ".reveal",
+		"declarations": "opacity: 0; translate: 0 var(--reveal-y, 2rem)"
 	},
 	{
 		"class": "reverse",
@@ -1892,8 +1904,8 @@
 	{
 		"class": "success",
 		"file": "component-props.css",
-		"selector": ".success",
-		"declarations": "background-color: var(--success); border: 1px solid var(--success)"
+		"selector": ":where(.themed, .info, .success, .warning, .danger)",
+		"declarations": "color: var(--text-white)"
 	},
 	{
 		"class": "surface-tight",
@@ -2060,8 +2072,8 @@
 	{
 		"class": "themed",
 		"file": "component-props.css",
-		"selector": ".themed",
-		"declarations": "background-color: var(--theme-color); border: 1px solid var(--theme-color)"
+		"selector": ":where(.themed, .info, .success, .warning, .danger)",
+		"declarations": "color: var(--text-white)"
 	},
 	{
 		"class": "thin",
@@ -2258,8 +2270,8 @@
 	{
 		"class": "warning",
 		"file": "component-props.css",
-		"selector": ".warning",
-		"declarations": "background-color: var(--warning); border: 1px solid var(--warning)"
+		"selector": ":where(.themed, .info, .success, .warning, .danger)",
+		"declarations": "color: var(--text-white)"
 	},
 	{
 		"class": "wf-bar",

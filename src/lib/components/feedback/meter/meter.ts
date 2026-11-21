@@ -1,5 +1,3 @@
-/** HTML <meter> region selection, used to pick a tone. */
-
 export type MeterRegion = 'optimum' | 'suboptimum' | 'even-less-good';
 
 export interface MeterBounds {
@@ -18,7 +16,6 @@ export interface MeterScale {
 	low: number;
 	high: number;
 	optimum: number;
-	/** 0–1 fraction of the range, for `--value`. */
 	fraction: number;
 	region: MeterRegion;
 }
@@ -27,7 +24,6 @@ function finite(n: number, fallback: number): number {
 	return Number.isFinite(n) ? n : fallback;
 }
 
-/** Clamp the bounds the way a user agent does for `<meter>`, then name the region. */
 export function meterScale(input: MeterBounds): MeterScale {
 	const min = finite(input.min, 0);
 	let max = finite(input.max, 100);

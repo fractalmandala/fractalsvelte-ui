@@ -1,19 +1,19 @@
 <!-- @component A top-level link in the list, with an optional current page state. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAnchorAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAnchorAttributes  } from 'svelte/elements';
+	import type { Size, TextColor } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAnchorAttributes {
-		/** The destination of the link. */
 		href: string;
-		/** Marks this link as the current page. */
 		current?: boolean;
-		/** The link label. */
+		size?: Size;
+		textColor?: TextColor;
 		children?: Snippet;
 	}
 
-	let { href, current = false, class: className, children, ...rest }: Props = $props();
+	let { href, current = false, size = 'h-lg', textColor = 'text-secondary', class: className, children, ...rest }: Props = $props();
 </script>
 
 <a
@@ -21,8 +21,9 @@
 	data-nav-link
 	tabindex="-1"
 	class={[
-		'bare relative z-raised row ycenter px-md h-lg weight-500 focus-ring',
-		current ? '' : 'text-secondary',
+		'bare relative z-raised row ycenter px-md weight-500 focus-ring',
+		size,
+		current ? '' : textColor,
 		className
 	]}
 	aria-current={current ? 'page' : undefined}

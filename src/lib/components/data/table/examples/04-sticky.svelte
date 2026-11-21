@@ -26,7 +26,7 @@
 		{#each deploys as d (d.service)}
 			<TableRow selected={d.service === current} onclick={() => (current = d.service)} class="pointer">
 				<TableCell>{d.service}</TableCell>
-				<TableCell class="font-mono text-sm" muted>{d.version}</TableCell>
+				<TableCell class="font-mono text-sm" muted textColor="text-muted">{d.version}</TableCell>
 				<TableCell>{d.author}</TableCell>
 				<TableCell numeric>{d.duration}</TableCell>
 			</TableRow>

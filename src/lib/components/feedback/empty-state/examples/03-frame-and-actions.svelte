@@ -1,4 +1,4 @@
-<!-- @example Frame and actions :: A hairline frame, a dashed frame, and a pair of next-step buttons. -->
+<!-- @example Frame, width and actions :: A hairline frame, a narrower text block with its own ink, a pair of next-step buttons, and the inset, gap and alignment of the dashed one. -->
 <script lang="ts">
 	import { EmptyState, Button } from '@fractaldesign/fractalsvelte-ui';
 	import { luSearchX, luUsers } from '@fractaldesign/icons/lucide';
@@ -16,6 +16,11 @@
 		title="No members in this project"
 		description="Invite a teammate to share deploys, logs and on-call rotations."
 		frame="bordered"
+		measure="measure-md"
+		pad="pad-xl"
+		gap="gap-md"
+		textColor="text-muted"
+		childTextColor="text-secondary"
 	>
 		{#snippet actions()}
 			<Button size="h-sm">Invite member</Button>
@@ -27,5 +32,6 @@
 		title="Waiting for the first response"
 		description="Forms published to this board have not received a submission."
 		frame="dashed"
+		alignContent="xcenter"
 	/>
 </div>

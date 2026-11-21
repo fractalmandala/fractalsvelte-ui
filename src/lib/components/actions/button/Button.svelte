@@ -1,13 +1,12 @@
 <!-- @component Triggers an action or navigates, with a spring-loaded press. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAnchorAttributes, HTMLButtonAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
-	import type { IconData } from '@fractaldesign/icons';
+	import type {  IconData  } from '@fractaldesign/icons';
 	import { luLoaderCircle } from '@fractaldesign/icons/lucide';
 	import { press } from '../../../motion/index.js';
-	import { defaultTextColor } from '../../../internal/helpers.js';
 	import { type Shape, type Size, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'disabled'> {
@@ -33,7 +32,7 @@
 		variant = 'primary',
 		size = 'h-lg',
 		textSize = 'text-md',
-		textColor,
+		textColor = 'text-primary',
 		shape = 'modern',
 		icon,
 		iconEnd,
@@ -52,7 +51,6 @@
 	}: Props = $props();
 
 	const inert = $derived(Boolean(disabled || loading));
-	const resolvedTextColor = $derived(textColor ?? defaultTextColor(variant));
 	const spring = $derived(pressable ? press() : undefined);
 </script>
 
@@ -72,7 +70,7 @@
 
 {#if href}
 	<a
-		class={['button row ycenter xcenter gap-sm', variant, size, shape, textSize, resolvedTextColor, block && 'wfull', pressable && 'motion', className]}
+		class={['button row ycenter xcenter gap-sm', variant, size, shape, textSize, textColor, block && 'wfull', pressable && 'motion', className]}
 		href={inert ? undefined : href}
 		{target}
 		rel={target === '_blank' ? 'noopener noreferrer' : undefined}
@@ -86,7 +84,7 @@
 	</a>
 {:else}
 	<button
-		class={['row ycenter xcenter gap-sm', variant, size, shape, textSize, resolvedTextColor, block && 'wfull', pressable && 'motion', className]}
+		class={['row ycenter xcenter gap-sm', variant, size, shape, textSize, textColor, block && 'wfull', pressable && 'motion', className]}
 		{type}
 		disabled={inert}
 		aria-busy={loading || undefined}

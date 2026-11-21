@@ -1,4 +1,4 @@
-<!-- @example Appearance :: variant, size and shape apply to both halves. -->
+<!-- @example Appearance :: variant, size and shape apply to both halves, and surface picks the menu's own surface. -->
 <script lang="ts">
 	import { SplitButton } from '@fractaldesign/fractalsvelte-ui';
 
@@ -10,7 +10,7 @@
 
 <div class="row wrap gap-md ycenter">
 	<SplitButton variant="outline" size="h-sm" shape="mincurved" {items}>Publish</SplitButton>
-	<SplitButton variant="themed" size="h-md" shape="modern" {items}>Publish</SplitButton>
+	<SplitButton variant="themed" size="h-md" shape="modern" surface="elevated" {items}>Publish</SplitButton>
 	<SplitButton variant="secondary" size="h-lg" shape="curved" {items}>Publish</SplitButton>
 	<SplitButton variant="secondary" size="h-xs" shape="rect" {items}>Publish</SplitButton>
 	<SplitButton variant="ghost" size="h-xl" shape="round" {items}>Publish</SplitButton>

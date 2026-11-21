@@ -1,48 +1,32 @@
 <!-- @component A numeric field with stepper buttons, keyboard and wheel adjustment, and optional formatted display. -->
 
 <script lang="ts">
-	import type { HTMLInputAttributes } from 'svelte/elements';
+	import type {  HTMLInputAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luChevronDown, luChevronUp, luGripVertical } from '@fractaldesign/icons/lucide';
-	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
+	import { defaultSize, type Shape, type Size, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
 	import { useFieldControl } from '../field/field.js';
 	import { focusFrame, frameClasses } from '../input/frame.js';
 
 	interface Props extends Omit<HTMLInputAttributes, 'size' | 'value' | 'children' | 'min' | 'max' | 'step' | 'type' | 'disabled'> {
-		/** The number. `null` when the field is empty. Bindable; works controlled and uncontrolled. */
 		value?: number | null;
-		/** Called with the new number (or `null` when cleared) whenever it changes. */
 		onValueChange?: (value: number | null) => void;
-		/** The inclusive lower bound. Arrow, Page, wheel and the stepper all honour it. */
 		min?: number;
-		/** The inclusive upper bound. */
 		max?: number;
-		/** How much Arrow Up/Down, the stepper and the wheel change the value. Page Up/Down move by ten times this. */
 		step?: number;
-		/** How many decimal places the value is rounded to. Omit it to keep every place `step` allows. */
 		precision?: number;
-		/** `Intl.NumberFormat` options used to present the value while the field is not being edited. */
 		format?: Intl.NumberFormatOptions;
-		/** Locale identifier passed to `Intl.NumberFormat`. */
 		locale?: string;
-		/** Alias for `format` options passed to `Intl.NumberFormat`. */
 		formatOptions?: Intl.NumberFormatOptions;
-		/** Enables horizontal pointer-drag scrubbing via a leading grip handle. */
 		scrubbable?: boolean;
-		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
-		/** The text scale, independent of the control height. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** The corner shape. @default 'modern' */
+		textColor?: TextColor;
 		shape?: Shape;
-		/** `outline` is a bordered field, `filled` a tinted one without a border, `ghost` is bare until hovered or focused. @default 'outline' */
-		look?: 'outline' | 'filled' | 'ghost';
-		/** Marks the field invalid (red border, `aria-invalid`). Inside a `Field` it follows the field's error unless set. */
+		variant?: Variant;
 		invalid?: boolean;
-		/** The underlying `<input>` element. Bindable. */
 		ref?: HTMLInputElement | null;
-			/** Blocks pointer and keyboard input, and dims the frame. */
-		disabled?: boolean | null;
+			disabled?: boolean | null;
 }
 
 	let {
@@ -58,8 +42,9 @@
 		scrubbable = false,
 		size,
 		textSize,
+		textColor = 'text-muted',
 		shape,
-		look,
+		variant,
 		invalid,
 		ref = $bindable(null),
 		id,
@@ -77,14 +62,14 @@
 	}: Props = $props();
 
 	const uid = $props.id();
-	const control = useFieldControl(uid, () => ({ id, invalid, required, disabled, describedby, size, shape, look }));
+	const control = useFieldControl(uid, () => ({ id, invalid, required, disabled, describedby, size, shape, variant }));
 
 	const resolvedSize = $derived(size ?? control.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? control.shape ?? 'modern');
-	const resolvedVariant = $derived(look ?? control.look ?? 'outline');
+	const resolvedVariant = $derived<Variant>(variant ?? control.variant ?? 'outline');
 
 	const classes = $derived([
-		frameClasses({ look: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled }),
+		frameClasses({ variant: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled }),
 		className
 	]);
 
@@ -254,7 +239,7 @@
 	{#if scrubbable}
 		<span
 			role="presentation"
-			class="scrub-handle row ycenter px-xs text-muted shrink-0"
+			class={['scrub-handle row ycenter px-xs shrink-0', textColor]}
 			title="Drag horizontally to adjust"
 			onpointerdown={onScrubDown}
 			onpointermove={onScrubMove}

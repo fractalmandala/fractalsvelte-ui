@@ -2,6 +2,7 @@
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck, luChevronRight, luCopy } from '@fractaldesign/icons/lucide';
 	import { vars } from '../../../motion/index.js';
+	import type { ChildTextColor, Size, TextColor, TextSize } from '../../../internal/tokens.js';
 	import {
 		getAccessibleDescription,
 		isRootKeyPath,
@@ -23,6 +24,10 @@
 		previewOpts: Partial<JsonNodePreviewOptions>;
 		onToggle: (id: string) => void;
 		onCopy: (node: JsonNode) => void;
+		size?: Size;
+		textSize?: TextSize;
+		textColor?: TextColor;
+		childTextColor?: ChildTextColor;
 	}
 
 	let {
@@ -34,7 +39,11 @@
 		copyable,
 		previewOpts,
 		onToggle,
-		onCopy
+		onCopy,
+		size = 'h-xs',
+		textSize = 'text-xs',
+		textColor = 'text-muted',
+		childTextColor = 'text-success'
 	}: Props = $props();
 
 	const id = $derived(nodeToValue(node));
@@ -72,14 +81,14 @@
 			{#if hasChildren}
 				<button
 					type="button"
-					class="bare row xcenter ycenter h-xs square text-muted pointer"
+					class={['bare row xcenter ycenter square pointer', size, textColor]}
 					aria-label={open ? `Collapse ${keyLabel}` : `Expand ${keyLabel}`}
 					onclick={() => onToggle(id)}
 				>
-					<Icon icon={luChevronRight} class={['caret quarter text-xs', open && 'open']} />
+					<Icon icon={luChevronRight} class={['caret quarter', textSize, open && 'open']} />
 				</button>
 			{:else}
-				<span class="h-xs square shrink-0" aria-hidden="true"></span>
+				<span class={['square shrink-0', size]} aria-hidden="true"></span>
 			{/if}
 
 			{#if keyLabel}
@@ -95,11 +104,11 @@
 		{#if copyable}
 			<button
 				type="button"
-				class="bare row xcenter ycenter h-xs square text-muted pointer shrink-0"
+				class={['bare row xcenter ycenter square pointer shrink-0', size, textColor]}
 				aria-label={`Copy ${keyLabel || 'value'}`}
 				onclick={() => onCopy(node)}
 			>
-				<Icon icon={copiedId === id ? luCheck : luCopy} class={copiedId === id ? 'text-success' : undefined} />
+				<Icon icon={copiedId === id ? luCheck : luCopy} class={copiedId === id ? childTextColor : undefined} />
 			</button>
 		{/if}
 	</div>
@@ -117,6 +126,10 @@
 					{previewOpts}
 					{onToggle}
 					{onCopy}
+					{size}
+					{textSize}
+					{textColor}
+					{childTextColor}
 				/>
 			{/each}
 		</div>

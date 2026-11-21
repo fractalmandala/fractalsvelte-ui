@@ -15,7 +15,7 @@
 <div class="grid-2 gap-xl">
 	<div class="box gap-xs">
 		<span class="text-sm text-muted">Vertical</span>
-		<DescriptionList items={instance} orientation="vertical" />
+		<DescriptionList items={instance} orientation="vertical" textSize="text-bs" childTextSize="text-md" childTextColor="text-muted" />
 	</div>
 	<div class="box gap-xs">
 		<span class="text-sm text-muted">Horizontal</span>

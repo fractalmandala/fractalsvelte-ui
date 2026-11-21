@@ -1,25 +1,25 @@
 <!-- @component A hairline rule that separates content, optionally labelled, horizontal or vertical. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Orientation, Size } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  Orientation, Size, TextColor, TextSize  } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** The direction of the rule. A vertical divider sits in a row and stretches to the row's height. */
 		orientation?: Orientation;
-		/** The line style: solid, dashed, a faint hairline or a strong rule. */
-		look?: 'solid' | 'dashed' | 'subtle' | 'strong';
-		/** The space on either side of the rule, from the shared size ladder. */
+		line?: 'solid' | 'dashed' | 'subtle' | 'strong';
 		spacing?: Size;
-		/** Text centred in a horizontal rule. Not drawn on a vertical divider. */
+		textSize?: TextSize;
+		textColor?: TextColor;
 		children?: Snippet;
 	}
 
 	let {
 		orientation = 'horizontal',
-		look = 'solid',
+		line = 'solid',
 		spacing = 'h-md',
+		textSize = 'text-xs',
+		textColor = 'text-muted',
 		class: className,
 		children,
 		...rest
@@ -48,18 +48,18 @@
 		'h-3xl': 'mx-3xl'
 	};
 
-	const line = $derived(orientation === 'vertical' ? verticalLine[look] : horizontalLine[look]);
+	const lineClass = $derived(orientation === 'vertical' ? verticalLine[line] : horizontalLine[line]);
 	const space = $derived(orientation === 'vertical' ? verticalSpace[spacing] : horizontalSpace[spacing]);
 </script>
 
 {#if orientation === 'horizontal' && !children}
-	<hr class={['border-none', line, space, className]} {...rest} />
+	<hr class={['border-none', lineClass, space, className]} {...rest} />
 {:else if orientation === 'horizontal'}
 	<div class={['row xcenter gap-sm wfull', space, className]} {...rest}>
-		<span class={['grow', line]} aria-hidden="true"></span>
-		<span class="shrink-0 text-xs text-muted tt-u ls-wide-bs">{@render children?.()}</span>
-		<span class={['grow', line]} aria-hidden="true"></span>
+		<span class={['grow', lineClass]} aria-hidden="true"></span>
+		<span class={['shrink-0 tt-u ls-wide-bs', textSize, textColor]}>{@render children?.()}</span>
+		<span class={['grow', lineClass]} aria-hidden="true"></span>
 	</div>
 {:else}
-	<div role="separator" aria-orientation="vertical" class={['inline-block', line, space, className]} {...rest}></div>
+	<div role="separator" aria-orientation="vertical" class={['inline-block', lineClass, space, className]} {...rest}></div>
 {/if}

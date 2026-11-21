@@ -1,10 +1,3 @@
-/**
- * A small, dependency-free syntax highlighter for the docs: svelte, ts, css,
- * bash, json and html. It never drops or reorders characters — the token text
- * of every line, concatenated with newlines, is exactly the input. Token
- * classes (`tok-kw`, `tok-str`, …) live in the display kit stylesheet, next to `.code`.
- */
-
 export type HighlightLang = 'svelte' | 'ts' | 'css' | 'bash' | 'json' | 'html';
 
 export type TokenClass =
@@ -37,7 +30,6 @@ const IDENT = /^[A-Za-z_$][\w$]*/;
 const NUMBER = /^(?:0[xXbBoO][\da-fA-F_]+n?|\d[\d_]*(?:\.\d+)?(?:[eE][+-]?\d+)?n?|\.\d+(?:[eE][+-]?\d+)?)/;
 const OPERATORS = /^[{}()[\];,.<>=+\-*/%!&|^~?:@#]+/;
 
-/** Index of the `}` closing the `{` at `open` (string- and template-aware); -1 if none. */
 function closeBrace(src: string, open: number): number {
 	let depth = 0;
 	for (let i = open; i < src.length; i++) {
@@ -53,7 +45,6 @@ function closeBrace(src: string, open: number): number {
 	return -1;
 }
 
-/** Index of the closing quote of the string at `i` (or the end of the line / input). */
 function endOfQuote(src: string, i: number): number {
 	const q = src[i];
 	let j = i + 1;
@@ -134,7 +125,6 @@ function lexTs(src: string, emit: Emit): void {
 	}
 }
 
-/** A template literal from the backtick at `i`; returns the index after it. */
 function lexTemplate(src: string, i: number, emit: Emit): number {
 	let j = i + 1;
 	let seg = i;
@@ -265,7 +255,6 @@ function lexCssValue(src: string, emit: Emit): void {
 
 const BLOCK_SIGIL = /^[#:/@][a-z]+/;
 
-/** A `{…}` expression (or block tag) starting at `i`; returns the index after it. */
 function lexBrace(src: string, i: number, emit: Emit): number {
 	const close = closeBrace(src, i);
 	const end = close < 0 ? src.length : close;
@@ -315,7 +304,6 @@ function lexMarkup(src: string, emit: Emit, svelte: boolean): void {
 	}
 }
 
-/** A tag from `<` at `i` to its `>`; returns the index after it. */
 function lexTag(src: string, i: number, emit: Emit, svelte: boolean): number {
 	const open = src.slice(i).match(/^<\/?!?/);
 	const lt = open ? open[0] : '<';
@@ -458,7 +446,6 @@ function lexJson(src: string, emit: Emit): void {
 
 // ── entry points ────────────────────────────────────────────────────────────
 
-/** Flat tokens, adjacent same-class tokens merged. Exposed for the self-test. */
 export function tokenize(code: string, lang: HighlightLang): HighlightToken[] {
 	const flat: HighlightToken[] = [];
 	const emit: Emit = (text, cls) => {
@@ -475,7 +462,6 @@ export function tokenize(code: string, lang: HighlightLang): HighlightToken[] {
 	return flat;
 }
 
-/** Lines of tokens. Joining every line's token text with `\n` reproduces `code` exactly. */
 export function highlight(code: string, lang: HighlightLang): HighlightToken[][] {
 	let flat = tokenize(code, lang);
 	// the guarantee: if a lexer ever lost a character, fall back to plain text

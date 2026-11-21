@@ -2,20 +2,20 @@
 <script lang="ts">
 	import { Tabs, TabList, Tab, TabPanel } from '@fractaldesign/fractalsvelte-ui';
 
-	const forms = ['underline', 'pill', 'enclosed'] as const;
+	const forms = ['flush', 'separated', 'contained'] as const;
 	const labels = {
-		underline: 'Underline',
-		pill: 'Pill',
-		enclosed: 'Enclosed'
+		flush: 'Underline',
+		separated: 'Pill',
+		contained: 'Enclosed'
 	};
-	let values = $state({ underline: 'read', pill: 'read', enclosed: 'read' });
+	let values = $state({ flush: 'read', separated: 'read', contained: 'read' });
 </script>
 
 <div class="box gap-xl">
-	{#each forms as form (form)}
+	{#each forms as grouping (grouping)}
 		<div class="box gap-sm">
-			<p class="text-sm text-muted weight-500">{labels[form]}</p>
-			<Tabs bind:value={values[form]} {form}>
+			<p class="text-sm text-muted weight-500">{labels[grouping]}</p>
+			<Tabs bind:value={values[grouping]} {grouping} surface={grouping === 'contained' ? 'paneled' : 'vacant'}>
 				<TabList>
 					<Tab value="read">Reading</Tab>
 					<Tab value="queue">Up next</Tab>

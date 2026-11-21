@@ -1,7 +1,7 @@
+import { untrack } from 'svelte';
 import { createContext } from 'svelte';
 import type { Orientation } from '../../../internal/tokens.js';
 
-/** What a pane tells its group about itself. Getters keep the values live. */
 export interface PaneEntry {
 	readonly id: string;
 	readonly defaultSize: number | undefined;
@@ -9,7 +9,6 @@ export interface PaneEntry {
 	readonly maxSize: number;
 	readonly collapsible: boolean;
 	readonly collapsedSize: number;
-	/** The pane element — set once mounted; used to keep panes in document order. */
 	el: HTMLElement | undefined;
 }
 
@@ -17,25 +16,20 @@ const EPS = 0.01;
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 const sum = (a: number[]) => a.reduce((t, v) => t + v, 0);
 
-/** The lowest size a pane may rest at: its collapsed size if it can collapse, else its minimum. */
 const floor = (p: PaneEntry) => (p.collapsible ? Math.min(p.collapsedSize, p.minSize) : p.minSize);
 
-/** Whether a size means the pane is collapsed. */
 const isCollapsedSize = (p: PaneEntry, v: number) => p.collapsible && p.collapsedSize < p.minSize && v <= p.collapsedSize + EPS;
 
-/** Bring one size into a pane's allowed set: collapsed, or within [min, max]. */
 function fitOne(p: PaneEntry, v: number): number {
 	if (isCollapsedSize(p, v)) return p.collapsedSize;
 	return clamp(v, p.minSize, Math.max(p.minSize, p.maxSize));
 }
 
-/** Resolve a drag/keyboard target for a pane, collapsing past the halfway point to the collapsed size. */
 function snap(p: PaneEntry, v: number): number {
 	if (p.collapsible && v < p.minSize) return v < (p.minSize + p.collapsedSize) / 2 ? p.collapsedSize : p.minSize;
 	return clamp(v, p.minSize, Math.max(p.minSize, p.maxSize));
 }
 
-/** Make a set of sizes honour every pane's limits and total exactly 100. */
 function fit(panes: PaneEntry[], raw: number[]): number[] {
 	const s = raw.map((v, i) => fitOne(panes[i], v));
 	for (let pass = 0; pass < 6; pass++) {
@@ -50,7 +44,6 @@ function fit(panes: PaneEntry[], raw: number[]): number[] {
 	return s;
 }
 
-/** Sizes from the explicit overrides, then each pane's default, then an equal share of what is left. */
 function resolve(panes: PaneEntry[], overrides: Record<string, number>): number[] {
 	if (panes.length === 0) return [];
 	const raw = panes.map((p) => overrides[p.id] ?? p.defaultSize ?? NaN);
@@ -63,13 +56,10 @@ function resolve(panes: PaneEntry[], overrides: Record<string, number>): number[
 	return fit(panes, scaled);
 }
 
-/** The state shared by a `Resizable` group, its panes and its handles. */
 export class ResizableState {
 	panes = $state.raw<PaneEntry[]>([]);
 	overrides = $state.raw<Record<string, number>>({});
-	/** A pointer is dragging a handle — panes follow it directly instead of springing. */
 	dragging = $state(false);
-	/** The user has moved something (as opposed to the sizes being defaults or seeded). */
 	touched = $state(false);
 	root: HTMLElement | undefined;
 	private handles = 0;
@@ -81,9 +71,7 @@ export class ResizableState {
 		return this.read.orientation();
 	}
 
-	/** The current sizes, in percent, in document order. */
 	sizes = $derived.by(() => resolve(this.panes, this.overrides));
-	/** The sizes with no user input. */
 	defaults = $derived.by(() => resolve(this.panes, {}));
 
 	register(entry: PaneEntry): () => void {
@@ -93,15 +81,19 @@ export class ResizableState {
 		};
 	}
 
-	/** Re-order panes by their position in the document (after a pane mounts late). */
+	// Called from the pane's mount attachment: read and write in the same reactive
+	// scope makes the attachment re-run whenever it sorts, which is a loop. Untracked,
+	// and only written when the order actually changed.
 	sort(): void {
-		const order = [...this.panes].sort((a, b) =>
-			a.el && b.el ? (a.el.compareDocumentPosition(b.el) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1) : 0
-		);
-		this.panes = order;
+		untrack(() => {
+			const order = [...this.panes].sort((a, b) =>
+				a.el && b.el ? (a.el.compareDocumentPosition(b.el) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1) : 0
+			);
+			if (order.every((entry, i) => entry === this.panes[i])) return;
+			this.panes = order;
+		});
 	}
 
-	/** The ordinal of a handle at registration — the fallback until it can read its place in the DOM. */
 	nextHandle(): number {
 		return this.handles++;
 	}
@@ -119,26 +111,22 @@ export class ResizableState {
 		return i >= 0 && isCollapsedSize(this.panes[i], this.sizes[i] ?? 100);
 	}
 
-	/** The pane before the handle at this gap, and the size/limits a separator reports. */
 	describe(index: number): { id: string | undefined; now: number; min: number; max: number } {
 		const p = this.panes[index];
 		if (!p) return { id: undefined, now: 0, min: 0, max: 100 };
 		return { id: p.id, now: this.sizes[index] ?? 0, min: floor(p), max: Math.min(100, p.maxSize) };
 	}
 
-	/** Seed sizes (a bound value or storage) without counting as user input. */
 	seed(next: number[]): void {
 		if (next.length !== this.panes.length) return;
 		this.overrides = Object.fromEntries(this.panes.map((p, i) => [p.id, next[i]]));
 	}
 
-	/** Record sizes the user chose. */
 	apply(next: number[]): void {
 		this.seed(next);
 		this.touched = true;
 	}
 
-	/** Pixels available to panes along the group's axis (the group minus its handles). */
 	available(): number {
 		const root = this.root;
 		if (!root) return 1;
@@ -150,7 +138,6 @@ export class ResizableState {
 		return Math.max(1, total - taken);
 	}
 
-	/** Sizes after moving the handle at `index` by `delta` percent from `base`. */
 	move(base: number[], index: number, delta: number): number[] {
 		const a = this.panes[index];
 		const b = this.panes[index + 1];
@@ -168,17 +155,14 @@ export class ResizableState {
 		return next;
 	}
 
-	/** Move the handle at `index` by `delta` percent from where it is now. */
 	resizeBy(index: number, delta: number): void {
 		this.apply(this.move(this.sizes, index, delta));
 	}
 
-	/** Put the pane before the handle at `index` at its smallest or largest size. */
 	jump(index: number, to: 'min' | 'max'): void {
 		this.resizeBy(index, to === 'min' ? -100 : 100);
 	}
 
-	/** Return the two panes around a handle to their default proportions. */
 	reset(index: number): void {
 		const d = this.defaults;
 		const s = this.sizes;
@@ -191,7 +175,6 @@ export class ResizableState {
 		this.apply(next);
 	}
 
-	/** Collapse or expand a pane, springing its neighbour to take or give the space. */
 	setCollapsed(id: string, want: boolean): void {
 		const i = this.indexOf(id);
 		if (i < 0 || this.panes.length < 2 || this.isCollapsed(id) === want) return;
@@ -213,7 +196,6 @@ export class ResizableState {
 		this.apply(next);
 	}
 
-	/** Toggle whichever pane around a handle can collapse (an already-collapsed one opens first). */
 	toggleAt(index: number): void {
 		const pair = [this.panes[index], this.panes[index + 1]].filter((p): p is PaneEntry => p !== undefined);
 		const target = pair.find((p) => this.isCollapsed(p.id)) ?? pair.find((p) => p.collapsible);

@@ -1,4 +1,4 @@
-<!-- @example Checkboxes and radios :: Checkbox items stay open after they toggle; a radio group closes on a choice. -->
+<!-- @example Checkboxes and radios :: Checkbox items stay open after they toggle; a radio group closes on a choice, with its own slot height and hint scale. -->
 <script lang="ts">
 	import {
 		Button,
@@ -20,7 +20,14 @@
 		<Button variant="outline" {...props}>View</Button>
 	{/snippet}
 	<MenuLabel>Shown in the list</MenuLabel>
-	<MenuCheckboxItem bind:checked={comments} onCheckedChange={(next) => (comments = next)} shortcut="⌘⇧C">
+	<MenuCheckboxItem
+		bind:checked={comments}
+		onCheckedChange={(next) => (comments = next)}
+		shortcut="⌘⇧C"
+		size="h-lg"
+		childTextSize="text-sm"
+		childTextColor="text-secondary"
+	>
 		Comments
 	</MenuCheckboxItem>
 	<MenuCheckboxItem bind:checked={activity} onCheckedChange={(next) => (activity = next)} disabled>
@@ -30,7 +37,15 @@
 	<MenuLabel>Density</MenuLabel>
 	<MenuRadioGroup bind:value={density} onValueChange={(next) => (density = next)}>
 		<MenuRadioItem value="compact" shortcut="⌘1">Compact</MenuRadioItem>
-		<MenuRadioItem value="comfortable" shortcut="⌘2">Comfortable</MenuRadioItem>
+		<MenuRadioItem
+			value="comfortable"
+			shortcut="⌘2"
+			size="h-lg"
+			childTextSize="text-sm"
+			childTextColor="text-secondary"
+		>
+			Comfortable
+		</MenuRadioItem>
 		<MenuRadioItem value="spacious" disabled>Spacious (beta)</MenuRadioItem>
 	</MenuRadioGroup>
 </DropdownMenu>

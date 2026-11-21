@@ -1,25 +1,26 @@
 <!-- @component A floating button that appears after a scroll threshold, with a scroll-progress ring around it. -->
 
 <script lang="ts">
-	import type { HTMLButtonAttributes } from 'svelte/elements';
+	import type {  HTMLButtonAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luArrowUp } from '@fractaldesign/icons/lucide';
 	import { reducedMotion, scrollProgress } from '../../../motion/index.js';
-	import { type Size } from '../../../internal/tokens.js';
+	import { type Shape, type Size } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLButtonAttributes {
-		/** How far the page must be scrolled, in pixels, before the button appears. */
 		threshold?: number;
-		/** Accessible name of the button. */
 		label?: string;
-		/** The control height; the button is always square. */
 		size?: Size;
+		ringSize?: Size;
+		shape?: Shape;
 	}
 
 	let {
 		threshold = 320,
 		label = 'Back to top',
 		size = 'h-lg',
+		ringSize = 'h-3xl',
+		shape = 'modern',
 		class: className,
 		...rest
 	}: Props = $props();
@@ -52,11 +53,11 @@
 </script>
 
 <div class={['layer at-bottom-end pop enter-up spring-snappy', visible && 'open', !visible && 'pointer-none']}>
-	<div class="relative square h-3xl row xcenter ycenter">
+	<div class={['relative square row xcenter ycenter', ringSize]}>
 		<span class="ring cover pointer-none" aria-hidden="true" {@attach scrollProgress()}></span>
 		<button
 			type="button"
-			class={['button btn-icon primary modern no-scaling inline-flex z-raised', size, className]}
+			class={['button btn-icon primary no-scaling inline-flex z-raised', size, shape, className]}
 			aria-label={label}
 			tabindex={visible ? 0 : -1}
 			aria-hidden={!visible || undefined}

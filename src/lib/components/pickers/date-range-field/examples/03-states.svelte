@@ -1,4 +1,4 @@
-<!-- @example States, sizes and forms :: sizes, shapes, year granularity, min and max, invalid, disabled, readonly, and a named range in a form. -->
+<!-- @example States, sizes and forms :: sizes, shapes, frames, the ink of the dash, year granularity, min and max, invalid, disabled, readonly, and a named range in a form. -->
 <script lang="ts">
 	import { DateRangeField, type DateRange } from '@fractaldesign/fractalsvelte-ui';
 
@@ -42,6 +42,17 @@
 		{#each shapes as shape (shape)}
 			<DateRangeField value={{ start: '2026-11-01', end: '2026-11-12' }} {shape} aria-label={`Stay dates (${shape})`} />
 		{/each}
+	</div>
+	<div class="box gap-sm measure-sm">
+		{#each ['outline', 'ghost', 'secondary'] as const as variant (variant)}
+			<DateRangeField value={{ start: '2026-11-01', end: '2026-11-12' }} {variant} aria-label={`Stay dates (${variant} frame)`} />
+		{/each}
+		<DateRangeField
+			value={{ start: '2026-11-01', end: '2026-11-12' }}
+			variant="ghost"
+			childTextColor="text-secondary"
+			aria-label="Stay dates with a quieter dash"
+		/>
 	</div>
 	<DateRangeField value={{ start: '2026-11-01', end: '2026-11-12' }} disabled aria-label="Locked stay dates" />
 	<DateRangeField value={{ start: '2026-11-01', end: '2026-11-12' }} readonly aria-label="Published stay dates" />

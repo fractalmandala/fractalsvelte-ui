@@ -1,26 +1,23 @@
 <!-- @component One named menu in the bar: a trigger and a popover of item parts. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
-	import { roving } from '../../../internal/roving.js';
-	import { surfaceClass, type OverlaySurface, type OverlayTrigger } from '../dialog/dialog.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import { anchor, floating, popoverSync, roving } from '../../../internal/helpers.js';
+	import {type OverlayTrigger} from '../dialog/dialog.js';
 	import { menuRoving, setMenu } from '../dropdown-menu/menu.js';
-	import { getMenubar } from './menubar.js';
+	import type { Pad, Shape, Size, TextSize, Surface } from '../../../internal/tokens.js';
+	import { getMenubar, type MenubarIntent } from './menubar.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The value this menu contributes to the menubar when it is open. */
 		value: string;
-		/** The default trigger label. Ignored when `trigger` is provided. */
 		label?: string;
-		/** The button that opens the menu. Spread `props` onto your own button. */
 		trigger?: Snippet<[OverlayTrigger]>;
-		/** The fill of this menu panel. Falls back to the menubar's `surface`. */
-		surface?: OverlaySurface;
-		/** Disables the trigger and prevents the menu from opening. */
+		surface?: Surface;
+		size?: Size;
+		textSize?: TextSize;
+		shape?: Shape;
 		disabled?: boolean;
-		/** The items, labels, separators and submenus. */
 		children?: Snippet;
 	}
 
@@ -29,6 +26,9 @@
 		label = '',
 		trigger,
 		surface,
+		size = 'h-bs',
+		textSize = 'text-sm',
+		shape = 'modern',
 		disabled = false,
 		children,
 		class: className,
@@ -52,7 +52,7 @@
 		target?.focus();
 	}
 
-	function setOpen(next: boolean, intent: 'first' | 'last' = 'first') {
+	function setOpen(next: boolean, intent: MenubarIntent = 'first') {
 		if (disabled) return;
 		if (next) bar.setValue(value, intent);
 		else if (bar.value() === value) {
@@ -159,7 +159,7 @@
 				aria-expanded={open}
 				aria-controls={uid}
 				aria-disabled={disabled || undefined}
-				class={['button ghost modern no-scaling inline-flex h-bs text-sm px-md weight-500', disabled && 'disabled']}
+				class={['button ghost no-scaling inline-flex px-md weight-500', size, textSize, shape, disabled && 'disabled']}
 				disabled={disabled || undefined}
 				onclick={toggle}
 				onkeydown={onTriggerKeydown}
@@ -176,8 +176,9 @@
 		role="menu"
 		tabindex="-1"
 		class={[
-			'floating at-bottom-start pop enter-down spring-snappy border rim shad-lg radius-lg pad-xs wmin-xs box gap-xs focus-none',
-			surfaceClass[fill],
+			'floating at-bottom-start pop enter-down spring-snappy radius-lg wmin-xs box gap-xs focus-none',
+			'pad-xs',
+			[fill],
 			className
 		]}
 		{@attach floating(uid, 'var(--space-sm)')}

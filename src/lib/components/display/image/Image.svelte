@@ -1,30 +1,29 @@
 <!-- @component Aspect-ratio framed image with skeleton placeholder, error fallback and optional caption. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luImageOff } from '@fractaldesign/icons/lucide';
-	import type { Shape } from '../../../internal/tokens.js';
+	import type {  ChildTextColor, ChildTextSize, Gap, Shape, Surface, TextColor, TextSize  } from '../../../internal/tokens.js';
 
 	type AspectRatio = '1-1' | '16-9' | '4-3' | '3-2' | '21-9';
 	type ObjectFit = 'cover' | 'contain' | 'fill' | 'scale-down';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** Image source URL. */
 		src?: string;
-		/** Alternative text description for assistive technologies. */
 		alt?: string;
-		/** Aspect ratio frame using Fractalstyler frame classes. */
 		aspectRatio?: AspectRatio;
-		/** How the bitmap scales inside the frame. */
 		fit?: ObjectFit;
-		/** Corner shape of the image frame. */
 		shape?: Shape;
-		/** Optional caption displayed underneath in `<figcaption>`. */
 		caption?: string;
-		/** Custom fallback snippet shown when the image fails or `src` is empty. */
 		fallback?: Snippet;
+		surface?: Surface;
+		gap?: Gap;
+		textSize?: TextSize;
+		textColor?: TextColor;
+		childTextSize?: ChildTextSize;
+		childTextColor?: ChildTextColor;
 	}
 
 	let {
@@ -35,6 +34,12 @@
 		shape = 'modern',
 		caption,
 		fallback,
+		surface = 'paneled',
+		gap = 'gap-xs',
+		textSize = 'text-sm',
+		textColor = 'text-muted',
+		childTextSize = 'text-xs',
+		childTextColor = 'text-muted',
 		class: className,
 		...rest
 	}: Props = $props();
@@ -58,8 +63,8 @@
 	const fitClass = $derived(`fit-${fit}`);
 </script>
 
-<figure class={['column gap-xs image-figure', className]} {...rest}>
-	<div class={['image-frame relative bg-panel border-subtle overflow-hidden', frameClass, shape]}>
+<figure class={['column image-figure', gap, className]} {...rest}>
+	<div class={['image-frame relative overflow-hidden', surface, frameClass, shape]}>
 		{#if status === 'loading'}
 			<div class="cover bone anim-pulse" aria-hidden="true"></div>
 		{/if}
@@ -74,7 +79,7 @@
 				onerror={() => (status = 'error')}
 			/>
 		{:else}
-			<div class="cover row xcenter ycenter text-muted gap-xs text-sm">
+			<div class={['cover row xcenter ycenter gap-xs', textSize, textColor]}>
 				{#if fallback}
 					{@render fallback()}
 				{:else}
@@ -85,6 +90,6 @@
 		{/if}
 	</div>
 	{#if caption}
-		<figcaption class="text-xs text-muted">{caption}</figcaption>
+		<figcaption class={[childTextSize, childTextColor]}>{caption}</figcaption>
 	{/if}
 </figure>

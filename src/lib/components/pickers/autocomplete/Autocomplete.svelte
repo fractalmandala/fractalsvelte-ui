@@ -1,43 +1,32 @@
 <!-- @component Free-text input with floating filtered suggestions, keyboard navigation, and clear control. -->
 
 <script lang="ts">
-	import type { HTMLInputAttributes } from 'svelte/elements';
+	import type {  HTMLInputAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luLoaderCircle, luSearch, luX } from '@fractaldesign/icons/lucide';
 	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
-	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
+	import { defaultSize, type ChildTextSize, type Pad, type Shape, type Size, type Surface, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
 	import { frameClasses } from '../../inputs/input/frame.js';
 	import { useFieldControl } from '../../inputs/field/field.js';
 	import { normalizeAutocompleteOptions, type AutocompleteOption } from './autocomplete.js';
 
 	interface Props extends Omit<HTMLInputAttributes, 'size' | 'value' | 'children' | 'disabled'> {
-		/** Current text input value; bindable. */
 		value?: string;
-		/** Called whenever typed text or selected suggestion changes `value`. */
 		onValueChange?: (value: string) => void;
-		/** Called when an option is picked from the list. */
 		onSelect?: (item: AutocompleteOption) => void;
-		/** Suggestion list (strings or rich objects). */
 		options: (string | AutocompleteOption)[];
-		/** Placeholder displayed when empty. */
 		placeholder?: string;
-		/** Control height on the shared size ladder. */
 		size?: Size;
-		/** Text scale override independent of `size`. */
 		textSize?: TextSize;
-		/** Corner shape. */
+		childTextSize?: ChildTextSize;
+		childTextColor?: TextColor;
 		shape?: Shape;
-		/** Input frame visual appearance. */
-		look?: 'outline' | 'filled' | 'ghost';
-		/** Show a spinner while suggestions are loading asynchronously. */
+		variant?: Variant;
+		surface?: Surface;
 		loading?: boolean;
-		/** Show a clear button when `value` is non-empty. */
 		clearable?: boolean;
-		/** Disable typing and opening suggestions. */
 		disabled?: boolean;
-		/** Mark the input invalid. */
 		invalid?: boolean;
-		/** Text displayed inside the popup when no options match. */
 		emptyText?: string;
 	}
 
@@ -49,8 +38,11 @@
 		placeholder = 'Type to search…',
 		size,
 		textSize,
+		childTextSize = 'text-xs',
+		childTextColor = 'text-muted',
 		shape,
-		look,
+		variant,
+		surface = 'glass',
 		loading = false,
 		clearable = true,
 		disabled,
@@ -63,11 +55,11 @@
 
 	const uid = $props.id();
 	const listId = `${uid}-list`;
-	const control = useFieldControl(uid, () => ({ id, invalid, disabled, size, shape, look }));
+	const control = useFieldControl(uid, () => ({ id, invalid, disabled, size, shape, variant }));
 
 	const resolvedSize = $derived(size ?? control.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? control.shape ?? 'modern');
-	const resolvedLook = $derived(look ?? control.look ?? 'outline');
+	const resolvedVariant = $derived<Variant>(variant ?? control.variant ?? 'outline');
 
 	let open = $state(false);
 	let activeIndex = $state(-1);
@@ -159,7 +151,7 @@
 
 	const frame = $derived(
 		frameClasses({
-			look: resolvedLook,
+			variant: resolvedVariant,
 			size: resolvedSize,
 			textSize,
 			shape: resolvedShape,
@@ -170,7 +162,7 @@
 </script>
 
 <div class={['anchor', frame, className]} {@attach anchor(uid)}>
-	<span class="pl-sm text-muted row ycenter pointer-none shrink-0" aria-hidden="true">
+	<span class={['pl-sm row ycenter pointer-none shrink-0', childTextColor]} aria-hidden="true">
 		{#if loading}
 			<Icon icon={luLoaderCircle} class="anim-spin" />
 		{:else}
@@ -205,7 +197,7 @@
 	{#if clearable && value && !control.disabled}
 		<button
 			type="button"
-			class="relative z-raised btn-icon h-md ghost round mr-xs text-muted"
+			class={['relative z-raised btn-icon ghost mr-xs', resolvedSize, resolvedShape, childTextColor]}
 			aria-label="Clear input"
 			onclick={clear}
 		>
@@ -221,19 +213,22 @@
 	role="listbox"
 	tabindex="-1"
 	class={[
-		'floating at-bottom-start match-anchor pop enter-down spring-snappy glass border rim shad-lg modern pad-xs scroll-y scroll-thin box gap-xs focus-none',
+		'floating at-bottom-start match-anchor pop enter-down spring-snappy scroll-y scroll-thin box gap-xs focus-none',
+		surface,
+		resolvedShape,
+		'pad-xs',
 		textSize
 	]}
 	{@attach floating(uid)}
 	{@attach popoverSync(() => open, (v) => (open = v))}
 >
 	{#if loading && filtered.length === 0}
-		<div class="row ycenter gap-sm px-sm py-sm text-sm text-muted">
+		<div class={['row ycenter gap-sm px-sm py-sm', childTextSize, childTextColor]}>
 			<Icon icon={luLoaderCircle} class="anim-spin" />
 			Loading suggestions…
 		</div>
 	{:else if filtered.length === 0}
-		<div class="px-sm py-sm text-sm text-muted">{emptyText}</div>
+		<div class={['px-sm py-sm', childTextSize, childTextColor]}>{emptyText}</div>
 	{:else}
 		{#each filtered as option, i (option.value)}
 			<button
@@ -253,7 +248,7 @@
 				<span class="column xleft min0">
 					<span class="truncate weight-500">{option.label}</span>
 					{#if option.description}
-						<span class="text-xs text-muted truncate">{option.description}</span>
+						<span class={['truncate', childTextSize, childTextColor]}>{option.description}</span>
 					{/if}
 				</span>
 			</button>

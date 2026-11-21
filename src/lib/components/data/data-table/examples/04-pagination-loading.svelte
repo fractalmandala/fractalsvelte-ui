@@ -1,4 +1,4 @@
-<!-- @example Pages, density and loading :: page, pageSize and their callbacks; loading shows skeleton rows; density covers compact, default and roomy. -->
+<!-- @example Pages, density and loading :: page, pageSize and their callbacks; loading shows skeleton rows; density covers compact, default and roomy; the pager's arrows and numbers are restyled through their own props bags. -->
 <script lang="ts">
 	import { Button, DataTable, type Column } from '@fractaldesign/fractalsvelte-ui';
 
@@ -75,6 +75,8 @@
 		{onPageSizeChange}
 		{loading}
 		{density}
+		stepButtonProps={{ variant: 'outline' }}
+		pageButtonProps={{ shape: 'round' }}
 		caption="Audit log"
 		striped
 	/>

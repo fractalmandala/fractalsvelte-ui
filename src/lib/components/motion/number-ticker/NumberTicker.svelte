@@ -1,23 +1,16 @@
 <!-- @component A number that springs from zero to its value, as a count or as rolling digit columns. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { inView, SpringValue, vars } from '../../../motion/index.js';
 
 	interface Props extends HTMLAttributes<HTMLSpanElement> {
-		/** The number to display. The spring retargets whenever it changes. */
 		value: number;
-		/** Intl.NumberFormat options used to render the value (and the accessible name). */
 		format?: Intl.NumberFormatOptions;
-		/** Locale passed to Intl.NumberFormat, such as `"en-GB"` or `"de-DE"`. */
 		locale?: string;
-		/** `count` writes the formatted number; `slot` rolls each digit in its own column. */
 		form?: 'count' | 'slot';
-		/** Text rendered immediately before the number, such as a currency symbol the formatter does not supply. */
 		prefix?: string;
-		/** Text rendered immediately after the number, such as a unit. */
 		suffix?: string;
-		/** Waits until the ticker is in view before springing from zero to `value`. */
 		startOnView?: boolean;
 	}
 

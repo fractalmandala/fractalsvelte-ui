@@ -1,4 +1,4 @@
-<!-- @example Placements and delays :: Every placement, a solid surface, and a controlled card with slower delays. -->
+<!-- @example Placements and delays :: Every placement, a solid surface, and a controlled card with a wider inset and slower delays. -->
 <script lang="ts">
 	import { HoverCard, type Placement } from '@fractaldesign/fractalsvelte-ui';
 
@@ -23,7 +23,7 @@
 <div class="box gap-md">
 	<div class="row wrap gap-sm">
 		{#each placements as placement (placement)}
-			<HoverCard {placement} surface="solid" openDelay={200} closeDelay={160}>
+			<HoverCard {placement} surface="overlayed" openDelay={200} closeDelay={160}>
 				{#snippet trigger({ props })}
 					<a href="https://northwind.dev/projects/harbour" class="text-theme text-sm" {...props}>{placement}</a>
 				{/snippet}

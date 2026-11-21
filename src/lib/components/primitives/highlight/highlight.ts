@@ -1,4 +1,3 @@
-/** One piece of a highlighted string: `match` is true where the query hit. */
 export interface HighlightChunk {
 	text: string;
 	match: boolean;
@@ -21,7 +20,6 @@ function buildChunks(text: string, spans: { start: number; end: number }[]): Hig
 	return result;
 }
 
-/** Splits `text` into matched and unmatched chunks for `query`. */
 export function splitHighlight(
 	text: string,
 	query: string | readonly string[] | undefined,

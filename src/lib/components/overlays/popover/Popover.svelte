@@ -1,32 +1,23 @@
 <!-- @component An anchored non-modal panel on the Popover API, placed with CSS anchor positioning. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
 	import { type Placement } from '../../../internal/tokens.js';
-import { placementClass } from '../../../internal/helpers.js';
-	import { surfaceClass, type OverlayContent, type OverlaySurface, type OverlayTrigger } from '../dialog/dialog.js';
+	import {type OverlayContent, type OverlayTrigger} from '../dialog/dialog.js';
+	import type { Pad, Surface } from '../../../internal/tokens.js';
 	import { enterFrom, type PopoverTrigger } from './popover.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** Whether the popover is open. Bind it, or let the trigger mode drive it. */
 		open?: boolean;
-		/** Called whenever the popover opens or closes. */
 		onOpenChange?: (open: boolean) => void;
-		/** Where the panel sits relative to the trigger. */
 		placement?: Placement;
-		/** The gap between the trigger and the panel, as a CSS length. */
 		offset?: string;
-		/** `click` toggles on press and light-dismisses; `hover` opens on hover or focus; `manual` is driven only by `open`. */
 		trigger?: PopoverTrigger;
-		/** Stretch the panel to the trigger's width. */
 		matchWidth?: boolean;
-		/** The panel fill: frosted glass, or opaque. */
-		surface?: OverlaySurface;
-		/** The element that opens the popover. Spread `props` onto your own button. Named `target` because `trigger` is the open mode. */
+		surface?: Surface;
 		target?: Snippet<[OverlayTrigger]>;
-		/** The panel contents. Receives `close`. */
 		children?: Snippet<[OverlayContent]>;
 	}
 
@@ -121,9 +112,10 @@ import { placementClass } from '../../../internal/helpers.js';
 	role="dialog"
 	tabindex="-1"
 	class={[
-		'floating pop spring-snappy border rim shad-lg radius-lg pad-bs max-w-sm focus-none',
-		surfaceClass[surface],
-		placementClass[placement],
+		'floating pop spring-snappy radius-lg max-w-sm focus-none',
+		'pad-bs',
+		surface,
+		`at-${`placement`}`,
 		enterFrom[placement],
 		matchWidth && 'match-anchor',
 		className

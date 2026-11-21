@@ -1,28 +1,23 @@
 import { createContext } from 'svelte';
-import type { Step } from '../../../internal/tokens.js';
+import type { Size } from '../../../internal/tokens.js';
 
-/** What a card shares with its parts. */
 export interface CardContext {
-	/** The card's size, read lazily so parts follow changes. */
-	readonly size: Step;
+	readonly size: Size;
 }
 
 const [read, write] = createContext<CardContext>();
 
-/** Provide the card's context to its parts. */
 export const setCardContext = write;
 
-/** The enclosing card's context, or a medium default when a part is used on its own. */
 export function getCardContext(): CardContext {
 	try {
 		return read();
 	} catch {
-		return { size: 'md' };
+		return { size: 'h-md' };
 	}
 }
 
-/** The gap between a card's parts at each size. */
-export const gapClass: Record<Step, string> = {
+export const gapClass: Record<string, string> = {
 	xs: 'gap-sm',
 	sm: 'gap-md',
 	md: 'gap-bs',
@@ -30,8 +25,7 @@ export const gapClass: Record<Step, string> = {
 	xl: 'gap-xl'
 };
 
-/** The padding token a card's bleeding media reaches back across, at each size. */
-export const padToken: Record<Step, string> = {
+export const padToken: Record<string, string> = {
 	xs: 'var(--space-sm)',
 	sm: 'var(--space-md)',
 	md: 'var(--space-bs)',
@@ -39,8 +33,7 @@ export const padToken: Record<Step, string> = {
 	xl: 'var(--space-xl)'
 };
 
-/** Title scale at each size. */
-export const titleClass: Record<Step, string> = {
+export const titleClass: Record<string, string> = {
 	xs: 'text-md',
 	sm: 'text-bs',
 	md: 'text-lg',
@@ -48,8 +41,7 @@ export const titleClass: Record<Step, string> = {
 	xl: 'text-2xl'
 };
 
-/** Description and body scale at each size. */
-export const bodyClass: Record<Step, string> = {
+export const bodyClass: Record<string, string> = {
 	xs: 'text-sm',
 	sm: 'text-sm',
 	md: 'text-md',

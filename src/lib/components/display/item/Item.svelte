@@ -1,32 +1,24 @@
 <!-- @component A list or row item with leading media, a title, a description and trailing actions. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAnchorAttributes, HTMLAttributes } from 'svelte/elements';
-	import type { Shape, Size } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAnchorAttributes, HTMLAttributes  } from 'svelte/elements';
+	import type { Shape, Size, Surface } from '../../../internal/tokens.js';
 	import { itemPadClass, setItemContext } from './context.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** `default` is a quiet row, `outline` is a hairline box, `muted` is a tinted panel. */
-		look?: 'default' | 'outline' | 'muted';
-		/** The padding and the type scale of the title. */
+		surface?: Surface;
 		size?: Size;
-		/** The corner shape. */
 		shape?: Shape;
-		/** Makes the whole row a target: a hover fill, a keyboard focus ring and, without `href`, a focusable row that activates on Enter and Space. */
 		interactive?: boolean;
-		/** Renders the row as an `<a>` that navigates. Implies `interactive`. */
 		href?: string;
-		/** Where to open the link, when `href` is set. */
 		target?: HTMLAnchorAttributes['target'];
-		/** Called when an interactive row without `href` is activated by click, Enter or Space. */
 		onclick?: (event: MouseEvent) => void;
-		/** The media, content and actions. */
 		children?: Snippet;
 	}
 
 	let {
-		look = 'default',
+		surface = 'vacant',
 		size = 'h-lg',
 		shape = 'modern',
 		interactive = false,
@@ -44,18 +36,13 @@
 		}
 	});
 
-	const surface: Record<'default' | 'outline' | 'muted', string> = {
-		default: 'bg-none',
-		outline: 'border',
-		muted: 'state-selected'
-	};
 
 	const live = $derived(interactive || href !== undefined);
 	const classes = $derived([
 		'row ycenter gap-sm wfull',
 		itemPadClass[size],
 		shape,
-		surface[look],
+		surface,
 		live && 'interactive focus-ring',
 		href !== undefined && 'link-plain',
 		className

@@ -1,20 +1,18 @@
 <!-- @component One cell of the bento, with column and row span, an optional featured surface, and an optional hover lift. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  Pad, Surface  } from '../../../internal/tokens.js';
 	import { vars } from '../../../motion/index.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** How many columns this item spans. */
 		colSpan?: number;
-		/** How many rows this item spans. */
 		rowSpan?: number;
-		/** Marks the item as a featured tile, with a raised surface. */
 		featured?: boolean;
-		/** Lifts the item on hover with a spring. */
+		pad?: Pad;
+		surface?: Surface;
 		lift?: boolean;
-		/** The item's content. */
 		children?: Snippet;
 	}
 
@@ -22,6 +20,8 @@
 		colSpan = 1,
 		rowSpan = 1,
 		featured = false,
+		pad = 'pad-md',
+		surface = 'paneled',
 		lift = false,
 		class: className,
 		children,
@@ -32,7 +32,7 @@
 <div
 	class={[
 		'span min0 anim-in',
-		featured && 'box pad-md border-subtle radius-md bg-panel rim shad-sm',
+		featured && ['box', pad, 'radius-md', surface],
 		lift && 'lift',
 		className
 	]}

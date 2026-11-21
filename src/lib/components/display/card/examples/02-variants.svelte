@@ -4,10 +4,10 @@
 </script>
 
 <div class="card-grid gap-bs">
-	{#each ['elevated', 'outline', 'filled', 'ghost', 'glass'] as const as look (look)}
-		<Card {look}>
+	{#each ['elevated', 'outlined', 'paneled', 'vacant', 'glass'] as const as surface (surface)}
+		<Card {surface}>
 			<CardHeader>
-				<CardTitle class="tt-c">{look}</CardTitle>
+				<CardTitle class="tt-c">{surface}</CardTitle>
 				<CardDescription>Release notes for version 2.4</CardDescription>
 			</CardHeader>
 			<CardContent>Faster startup, a redesigned inspector and 14 fixes.</CardContent>

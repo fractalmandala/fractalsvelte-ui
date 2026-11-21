@@ -1,12 +1,13 @@
 <!-- @component The live theme editor: mode, named theme, colour, shape, density, motion, a preview, and copy or reset. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {   HTMLAttributes  } from 'svelte/elements';
+	import type { ComponentProps } from 'svelte';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck, luCopy, luRotateCcw } from '@fractaldesign/icons/lucide';
 	import { Button } from '../../actions/button/index.js';
 	import { roving } from '../../../internal/helpers.js';
-import type { Shape } from '../../../internal/tokens.js';
+import type { ChildTextColor, ChildTextSize, Pad, Shape, Surface, TextColor, TextSize, Gap } from '../../../internal/tokens.js';
 	import { vars } from '../../../motion/index.js';
 	import {
 		defaultTheme,
@@ -21,7 +22,7 @@ import type { Shape } from '../../../internal/tokens.js';
 	import { ModeToggle } from '../mode-toggle/index.js';
 	import { ThemePicker } from '../theme-picker/index.js';
 	import { ThemeProvider } from '../theme-provider/index.js';
-	import type { CustomizerSection } from './sections.js';
+	import type {  CustomizerSection  } from './sections.js';
 
 	const ALL: CustomizerSection[] = ['mode', 'theme', 'color', 'shape', 'density', 'motion', 'preview'];
 	const shapes: { id: Shape; name: string }[] = [
@@ -47,13 +48,33 @@ import type { Shape } from '../../../internal/tokens.js';
 		value?: ThemeSettings;
 		onValueChange?: (value: ThemeSettings) => void;
 		sections?: CustomizerSection[];
+		textSize?: TextSize;
+		textColor?: TextColor;
+		childTextSize?: ChildTextSize;
+		childTextColor?: ChildTextColor;
+		surface?: Surface;
+		pad?: Pad;
+		gap?: Gap;
+		previewButtonProps?: ComponentProps<typeof Button>;
+		resetButtonProps?: ComponentProps<typeof Button>;
+		copyButtonProps?: ComponentProps<typeof Button>;
 	}
 
 	let {
 		value = $bindable(),
 		onValueChange,
 		sections = ALL,
+		textSize = 'text-sm',
+		textColor = 'text-secondary',
+		childTextSize = 'text-xs',
+		childTextColor = 'text-muted',
+		surface = 'paneled',
 		class: className,
+		pad = 'pad-lg',
+		gap = 'gap-lg',
+		previewButtonProps,
+		resetButtonProps,
+		copyButtonProps,
 		...rest
 	}: Props = $props();
 
@@ -133,8 +154,8 @@ import type { Shape } from '../../../internal/tokens.js';
 {#snippet slider(name: string, min: number, max: number, step: number, current: number, display: string, track: string, change: (value: number) => void)}
 	<div class="box gap-xs">
 		<div class="row ycenter xbetween">
-			<span class="text-sm text-secondary">{name}</span>
-			<span class="text-sm tabular-nums text-muted">{display}</span>
+			<span class={[textSize, textColor]}>{name}</span>
+			<span class={[textSize, childTextColor, 'tabular-nums']}>{display}</span>
 		</div>
 		<div class={['range-rail track relative', track]} {@attach vars({ value: (current - min) / (max - min), hue, 'ramp-max': 0.3 })}>
 			<span class="thumb"></span>
@@ -152,24 +173,24 @@ import type { Shape } from '../../../internal/tokens.js';
 	</div>
 {/snippet}
 
-<div class={['box gap-lg pad-lg radius-lg border bg-panel', className]} {...rest}>
+<div class={['box radius-lg', surface, pad, gap, className]} {...rest}>
 	{#if has('mode')}
 		<div class="box gap-sm">
-			<p class="text-sm weight-500">Mode</p>
+			<p class={[textSize, 'weight-500']}>Mode</p>
 			<ModeToggle form="segmented" withSystem value={settings.mode} onValueChange={setMode} />
 		</div>
 	{/if}
 
 	{#if has('theme')}
 		<div class="box gap-sm">
-			<p class="text-sm weight-500">Theme</p>
+			<p class={[textSize, 'weight-500']}>Theme</p>
 			<ThemePicker showLabels value={settings.theme} onValueChange={setTheme} />
 		</div>
 	{/if}
 
 	{#if has('color')}
 		<div class="box gap-md">
-			<p class="text-sm weight-500">Colour</p>
+			<p class={[textSize, 'weight-500']}>Colour</p>
 			{@render slider('Hue', 0, 360, 1, hue, String(Math.round(hue)), 'hue-track', (v) => patch({ hue: v }))}
 			{@render slider('Chroma', 0, 0.3, 0.005, chroma, chroma.toFixed(3), 'ramp', (v) => patch({ chroma: v }))}
 			{@render slider('Tint', 0, 0.04, 0.001, tint, tint.toFixed(3), 'ramp', (v) => patch({ tint: v }))}
@@ -178,8 +199,8 @@ import type { Shape } from '../../../internal/tokens.js';
 
 	{#if has('shape')}
 		<div class="box gap-sm">
-			<p class="text-sm weight-500">Shape</p>
-			<div role="radiogroup" aria-label="Shape" class="choice-group text-sm" {@attach roving({ orientation: 'horizontal', onNavigate: (item) => item.click() })}>
+			<p class={[textSize, 'weight-500']}>Shape</p>
+			<div role="radiogroup" aria-label="Shape" class={['choice-group', textSize]} {@attach roving({ orientation: 'horizontal', onNavigate: (item) => item.click() })}>
 				{#each shapes as option (option.id)}
 					<button type="button" role="radio" aria-checked={option.id === settings.shape} tabindex={option.id === settings.shape ? 0 : -1} class="bare choice focus-ring weight-500" onclick={() => patch({ shape: option.id })}>
 						{option.name}
@@ -191,8 +212,8 @@ import type { Shape } from '../../../internal/tokens.js';
 
 	{#if has('density')}
 		<div class="box gap-sm">
-			<p class="text-sm weight-500">Density</p>
-			<div role="radiogroup" aria-label="Density" class="choice-group text-sm" {@attach roving({ orientation: 'horizontal', onNavigate: (item) => item.click() })}>
+			<p class={[textSize, 'weight-500']}>Density</p>
+			<div role="radiogroup" aria-label="Density" class={['choice-group', textSize]} {@attach roving({ orientation: 'horizontal', onNavigate: (item) => item.click() })}>
 				{#each densities as option (option.id)}
 					<button type="button" role="radio" aria-checked={option.id === settings.density} tabindex={option.id === settings.density ? 0 : -1} class="bare choice focus-ring weight-500" onclick={() => patch({ density: option.id })}>
 						{option.name}
@@ -204,8 +225,8 @@ import type { Shape } from '../../../internal/tokens.js';
 
 	{#if has('motion')}
 		<div class="box gap-sm">
-			<p class="text-sm weight-500">Motion</p>
-			<div role="radiogroup" aria-label="Motion" class="choice-group text-sm" {@attach roving({ orientation: 'horizontal', onNavigate: (item) => item.click() })}>
+			<p class={[textSize, 'weight-500']}>Motion</p>
+			<div role="radiogroup" aria-label="Motion" class={['choice-group', textSize]} {@attach roving({ orientation: 'horizontal', onNavigate: (item) => item.click() })}>
 				{#each motions as option (option.id)}
 					<button type="button" role="radio" aria-checked={option.id === settings.motion} tabindex={option.id === settings.motion ? 0 : -1} class="bare choice focus-ring weight-500" onclick={() => patch({ motion: option.id })}>
 						{option.name}
@@ -225,30 +246,30 @@ import type { Shape } from '../../../internal/tokens.js';
 			shape={settings.shape}
 			density={settings.density}
 			motion={settings.motion}
-			class="box gap-sm pad-bs radius-md border"
+			class="box gap-sm pad-bs radius-md outlined"
 		>
-			<p class="text-xs text-muted">Preview</p>
+			<p class={[childTextSize, childTextColor]}>Preview</p>
 			<p class="weight-600">Invoice INV-2048</p>
-			<p class="text-sm text-secondary tabular-nums">$1,284.00 due 18 Nov</p>
+			<p class={[textSize, textColor, 'tabular-nums']}>$1,284.00 due 18 Nov</p>
 			<div class="row wrap gap-sm">
-				<Button size="h-sm">Pay now</Button>
-				<Button size="h-sm" variant="secondary">Download PDF</Button>
-				<Button size="h-sm" variant="themed">Accent</Button>
+				<Button size="h-sm" {...previewButtonProps}>Pay now</Button>
+				<Button size="h-sm" variant="secondary" {...previewButtonProps}>Download PDF</Button>
+				<Button size="h-sm" variant="themed" {...previewButtonProps}>Accent</Button>
 				<span class="tag ink-auto">Published</span>
 			</div>
 		</ThemeProvider>
 	{/if}
 
 	<div class="row wrap gap-sm">
-		<Button size="h-sm" variant="secondary" onclick={reset}>
+		<Button size="h-sm" variant="secondary" onclick={reset} {...resetButtonProps}>
 			<Icon icon={luRotateCcw} />
 			Reset
 		</Button>
-		<Button size="h-sm" variant="outline" onclick={() => copy('css')}>
+		<Button size="h-sm" variant="outline" onclick={() => copy('css')} {...copyButtonProps}>
 			<Icon icon={copied === 'css' ? luCheck : luCopy} />
 			{copied === 'css' ? 'Copied CSS' : 'Copy CSS'}
 		</Button>
-		<Button size="h-sm" variant="outline" onclick={() => copy('config')}>
+		<Button size="h-sm" variant="outline" onclick={() => copy('config')} {...copyButtonProps}>
 			<Icon icon={copied === 'config' ? luCheck : luCopy} />
 			{copied === 'config' ? 'Copied config' : 'Copy config'}
 		</Button>

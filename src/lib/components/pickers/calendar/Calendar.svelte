@@ -1,10 +1,11 @@
 <!-- @component A month grid for picking a day, a range or several days, with locale-aware labels and full keyboard navigation. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luChevronLeft, luChevronRight } from '@fractaldesign/icons/lucide';
 	import { animate, setMotion } from '../../../motion/index.js';
+	import { type ChildTextSize, type Gap, type Shape, type Size, type TextColor, type TextSize } from '../../../internal/tokens.js';
 	import {
 		addDays,
 		addMonths,
@@ -27,27 +28,22 @@
 	} from './dates.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The chosen date (`YYYY-MM-DD`), an array of dates, or a `{ start, end }` range — depending on `mode`. Bindable. */
 		value?: CalendarValue;
-		/** Called whenever the person changes the selection. */
 		onValueChange?: (value: CalendarValue) => void;
-		/** `single` picks one day, `range` a start and end, `multiple` any number of days. */
 		mode?: 'single' | 'range' | 'multiple';
-		/** The earliest selectable ISO date. */
 		min?: string;
-		/** The latest selectable ISO date. */
 		max?: string;
-		/** Returns true when a date cannot be selected. Combined with `min` and `max`. */
 		isDateDisabled?: (iso: string) => boolean;
-		/** Day the week starts on, 0 = Sunday through 6 = Saturday. */
 		weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-		/** BCP 47 locale for month names and weekday labels. Defaults to the runtime locale. */
 		locale?: string;
-		/** How many months to show side by side. */
 		numberOfMonths?: number;
-		/** Blocks pointer and keyboard input. */
+		size?: Size;
+		shape?: Shape;
+		textSize?: TextSize;
+		childTextSize?: ChildTextSize;
+		childTextColor?: TextColor;
+		gap?: Gap;
 		disabled?: boolean;
-		/** Accessible name of the calendar. */
 		label?: string;
 	}
 
@@ -61,6 +57,12 @@
 		weekStartsOn = 0,
 		locale,
 		numberOfMonths = 1,
+		size = 'h-lg',
+		shape = 'round',
+		textSize = 'text-md',
+		childTextSize = 'text-xs',
+		childTextColor = 'text-muted',
+		gap = 'gap-sm',
 		disabled = false,
 		label,
 		class: className,
@@ -268,23 +270,23 @@
 </script>
 
 <div
-	class={['box gap-sm select-none', disabled && 'disabled', className]}
+	class={['box select-none', gap, disabled && 'disabled', className]}
 	{...rest}
 >
 	<div class="row ycenter xbetween gap-sm">
 		<button
 			type="button"
-			class="button btn-icon ghost round h-lg"
+			class={['button btn-icon ghost', shape, size]}
 			aria-label="Previous month"
 			disabled={disabled}
 			onclick={prev}
 		>
 			<Icon icon={luChevronLeft} />
 		</button>
-		<div class="text-md weight-500 grow ta-c">{title}</div>
+		<div class={['weight-500 grow ta-c', textSize]}>{title}</div>
 		<button
 			type="button"
-			class="button btn-icon ghost round h-lg"
+			class={['button btn-icon ghost', shape, size]}
 			aria-label="Next month"
 			disabled={disabled}
 			onclick={next}
@@ -305,7 +307,7 @@
 			>
 				<div role="row" class="grid-7">
 					{#each labels as name (name)}
-						<div role="columnheader" class="ta-c text-xs text-muted weight-500 py-xs">{name}</div>
+						<div role="columnheader" class={['ta-c weight-500 py-xs', childTextSize, childTextColor]}>{name}</div>
 					{/each}
 				</div>
 				{#each [0, 1, 2, 3, 4, 5] as week (week)}

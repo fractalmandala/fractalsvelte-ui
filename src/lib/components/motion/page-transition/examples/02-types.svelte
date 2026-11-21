@@ -1,7 +1,7 @@
 <!-- @example Types :: Every built-in view-transition type, including a function that picks slide-back. -->
 <script lang="ts">
 	import { Button, PageTransition } from '@fractaldesign/fractalsvelte-ui';
-	import type { OnNavigateLike, ViewTransitionType } from '@fractaldesign/fractalsvelte-ui/motion';
+	import type {  OnNavigateLike, ViewTransitionType  } from '@fractaldesign/fractalsvelte-ui/motion';
 
 	const types: ViewTransitionType[] = ['fade', 'slide', 'slide-back', 'scale', 'reveal', 'none'];
 	let type = $state<ViewTransitionType>('fade');

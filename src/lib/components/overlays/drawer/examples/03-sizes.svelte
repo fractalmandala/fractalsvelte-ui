@@ -1,7 +1,7 @@
 <!-- @example Widths :: Every width on the measure ladder — width for a side drawer, height for a top or bottom one. -->
 <script lang="ts">
 	import { Button, Drawer } from '@fractaldesign/fractalsvelte-ui';
-	import type { Measure } from '@fractaldesign/fractalsvelte-ui';
+	import type {  Measure  } from '@fractaldesign/fractalsvelte-ui';
 
 	const widths: Measure[] = ['measure-xs', 'measure-sm', 'measure-md', 'measure-lg', 'measure-xl', 'measure-2xl', 'measure-3xl', 'measure-4xl', 'measure-full'];
 	let width = $state<Measure>('measure-md');

@@ -1,28 +1,24 @@
 <!-- @component A form label that names its control, with required and optional markers. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import { type Size } from '../../../internal/tokens.js';
-	import type { HTMLLabelAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import { type Size, type TextColor } from '../../../internal/tokens.js';
+	import type {  HTMLLabelAttributes  } from 'svelte/elements';
 
 	interface Props extends HTMLLabelAttributes {
-		/** The id of the control this label names. Sets the native for attribute. */
 		for?: string;
-		/** The label scale: text size. */
 		size?: Size;
-		/** Draws a red asterisk after the label. The control itself must still carry the required attribute. */
+		textColor?: TextColor;
 		required?: boolean;
-		/** Draws a muted "Optional" after the label, for fields that may be left empty. */
 		optional?: boolean;
-		/** Dims the label to match a disabled control. */
 		disabled?: boolean;
-		/** The label text. */
 		children?: Snippet;
 	}
 
 	let {
 		for: htmlFor,
 		size = 'h-sm',
+		textColor = 'text-muted',
 		required = false,
 		optional = false,
 		disabled = false,
@@ -43,9 +39,9 @@
 <label class={classes} for={htmlFor} {...rest}>
 	{@render children?.()}
 	{#if required}
-		<span class="text-danger" aria-hidden="true">*</span>
+		<span class="tone-danger text-theme" aria-hidden="true">*</span>
 	{/if}
 	{#if optional}
-		<span class="weight-400 text-muted">Optional</span>
+		<span class={['weight-400', textColor]}>Optional</span>
 	{/if}
 </label>

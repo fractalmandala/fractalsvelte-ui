@@ -1,11 +1,12 @@
 <!-- @component Hierarchical timeline waterfall for visualizing nested traces, network spans, and durations. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { SvelteSet } from 'svelte/reactivity';
 	import { Icon } from '@fractaldesign/icons';
 	import { luChevronRight } from '@fractaldesign/icons/lucide';
 	import { vars } from '../../../motion/index.js';
+	import type { ChildTextColor, ChildTextSize, Shape, Size, Surface, TextColor, TextSize } from '../../../internal/tokens.js';
 	import {
 		collectExpandableIds,
 		computeBounds,
@@ -15,18 +16,19 @@
 	} from './waterfall.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Hierarchical trace spans rendered as indented timeline rows. */
 		items: WaterfallItem[];
-		/** Vertical reference timestamps overlaid across lanes (e.g. LCP, FCP). */
 		markers?: WaterfallMarker[];
-		/** Active selected span id; bindable. */
 		selectedId?: string;
-		/** Called when a user selects a span row. */
 		onSelect?: (item: WaterfallItem) => void;
-		/** Display unit suffix appended to axis ticks and duration labels. */
 		unit?: 'ms' | 's';
-		/** Number of evenly spaced axis ticks. */
 		ticks?: number;
+		surface?: Surface;
+		shape?: Shape;
+		size?: Size;
+		textSize?: TextSize;
+		childTextSize?: ChildTextSize;
+		textColor?: TextColor;
+		childTextColor?: ChildTextColor;
 	}
 
 	let {
@@ -36,6 +38,13 @@
 		onSelect,
 		unit = 'ms',
 		ticks = 4,
+		surface = 'elevated',
+		shape = 'modern',
+		size = 'h-xs',
+		textSize = 'text-sm',
+		childTextSize = 'text-xs',
+		textColor = 'text-muted',
+		childTextColor = 'text-secondary',
 		class: className,
 		...rest
 	}: Props = $props();
@@ -84,8 +93,8 @@
 	}
 </script>
 
-<div class={['box outlined modern bg-surface overflow-hidden text-sm', className]} {...rest}>
-	<div class="row ycenter bb bg-panel px-sm py-xs text-xs text-muted">
+<div class={['box overflow-hidden', surface, shape, textSize, className]} {...rest}>
+	<div class={['row ycenter bb px-sm py-xs', childTextSize, textColor]}>
 		<div class="wvar shrink-0 weight-500" {@attach vars({ w: '40%' })}>Operation</div>
 		<div class="grow row xbetween tabular-nums">
 			{#each axisTicks as tick (tick.pct)}
@@ -104,7 +113,7 @@
 				aria-expanded={row.hasChildren ? expanded.has(row.item.id) : undefined}
 				aria-selected={isSelected}
 				tabindex="0"
-				class={['row ycenter px-sm py-xs interactive', isSelected ? 'selected bg-panel' : 'bg-none']}
+				class={['row ycenter px-sm py-xs interactive', isSelected ? 'selected state-selected' : 'bg-none']}
 				onclick={() => select(row.item)}
 				onkeydown={(e) => {
 					if (e.key === 'Enter' || e.key === ' ') {
@@ -117,21 +126,21 @@
 					{#if row.hasChildren}
 						<button
 							type="button"
-							class="bare row xcenter ycenter h-xs square text-muted pointer shrink-0"
+							class={['bare row xcenter ycenter square pointer shrink-0', size, textColor]}
 							aria-label={expanded.has(row.item.id) ? `Collapse ${row.item.label}` : `Expand ${row.item.label}`}
 							onclick={(e) => {
 								e.stopPropagation();
 								toggle(row.item.id);
 							}}
 						>
-							<Icon icon={luChevronRight} class={['caret quarter text-xs', expanded.has(row.item.id) && 'open']} />
+							<Icon icon={luChevronRight} class={['caret quarter', childTextSize, expanded.has(row.item.id) && 'open']} />
 						</button>
 					{:else}
-						<span class="h-xs square shrink-0" aria-hidden="true"></span>
+						<span class={['square shrink-0', size]} aria-hidden="true"></span>
 					{/if}
 					<span class="truncate weight-500">{row.item.label}</span>
 					{#if row.item.status}
-						<span class="text-xs text-muted shrink-0">{row.item.status}</span>
+						<span class={['shrink-0', childTextSize, textColor]}>{row.item.status}</span>
 					{/if}
 				</div>
 
@@ -149,7 +158,7 @@
 					></div>
 				</div>
 
-				<div class="wvar ta-r shrink-0 tabular-nums text-xs text-secondary" {@attach vars({ w: '4rem' })}>
+				<div class={['wvar ta-r shrink-0 tabular-nums', childTextSize, childTextColor]} {@attach vars({ w: '4rem' })}>
 					{row.item.duration}{unit}
 				</div>
 			</div>

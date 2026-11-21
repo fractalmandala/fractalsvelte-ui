@@ -1,34 +1,25 @@
 <!-- @component A drag-to-reorder list whose siblings make room with FLIP springs. -->
 
 <script lang="ts" generics="T">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { animate, createFlip, setMotion } from '../../../motion/index.js';
 
 	interface HandleProps {
-		/** Starts a pointer drag on this item. */
 		onpointerdown: (event: PointerEvent) => void;
-		/** Classes for a drag handle. */
 		class: string;
 	}
 
 	interface ItemExtras {
-		/** Whether this item is currently lifted by the pointer or the keyboard. */
 		dragging: boolean;
-		/** Spread these onto a handle (or the row) to start a pointer drag. */
 		handleProps: HandleProps;
 	}
 
 	interface Props extends Omit<HTMLAttributes<HTMLUListElement>, 'children'> {
-		/** The items, in visual order. Two-way bindable. */
 		items: T[];
-		/** Returns a stable id for an item, used as the FLIP key. */
 		key: (item: T) => string;
-		/** The axis items can be dragged along. */
 		axis?: 'x' | 'y';
-		/** The content of one item, called with the item and its drag state. */
 		children?: Snippet<[T, ItemExtras]>;
-		/** Called after a drop or a cancelled keyboard lift, with the next order. */
 		onReorder?: (items: T[]) => void;
 	}
 

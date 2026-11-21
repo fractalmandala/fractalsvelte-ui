@@ -11,7 +11,7 @@
 				<code class="text-sm text-secondary font-mono">export const total = items.reduce(sum, 0);</code>
 			</div>
 		</ResizablePane>
-		<ResizableHandle withGrip aria-label="Resize terminal" />
+		<ResizableHandle withGrip surface="paneled" textColor="text-secondary" aria-label="Resize terminal" />
 		<ResizablePane defaultSize={45} minSize={15}>
 			<div class="box gap-xs pad-md">
 				<span class="text-sm weight-500">Terminal</span>

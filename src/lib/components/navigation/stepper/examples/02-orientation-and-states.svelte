@@ -9,6 +9,12 @@
 <Stepper
 	bind:value
 	orientation="vertical"
+	size="h-md"
+	shape="modern"
+	textSize="text-md"
+	textColor="text-secondary"
+	childTextSize="text-sm"
+	childTextColor="text-secondary"
 	steps={[
 		{ value: 'draft', label: 'Draft filed', description: 'Tuesday at 14:10', icon: luFile, status: 'complete' },
 		{ value: 'review', label: 'Fact check', description: 'Two queries still open', icon: luSearch, status: 'error' },

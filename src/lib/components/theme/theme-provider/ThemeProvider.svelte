@@ -2,9 +2,9 @@
 
 <script lang="ts">
 	import { untrack, type Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
-	import type { Shape } from '../../../internal/tokens.js';
+	import type {  Shape  } from '../../../internal/tokens.js';
 	import {
 		initTheme,
 		theme as shared,

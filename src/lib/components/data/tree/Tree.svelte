@@ -1,7 +1,7 @@
 <!-- @component A hierarchical tree view with keyboard navigation, lazy children and optional checkboxes. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck, luChevronRight, luLoaderCircle, luMinus } from '@fractaldesign/icons/lucide';
 	import { vars } from '../../../motion/index.js';
@@ -17,33 +17,19 @@
 	} from './tree.svelte.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** The root nodes of the tree. */
 		items: TreeItem[];
-		/** The ids of expanded nodes. */
 		expanded?: Set<string>;
-		/** Called when a node is expanded or collapsed. */
 		onExpandedChange?: (expanded: Set<string>) => void;
-		/** The selected id (single) or ids (`multiple`). */
 		selected?: string | Set<string> | null;
-		/** Called when the selection changes. */
 		onSelectedChange?: (selected: string | Set<string> | null) => void;
-		/** Allow more than one node to be selected. */
 		multiple?: boolean;
-		/** Show a tri-state checkbox on each node, with parent–child propagation. */
 		checkable?: boolean;
-		/** The ids of checked nodes. */
 		checked?: Set<string>;
-		/** Called when a checkbox is toggled. */
 		onCheckedChange?: (checked: Set<string>) => void;
-		/** Load children when an unloaded expandable node is first opened. */
 		loadChildren?: (item: TreeItem) => Promise<TreeItem[]>;
-		/** Allow inline renaming of nodes via F2 or double-click. */
 		renamable?: boolean;
-		/** Called when an item rename commits with a non-empty label. */
 		onRename?: (id: string, label: string) => void;
-		/** Draw subtle vertical indent guides beside nested branches. */
 		guides?: boolean;
-		/** Names the tree for assistive technology. */
 		label?: string;
 	}
 
@@ -372,7 +358,7 @@
 					<input
 						bind:this={renameEl}
 						type="text"
-						class="bare bg-input px-xs radius-xs focus-ring grow min0"
+						class="bare px-xs radius-xs focus-ring grow min0"
 						aria-label={`Rename ${item.label}`}
 						bind:value={renameDraft}
 						onclick={(e) => e.stopPropagation()}

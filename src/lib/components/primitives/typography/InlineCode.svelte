@@ -1,15 +1,17 @@
 <!-- @component A short code snippet in running text. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  Shape, TextSize  } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** The code snippet. */
+		textSize?: TextSize;
+		shape?: Shape;
 		children?: Snippet;
 	}
 
-	let { class: className, children, ...rest }: Props = $props();
+	let { textSize = 'text-sm', shape = 'curved', class: className, children, ...rest }: Props = $props();
 </script>
 
-<code class={['font-mono text-sm pad-xs bg-panel curved', className]} {...rest}>{@render children?.()}</code>
+<code class={['font-mono bg-panel', textSize, '', shape, className]} {...rest}>{@render children?.()}</code>

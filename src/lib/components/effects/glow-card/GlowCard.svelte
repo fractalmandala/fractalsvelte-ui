@@ -1,31 +1,36 @@
 <!-- @component A card with a rotating conic-gradient border and a soft outer glow. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type { Gap, Pad, Shape, Surface } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Seconds for one full rotation of the gradient border. */
 		speed?: number;
-		/** Colour of the rotating border: the theme accent, a hue-swept rainbow, or a quieter wash. */
-		look?: 'theme' | 'rainbow' | 'subtle';
-		/** When true, the border always rotates; when false, it rotates only on hover or focus within. */
+		ring?: 'theme' | 'rainbow' | 'subtle';
 		active?: boolean;
-		/** The card's content. */
+		surface?: Surface;
+		shape?: Shape;
+		pad?: Pad;
+		gap?: Gap;
 		children?: Snippet;
 	}
 
 	let {
 		speed = 8,
-		look = 'theme',
+		ring = 'theme',
 		active = false,
+		surface = 'elevated',
+		shape = 'curved',
+		pad = 'pad-lg',
+		gap = 'gap-sm',
 		class: className,
 		children,
 		...rest
 	}: Props = $props();
 
-	const lookClass = { theme: 'ring-theme', rainbow: 'ring-rainbow', subtle: 'ring-subtle' };
+	const ringClass = { theme: 'ring-theme', rainbow: 'ring-rainbow', subtle: 'ring-subtle' };
 </script>
 
 <div
@@ -34,14 +39,12 @@
 		'halo',
 		'spin',
 		!active && 'spin-hover',
-		'card',
 		'box',
-		'bg-surface',
-		'border-subtle',
-		'curved',
-		'pad-lg',
-		'gap-sm',
-		lookClass[look],
+		surface,
+		shape,
+		pad,
+		gap,
+		ringClass[ring],
 		className
 	]}
 	{@attach vars({ spin: speed })}

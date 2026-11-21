@@ -1,4 +1,4 @@
-<!-- @example Variants :: Text, a circle and a rectangle, with a custom number of lines. -->
+<!-- @example Variants :: Text, a circle and a rectangle, with a custom number of lines and a squarer avatar. -->
 <script lang="ts">
 	import { Skeleton } from '@fractaldesign/fractalsvelte-ui';
 </script>
@@ -7,6 +7,7 @@
 	<Skeleton form="text" lines={4} />
 	<div class="row gap-md ycenter">
 		<Skeleton form="circle" />
+		<Skeleton form="circle" shape="modern" />
 		<div class="grow"><Skeleton form="text" lines={2} /></div>
 	</div>
 	<Skeleton form="rect" />

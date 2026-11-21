@@ -1,22 +1,20 @@
 <!-- @component A row for actions or metadata at the bottom. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import { type Align } from '../../../internal/tokens.js';
-import { justifyClass } from '../../../internal/helpers.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import { type Align, type Gap } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** Where the footer's items sit along the row. */
 		align?: Align;
-		/** The footer's actions or metadata. */
+		gap?: Gap;
 		children?: Snippet;
 	}
 
-	let { align = 'left', class: className, children, ...rest }: Props = $props();
+	let { align = 'left', gap = 'gap-sm', class: className, children, ...rest }: Props = $props();
 
 </script>
 
-<footer class={['row wrap ycenter gap-sm', justifyClass[align], className]} {...rest}>
+<footer class={['row wrap ycenter', gap, `x${`align`}`, className]} {...rest}>
 	{@render children?.()}
 </footer>

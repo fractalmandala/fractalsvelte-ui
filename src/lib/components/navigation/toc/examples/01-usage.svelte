@@ -50,6 +50,6 @@
 		</section>
 	</div>
 	<div class="shrink-0">
-		<Toc {items} bind:active onActiveChange={() => {}} label="On this page" />
+		<Toc {items} bind:active onActiveChange={() => {}} label="On this page" textColor="text-secondary" />
 	</div>
 </div>

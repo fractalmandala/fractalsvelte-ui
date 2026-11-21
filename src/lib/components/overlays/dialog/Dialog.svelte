@@ -1,46 +1,36 @@
 <!-- @component A modal dialog on the native <dialog> element, with a spring pop and a blurred backdrop. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLDialogAttributes } from 'svelte/elements';
+	import type {  ComponentProps, Snippet  } from 'svelte';
+	import type {  HTMLDialogAttributes  } from 'svelte/elements';
 	import { luX } from '@fractaldesign/icons/lucide';
 	import { dialogSync } from '../../../internal/helpers.js';
-	import type { Measure } from '../../../internal/tokens.js';
-	import { vars } from '../../../motion/index.js';
+	import type { ChildTextColor, ChildTextSize, Gap, Measure, TextSize, Surface } from '../../../internal/tokens.js';
 	import { Button } from '../../actions/button/index.js';
 	import {
-		dialogWidth,
-		surfaceClass,
 		type DialogScrollBehavior,
 		type OverlayContent,
-		type OverlaySurface,
 		type OverlayTrigger
 	} from './dialog.js';
 
 	interface Props extends Omit<HTMLDialogAttributes, 'title' | 'open' | 'children'> {
-		/** Whether the dialog is open. Bind it, or let the `trigger` drive it. */
 		open?: boolean;
-		/** Called whenever the dialog opens or closes — by the trigger, Esc, the backdrop or the close button. */
 		onOpenChange?: (open: boolean) => void;
-		/** The heading. Wired to the dialog as its accessible name (`aria-labelledby`). */
 		title?: string | Snippet;
-		/** A line under the heading. Wired as the accessible description (`aria-describedby`). */
 		description?: string | Snippet;
-		/** The width, on the measure ladder. `full` fills the viewport less a margin. */
 		width?: Measure;
-		/** Whether Esc and a click on the backdrop close the dialog. */
+		gap?: Gap;
+		textSize?: TextSize;
+		childTextSize?: ChildTextSize;
+		bodyTextSize?: TextSize;
+		childTextColor?: ChildTextColor;
 		dismissible?: boolean;
-		/** Shows a close button in the top-right corner. */
 		closeButton?: boolean;
-		/** `inside` scrolls the body between a fixed header and footer; `outside` lets the whole panel scroll past the viewport. */
+		closeButtonProps?: ComponentProps<typeof Button>;
 		scrollBehavior?: DialogScrollBehavior;
-		/** The panel fill: opaque, or frosted glass. */
-		surface?: OverlaySurface;
-		/** Renders the element that opens the dialog. Spread `props` onto your own button. */
+		surface?: Surface;
 		trigger?: Snippet<[OverlayTrigger]>;
-		/** The body. Receives `close`. */
 		children?: Snippet<[OverlayContent]>;
-		/** The action row at the bottom, aligned to the end. Receives `close`. */
 		footer?: Snippet<[OverlayContent]>;
 	}
 
@@ -50,10 +40,16 @@
 		title,
 		description,
 		width = 'measure-md',
+		gap = 'gap-xs',
+		textSize = 'text-lg',
+		childTextSize = 'text-sm',
+		bodyTextSize = 'text-md',
+		childTextColor = 'text-secondary',
 		dismissible = true,
 		closeButton = true,
+		closeButtonProps,
 		scrollBehavior = 'inside',
-		surface = 'solid',
+		surface = 'overlayed',
 		trigger,
 		children,
 		footer,
@@ -62,8 +58,8 @@
 	}: Props = $props();
 
 	const id = $props.id();
-	const titleId = `${id}-title`;
-	const descId = `${id}-desc`;
+	const titleId = `${id}card-title`;
+	const descId = `${id}card-desc`;
 
 	function setOpen(next: boolean) {
 		if (open === next) return;
@@ -89,18 +85,7 @@
 	});
 
 	const outside = $derived(scrollBehavior === 'outside');
-	const outsideWidth: Record<string, string> = {
-		'measure-xs': 'measure-xs',
-		'measure-sm': 'measure-sm',
-		'measure-md': 'measure-md',
-		'measure-bs': 'measure-bs',
-		'measure-lg': 'measure-lg',
-		'measure-xl': 'measure-xl',
-		'measure-2xl': 'measure-2xl',
-		'measure-3xl': 'measure-3xl',
-		'measure-4xl': 'measure-4xl',
-		'measure-full': 'wfull'
-	};
+	const full = $derived(width === 'measure-full');
 	const content: OverlayContent = { close };
 </script>
 
@@ -110,19 +95,21 @@
 
 {#snippet panel()}
 	{#if title || description}
-		<header class={['box gap-xs px-lg pt-lg pb-md', closeButton && 'pr-2xl']}>
+		<header class={['box px-lg pt-lg pb-md', gap, closeButton && 'pr-2xl']}>
 			{#if title}
-				<h2 id={titleId} class="text-lg weight-600 lh12 ls-tight-bs">{@render text(title)}</h2>
+				<h2 id={titleId} class={['weight-600 lh12 ls-tight-bs', textSize]}>{@render text(title)}</h2>
 			{/if}
 			{#if description}
-				<p id={descId} class="text-sm lh15 text-secondary">{@render text(description)}</p>
+				<p id={descId} class={['lh15', childTextSize, childTextColor]}>{@render text(description)}</p>
 			{/if}
 		</header>
 	{/if}
 	{#if children}
 		<div
 			class={[
-				'px-lg text-md lh15 text-secondary',
+				'px-lg lh15',
+				bodyTextSize,
+				childTextColor,
 				!(title || description) && 'pt-lg',
 				!footer && 'pb-lg',
 				!outside && 'grow min0 scroll-y scroll-thin'
@@ -137,7 +124,16 @@
 		</footer>
 	{/if}
 	{#if closeButton}
-		<Button variant="ghost" size="h-sm" icon={luX} class="btn-icon pin-tr text-muted" aria-label="Close" onclick={close} />
+		<Button
+			variant="ghost"
+			size="h-sm"
+			textColor="text-muted"
+			icon={luX}
+			aria-label="Close"
+			onclick={close}
+			{...closeButtonProps}
+			class={['btn-icon pin-tr', closeButtonProps?.class]}
+		/>
 	{/if}
 {/snippet}
 
@@ -160,7 +156,7 @@
 				if (dismissible && event.target === event.currentTarget) close();
 			}}
 		>
-			<div class={['relative box ta-l radius-lg shad-2xl', surfaceClass[surface], outsideWidth[width]]}>
+			<div class={['relative box ta-l radius-lg', surface, width]}>
 				{@render panel()}
 			</div>
 		</div>
@@ -169,15 +165,14 @@
 	<dialog
 		{id}
 		class={[
-			'dialog open-column sized pop enter-scale radius-lg shad-2xl',
-			surfaceClass[surface],
-			width === 'measure-full' && 'hfull',
+			'dialog open-column pop enter-scale radius-lg',
+			surface,
+			full ? 'hfull' : width,
 			className
 		]}
 		aria-labelledby={title ? titleId : undefined}
 		aria-describedby={description ? descId : undefined}
 		{@attach dialogSync(() => open, setOpen, { dismissible })}
-		{@attach vars({ size: dialogWidth[width] })}
 		{...rest}
 	>
 		{@render panel()}

@@ -1,10 +1,10 @@
 <!-- @component Text input or textarea with context-triggered `@` / `/` command suggestion popup. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
-	import { defaultSize, type Shape, type Size } from '../../../internal/tokens.js';
+	import { defaultSize, type ChildTextColor, type ChildTextSize, type Pad, type Shape, type Size, type Surface, type TextSize, type Variant } from '../../../internal/tokens.js';
 	import { frameClasses } from '../../inputs/input/frame.js';
 	import {
 		detectTrigger,
@@ -14,25 +14,19 @@
 	} from './trigger-menu.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Trigger definitions mapping characters (`@`, `/`, `#`) to option lists. */
 		triggers?: TriggerConfig[];
-		/** Text input content; bindable. */
 		value?: string;
-		/** Called whenever text changes or a trigger insertion completes. */
 		onValueChange?: (value: string) => void;
-		/** Called when an item is chosen from the trigger menu. */
 		onSelect?: (item: TriggerMenuItem, trigger: string) => void;
-		/** Render a multi-line `<textarea>` rather than a single-line `<input>`. */
 		multiline?: boolean;
-		/** Visible row count when `multiline` is true. */
 		rows?: number;
-		/** Input placeholder text. */
 		placeholder?: string;
-		/** Control height and text scale on the shared size ladder. */
 		size?: Size;
-		/** Corner shape. */
 		shape?: Shape;
-		/** Disable editing and trigger popups. */
+		surface?: Surface;
+		textSize?: TextSize;
+		childTextSize?: ChildTextSize;
+		childTextColor?: ChildTextColor;
 		disabled?: boolean;
 	}
 
@@ -46,6 +40,10 @@
 		placeholder = 'Type @ to mention or / for commands…',
 		size = defaultSize,
 		shape = 'modern',
+		surface = 'glass',
+		textSize = 'text-md',
+		childTextSize = 'text-xs',
+		childTextColor = 'text-muted',
 		disabled = false,
 		class: className,
 		...rest
@@ -59,15 +57,15 @@
 	let match = $state<ActiveTriggerMatch | null>(null);
 	let activeIndex = $state(0);
 
-	const triggerChars = $derived(triggers.map((t) => t.trigger));
+	const triggerChars = $derived(triggers.map((t) => t.trigger).filter((t): t is string => Boolean(t)));
 	const activeConfig = $derived(
 		match ? triggers.find((t) => t.trigger === match!.trigger) : undefined
 	);
 	const items = $derived.by(() => {
 		if (!activeConfig || !match) return [];
 		const q = match.query.toLowerCase();
-		if (!q) return activeConfig.items;
-		return activeConfig.items.filter(
+		if (!q) return activeConfig.items ?? [];
+		return (activeConfig.items ?? []).filter(
 			(item) =>
 				item.label.toLowerCase().includes(q) ||
 				item.value.toLowerCase().includes(q) ||
@@ -146,7 +144,7 @@
 	}
 
 	const frame = $derived(
-		frameClasses({ look: 'outline', size, shape, invalid: false, disabled, content: multiline })
+		frameClasses({ variant: 'outline', size, shape, invalid: false, disabled, content: multiline })
 	);
 </script>
 
@@ -163,7 +161,7 @@
 			aria-expanded={open}
 			aria-controls={menuId}
 			aria-activedescendant={open && items[activeIndex] ? `${uid}-tm-${activeIndex}` : undefined}
-			class="wfull bare pad-sm bg-none font-sans focus-none resize-y"
+			class="wfull bare px-sm py-sm bg-none font-sans focus-none resize-y"
 			oninput={onInput}
 			onclick={scanCaret}
 			onkeydown={onKeyDown}
@@ -197,17 +195,20 @@
 	role="listbox"
 	tabindex="-1"
 	class={[
-		'floating at-bottom-start match-anchor pop enter-down spring-snappy glass border rim shad-lg modern pad-xs scroll-y scroll-thin box gap-xs focus-none',
+		'floating at-bottom-start match-anchor pop enter-down spring-snappy scroll-y scroll-thin box gap-xs focus-none',
+		surface,
+		shape,
+		'pad-xs',
 		size
 	]}
 	{@attach floating(uid)}
 	{@attach popoverSync(() => open, (v) => { if (!v) match = null; })}
 >
 	{#if activeConfig?.label}
-		<div class="text-xs text-muted weight-500 px-sm pt-xs pb-xs select-none">{activeConfig.label}</div>
+		<div class={['weight-500 px-sm pt-xs pb-xs select-none', childTextSize, childTextColor]}>{activeConfig.label}</div>
 	{/if}
 	{#if items.length === 0}
-		<div class="px-sm py-sm text-sm text-muted">No matching items</div>
+		<div class={['px-sm py-sm', textSize, childTextColor]}>No matching items</div>
 	{:else}
 		{#each items as item, i (item.value)}
 			<button
@@ -225,12 +226,12 @@
 				}}
 			>
 				{#if item.icon}
-					<Icon icon={item.icon} class="text-muted shrink-0" />
+					<Icon icon={item.icon} class={['shrink-0', childTextColor]} />
 				{/if}
 				<span class="column xleft min0">
 					<span class="truncate weight-500">{item.label}</span>
 					{#if item.description}
-						<span class="text-xs text-muted truncate">{item.description}</span>
+						<span class={['truncate', childTextSize, childTextColor]}>{item.description}</span>
 					{/if}
 				</span>
 			</button>

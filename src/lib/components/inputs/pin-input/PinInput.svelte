@@ -1,38 +1,26 @@
 <!-- @component A row of cells for one-time codes and PINs, with paste distribution, auto-advance, and a spring pop as each cell fills. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { animate } from '../../../motion/index.js';
-	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
+	import { defaultSize, type Shape, type Size, type TextSize, type Variant } from '../../../internal/tokens.js';
 	import { vars } from '../../../motion/index.js';
 	import { useFieldControl } from '../field/field.js';
 	import { frameClasses } from '../input/frame.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'disabled'> {
-		/** The code. Bindable; works controlled and uncontrolled. Length is padded or trimmed to `length`. */
 		value?: string;
-		/** Called with the new code whenever a cell changes. */
 		onValueChange?: (value: string) => void;
-		/** Called once when every cell is filled. */
 		onComplete?: (value: string) => void;
-		/** How many cells to show. */
 		length?: number;
-		/** `numeric` accepts digits only; `alphanumeric` accepts letters and digits. */
 		charset?: 'numeric' | 'alphanumeric';
-		/** Hides the characters, as a password field would. */
 		mask?: boolean;
-		/** The cell height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
-		/** The text scale, independent of the cell height. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** The corner shape of each cell. @default 'modern' */
 		shape?: Shape;
-		/** `outline` is a bordered cell, `filled` a tinted one without a border, `ghost` is bare until hovered or focused. @default 'outline' */
-		look?: 'outline' | 'filled' | 'ghost';
-		/** Marks the group invalid (red border, `aria-invalid`). Inside a `Field` it follows the field's error unless set. */
+		variant?: Variant;
 		invalid?: boolean;
-			/** Blocks pointer and keyboard input, and dims the cells. */
-		disabled?: boolean | null;
+			disabled?: boolean | null;
 }
 
 	let {
@@ -45,7 +33,7 @@
 		size,
 		textSize,
 		shape,
-		look,
+		variant,
 		invalid,
 		id,
 		class: className,
@@ -54,11 +42,11 @@
 	}: Props = $props();
 
 	const uid = $props.id();
-	const control = useFieldControl(uid, () => ({ id, invalid, describedby, size, shape, look }));
+	const control = useFieldControl(uid, () => ({ id, invalid, describedby, size, shape, variant }));
 
 	const resolvedSize = $derived(size ?? control.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? control.shape ?? 'modern');
-	const resolvedVariant = $derived(look ?? control.look ?? 'outline');
+	const resolvedVariant = $derived<Variant>(variant ?? control.variant ?? 'outline');
 	const cells = $derived(Math.max(1, Math.round(length)));
 	const chars = $derived(pad(value, cells));
 	const pattern = $derived(charset === 'numeric' ? /[0-9]/ : /[A-Za-z0-9]/);
@@ -181,7 +169,7 @@
 		'h-3xl': '5rem'
 	};
 	const frame = $derived(
-		frameClasses({ look: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled, content: true }).filter(
+		frameClasses({ variant: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled, content: true }).filter(
 			(c: string) => c !== 'wfull'
 		)
 	);

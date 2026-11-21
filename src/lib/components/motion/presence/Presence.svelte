@@ -1,10 +1,10 @@
 <!-- @component Mounts and unmounts children with spring enter and exit transitions. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import type {  Snippet  } from 'svelte';
 	import { untrack } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import type { TransitionConfig } from 'svelte/transition';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  TransitionConfig  } from 'svelte/transition';
 	import {
 		springBlur,
 		springFade,
@@ -19,21 +19,13 @@
 	type PresenceMode = 'sync' | 'wait';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** Whether the children are mounted. When false, they play the exit transition and then unmount. */
 		show: boolean;
-		/** The enter transition, built on the matching `spring*` function. */
 		enter?: PresencePreset;
-		/** The exit transition, built on the matching `spring*` function. */
 		exit?: PresencePreset;
-		/** The spring driving enter and exit. */
 		spring?: SpringInput;
-		/** How a keyed swap plays: `sync` crosses the exit with the enter, `wait` finishes the exit first. */
 		mode?: PresenceMode;
-		/** When this changes, the current children exit and the next children enter. */
 		key?: string | number;
-		/** Called after the exit transition has finished and the children have unmounted. */
 		onExitComplete?: () => void;
-		/** The content that enters and exits. */
 		children?: Snippet;
 	}
 

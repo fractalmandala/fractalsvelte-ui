@@ -1,9 +1,9 @@
-<!-- @example Looks and multiplicity :: look covers separated, contained and flush; multiple opens any number; collapsible={false} keeps one item open. -->
+<!-- @example Groupings and multiplicity :: grouping covers separated, contained and flush, on an outlined surface; multiple opens any number; collapsible={false} keeps one item open. -->
 <script lang="ts">
 	import { Accordion, AccordionItem } from '@fractaldesign/fractalsvelte-ui';
 
-	const looks = ['separated', 'contained', 'flush'] as const;
-	let look = $state<(typeof looks)[number]>('separated');
+	const groupings = ['separated', 'contained', 'flush'] as const;
+	let grouping = $state<(typeof groupings)[number]>('separated');
 	let multiple = $state(false);
 	let value = $state<string | string[] | null>('uptime');
 
@@ -14,18 +14,19 @@
 
 <div class="box gap-lg">
 	<div class="row wrap gap-sm">
-		{#each looks as item (item)}
-			<button type="button" class={['button ghost modern h-bs text-sm', look === item && 'soft']} onclick={() => (look = item)}>
+		{#each groupings as item (item)}
+			<button type="button" class={['button ghost modern h-bs text-sm', grouping === item && 'state-selected']} onclick={() => (grouping = item)}>
 				{item}
 			</button>
 		{/each}
-		<button type="button" class={['button ghost modern h-bs text-sm', multiple && 'soft']} onclick={() => { multiple = !multiple; value = multiple ? ['uptime'] : 'uptime'; }}>
+		<button type="button" class={['button ghost modern h-bs text-sm', multiple && 'state-selected']} onclick={() => { multiple = !multiple; value = multiple ? ['uptime'] : 'uptime'; }}>
 			{multiple ? 'multiple' : 'single'}
 		</button>
 	</div>
 	<Accordion
 		{multiple}
-		{look}
+		{grouping}
+		surface="outlined"
 		bind:value
 		{onValueChange}
 		collapsible={false}

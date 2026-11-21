@@ -1,4 +1,4 @@
-<!-- @example Max and validate :: At most five skills, each at least two characters, reported through onValueChange. -->
+<!-- @example Max and validate :: At most five skills, each at least two characters, with rejections reported in a warning ink. -->
 <script lang="ts">
 	import { Field, TagsInput } from '@fractaldesign/fractalsvelte-ui';
 
@@ -14,6 +14,6 @@
 
 <div class="measure-sm">
 	<Field label="Skills" hint="Up to five. Short fragments are rejected.">
-		<TagsInput bind:value={skills} max={5} {validate} onValueChange={() => changes++} placeholder="Add a skill" />
+		<TagsInput bind:value={skills} max={5} {validate} textColor="text-warning" onValueChange={() => changes++} placeholder="Add a skill" />
 	</Field>
 </div>

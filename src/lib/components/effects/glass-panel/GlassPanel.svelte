@@ -1,39 +1,39 @@
-<!-- @component A frosted surface that builds on the library glass treatment, with blur, tint, border and rim. -->
+<!-- @component A frosted surface that builds on the library glass treatment, with blur, tint and an optional solid fallback. -->
 
 <script lang="ts">
+	import type { Gap, Pad, Shape, Space, Surface } from '../../../internal/tokens.js';
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** How strongly the panel frosts what sits behind it. */
-		blur?: 'sm' | 'md' | 'lg';
-		/** Mixes a little of the theme accent into the frost. */
+		blur?: Space;
 		tint?: boolean;
-		/** Draws a hairline around the panel. */
-		border?: boolean;
-		/** Lights the top edge of the panel. */
-		rim?: boolean;
-		/** The panel's content. */
+		surface?: Surface;
+		shape?: Shape;
+		pad?: Pad;
+		gap?: Gap;
 		children?: Snippet;
 	}
 
 	let {
 		blur = 'md',
 		tint = false,
-		border = true,
-		rim = true,
+		surface = 'glass',
+		shape = 'curved',
+		pad = 'pad-lg',
+		gap = 'gap-sm',
 		class: className,
 		children,
 		...rest
 	}: Props = $props();
 
-	const blurValue = { sm: '0.5rem', md: '1rem', lg: '1.75rem' };
+	const blurValue: Partial<Record<Space, string>> = { sm: '0.5rem', md: '1rem', lg: '1.75rem' };
 </script>
 
 <div
-	class={['glass', 'box', 'curved', 'pad-lg', 'gap-sm', tint && 'tinted', border && 'border', rim && 'rim', className]}
-	{@attach vars({ 'glass-blur': blurValue[blur] })}
+	class={['box', surface, shape, pad, gap, tint && 'tinted', className]}
+	{@attach vars({ 'glass-blur': (blurValue[blur] ?? blurValue.md) })}
 	{...rest}
 >
 	{@render children?.()}

@@ -14,7 +14,7 @@
 </script>
 
 <div class="box gap-sm">
-	<Menubar label="Harbour desk">
+	<Menubar label="Harbour desk" gap="gap-sm">
 		<MenubarMenu value="file" label="File">
 			<MenuLabel>Document</MenuLabel>
 			<MenuItem icon={luFile} shortcut="⌘N" onclick={() => (log = 'New document')}>New document</MenuItem>

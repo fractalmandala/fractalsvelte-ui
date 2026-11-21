@@ -1,9 +1,19 @@
-<!-- @example Still and single :: autoplay={false} and loop={false} keep the rail still until the user moves it; perView={1} shows one slide. -->
+<!-- @example Still and single :: autoplay={false} and loop={false} keep the rail still until the user moves it; perView={1} shows one slide, with the arrows restyled through `navButtonProps`. -->
 <script lang="ts">
 	import { Carousel, CarouselSlide } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
-<Carousel autoplay={false} loop={false} perView={1} gap="gap-lg" label="Release highlights" class="measure-md">
+<Carousel
+	autoplay={false}
+	loop={false}
+	perView={1}
+	gap="gap-lg"
+	shape="round"
+	textColor="text-secondary"
+	navButtonProps={{ variant: 'outline' }}
+	label="Release highlights"
+	class="measure-md"
+>
 	<CarouselSlide label="Sticky headers">
 		<div class="box gap-xs border modern bg-surface pad-bs">
 			<p class="weight-600">Sticky headers</p>

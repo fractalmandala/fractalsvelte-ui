@@ -1,4 +1,4 @@
-<!-- @example Usage :: Click thumbnails to launch a zoomable full-screen Lightbox. -->
+<!-- @example Usage :: Click thumbnails to launch a zoomable full-screen Lightbox, with its own inset, corners, surface, type scale and thumbnail size. -->
 <script lang="ts">
 	import { Lightbox, type LightboxItem } from '@fractaldesign/fractalsvelte-ui';
 
@@ -33,4 +33,18 @@
 	{/each}
 </div>
 
-<Lightbox {items} bind:open bind:index />
+<Lightbox
+	{items}
+	bind:open
+	bind:index
+	shape="curved"
+	surface="overlayed"
+	pad="pad-md"
+	alignContent="xcenter"
+	textSize="text-sm"
+	size="h-xl"
+	zoomButtonProps={{ variant: 'themed' }}
+	closeButtonProps={{ variant: 'danger' }}
+	prevButtonProps={{ size: 'h-md' }}
+	nextButtonProps={{ size: 'h-md' }}
+/>

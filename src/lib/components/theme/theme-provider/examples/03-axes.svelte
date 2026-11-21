@@ -1,8 +1,8 @@
 <!-- @example Axes :: Shape, density, motion and mode rewrite the ladders for one subtree. -->
 <script lang="ts">
 	import { Button, ThemeProvider } from '@fractaldesign/fractalsvelte-ui';
-	import type { ThemeDensity, ThemeMode, ThemeMotion } from '@fractaldesign/fractalsvelte-ui/theme';
-	import type { Shape } from '@fractaldesign/fractalsvelte-ui';
+	import type {  ThemeDensity, ThemeMode, ThemeMotion  } from '@fractaldesign/fractalsvelte-ui/theme';
+	import type {  Shape  } from '@fractaldesign/fractalsvelte-ui';
 
 	const shapes: Shape[] = ['rect', 'mincurved', 'modern', 'curved', 'round'];
 	const densities: ThemeDensity[] = ['compact', 'cozy', 'comfortable'];

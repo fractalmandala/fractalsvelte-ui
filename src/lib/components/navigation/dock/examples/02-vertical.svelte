@@ -1,4 +1,4 @@
-<!-- @example Vertical :: A side dock for a listening app, with labels to the right. -->
+<!-- @example Vertical :: A side dock for a listening app, with a tighter inset, a wider gap and items aligned to the start edge. -->
 <script lang="ts">
 	import { Dock } from '@fractaldesign/fractalsvelte-ui';
 	import { luDisc, luPodcast, luRadio, luHeart, luSearch } from '@fractaldesign/icons/lucide';
@@ -7,6 +7,11 @@
 <div class="row pl-2xl">
 	<Dock
 		orientation="vertical"
+		surface="paneled"
+		shape="curved"
+		pad="pad-md"
+		gap="gap-md"
+		alignContent="xleft"
 		current="records"
 		items={[
 			{ value: 'search', label: 'Search', icon: luSearch, href: '/search' },

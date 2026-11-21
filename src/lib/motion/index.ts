@@ -1,7 +1,3 @@
-/**
- * `@fractaldesign/fractalsvelte-ui/motion` — spring physics, the JS spring engine,
- * motion attachments, spring transitions and view transitions.
- */
 export {
 	springs,
 	resolveSpring,

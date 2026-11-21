@@ -1,23 +1,19 @@
 <!-- @component A table of contents with a scroll-spy and a spring-driven marker beside the active heading. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { animate, reducedMotion } from '../../../motion/index.js';
-	import type { TocItem } from './items.js';
+	import type { TextColor } from '../../../internal/tokens.js';
+	import type {  TocItem  } from './items.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** The headings to list. When omitted, they are collected from `container`. */
 		items?: TocItem[];
-		/** A selector for the element whose headings are collected, when `items` is omitted. */
 		container?: string;
-		/** The heading selector used when collecting from `container`. */
 		headingSelector?: string;
-		/** The active heading's id. Two-way bindable, and updated by the scroll spy. */
 		active?: string | null;
-		/** Called whenever the active heading changes. */
 		onActiveChange?: (id: string | null) => void;
-		/** Accessible name of the navigation. */
 		label?: string;
+		textColor?: TextColor;
 	}
 
 	let {
@@ -27,6 +23,7 @@
 		active = $bindable(null),
 		onActiveChange,
 		label = 'On this page',
+		textColor = 'text-muted',
 		class: className,
 		...rest
 	}: Props = $props();
@@ -162,7 +159,7 @@
 
 <nav bind:this={root} aria-label={label} class={['toc-section relative bl', className]} {...rest}>
 	<div bind:this={indicator} class="indicator rule" aria-hidden="true"></div>
-	<p class="nav-header text-muted">{label}</p>
+	<p class={['nav-header', textColor]}>{label}</p>
 	<ol class="column">
 		{#each entries as item (item.id)}
 			<li>

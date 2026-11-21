@@ -21,7 +21,7 @@
 
 <div class="box gap-md measure-md">
 	<Button variant="secondary" size="h-sm" onclick={push}>New update</Button>
-	<AnimatedList items={notices} key={(notice) => notice.id} max={3} reverse>
+	<AnimatedList items={notices} key={(notice) => notice.id} max={3} reverse gap="gap-md">
 		{#snippet children(notice)}
 			<div class="pad-md bg-panel rim">
 				<p class="text-sm">{notice.text}</p>

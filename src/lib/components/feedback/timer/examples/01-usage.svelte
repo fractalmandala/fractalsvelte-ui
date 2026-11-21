@@ -4,6 +4,6 @@
 </script>
 
 <div class="column gap-md">
-	<Timer mode="countdown" duration={30_000} />
+	<Timer mode="countdown" duration={30_000} gap="gap-sm" />
 	<Timer mode="stopwatch" />
 </div>

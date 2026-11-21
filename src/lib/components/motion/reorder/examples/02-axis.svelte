@@ -13,7 +13,7 @@
 <Reorder bind:items key={(item) => item.id} axis="x" onReorder={(next) => (items = next)}>
 	{#snippet children(item, { dragging, handleProps })}
 		<div
-			class={['card', 'rim', 'shad-sm', 'pad-md', dragging && 'shad-lg', handleProps.class]}
+			class={['bg-surface', 'border', 'radius-md', 'rim', 'shad-sm', 'pad-md', dragging && 'shad-lg', handleProps.class]}
 			role="button" tabindex={-1} aria-label="Reorder" onpointerdown={handleProps.onpointerdown}
 		>
 			<span class="text-sm weight-500">{item.label}</span>

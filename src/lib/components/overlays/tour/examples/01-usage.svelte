@@ -1,9 +1,10 @@
-<!-- @example Usage :: Launching a three-step onboarding spotlight over controls. -->
+<!-- @example Usage :: Launching a three-step onboarding spotlight over controls, with its own card surface, corner, inset and type scales, and a line reporting where the tour stands. -->
 <script lang="ts">
 	import { Button, Tour, type TourStep } from '@fractaldesign/fractalsvelte-ui';
 
 	let open = $state(false);
 	let current = $state(0);
+	let readout = $state('Tour has not run yet');
 
 	const steps: TourStep[] = [
 		{
@@ -31,4 +32,25 @@
 	<Button variant="themed" onclick={() => { current = 0; open = true; }}>Start tour</Button>
 </div>
 
-<Tour {steps} bind:open bind:current />
+<p class="text-sm text-secondary mt-sm">{readout}</p>
+
+<Tour
+	{steps}
+	bind:open
+	bind:current
+	surface="elevated"
+	shape="curved"
+	textSize="text-bs"
+	childTextSize="text-sm"
+	metaTextSize="text-sm"
+	childTextColor="text-secondary"
+	textColor="text-muted"
+	onOpenChange={(next) => (readout = next ? 'Tour opened at step 1' : 'Tour closed')}
+	onCurrentChange={(step) => (readout = `Showing step ${step + 1} of ${steps.length}`)}
+	onComplete={() => (readout = 'Tour finished')}
+	onSkip={() => (readout = 'Tour skipped')}
+	closeButtonProps={{ size: 'h-sm' }}
+	skipButtonProps={{ variant: 'outline' }}
+	backButtonProps={{ variant: 'secondary' }}
+	nextButtonProps={{ size: 'h-md' }}
+/>

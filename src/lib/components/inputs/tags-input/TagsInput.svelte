@@ -1,43 +1,31 @@
 <!-- @component A field of tokens: add a tag with Enter, a comma or paste, and remove it with Backspace or its × button. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luX } from '@fractaldesign/icons/lucide';
 	import { springScale } from '../../../motion/index.js';
-	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
+	import { defaultSize, type Gap, type Shape, type Size, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
 	import { useFieldControl } from '../field/field.js';
 	import { focusFrame, frameClasses } from '../input/frame.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'disabled'> {
-		/** The tags. Bindable; works controlled and uncontrolled. */
 		value?: string[];
-		/** Called with the new list whenever a tag is added or removed. */
 		onValueChange?: (value: string[]) => void;
-		/** The most tags allowed. Further additions are ignored. */
 		max?: number;
-		/** Return `true` to accept a tag, `false` or an error message to reject it. */
 		validate?: (tag: string) => boolean | string;
-		/** When true, a tag that is already in the list can be added again. */
 		allowDuplicates?: boolean;
-		/** Allow double-clicking an existing tag to edit it inline. */
 		editable?: boolean;
-		/** Delimiter character or RegExp used to split drafted or pasted tags. */
 		delimiter?: string | RegExp;
-		/** Placeholder shown in the typing area while the list is empty. */
 		placeholder?: string;
-		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
-		/** The text scale, independent of the control height. Follows `size` when omitted. */
+		gap?: Gap;
 		textSize?: TextSize;
-		/** The corner shape. @default 'modern' */
+		textColor?: TextColor;
 		shape?: Shape;
-		/** `outline` is a bordered field, `filled` a tinted one without a border, `ghost` is bare until hovered or focused. @default 'outline' */
-		look?: 'outline' | 'filled' | 'ghost';
-		/** Marks the field invalid (red border, `aria-invalid`). Inside a `Field` it follows the field's error unless set. */
+		variant?: Variant;
 		invalid?: boolean;
-			/** Blocks pointer and keyboard input, and dims the frame. */
-		disabled?: boolean | null;
+			disabled?: boolean | null;
 }
 
 	let {
@@ -50,9 +38,11 @@
 		delimiter = ',',
 		placeholder,
 		size,
+		gap = 'gap-xs',
 		textSize,
+		textColor = 'text-danger',
 		shape,
-		look,
+		variant,
 		invalid,
 		id,
 		class: className,
@@ -61,6 +51,7 @@
 	}: Props = $props();
 
 	const uid = $props.id();
+	const chipText = $derived(textSize ?? 'text-sm');
 	const messageId = `${uid}-message`;
 	const control = useFieldControl(uid, () => ({
 		id,
@@ -68,12 +59,12 @@
 		describedby: [describedby, message ? messageId : null].filter(Boolean).join(' ') || null,
 		size,
 		shape,
-		look
+		variant
 	}));
 
 	const resolvedSize = $derived(size ?? control.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? control.shape ?? 'modern');
-	const resolvedVariant = $derived(look ?? control.look ?? 'outline');
+	const resolvedVariant = $derived<Variant>(variant ?? control.variant ?? 'outline');
 
 	let draft = $state('');
 	let message = $state<string | null>(null);
@@ -86,7 +77,7 @@
 	const atMax = $derived(max !== undefined && tags.length >= max);
 	const frame = $derived(
 		frameClasses({
-			look: resolvedVariant,
+			variant: resolvedVariant,
 			size: resolvedSize,
 			textSize,
 			shape: resolvedShape,
@@ -216,7 +207,7 @@
 	}
 </script>
 
-<div class={['box gap-xs wfull', className]}>
+<div class={['box', gap, 'wfull', className]}>
 	<div
 		role="presentation"
 		class={frame}
@@ -229,7 +220,7 @@
 					<input
 						bind:this={editInput}
 						type="text"
-						class="bare tag text-sm px-sm focus-ring"
+						class={['bare tag px-sm focus-ring', chipText]}
 						aria-label={`Edit tag ${tag}`}
 						bind:value={editingDraft}
 						onblur={commitEdit}
@@ -247,7 +238,7 @@
 				{:else}
 					<span
 						role="presentation"
-						class="tag row ycenter gap-xs text-sm ink-auto"
+						class={['tag row ycenter gap-xs ink-auto', chipText]}
 						transition:springScale={{ start: 0.85 }}
 						ondblclick={() => beginEdit(index)}
 					>
@@ -285,6 +276,6 @@
 		</div>
 	</div>
 	{#if message}
-		<p id={messageId} class="text-sm text-danger">{message}</p>
+		<p id={messageId} class={[chipText, textColor]}>{message}</p>
 	{/if}
 </div>

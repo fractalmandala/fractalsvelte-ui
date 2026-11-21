@@ -1,4 +1,3 @@
-/** Walks up from `node` to the nearest scroll container, or `null` for the viewport. */
 export function scrollParent(node: HTMLElement): HTMLElement | null {
 	let current = node.parentElement;
 	while (current) {

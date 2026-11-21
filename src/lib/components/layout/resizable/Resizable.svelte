@@ -2,20 +2,15 @@
 
 <script lang="ts">
 	import { untrack, type Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Orientation } from '../../../internal/tokens.js';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  Orientation  } from '../../../internal/tokens.js';
 	import { ResizableState, setResizable } from './resizable.svelte.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** The direction panes are laid out: `horizontal` puts them side by side, `vertical` stacks them. */
 		orientation?: Orientation;
-		/** The size of every pane in percent, in order. Bindable; reads and writes stay in step with dragging. */
 		sizes?: number[];
-		/** Called with the new sizes (percent, in order) whenever the user moves a handle. */
 		onResize?: (sizes: number[]) => void;
-		/** Saves the layout to `localStorage` under this key and restores it on the next visit. */
 		storageKey?: string;
-		/** The panes and the handles between them. */
 		children?: Snippet;
 	}
 
@@ -47,19 +42,28 @@
 		}
 	});
 
-	// A bound `sizes` that changes from outside moves the panes.
+	// Two-way binding between the panes and `sizes`, with echo suppression: writing the
+	// bound value re-runs this pair, and without the guard each round seeds the panes
+	// again, which writes again — the loop Svelte reports as update depth exceeded.
+	let echo: number[] | null = null;
+
 	$effect(() => {
 		const next = sizes;
 		untrack(() => {
+			if (echo && same(next, echo)) {
+				echo = null;
+				return;
+			}
 			if (next.length === state.panes.length && next.length > 0 && !same(next, state.sizes)) state.seed(next);
 		});
 	});
 
-	// The panes' sizes flow back out to the bound value.
 	$effect(() => {
 		const next = state.sizes;
 		untrack(() => {
-			if (!same(next, sizes)) sizes = next.slice();
+			if (same(next, sizes)) return;
+			echo = next.slice();
+			sizes = next.slice();
 		});
 	});
 

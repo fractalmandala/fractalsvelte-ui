@@ -4,8 +4,8 @@
 </script>
 
 <div class="box gap-sm measure-sm">
-	{#each ['outline', 'filled', 'ghost'] as const as look (look)}
-		<SearchInput {look} value="Harbor" aria-label={`${look} search`} />
+	{#each ['outline', 'secondary', 'ghost'] as const as variant (variant)}
+		<SearchInput {variant} value="Harbor" aria-label={`${variant} search`} />
 	{/each}
 	{#each ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const as size (size)}
 		<SearchInput {size} placeholder={`Size ${size}`} aria-label={`Size ${size}`} />

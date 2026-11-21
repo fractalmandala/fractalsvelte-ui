@@ -6,6 +6,5 @@ export type {
 	ToastItem,
 	ToastOptions,
 	ToastPromiseMessage,
-	ToastPromiseMessages,
-	ToastType
+	ToastPromiseMessages
 } from './toast.svelte.js';

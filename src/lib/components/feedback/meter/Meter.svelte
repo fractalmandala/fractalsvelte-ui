@@ -1,44 +1,32 @@
 <!-- @component A gauge for a value on a known range, with optional low, high and optimum thresholds. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Space  } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
-	import { type Size, type Tone } from '../../../internal/tokens.js';
+	import { type ChildTextColor, type Size, type TextColor, type TextSize, type Tone } from '../../../internal/tokens.js';
 	import { meterScale } from './meter.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** The current value, on the range from `min` to `max`. */
 		value?: number;
-		/** The lower bound of the range. */
 		min?: number;
-		/** The upper bound of the range. */
 		max?: number;
-		/** The upper edge of the low region, used with `high` and `optimum` to pick a tone. */
 		low?: number;
-		/** The lower edge of the high region, used with `low` and `optimum` to pick a tone. */
 		high?: number;
-		/** The best value on the range. Defaults to the midpoint. */
 		optimum?: number;
-		/** Forces a tone, instead of the one picked from the low / high / optimum regions. */
 		tone?: Tone;
-		/** The thickness of a linear track, or the diameter of a ring, scaled with the text size. */
 		size?: Size;
-		/** `linear` is a bar; `ring` is a circular gauge with a label in the centre. */
+		textSize?: TextSize;
+		textColor?: TextColor;
+		childTextColor?: ChildTextColor;
 		form?: 'linear' | 'ring';
-		/** The stroke thickness of a ring, expressed through the text scale the ring already uses. */
-		thickness?: 'sm' | 'md' | 'lg';
-		/** Shows motion instead of a value: the track sweeps and no number is announced. */
+		thickness?: Space;
 		indeterminate?: boolean;
-		/** Draws diagonal stripes across a linear fill. */
 		striped?: boolean;
-		/** A visible name for the meter, such as "Storage used". */
 		label?: string;
-		/** Shows the numeric value to the right of the label, in tabular numerals. */
 		showValue?: boolean;
-		/** Accessible value text, and the ring centre when `children` are omitted. Defaults to the value. */
 		valueText?: string;
-		/** Custom centre content on a ring. Replaces the default centre text when provided. */
 		children?: Snippet;
 	}
 
@@ -51,6 +39,9 @@
 		optimum,
 		tone,
 		size = 'h-lg',
+		textSize = 'text-sm',
+		textColor = 'text-secondary',
+		childTextColor = 'text-muted',
 		form = 'linear',
 		thickness = 'md',
 		indeterminate = false,
@@ -77,7 +68,7 @@
 		'even-less-good': 'danger'
 	};
 
-	const thickClass: Record<'sm' | 'md' | 'lg', string> = {
+	const thickClass: Partial<Record<Space, string>> = {
 		sm: 'text-xs',
 		md: 'text-md',
 		lg: 'text-lg'
@@ -106,7 +97,7 @@
 			{@attach vars(colour)}
 		></div>
 		{#if children || text}
-			<div class={['cover box xcenter ycenter tabular-nums text-secondary', size]}>
+			<div class={['cover box xcenter ycenter tabular-nums', size, textColor]}>
 				{#if children}
 					{@render children()}
 				{:else}
@@ -120,10 +111,10 @@
 		{#if label || showValue}
 			<div class="row xbetween ycenter gap-sm">
 				{#if label}
-					<span class="text-sm text-secondary">{label}</span>
+					<span class={[textSize, textColor]}>{label}</span>
 				{/if}
 				{#if showValue}
-					<span class="text-sm text-muted tabular-nums">{text}</span>
+					<span class={[textSize, childTextColor, 'tabular-nums']}>{text}</span>
 				{/if}
 			</div>
 		{/if}

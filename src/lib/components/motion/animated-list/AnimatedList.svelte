@@ -2,23 +2,20 @@
 
 <script lang="ts" generics="T">
 	import { tick, type Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  Gap  } from '../../../internal/tokens.js';
 	import { createFlip, springFly } from '../../../motion/index.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The items to show. */
 		items: T[];
-		/** A stable identity for each item, used as the each-block key and the FLIP id. */
 		key: (item: T) => string;
-		/** Maximum number of items to keep visible. */
 		max?: number;
-		/** Shows the items in reverse order (newest first in a feed). When `max` is set, the last items are the ones kept. */
 		reverse?: boolean;
-		/** The content of one item, called with that item. */
+		gap?: Gap;
 		children?: Snippet<[T]>;
 	}
 
-	let { items, key: keyOf, max, reverse = false, class: className, children, ...rest }: Props = $props();
+	let { items, key: keyOf, max, reverse = false, gap = 'gap-sm', class: className, children, ...rest }: Props = $props();
 
 	const flip = createFlip({ spring: 'snappy' });
 
@@ -52,7 +49,7 @@
 	}
 </script>
 
-<div class={['relative box gap-sm', className]} role="list" {@attach flip.attach} {...rest}>
+<div class={['relative box', gap, className]} role="list" {@attach flip.attach} {...rest}>
 	{#each visible as item (keyOf(item))}
 		<div
 			class="motion"

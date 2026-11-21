@@ -9,7 +9,7 @@
 
 <div class="column gap-lg">
 	<RadioGroup orientation="vertical" bind:value={density} aria-label="Row density">
-		<Radio value="compact" label="Compact" description="More rows on screen." />
+		<Radio value="compact" gap="gap-md" label="Compact" description="More rows on screen." />
 		<Radio value="comfortable" label="Comfortable" description="Balanced spacing, the default." />
 	</RadioGroup>
 	<RadioGroup

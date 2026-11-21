@@ -1,4 +1,4 @@
-<!-- @example Every variant, size and shape :: The full range the group accepts, each with a realistic two-way choice. -->
+<!-- @example Every variant, size, shape and ink :: The full range the group accepts, each with a realistic two-way choice. -->
 <script lang="ts">
 	import { ToggleGroup, ToggleGroupItem } from '@fractaldesign/fractalsvelte-ui';
 </script>
@@ -19,6 +19,14 @@
 			<ToggleGroup label={`Size ${s}`} size={s as never} value="a">
 				<ToggleGroupItem value="a">A</ToggleGroupItem>
 				<ToggleGroupItem value="b">B</ToggleGroupItem>
+			</ToggleGroup>
+		{/each}
+	</div>
+	<div class="row wrap gap-sm ycenter">
+		{#each ['text-primary', 'text-secondary', 'text-muted', 'text-danger'] as c (c)}
+			<ToggleGroup label={`Ink ${c}`} variant="outline" textColor={c as never} value="a">
+				<ToggleGroupItem value="a">Left</ToggleGroupItem>
+				<ToggleGroupItem value="b">Right</ToggleGroupItem>
 			</ToggleGroup>
 		{/each}
 	</div>

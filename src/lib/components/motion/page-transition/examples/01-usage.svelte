@@ -1,7 +1,7 @@
 <!-- @example Usage :: A panel that springs between two views when view transitions are unavailable. -->
 <script lang="ts">
 	import { Button, PageTransition } from '@fractaldesign/fractalsvelte-ui';
-	import type { OnNavigateLike } from '@fractaldesign/fractalsvelte-ui/motion';
+	import type {  OnNavigateLike  } from '@fractaldesign/fractalsvelte-ui/motion';
 
 	let page = $state<'atelier' | 'press'>('atelier');
 	const onNavigate: OnNavigateLike = () => {};

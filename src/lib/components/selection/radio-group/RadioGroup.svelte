@@ -1,31 +1,26 @@
 <!-- @component A set of native radios with a bindable value, as plain rows or selectable cards. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Orientation, Size, TextSize } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  ChildTextSize, Gap, Orientation, Pad, Shape, Size, Surface, TextColor, TextSize  } from '../../../internal/tokens.js';
 	import { setRadioGroup } from './radio-group.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The value of the selected radio. Two-way bindable; `undefined` means nothing is selected. */
 		value?: string;
-		/** Called after the user picks a radio, with its value. */
 		onValueChange?: (value: string) => void;
-		/** Lays the radios out in a column (`vertical`) or a wrapping row (`horizontal`). */
 		orientation?: Orientation;
-		/** The field name shared by every radio; it groups them natively and is submitted with a form. Generated when omitted. */
 		name?: string;
-		/** `default` is a radio dot beside a label; `card` is a selectable bordered card with a title and description. */
 		variant?: 'default' | 'card';
-		/** The radio and text scale. */
 		size?: Size;
-		/** The text scale of every label, independent of the control. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** Disables every radio in the group. */
+		childTextSize?: ChildTextSize;
+		childTextColor?: TextColor;
+		shape?: Shape;
+		surface?: Surface;
+		gap?: Gap;
 		disabled?: boolean;
-		/** Marks the group as failing validation. */
 		invalid?: boolean;
-		/** The `Radio` parts. */
 		children?: Snippet;
 	}
 
@@ -35,8 +30,13 @@
 		orientation = 'vertical',
 		name,
 		variant = 'default',
+		gap = variant === 'card' ? 'gap-sm' : 'gap-md',
 		size = 'h-lg',
 		textSize,
+		childTextSize = 'text-sm',
+		childTextColor = 'text-secondary',
+		shape = 'modern',
+		surface = 'elevated',
 		disabled = false,
 		invalid = false,
 		class: className,
@@ -62,6 +62,18 @@
 		get textSize() {
 			return textSize;
 		},
+		get childTextSize() {
+			return childTextSize;
+		},
+		get childTextColor() {
+			return childTextColor;
+		},
+		get shape() {
+			return shape;
+		},
+		get surface() {
+			return surface;
+		},
 		get disabled() {
 			return disabled;
 		},
@@ -78,7 +90,7 @@
 <div
 	role="radiogroup"
 	aria-invalid={invalid || undefined}
-	class={[orientation === 'horizontal' ? 'row wrap' : 'column', variant === 'card' ? 'gap-sm' : 'gap-md', className]}
+	class={[orientation === 'horizontal' ? 'row wrap' : 'column', gap, className]}
 	{...rest}
 >
 	{@render children?.()}

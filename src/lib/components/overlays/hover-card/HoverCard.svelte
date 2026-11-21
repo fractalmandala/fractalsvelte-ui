@@ -1,43 +1,30 @@
 <!-- @component A rich preview card on hover or focus of a link, with time to travel from the trigger to the card. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
 	import { type Placement } from '../../../internal/tokens.js';
-import { placementClass } from '../../../internal/helpers.js';
-	import { surfaceClass, type OverlayContent, type OverlaySurface } from '../dialog/dialog.js';
+	import {type OverlayContent} from '../dialog/dialog.js';
+	import type { Pad, Surface } from '../../../internal/tokens.js';
 	import { enterFrom } from './hover-card.js';
 
 	interface HoverTrigger {
-		/** Spread onto the trigger element: ARIA wiring and the hover and focus handlers. */
 		props: HTMLAttributes<HTMLElement>;
-		/** Whether the card is open. */
 		isOpen: boolean;
-		/** Opens the card. */
 		open: () => void;
-		/** Closes the card. */
 		close: () => void;
-		/** Opens it if closed, closes it if open. */
 		toggle: () => void;
 	}
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** Whether the card is open. Bind it, or let hover and focus drive it. */
 		open?: boolean;
-		/** Called whenever the card opens or closes. */
 		onOpenChange?: (open: boolean) => void;
-		/** Where the card sits relative to the trigger. */
 		placement?: Placement;
-		/** How long to wait, in milliseconds, before opening on hover or focus. */
 		openDelay?: number;
-		/** How long to wait, in milliseconds, before closing after the pointer or focus leaves — long enough to travel onto the card. */
 		closeDelay?: number;
-		/** The card fill: frosted glass, or opaque. */
-		surface?: OverlaySurface;
-		/** The link or control that opens the card. Spread `props` onto your own element. */
+		surface?: Surface;
 		trigger?: Snippet<[HoverTrigger]>;
-		/** The card contents. Receives `close`. */
 		children?: Snippet<[OverlayContent]>;
 	}
 
@@ -127,9 +114,10 @@ import { placementClass } from '../../../internal/helpers.js';
 	popover="manual"
 	role="dialog"
 	class={[
-		'floating pop spring-snappy border rim shad-lg radius-lg pad-bs max-w-sm wmin-xs',
-		surfaceClass[surface],
-		placementClass[placement],
+		'floating pop spring-snappy radius-lg max-w-sm wmin-xs',
+		'pad-bs',
+		surface,
+		`at-${`placement`}`,
 		enterFrom[placement],
 		className
 	]}

@@ -54,5 +54,8 @@ The JSDoc for this folder’s source lives here. `pnpm comments:restore` puts it
 - `value` :: The named theme. Bindable. Leave it undefined to read and write the shared `theme`.
 - `onValueChange` :: Called with the new theme whenever the person picks one.
 - `size` :: The swatch and label scale.
+- `gap` :: Space between the swatches on the shared gap ladder. @default 'gap-sm'
+- `textSize` :: The scale of the theme name under each swatch. @default 'text-sm'
+- `textColor` :: The ink of the theme name, secondary by default so the swatches carry the colour. @default 'text-secondary'
 - `showLabels` :: Draws the theme name under each swatch.
 - `label` :: The accessible name of the group.

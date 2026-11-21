@@ -1,35 +1,29 @@
 <!-- @component Inline keyboard-navigable option list supporting single or multiple selection and groups. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck } from '@fractaldesign/icons/lucide';
-	import { roving } from '../../../internal/roving.js';
-	import { type Shape, type Size } from '../../../internal/tokens.js';
-import { maxHeightClass, maxHeightStyle } from '../../../internal/helpers.js';
+	import { roving, maxHeightStyle } from '../../../internal/helpers.js';
+	import { type ChildTextSize, type Gap, type Pad, type Shape, type Size, type Surface, type TextColor } from '../../../internal/tokens.js';
 	import { vars } from '../../../motion/index.js';
 	import { groupOptions, type ListboxOption } from './listbox.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Listbox choices, optionally grouped by `group`. */
 		options: ListboxOption[];
-		/** Selected value (single) or values (`multiple`); bindable. */
 		value?: string | string[];
-		/** Called when selection changes. */
 		onValueChange?: (value: string | string[]) => void;
-		/** Allow selecting multiple options. */
 		multiple?: boolean;
-		/** Option row height and text scale on the shared size ladder. */
 		size?: Size;
-		/** Outer container corner shape. */
 		shape?: Shape;
-		/** Vertical scroll cap using a `Size` step (`h-xl`) or CSS length. */
+		surface?: Surface;
+		pad?: Pad;
+		gap?: Gap;
+		childTextSize?: ChildTextSize;
+		childTextColor?: TextColor;
 		maxHeight?: Size | string | number;
-		/** Disables all interaction. */
 		disabled?: boolean;
-		/** Message shown when `options` is empty. */
 		emptyText?: string;
-		/** Accessible label naming the list. */
 		label?: string;
 	}
 
@@ -40,6 +34,11 @@ import { maxHeightClass, maxHeightStyle } from '../../../internal/helpers.js';
 		multiple = false,
 		size = 'h-lg',
 		shape = 'modern',
+		surface = 'elevated',
+		pad = 'pad-xs',
+		gap = 'gap-xs',
+		childTextSize = 'text-xs',
+		childTextColor = 'text-muted',
 		maxHeight,
 		disabled = false,
 		emptyText = 'No options available',
@@ -72,7 +71,7 @@ import { maxHeightClass, maxHeightStyle } from '../../../internal/helpers.js';
 		}
 	}
 
-	const capCls = $derived(maxHeightClass(maxHeight));
+	const capCls = $derived(maxHeight ? `max-h-${String(maxHeight).replace(/^h-/, '')}` : '');
 	const capVar = $derived(maxHeightStyle(maxHeight));
 </script>
 
@@ -82,7 +81,10 @@ import { maxHeightClass, maxHeightStyle } from '../../../internal/helpers.js';
 	aria-multiselectable={multiple || undefined}
 	aria-disabled={disabled || undefined}
 	class={[
-		'box gap-xs outlined bg-surface pad-xs overflow-auto',
+		'box scroll-y',
+		surface,
+		pad,
+		gap,
 		shape,
 		capCls,
 		capVar && 'capped',
@@ -94,11 +96,11 @@ import { maxHeightClass, maxHeightStyle } from '../../../internal/helpers.js';
 	{...rest}
 >
 	{#if options.length === 0}
-		<div class="pad-md ta-c text-sm text-muted">{emptyText}</div>
+		<div class={['ta-c', 'pad-xs', childTextSize, childTextColor]}>{emptyText}</div>
 	{:else}
 		{#each sections as section (section.group ?? '__default')}
 			{#if section.group}
-				<div class="px-sm pt-xs text-xs weight-600 text-muted">{section.group}</div>
+				<div class={['px-sm pt-xs weight-600', childTextSize, childTextColor]}>{section.group}</div>
 			{/if}
 			{#each section.items as option (option.value)}
 				{@const selected = selectedSet.has(option.value)}
@@ -119,12 +121,12 @@ import { maxHeightClass, maxHeightStyle } from '../../../internal/helpers.js';
 				>
 					<span class="row ycenter gap-sm min0">
 						{#if option.icon}
-							<Icon icon={option.icon} class="text-muted shrink-0" />
+							<Icon icon={option.icon} class={['shrink-0', childTextColor]} />
 						{/if}
 						<span class="column xleft min0">
 							<span class="truncate weight-500">{option.label}</span>
 							{#if option.description}
-								<span class="text-xs text-muted truncate">{option.description}</span>
+								<span class={['truncate', childTextSize, childTextColor]}>{option.description}</span>
 							{/if}
 						</span>
 					</span>

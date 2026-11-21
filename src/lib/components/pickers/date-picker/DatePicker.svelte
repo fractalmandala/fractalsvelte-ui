@@ -1,59 +1,44 @@
 <!-- @component A text field and a popover calendar for picking a single date, with typed parsing and optional presets. -->
 
 <script lang="ts">
-	import type { HTMLInputAttributes } from 'svelte/elements';
+	import type {  HTMLInputAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCalendar, luX } from '@fractaldesign/icons/lucide';
 	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
-	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
+	import { defaultSize, type ChildTextSize, type Pad, type Shape, type Size, type Surface, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
 import { getFieldContext } from '../../inputs/field/field.js';
+	import { frameClasses } from '../../inputs/input/frame.js';
 	import Calendar from '../calendar/Calendar.svelte';
 	import { formatIso, parseInput, type DateFormat } from '../calendar/dates.js';
 
 	interface Preset {
-		/** The visible name of the preset, e.g. "Today". */
 		label: string;
-		/** The ISO date the preset writes to `value`. */
 		value: string;
 	}
 
 	interface Props extends Omit<HTMLInputAttributes, 'value' | 'size' | 'children' | 'type' | 'name' | 'form' | 'disabled'> {
-		/** The chosen date as ISO `YYYY-MM-DD`, or `null`. Bindable. */
 		value?: string | null;
-		/** Called whenever the person changes the date. */
 		onValueChange?: (value: string | null) => void;
-		/** The earliest selectable ISO date. */
 		min?: string;
-		/** The latest selectable ISO date. */
 		max?: string;
-		/** How the date is shown in the field. */
 		format?: DateFormat;
-		/** Shows a button that clears the date. */
 		clearable?: boolean;
-		/** Quick-pick dates listed above the calendar. */
 		presets?: Preset[];
-		/** BCP 47 locale for parsing, formatting and calendar labels. */
 		locale?: string;
-		/** Day the week starts on, 0 = Sunday through 6 = Saturday. */
 		weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
-		/** The text scale, independent of the control height. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** The corner shape of the field. @default 'modern' */
+		childTextSize?: ChildTextSize;
+		childTextColor?: TextColor;
 		shape?: Shape;
-		/** Marks the field as failing validation: a danger border and `aria-invalid`. */
+		variant?: Variant;
+		surface?: Surface;
 		invalid?: boolean;
-		/** The text shown while no date is chosen. */
 		placeholder?: string;
-		/** The name of the hidden input that carries the ISO date in a form submission. */
 		name?: string;
-		/** Whether the calendar is showing. Bindable. */
 		open?: boolean;
-		/** Called when the calendar opens or closes. */
 		onOpenChange?: (open: boolean) => void;
-			/** Blocks opening the calendar and dims the field. */
-		disabled?: boolean | null;
+			disabled?: boolean | null;
 }
 
 	let {
@@ -68,7 +53,11 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		weekStartsOn = 0,
 		size,
 		textSize,
+		childTextSize = 'text-sm',
+		childTextColor = 'text-muted',
 		shape,
+		variant,
+		surface = 'glass',
 		invalid,
 		placeholder = 'Pick a date',
 		name,
@@ -84,6 +73,19 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	const resolvedSize = $derived(size ?? fieldCtx?.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? fieldCtx?.shape ?? 'modern');
 	const resolvedInvalid = $derived(invalid ?? fieldCtx?.invalid ?? false);
+	const resolvedVariant = $derived<Variant>(variant ?? fieldCtx?.variant ?? 'outline');
+	const frame = $derived([
+		...frameClasses({
+			variant: resolvedVariant,
+			size: resolvedSize,
+			textSize,
+			shape: resolvedShape,
+			invalid: resolvedInvalid,
+			disabled: Boolean(disabled)
+		}),
+		'font-sans relative anchor xright',
+		className
+	]);
 
 	const uid = $props.id();
 	const inputId = $derived(idProp ?? `${uid}-input`);
@@ -185,14 +187,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 
 <div
 	bind:this={field}
-	class={[
-		'field anchor relative row ycenter xright bg-input border',
-		resolvedSize, textSize,
-		resolvedShape,
-		resolvedInvalid && 'is-invalid',
-		disabled && 'disabled',
-		className
-	]}
+	class={frame}
 	aria-invalid={resolvedInvalid || undefined}
 	{@attach anchor(uid)}
 >
@@ -220,13 +215,13 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	/>
 	<span class="relative z-raised row ycenter gap-xs pr-sm pointer-none">
 		{#if clearable && value && !disabled}
-			<button type="button" class="pointer-auto btn-icon h-md ghost round text-muted" aria-label="Clear date" onclick={clear}>
+			<button type="button" class={['pointer-auto btn-icon ghost', resolvedSize, resolvedShape, childTextColor]} aria-label="Clear date" onclick={clear}>
 				<Icon icon={luX} />
 			</button>
 		{/if}
 		<button
 			type="button"
-			class="pointer-auto btn-icon h-md ghost round text-muted"
+			class={['pointer-auto btn-icon ghost', resolvedSize, resolvedShape, childTextColor]}
 			tabindex="-1"
 			aria-label="Open calendar"
 			disabled={disabled}
@@ -247,7 +242,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	role="dialog"
 	tabindex="-1"
 	aria-label="Choose a date"
-	class="floating at-bottom-start pop enter-down spring-snappy glass border rim shad-lg modern pad-bs box gap-sm focus-none"
+	class={['floating at-bottom-start pop enter-down spring-snappy box gap-sm focus-none', surface, resolvedShape, 'pad-bs']}
 	{@attach floating(uid)}
 	{@attach popoverSync(() => open, setOpen)}
 	onpointerdown={(event) => event.preventDefault()}
@@ -255,7 +250,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	{#if presets?.length}
 		<div class="row wrap gap-xs">
 			{#each presets as preset (preset.value)}
-				<button type="button" class="button ghost h-bs text-sm modern" onclick={() => choose(preset.value)}>
+				<button type="button" class={['button ghost', resolvedSize, childTextSize, resolvedShape]} onclick={() => choose(preset.value)}>
 					{preset.label}
 				</button>
 			{/each}

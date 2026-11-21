@@ -1,34 +1,40 @@
 <!-- @component The form-field wrapper: a label, a control, helper text and an error, wired together for assistive technology. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { springFade } from '../../../motion/index.js';
-	import type { Orientation, Shape, Size } from '../../../internal/tokens.js';
-	import { setFieldContext, type FieldLook } from './field.js';
+	import type { 
+		ChildTextColor,
+		ChildTextSize,
+		Gap,
+		Measure,
+		Orientation,
+		Shape,
+		Size,
+		TextColor,
+		TextSize,
+		Variant
+	 } from '../../../internal/tokens.js';
+	import { setFieldContext } from './field.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
-		/** The label text. It is a real `<label>` bound to the control, and doubles as the accessible name of grouped controls. */
 		label?: string;
-		/** Helper text shown under the control and read after its name. Replaced by `error` while there is one. */
 		hint?: string;
-		/** An error message. Marks the control invalid and is announced politely when it appears. */
 		error?: string;
-		/** Marks the control required and adds a marker beside the label. */
 		required?: boolean;
-		/** Disables the control inside and dims the label. */
 		disabled?: boolean;
-		/** Whether the label sits above the control or to its side. */
 		orientation?: Orientation;
-		/** The control height and text scale, inherited by the control inside unless it sets its own. */
+		gap?: Gap;
 		size?: Size;
-		/** The corner shape, inherited by the control inside unless it sets its own. */
 		shape?: Shape;
-		/** The field look, inherited by the control inside unless it sets its own. */
-		look?: FieldLook;
-		/** The id given to the control inside. Generated when omitted. */
+		variant?: Variant;
+		textSize?: TextSize;
+		textColor?: TextColor;
+		childTextSize?: ChildTextSize;
+		childTextColor?: ChildTextColor;
+		measure?: Measure;
 		id?: string;
-		/** The control. Inputs in this kit pick up the id, description and invalid state automatically. */
 		children?: Snippet;
 	}
 
@@ -39,9 +45,15 @@
 		required = false,
 		disabled = false,
 		orientation = 'vertical',
+		gap,
 		size,
 		shape = 'modern',
-		look,
+		variant,
+		textSize = 'text-sm',
+		textColor = 'text-primary',
+		childTextSize,
+		childTextColor,
+		measure = 'measure-xs',
 		id,
 		class: className,
 		children,
@@ -79,24 +91,35 @@
 		get shape() {
 			return shape;
 		},
-		get look() {
-			return look;
+		get variant() {
+			return variant;
 		}
 	});
 
 	const horizontal = $derived(orientation === 'horizontal');
+	const resolvedChildTextSize = $derived(childTextSize ?? textSize);
+	const resolvedChildTextColor = $derived(childTextColor ?? (error ? 'text-danger' : 'text-muted'));
+	const labelHeight = $derived(size ?? 'h-lg');
+	const layout = $derived(horizontal ? 'row' : 'box');
+	const layoutGap = $derived(gap ?? (horizontal ? 'gap-lg' : 'gap-xs'));
 </script>
 
-<div class={[horizontal ? 'row gap-lg' : 'box gap-xs', 'wfull', className]} {...rest}>
+<div class={[layout, layoutGap, 'wfull ta-l', className]} {...rest}>
 	{#if label}
 		<label
 			id={labelId}
 			for={controlId}
-			class={['row ycenter gap-xs text-sm weight-500', horizontal && 'measure-xs shrink-0 h-lg', disabled && 'dim']}
+			class={[
+				'row gap-xs weight-500',
+				textSize,
+				textColor,
+				horizontal && [measure, 'shrink-0', labelHeight],
+				disabled && 'dim'
+			]}
 		>
 			{label}
 			{#if required}
-				<span class="text-danger" aria-hidden="true">*</span>
+				<span class="tone-danger text-theme" aria-hidden="true">*</span>
 			{/if}
 		</label>
 	{/if}
@@ -104,9 +127,9 @@
 		{@render children?.()}
 		<div aria-live="polite" class="box">
 			{#if error}
-				<p id={errorId} class="text-sm text-danger" transition:springFade>{error}</p>
+				<p id={errorId} class={[resolvedChildTextSize, resolvedChildTextColor]} transition:springFade>{error}</p>
 			{:else if hint}
-				<p id={hintId} class="text-sm text-muted">{hint}</p>
+				<p id={hintId} class={[resolvedChildTextSize, resolvedChildTextColor]}>{hint}</p>
 			{/if}
 		</div>
 	</div>

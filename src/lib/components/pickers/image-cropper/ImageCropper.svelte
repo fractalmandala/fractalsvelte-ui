@@ -1,7 +1,8 @@
 <!-- @component Interactive image crop rectangle selector with rule-of-thirds grid, zoom, and aspect ratio lock. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Shape, Surface  } from '../../../internal/tokens.js';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
 	import { clampValue } from './crop.js';
 
@@ -15,23 +16,15 @@
 	type DragMode = 'move' | 'nw' | 'ne' | 'sw' | 'se' | null;
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Image source URL to crop. */
 		src: string;
-		/** Alternative text description for the image. */
 		alt?: string;
-		/** Crop selection rectangle in percentages (`0` to `100`); bindable. */
 		crop?: CropRect;
-		/** Called when the user drags or resizes the selection rectangle. */
 		onCropChange?: (crop: CropRect) => void;
-		/** Optional fixed width-to-height ratio (for example `1` or `16 / 9`). */
 		aspectRatio?: number;
-		/** Image preview magnification (`1` = 100%); bindable. */
 		zoom?: number;
-		/** Render rule-of-thirds helper lines inside the selection frame. */
 		grid?: boolean;
-		/** Selection cutout corner shape (`'rect'` or circular `'round'`). */
-		shape?: 'rect' | 'round';
-		/** Disable dragging and resizing. */
+		shape?: Shape;
+		surface?: Surface;
 		disabled?: boolean;
 	}
 
@@ -44,6 +37,7 @@
 		zoom = $bindable(1),
 		grid = true,
 		shape = 'rect',
+		surface = 'outlined',
 		disabled = false,
 		class: className,
 		...rest
@@ -142,7 +136,7 @@
 
 <div
 	bind:this={stage}
-	class={['crop-stage frame-16-9 modern border overflow-hidden', disabled && 'disabled', className]}
+	class={['crop-stage frame-16-9 overflow-hidden', surface, shape, disabled && 'disabled', className]}
 	{@attach vars({
 		'crop-x': crop.x,
 		'crop-y': crop.y,
@@ -165,7 +159,7 @@
 		aria-valuenow={Math.round(crop.x)}
 		aria-valuetext={`${crop.x}% X, ${crop.y}% Y, ${crop.width}% width, ${crop.height}% height`}
 		tabindex={disabled ? -1 : 0}
-		class={['crop-box focus-ring', shape === 'round' && 'round']}
+		class={['crop-box focus-ring', shape]}
 		onpointerdown={(e) => beginDrag('move', e)}
 		onkeydown={nudge}
 	>

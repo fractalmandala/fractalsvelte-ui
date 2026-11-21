@@ -15,7 +15,7 @@
 		<Status size="h-3xl">Operational</Status>
 	</div>
 	<div class="row wrap gap-lg">
-		<Status tone="success" pulse>All regions live</Status>
+		<Status tone="success" gap="gap-md" pulse>All regions live</Status>
 		<Status tone="warning" pulse>Elevated latency in eu-west-3</Status>
 	</div>
 </div>

@@ -1,28 +1,19 @@
 <!-- @component Circular rotary dial slider selecting an angle in degrees. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { type Size } from '../../../internal/tokens.js';
 	import { vars } from '../../../motion/index.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Current angle value in degrees; bindable. */
 		value?: number;
-		/** Called when the angle updates. */
 		onValueChange?: (value: number) => void;
-		/** Minimum angle in degrees. */
 		min?: number;
-		/** Maximum angle in degrees. */
 		max?: number;
-		/** Discrete increment for pointer snapping and arrow keys. */
 		step?: number;
-		/** Outer diameter on the shared size ladder. */
 		size?: Size;
-		/** Disables pointer and keyboard interaction. */
 		disabled?: boolean;
-		/** Display numeric degree value in the center of the dial. */
 		showValue?: boolean;
-		/** Accessible label describing what the angle controls. */
 		label?: string;
 	}
 

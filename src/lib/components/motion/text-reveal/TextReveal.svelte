@@ -1,21 +1,15 @@
 <!-- @component Text that enters one character, word or line at a time, staggered on the `--i` channel. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { inView, stagger } from '../../../motion/index.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** The text that is revealed. It is also the accessible name of the wrapper. */
 		text: string;
-		/** How the text is split into staggered pieces. */
 		by?: 'char' | 'word' | 'line';
-		/** The entrance each piece uses. */
 		preset?: 'fade-up' | 'blur' | 'scale' | 'slide';
-		/** Delay between one piece and the next, in milliseconds. Written to the `--stagger` channel. */
 		step?: number;
-		/** `mount` plays as soon as the element is created; `inView` waits until it enters the viewport. */
 		trigger?: 'mount' | 'inView';
-		/** The element tag to render as. */
 		as?: string;
 	}
 

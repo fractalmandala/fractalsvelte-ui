@@ -1,23 +1,17 @@
 <!-- @component A windowed list that keeps 10,000+ rows scrolling smoothly, with an imperative scrollToIndex. -->
 
 <script lang="ts" generics="T">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { reducedMotion, vars } from '../../../motion/index.js';
 	import { indexAtOffset } from './virtual-list.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The full item list. Only a window of it is rendered. */
 		items: T[];
-		/** Fixed row height in pixels, or a function that estimates a row before it is measured. */
 		itemHeight: number | ((index: number, item: T) => number);
-		/** Extra rows rendered above and below the viewport. */
 		overscan?: number;
-		/** Viewport height, as a number of pixels or any CSS length. */
 		height?: number | string;
-		/** Names the list for assistive technology and makes the viewport keyboard-scrollable. */
 		label?: string;
-		/** The row content, called with the item and its index. */
 		children?: Snippet<[T, number]>;
 	}
 

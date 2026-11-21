@@ -1,4 +1,4 @@
-<!-- @example States, sizes and forms :: sizes, shapes, min and max, invalid, disabled, readonly, and a named field in a form. -->
+<!-- @example States, sizes and forms :: sizes, shapes, frames, min and max, invalid, disabled, readonly, and a named field in a form. -->
 <script lang="ts">
 	import { DateField } from '@fractaldesign/fractalsvelte-ui';
 
@@ -39,6 +39,11 @@
 	<div class="box gap-sm measure-xs">
 		{#each shapes as shape (shape)}
 			<DateField value="2026-11-12" {shape} aria-label={`Invoice date (${shape})`} />
+		{/each}
+	</div>
+	<div class="box gap-sm measure-xs">
+		{#each ['outline', 'ghost', 'secondary'] as const as variant (variant)}
+			<DateField value="2026-11-12" {variant} aria-label={`Invoice date (${variant} frame)`} />
 		{/each}
 	</div>
 	<DateField value="2026-11-12" disabled aria-label="Locked invoice date" />

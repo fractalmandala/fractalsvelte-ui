@@ -1,10 +1,9 @@
 <!-- @component A balanced masonry of uneven items, using CSS grid masonry where it is supported and a shortest-column packer everywhere else. -->
 
 <script lang="ts" generics="T">
-	import type { Snippet } from 'svelte';
+	import type {  Snippet  } from 'svelte';
 	import { type Gap } from '../../../internal/tokens.js';
-import { gapValue } from '../../../internal/helpers.js';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
 	import {
 		packColumns,
@@ -15,13 +14,9 @@ import { gapValue } from '../../../internal/helpers.js';
 	} from './masonry.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** How many columns to use, or a map resolved from the element's width against the system's `--bp-*` breakpoints. */
 		columns?: number | MasonryColumns;
-		/** The gap between columns and stacked items. */
 		gap?: Gap;
-		/** The items to place, in stable source order. */
 		items: T[];
-		/** The content of one item, called with the item and its index. */
 		children?: Snippet<[T, number]>;
 	}
 
@@ -95,7 +90,7 @@ import { gapValue } from '../../../internal/helpers.js';
 
 <div
 	class={['masonry', packed && 'packed', className]}
-	{@attach vars({ cols, gap: gapValue(gap) })}
+	{@attach vars({ cols })}
 	{@attach observe(cols, items.length, gap)}
 	{...rest}
 >

@@ -1,21 +1,13 @@
-/** A responsive column map, resolved against the element's width and the system's `--bp-*` breakpoints. */
 export type MasonryColumns = {
-	/** Columns below the `sm` breakpoint. */
 	base?: number;
-	/** Columns from `--bp-sm` (769px) up. */
 	sm?: number;
-	/** Columns from `--bp-md` (1025px) up. */
 	md?: number;
-	/** Columns from `--bp-lg` (1281px) up. */
 	lg?: number;
-	/** Columns from `--bp-xl` (1441px) up. */
 	xl?: number;
 };
 
 export type PackedItem = {
-	/** Inline offset from the start edge, in pixels (written to `--x`). */
 	x: number;
-	/** Block offset from the top, in pixels (written to `--y`). */
 	y: number;
 };
 
@@ -46,15 +38,10 @@ export function readBreakpoints(root: HTMLElement): Record<'sm' | 'md' | 'lg' | 
 	};
 }
 
-/** Whether the browser supports the CSS masonry grid the brief asks for. SSR-safe: false when `CSS` is unavailable. */
 export function supportsMasonry(): boolean {
 	return typeof CSS !== 'undefined' && CSS.supports('grid-template-rows', 'masonry');
 }
 
-/**
- * Place each item, in source order, into the shortest column.
- * Returns pixel offsets and the packed height (`extent`), gap not included after the last item.
- */
 export function packColumns(heights: number[], cols: number, gap: number, colWidth: number): { items: PackedItem[]; extent: number } {
 	const count = Math.max(1, cols);
 	const colH = Array.from({ length: count }, () => 0);

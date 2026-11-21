@@ -59,6 +59,7 @@ The JSDoc for this folder’s source lives here. `pnpm comments:restore` puts it
 ### `interface Props`
 
 - `orientation` :: The direction the controls run in, and which arrow keys move focus.
+- `gap` :: Space between the controls on the shared gap ladder. @default 'gap-xs'
 - `label` :: The accessible name of the toolbar.
 - `loop` :: Whether arrow keys wrap from the last control to the first.
 - `children` :: The buttons, toggles, links, groups and separators.
@@ -69,6 +70,7 @@ The JSDoc for this folder’s source lives here. `pnpm comments:restore` puts it
 
 - `label` :: The accessible name of the group, announced when focus enters it.
 - `attached` :: Joins the controls into one segmented cluster. When false, they sit apart with a small gap.
+- `gap` :: Space between the controls when the cluster is not attached. @default 'gap-xs'
 - `children` :: The buttons or toggles in the group.
 
 ## toolbar.ts

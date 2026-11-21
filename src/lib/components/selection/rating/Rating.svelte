@@ -1,35 +1,26 @@
 <!-- @component A star rating the person can set, with half values, a custom icon and a hover preview. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
-	import type { IconData } from '@fractaldesign/icons';
+	import type {  IconData  } from '@fractaldesign/icons';
 	import { luStar } from '@fractaldesign/icons/lucide';
 	import { animate, vars } from '../../../motion/index.js';
-	import { type Size, type TextSize } from '../../../internal/tokens.js';
+	import { type Size, type TextColor, type TextSize } from '../../../internal/tokens.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The rating, from 0 (none) up to `max`. Two-way bindable. */
 		value?: number;
-		/** Called whenever the person changes the rating. */
 		onValueChange?: (value: number) => void;
-		/** The number of icons, and the highest value. */
 		max?: number;
-		/** Lets the person pick halves, so the value steps by 0.5. */
 		allowHalf?: boolean;
-		/** Shows the rating without letting it be changed. */
 		readonly?: boolean;
-		/** The icon scale. */
 		size?: Size;
-		/** The text scale, independent of the stars. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** The icon used for each unit. Defaults to a star. */
+		textColor?: TextColor;
+		childTextColor?: TextColor;
 		icon?: IconData;
-		/** Accessible name of the group, announced as the rating changes. */
 		label?: string;
-		/** Blocks pointer and keyboard input. */
 		disabled?: boolean;
-		/** The field name; a hidden input submits the value with a form. */
 		name?: string;
 	}
 
@@ -41,6 +32,8 @@
 		readonly = false,
 		size = 'h-lg',
 		textSize,
+		textColor = 'text-warning',
+		childTextColor = 'text-muted',
 		icon = luStar,
 		label,
 		disabled = false,
@@ -108,7 +101,6 @@
 		return `${base}: ${v} of ${max}`;
 	}
 
-	/** The selected increment is the tab stop; if none is selected, the first one is. */
 	function tabFor(v: number): number {
 		if (value === v) return 0;
 		if (value === 0 && v === step) return 0;
@@ -128,8 +120,8 @@
 >
 	{#each units as unit (unit)}
 		<span class={['relative motion square', locked ? 'select-none' : 'pointer']}>
-			<Icon {icon} class="text-muted" />
-			<span class="clip text-warning" {@attach vars({ value: fillOf(unit) })}>
+			<Icon {icon} class={[childTextColor]} />
+			<span class={['clip', textColor]} {@attach vars({ value: fillOf(unit) })}>
 				<Icon {icon} />
 			</span>
 			{#if !locked}

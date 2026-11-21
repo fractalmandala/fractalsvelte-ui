@@ -1,14 +1,11 @@
 import { globalMotion } from '../motion/animate.js';
 import { startViewTransition } from '../motion/view-transitions.js';
 
-/** `system` follows the OS preference. */
 export type ThemeMode = 'light' | 'dark' | 'system';
-/** The built-in named themes — each is three numbers in the stylesheet. */
 export type ThemeName = 'fractalsvelte' | 'aurora' | 'ocean' | 'ember' | 'rose' | 'lime' | 'amber' | 'mono';
 import type { Density, Shape } from '../internal/tokens.js';
 
 
-/** The theme's density step — the shared ladder, `compact` · `cozy` · `comfortable`. */
 export type ThemeDensity = Density;
 export type ThemeMotion = 'off' | 'calm' | 'snappy' | 'playful';
 
@@ -20,8 +17,6 @@ export interface ThemePreset {
 	tint: number;
 }
 
-/** The named themes and the numbers behind them.
- *  Keep in sync with `@fractaldesign/fractalstyler` `src/lib/styles/colors-themes.css` — that stylesheet is the source; this list is a mirror for the picker and `theme.hue`. */
 export const themes: ThemePreset[] = [
 	{ id: 'fractalsvelte', label: 'Fractalsvelte', hue: 38, chroma: 0.2, tint: 0.012 },
 	{ id: 'aurora', label: 'Aurora', hue: 168, chroma: 0.15, tint: 0.01 },
@@ -33,14 +28,12 @@ export const themes: ThemePreset[] = [
 	{ id: 'mono', label: 'Mono', hue: 268, chroma: 0, tint: 0 }
 ];
 
-/** Everything a theme is. `hue`/`chroma`/`tint` are `null` until customised. */
 export interface ThemeSettings {
 	mode: ThemeMode;
 	theme: ThemeName;
 	hue: number | null;
 	chroma: number | null;
 	tint: number | null;
-	/** The theme's corner shape — the same five words a component's `shape` takes. */
 	shape: Shape;
 	density: ThemeDensity;
 	motion: ThemeMotion;
@@ -59,11 +52,6 @@ export const defaultTheme: ThemeSettings = {
 
 const STORAGE_KEY = 'fractalsvelte-ui-theme';
 
-/**
- * The theme runtime: reactive settings that are written to an element
- * (default `<html>`) as `data-*` attributes and custom properties — the
- * stylesheet does the rest. Use the shared `theme` instance.
- */
 export class ThemeState {
 	mode = $state<ThemeMode>(defaultTheme.mode);
 	theme = $state<ThemeName>(defaultTheme.theme);
@@ -73,25 +61,20 @@ export class ThemeState {
 	shape = $state<Shape>(defaultTheme.shape);
 	density = $state<ThemeDensity>(defaultTheme.density);
 	motion = $state<ThemeMotion>(defaultTheme.motion);
-	/** What the OS asks for; updated by `initTheme`. */
 	systemDark = $state(true);
 
-	/** The mode actually in effect — `system` resolved. */
 	get resolvedMode(): 'light' | 'dark' {
 		return this.mode === 'system' ? (this.systemDark ? 'dark' : 'light') : this.mode;
 	}
 
-	/** The preset behind the current theme name. */
 	get preset(): ThemePreset {
 		return themes.find((t) => t.id === this.theme) ?? themes[0];
 	}
 
-	/** True when hue, chroma or tint override the named theme. */
 	get customised(): boolean {
 		return this.hue !== null || this.chroma !== null || this.tint !== null;
 	}
 
-	/** A plain snapshot — what is persisted. */
 	get settings(): ThemeSettings {
 		return {
 			mode: this.mode,
@@ -105,26 +88,19 @@ export class ThemeState {
 		};
 	}
 
-	/** Merge settings in. */
 	set(settings: Partial<ThemeSettings>): void {
 		Object.assign(this, settings);
 	}
 
-	/** Pick a named theme and drop any hue/chroma/tint override. */
 	setTheme(name: ThemeName): void {
 		this.theme = name;
 		this.hue = this.chroma = this.tint = null;
 	}
 
-	/** Back to the defaults. */
 	reset(): void {
 		this.set(defaultTheme);
 	}
 
-	/**
-	 * Switch mode. Pass the click event (or an element) to wipe the new mode in
-	 * as a circle from that point, through a view transition.
-	 */
 	setMode(mode: ThemeMode, origin?: MouseEvent | Element): Promise<void> {
 		return startViewTransition(
 			() => {
@@ -135,12 +111,10 @@ export class ThemeState {
 		);
 	}
 
-	/** Flip between light and dark. */
 	toggleMode(origin?: MouseEvent | Element): Promise<void> {
 		return this.setMode(this.resolvedMode === 'dark' ? 'light' : 'dark', origin);
 	}
 
-	/** Write the settings to an element. `initTheme` does this reactively. */
 	apply(root: HTMLElement = document.documentElement): void {
 		root.dataset.mode = this.resolvedMode;
 		root.dataset.theme = this.theme;
@@ -158,21 +132,13 @@ export class ThemeState {
 	}
 }
 
-/** The shared theme. Import it anywhere; call `initTheme()` once in the root layout. */
 export const theme = new ThemeState();
 
 export interface InitThemeOptions {
-	/** Starting settings, used when nothing is stored. */
 	defaults?: Partial<ThemeSettings>;
-	/** Persist to `localStorage` under this key. `false` disables persistence. */
 	storageKey?: string | false;
 }
 
-/**
- * Start the theme runtime. Call it during the root layout's initialisation:
- * it restores stored settings, follows the OS colour scheme, and keeps
- * `<html>` and `localStorage` in step with `theme`. Safe on the server (a no-op).
- */
 export function initTheme(options: InitThemeOptions = {}): void {
 	const { defaults, storageKey = STORAGE_KEY } = options;
 	if (defaults) theme.set(defaults);
@@ -205,10 +171,6 @@ export function initTheme(options: InitThemeOptions = {}): void {
 	});
 }
 
-/**
- * A tiny blocking script for `<svelte:head>` / `app.html` that applies the
- * stored theme before first paint, so there is no flash of the wrong mode.
- */
 export function themeInitScript(storageKey: string = STORAGE_KEY): string {
 	return `(function(){try{var s=JSON.parse(localStorage.getItem(${JSON.stringify(storageKey)})||'{}'),d=document.documentElement,m=s.mode||'system';d.dataset.mode=m==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):m;if(s.theme)d.dataset.theme=s.theme;if(s.shape)d.dataset.shape=s.shape;if(s.density)d.dataset.density=s.density;if(s.motion&&s.motion!=='snappy')d.dataset.motion=s.motion;['hue','chroma','tint'].forEach(function(k){if(s[k]!=null)d.style.setProperty('--'+k,s[k])})}catch(e){}})()`;
 }

@@ -1,29 +1,23 @@
 <!-- @component A presentational table of records with quiet headers, hairline rows and aligned numerals. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLTableAttributes } from 'svelte/elements';
+	import { maxHeightStyle } from '../../../internal/helpers.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLTableAttributes  } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
-	import { type Size } from '../../../internal/tokens.js';
-import { maxHeightClass, maxHeightStyle } from '../../../internal/helpers.js';
+	import { type Shape, type Size, type Surface } from '../../../internal/tokens.js';
 	import { densityClass, type Density } from './table.js';
 
 	interface Props extends HTMLTableAttributes {
-		/** Shades every other body row. */
 		striped?: boolean;
-		/** Lights a body row under the pointer. Turn off for dense reference tables. */
 		hoverable?: boolean;
-		/** Row density, on the shared ladder: `compact` · `cozy` · `comfortable`. */
 		density?: Density;
-		/** Keeps the header row in view while the body scrolls. Pair it with `maxHeight`. */
 		stickyHeader?: boolean;
-		/** Caps the height and scrolls the body: a ladder word (`lg`) or any CSS length (`24rem`). */
 		maxHeight?: Size | string;
-		/** Names the scroll region for assistive technology and makes it keyboard-scrollable. */
 		label?: string;
-		/** Draws the hairline frame and surface fill around the table. */
 		framed?: boolean;
-		/** The table parts: `TableCaption`, `TableHead`, `TableBody`. */
+		surface?: Surface;
+		shape?: Shape;
 		children?: Snippet;
 	}
 
@@ -35,6 +29,8 @@ import { maxHeightClass, maxHeightStyle } from '../../../internal/helpers.js';
 		maxHeight,
 		label,
 		framed = true,
+		surface = 'elevated',
+		shape = 'modern',
 		class: className,
 		children,
 		...rest
@@ -45,8 +41,8 @@ import { maxHeightClass, maxHeightStyle } from '../../../internal/helpers.js';
 <div
 	class={[
 		'scroll-xy scroll-thin wfull',
-		maxHeightClass(maxHeight),
-		framed && 'border modern bg-surface',
+		maxHeight && `max-h-${String(maxHeight).replace(/^h-/, '')}`,
+		framed && [surface, shape],
 		label && 'focus-ring'
 	]}
 	role={label ? 'region' : undefined}

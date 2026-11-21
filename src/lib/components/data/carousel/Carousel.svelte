@@ -1,10 +1,10 @@
 <!-- @component A scroll-snap carousel with autoplay, drag, and a spring-loaded indicator. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import { type Gap } from '../../../internal/tokens.js';
-import { gapValue } from '../../../internal/helpers.js';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import { untrack } from 'svelte';
+	import type {  ComponentProps, Snippet  } from 'svelte';
+	import { type Gap, type Pad, type Shape, type TextColor } from '../../../internal/tokens.js';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luChevronLeft, luChevronRight } from '@fractaldesign/icons/lucide';
 	import { Button } from '../../actions/button/index.js';
@@ -12,21 +12,16 @@ import { gapValue } from '../../../internal/helpers.js';
 	import { setCarousel, type SlideMeta } from './carousel.svelte.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** The index of the first visible slide. */
 		index?: number;
-		/** Called when the current slide changes. */
 		onIndexChange?: (index: number) => void;
-		/** When true, next and previous wrap around the ends. */
 		loop?: boolean;
-		/** Auto-advance. Pass `true` for 5s, or an interval in milliseconds. Pauses on hover, focus and reduced motion. */
 		autoplay?: boolean | number;
-		/** How many slides are visible at once. */
 		perView?: number;
-		/** The gap between slides. */
 		gap?: Gap;
-		/** Names the carousel for assistive technology. */
+		shape?: Shape;
+		textColor?: TextColor;
+		navButtonProps?: ComponentProps<typeof Button>;
 		label?: string;
-		/** The `CarouselSlide`s. */
 		children?: Snippet;
 	}
 
@@ -37,6 +32,9 @@ import { gapValue } from '../../../internal/helpers.js';
 		autoplay = false,
 		perView = 1,
 		gap = 'gap-md',
+		shape = 'modern',
+		textColor = 'text-muted',
+		navButtonProps,
 		label = 'Carousel',
 		class: className,
 		children,
@@ -64,10 +62,16 @@ import { gapValue } from '../../../internal/helpers.js';
 	const paused = $derived(hovered || focused || reducedMotion.current || !autoplay);
 	const interval = $derived(typeof autoplay === 'number' ? autoplay : 5000);
 
+	// A slide registers from an attachment, which would otherwise subscribe to the very
+	// list it is adding to: read → write → re-run, forever.
 	function register(meta: SlideMeta) {
-		slides = [...slides, meta];
+		untrack(() => {
+			slides = [...slides, meta];
+		});
 		return () => {
-			slides = slides.filter((item) => item.node !== meta.node);
+			untrack(() => {
+				slides = slides.filter((item) => item.node !== meta.node);
+			});
 		};
 	}
 
@@ -228,7 +232,7 @@ import { gapValue } from '../../../internal/helpers.js';
 </script>
 
 <div
-	class={['box gap-sm', className]}
+	class={['box', gap, className]}
 	role="region"
 	aria-roledescription="carousel"
 	aria-label={label}
@@ -245,17 +249,18 @@ import { gapValue } from '../../../internal/helpers.js';
 		<Button
 			variant="ghost"
 			size="h-sm"
-			class="btn-icon"
 			icon={luChevronLeft}
 			disabled={!canPrev}
 			aria-label="Previous slide"
 			onclick={() => go(-1)}
+			{...navButtonProps}
+			class="btn-icon {navButtonProps?.class ?? ''}"
 		/>
 		<div
 			class={['slides reel carousel-track grow', 'is-draggable', dragging && 'is-dragging']}
 			role="group"
 			aria-label="Slides"
-			{@attach vars({ 'per-view': perView, gap: gapValue(gap) })}
+			{@attach vars({ 'per-view': perView })}
 			{@attach reelAttach}
 			onscroll={onScroll}
 			onpointerdown={onPointerDown}
@@ -265,25 +270,26 @@ import { gapValue } from '../../../internal/helpers.js';
 		<Button
 			variant="ghost"
 			size="h-sm"
-			class="btn-icon"
 			icon={luChevronRight}
 			disabled={!canNext}
 			aria-label="Next slide"
 			onclick={() => go(1)}
+			{...navButtonProps}
+			class="btn-icon {navButtonProps?.class ?? ''}"
 		/>
 	</div>
 	<div class="row ycenter xcenter gap-sm relative" {@attach dotsAttach}>
-		<div class="indicator spring spring-snappy modern soft" {@attach vars({ ix, iy, iw, ih })}></div>
+		<div class={['indicator spring spring-snappy state-selected', shape]} {@attach vars({ ix, iy, iw, ih })}></div>
 		{#each slides as slide, i (slide.node)}
 			<button
 				type="button"
-				class="bare pad-sm focus-ring"
+				class={['bare focus-ring', 'pad-sm']}
 				aria-label={slide.label ?? `Go to slide ${i + 1}`}
 				aria-current={i === safeIndex ? 'true' : undefined}
 				onclick={() => setIndex(i)}
 				{@attach (el) => { dotEls[i] = el; queueMicrotask(measureIndicator); return () => { if (dotEls[i] === el) delete dotEls[i]; }; }}
 			>
-				<span class={['dot', i === safeIndex ? '' : 'text-muted']}></span>
+				<span class={['dot', i === safeIndex ? '' : textColor]}></span>
 			</button>
 		{/each}
 	</div>

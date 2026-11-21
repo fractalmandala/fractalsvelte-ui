@@ -1,30 +1,31 @@
 <!-- @component One option in the group: a native radio with a label and an optional description. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLInputAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLInputAttributes  } from 'svelte/elements';
 	import { animate, setMotion } from '../../../motion/index.js';
+	import type { Gap } from '../../../internal/tokens.js';
 	
 	import { getRadioGroup } from './radio-group.js';
 
 	interface Props extends Omit<HTMLInputAttributes, 'type' | 'size' | 'children' | 'checked' | 'name' | 'value' | 'group'> {
-		/** The value this radio selects. Must be unique within its group. */
 		value: string;
-		/** The label; in the `card` variant it is the card title. */
 		label?: string;
-		/** Supporting text under the label, in a quieter ink. */
 		description?: string;
-		/** Rich label content, used in place of `label`. */
+		gap?: Gap;
 		children?: Snippet;
 	}
 
-	let { value, label, description, disabled = false, class: className, children, ...rest }: Props = $props();
+	let { value, label, description, gap = 'gap-sm', disabled = false, class: className, children, ...rest }: Props = $props();
 
 	const group = getRadioGroup();
 	const id = $props.id();
 	const checked = $derived(group.value === value);
 	const off = $derived(disabled || group.disabled);
 	const card = $derived(group.variant === 'card');
+	const layout = $derived(
+		card ? ['ytop', 'spring', 'pad-md', group.shape, group.surface] : description ? ['ytop'] : ['ycenter']
+	);
 
 	let box = $state<HTMLElement>();
 	let seen = false;
@@ -41,9 +42,10 @@
 
 <label
 	class={[
-		'row gap-sm relative',
-		card ? 'ytop pad-md modern spring bg-surface' : description ? 'ytop' : 'ycenter',
-		card && (checked ? 'glow' : 'border'),
+		'row relative',
+		gap,
+		...layout,
+		card && checked && 'glow',
 		card && !checked && !off && 'shad-hover-xs',
 		group.textSize,
 		off ? 'disabled' : 'pointer',
@@ -67,7 +69,7 @@
 		<span class="column xleft gap-xs">
 			<span class="lh13 weight-500">{#if children}{@render children()}{:else}{label}{/if}</span>
 			{#if description}
-				<span id="{id}-desc" class="text-secondary text-sm lh14">{description}</span>
+				<span id="{id}-desc" class={['lh14', group.childTextColor, group.childTextSize]}>{description}</span>
 			{/if}
 		</span>
 	{/if}

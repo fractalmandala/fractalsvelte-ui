@@ -48,6 +48,7 @@ The JSDoc for this folder’s source lives here. `pnpm comments:restore` puts it
 - `size` :: The control height. Text follows this unless `textSize` is set.
 - `textSize` :: The text scale, independent of the control height. Follows `size` when omitted.
 - `textColor` :: The text colour. Defaults to `text-inverse` on dark variants, `text-primary` on light ones.
+- `gap` :: Space between the icon and the label on the shared gap ladder. @default 'gap-sm'
 - `shape` :: The corner shape.
 - `icon` :: An icon drawn before the label. With no label, set `aria-label`.
 - `pressable` :: Springs the toggle down under the pointer. Turn off for a still toggle.

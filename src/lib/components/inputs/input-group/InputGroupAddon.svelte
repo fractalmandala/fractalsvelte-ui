@@ -1,19 +1,19 @@
 <!-- @component A start or end cluster of icons, text or buttons. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  Gap  } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Whether the addon sits at the start or the end of the group. Visual order still follows source order. */
 		align?: 'start' | 'end';
-		/** Icons, text or buttons that belong to this side of the field. */
+		gap?: Gap;
 		children?: Snippet;
 	}
 
-	let { align = 'start', class: className, children, ...rest }: Props = $props();
+	let { align = 'start', gap = 'gap-xs', class: className, children, ...rest }: Props = $props();
 </script>
 
-<div class={['row ycenter shrink-0 gap-xs', className]} data-align={align} {...rest}>
+<div class={['row ycenter shrink-0', gap, className]} data-align={align} {...rest}>
 	{@render children?.()}
 </div>

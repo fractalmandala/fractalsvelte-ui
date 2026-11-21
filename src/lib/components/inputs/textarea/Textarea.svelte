@@ -1,53 +1,42 @@
 <!-- @component A multi-line text field that can grow with its content, with a live character counter. -->
 
 <script lang="ts">
-	import type { HTMLTextareaAttributes } from 'svelte/elements';
-	import type { Attachment } from 'svelte/attachments';
+	import type {  HTMLTextareaAttributes  } from 'svelte/elements';
+	import type {  Attachment  } from 'svelte/attachments';
 	import { vars } from '../../../motion/index.js';
-	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
+	import { defaultSize, type Gap, type Resize, type Shape, type Size, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
 	import { useFieldControl } from '../field/field.js';
 	import { focusFrame, frameClasses } from '../input/frame.js';
 
 	interface Props extends Omit<HTMLTextareaAttributes, 'value' | 'rows' | 'maxlength' | 'children' | 'disabled'> {
-		/** The text. Bindable; works controlled and uncontrolled. */
 		value?: string;
-		/** Called with the new text whenever it changes. */
 		onValueChange?: (value: string) => void;
-		/** The text scale. The height follows the content and `rows`. `textSize` overrides this. @default 'lg' */
 		size?: Size;
-		/** The text scale, independent of the control height. Follows `size` when omitted. */
+		gap?: Gap;
 		textSize?: TextSize;
-		/** The corner shape. @default 'modern' */
+		textColor?: TextColor;
 		shape?: Shape;
-		/** `outline` is a bordered field, `filled` a tinted one without a border, `ghost` is bare until hovered or focused. @default 'outline' */
-		look?: 'outline' | 'filled' | 'ghost';
-		/** Marks the field invalid (red border, `aria-invalid`). Inside a `Field` it follows the field's error unless set. */
+		variant?: Variant;
 		invalid?: boolean;
-		/** Grows the field with its text using CSS `field-sizing: content`, between `rows` and `maxRows` lines. */
 		autosize?: boolean;
-		/** The number of visible lines — the fixed height, or the minimum when `autosize` is on. */
 		rows?: number;
-		/** The most lines an autosizing field grows to before it scrolls. */
 		maxRows?: number;
-		/** The most characters allowed. */
 		maxlength?: number;
-		/** Shows a live character count under the field; with `maxlength` it reads `count / max`. */
 		counter?: boolean;
-		/** Which directions the user can drag-resize the field. Autosizing fields do not resize. */
-		resize?: 'none' | 'vertical' | 'horizontal' | 'both';
-		/** The underlying `<textarea>` element. Bindable. */
+		resize?: Resize;
 		ref?: HTMLTextAreaElement | null;
-			/** Blocks pointer and keyboard input, and dims the frame. */
-		disabled?: boolean | null;
+			disabled?: boolean | null;
 }
 
 	let {
 		value = $bindable(''),
 		onValueChange,
 		size,
+		gap = 'gap-xs',
 		textSize,
+		textColor = 'text-muted',
 		shape,
-		look,
+		variant,
 		invalid,
 		autosize = false,
 		rows = 3,
@@ -75,19 +64,19 @@
 		describedby: [describedby, counter ? counterId : null].filter(Boolean).join(' ') || null,
 		size,
 		shape,
-		look
+		variant
 	}));
 
 	const resolvedSize = $derived(size ?? control.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? control.shape ?? 'modern');
-	const resolvedVariant = $derived(look ?? control.look ?? 'outline');
+	const resolvedVariant = $derived<Variant>(variant ?? control.variant ?? 'outline');
 
-	const frame = $derived(frameClasses({ look: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled, content: true }));
-	const resizeClass = { none: 'resize-none', vertical: 'resize-y', horizontal: 'resize-x', both: 'resize-both' };
+	const frame = $derived(frameClasses({ variant: resolvedVariant, size: resolvedSize, textSize, shape: resolvedShape, invalid: control.invalid, disabled: control.disabled, content: true }));
+	const resizeClass: Record<Resize, string> = { none: 'resize-none', vertical: 'resize-y', horizontal: 'resize-x', both: 'resize-both' };
+	const counterText = $derived(textSize ?? 'text-xs');
 	const length = $derived(value.length);
 	const atLimit = $derived(maxlength !== undefined && length >= maxlength);
 
-	/** Where `field-sizing` is missing, mirror the content height into --fit. */
 	function fit(_text: string): Attachment<HTMLTextAreaElement> {
 		return (node) => {
 			if (CSS.supports('field-sizing', 'content')) return;
@@ -103,7 +92,7 @@
 	}
 </script>
 
-<div class={['box gap-xs wfull', className]}>
+<div class={['box', gap, 'wfull', className]}>
 	<div role="presentation" class={frame} onpointerdown={(event) => focusFrame(event, ref)}>
 		<textarea
 			bind:this={ref}
@@ -123,7 +112,7 @@
 		></textarea>
 	</div>
 	{#if counter}
-		<span id={counterId} class={['text-xs tabular-nums ta-r', atLimit ? 'text-danger' : 'text-muted']}>
+		<span id={counterId} class={[counterText, 'tabular-nums ta-r', atLimit ? 'tone-danger text-theme' : textColor]}>
 			{length}{maxlength !== undefined ? ` / ${maxlength}` : ''}
 			<span class="sr-only">characters</span>
 		</span>

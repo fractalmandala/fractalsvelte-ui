@@ -1,13 +1,14 @@
 <!-- @component A ⌘K command launcher on a modal dialog, with fuzzy ranking, highlighted matches and staggered results. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLDialogAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLDialogAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luSearch } from '@fractaldesign/icons/lucide';
 	import { dialogSync } from '../../../internal/helpers.js';
+	import type { ChildTextColor, ChildTextSize, Pad, TextColor, TextSize, Surface } from '../../../internal/tokens.js';
 	import { stagger, vars } from '../../../motion/index.js';
-	import { surfaceClass, type OverlaySurface, type OverlayTrigger } from '../dialog/dialog.js';
+	import {type OverlayTrigger} from '../dialog/dialog.js';
 	import {
 		groupCommands,
 		marks,
@@ -16,23 +17,19 @@
 	} from './command.js';
 
 	interface Props extends Omit<HTMLDialogAttributes, 'title' | 'open' | 'children'> {
-		/** Whether the palette is open. Bind it, or let the trigger or the global shortcut drive it. */
 		open?: boolean;
-		/** Called whenever the palette opens or closes. */
 		onOpenChange?: (open: boolean) => void;
-		/** The commands to search, group and rank. */
 		commands?: Command[];
-		/** A global shortcut that toggles the palette, for example `mod+k`. `mod` is ⌘ on Apple platforms and Ctrl elsewhere. */
 		shortcut?: string;
-		/** The placeholder of the search field. */
 		placeholder?: string;
-		/** The panel fill: opaque, or frosted glass. */
-		surface?: OverlaySurface;
-		/** Shown when the query has no matches. Receives the current query. */
+		textSize?: TextSize;
+		childTextSize?: ChildTextSize;
+		bodyTextSize?: TextSize;
+		textColor?: TextColor;
+		childTextColor?: ChildTextColor;
+		surface?: Surface;
 		empty?: Snippet<[string]>;
-		/** Replaces the default footer hints. */
 		footer?: Snippet;
-		/** The element that opens the palette. Spread `props` onto your own button. */
 		trigger?: Snippet<[OverlayTrigger]>;
 	}
 
@@ -42,7 +39,12 @@
 		commands = [],
 		shortcut,
 		placeholder = 'Search commands…',
-		surface = 'solid',
+		textSize = 'text-md',
+		childTextSize = 'text-xs',
+		bodyTextSize = 'text-sm',
+		textColor = 'text-muted',
+		childTextColor = 'text-secondary',
+		surface = 'overlayed',
 		empty,
 		footer,
 		trigger,
@@ -147,17 +149,17 @@
 
 <dialog
 	id={uid}
-	class={['dialog open-column sized pop enter-scale radius-lg shad-2xl', surfaceClass[surface], className]}
+	class={['dialog open-column sized pop enter-scale radius-lg', surface, className]}
 	aria-label="Command palette"
 	{@attach dialogSync(() => open, setOpen, { dismissible: true })}
 	{@attach vars({ size: 'var(--measure-md)' })}
 	{...rest}
 >
 	<div class="row ycenter gap-sm px-lg py-bs bb-sub shrink-0">
-		<Icon icon={luSearch} class="text-muted shrink-0" />
+		<Icon icon={luSearch} class={['shrink-0', textColor]} />
 		<input
 			bind:this={field}
-			class="bare grow text-md"
+			class={['bare grow', textSize]}
 			type="text"
 			{placeholder}
 			bind:value={query}
@@ -172,14 +174,14 @@
 	<div
 		id={listId}
 		role="listbox"
-		class="box gap-xs pad-xs grow min0 scroll-y scroll-thin"
+		class={['box gap-xs grow min0 scroll-y scroll-thin', 'pad-xs']}
 		{@attach stagger({ selector: '[role="option"]', step: 30 })}
 	>
 		{#key query}
 			{#each groups as group (group.group)}
 				<div role="group" aria-label={group.group || undefined} class="box">
 					{#if group.group}
-						<div class="text-xs text-muted weight-500 px-sm pt-sm pb-xs select-none">{group.group}</div>
+						<div class={['weight-500 px-sm pt-sm pb-xs select-none', childTextSize, textColor]}>{group.group}</div>
 					{/if}
 					{#each group.commands as command (command.id)}
 						{@const isActive = flat[active]?.id === command.id}
@@ -198,7 +200,7 @@
 							}}
 						>
 							{#if command.icon}
-								<Icon icon={command.icon} class="text-secondary shrink-0" />
+								<Icon icon={command.icon} class={['shrink-0', childTextColor]} />
 							{/if}
 							<span class="grow truncate">
 								{#each marks(command.label, query) as part, i (`${i}:${part.text}`)}
@@ -206,13 +208,13 @@
 								{/each}
 							</span>
 							{#if command.shortcut}
-								<kbd class="kbd shrink-0 font-mono text-xs text-muted">{command.shortcut}</kbd>
+								<kbd class={['kbd shrink-0 font-mono', childTextSize, textColor]}>{command.shortcut}</kbd>
 							{/if}
 						</div>
 					{/each}
 				</div>
 			{:else}
-				<div class="px-sm py-lg text-sm text-muted ta-c">
+				<div class={['px-sm py-lg ta-c', bodyTextSize, textColor]}>
 					{#if empty}
 						{@render empty(query)}
 					{:else}
@@ -222,7 +224,7 @@
 			{/each}
 		{/key}
 	</div>
-	<footer class="row wrap ycenter gap-sm px-lg py-sm bt-sub text-xs text-muted shrink-0">
+	<footer class={['row wrap ycenter gap-sm px-lg py-sm bt-sub shrink-0', childTextSize, textColor]}>
 		{#if footer}
 			{@render footer()}
 		{:else}

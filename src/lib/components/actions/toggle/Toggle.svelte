@@ -1,13 +1,12 @@
 <!-- @component A two-state button that stays pressed until pressed again. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLButtonAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLButtonAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
-	import type { IconData } from '@fractaldesign/icons';
+	import type {  IconData  } from '@fractaldesign/icons';
 	import { press } from '../../../motion/index.js';
-	import { defaultTextColor } from '../../../internal/helpers.js';
-	import { type Shape, type Size, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
+	import { type Gap, type Shape, type Size, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'disabled'> {
 		pressed?: boolean;
@@ -16,6 +15,7 @@
 		size?: Size;
 		textSize?: TextSize;
 		textColor?: TextColor;
+		gap?: Gap;
 		shape?: Shape;
 		icon?: IconData;
 		pressable?: boolean;
@@ -30,6 +30,7 @@
 		size = 'h-lg',
 		textSize,
 		textColor,
+		gap = 'gap-sm',
 		shape = 'modern',
 		icon,
 		pressable = true,
@@ -41,7 +42,6 @@
 	}: Props = $props();
 
 	const iconOnly = $derived(!children);
-	const resolvedTextColor = $derived(textColor ?? defaultTextColor(variant));
 
 	function toggle(event: MouseEvent & { currentTarget: EventTarget & HTMLButtonElement }) {
 		onclick?.(event);
@@ -53,9 +53,10 @@
 
 <button
 	class={[
-		'button no-scaling gap-sm weight-500 inline-flex',
+		'button no-scaling weight-500 inline-flex',
+		gap,
 		variant,
-		size, textSize, resolvedTextColor,
+		size, textSize,
 		shape,
 		iconOnly && 'btn-icon',
 		variant === 'secondary' && pressed && 'selected',

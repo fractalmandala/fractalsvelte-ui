@@ -1,21 +1,9 @@
-/**
- * Svelte transition functions driven by real spring curves.
- *
- * Each returns `{ delay, duration, easing, css }` where `duration` is the
- * spring's settle time (`springDuration`) and `easing` follows the spring
- * itself (`springEase`) — so `bouncy` really overshoots. Svelte runs the `css`
- * keyframes via the Web Animations API. Under reduced motion every transition
- * becomes a short plain opacity fade.
- */
 import type { TransitionConfig } from 'svelte/transition';
 import { reducedMotion } from './global.svelte.js';
 import { springDuration, springEase, type SpringInput } from './spring.js';
 
-/** Parameters shared by every spring transition. */
 export interface SpringTransitionParams {
-	/** The spring (preset name or partial config). Defaults to `'snappy'`. */
 	spring?: SpringInput;
-	/** Delay before the transition starts, in ms. Defaults to `0`. */
 	delay?: number;
 }
 
@@ -41,22 +29,12 @@ function computed(node: Element): { opacity: number; transform: string } {
 
 const n = (v: number): string => (Math.round(v * 1000) / 1000).toString();
 
-/**
- * Fade in/out along a spring curve.
- * @param node The transitioning element.
- * @param params `spring`, `delay`.
- */
 export function springFade(node: Element, params: SpringTransitionParams = {}): TransitionConfig {
 	if (reducedMotion.current) return reduced(params.delay ?? 0);
 	const { opacity } = computed(node);
 	return { ...base(params), css: (t) => `opacity: ${n(Math.min(1, Math.max(0, t)) * opacity)}` };
 }
 
-/**
- * Fly in/out from an offset, springing into place (overshoot included).
- * @param node The transitioning element.
- * @param params `spring`, `delay`, `x`/`y` offset in px (default `y: 16`), `opacity` at the offset (default `0`).
- */
 export function springFly(
 	node: Element,
 	params: SpringTransitionParams & { x?: number; y?: number; opacity?: number } = {}
@@ -76,11 +54,6 @@ export function springFly(
 	};
 }
 
-/**
- * Scale in/out from `start`, with spring overshoot.
- * @param node The transitioning element.
- * @param params `spring`, `delay`, `start` scale (default `0.9`), `opacity` at the start (default `0`).
- */
 export function springScale(
 	node: Element,
 	params: SpringTransitionParams & { start?: number; opacity?: number } = {}
@@ -100,11 +73,6 @@ export function springScale(
 	};
 }
 
-/**
- * Blur and fade in/out, with an optional vertical drift.
- * @param node The transitioning element.
- * @param params `spring`, `delay`, `amount` of blur in px (default `8`), `y` drift in px (default `0`).
- */
 export function springBlur(
 	node: Element,
 	params: SpringTransitionParams & { amount?: number; y?: number } = {}
@@ -124,13 +92,6 @@ export function springBlur(
 	};
 }
 
-/**
- * Collapse/expand the element's height (or width with `axis: 'x'`), including
- * padding, margin and border, along a spring curve. Overshoot is clamped so
- * surrounding layout never bounces.
- * @param node The transitioning element.
- * @param params `spring`, `delay`, `axis` (`'y'` default, or `'x'`).
- */
 export function springSlide(node: Element, params: SpringTransitionParams & { axis?: 'x' | 'y' } = {}): TransitionConfig {
 	if (reducedMotion.current) return reduced(params.delay ?? 0);
 	const style = getComputedStyle(node);

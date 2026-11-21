@@ -1,9 +1,9 @@
 <!-- @component A spring-dragged element, with optional bounds, a handle, and keyboard movement. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { Attachment } from 'svelte/attachments';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  Attachment  } from 'svelte/attachments';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import {
 		animate,
 		drag,
@@ -21,33 +21,19 @@
 	}
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The axis the element can be dragged along. */
 		axis?: DragAxis;
-		/** Limits for the drag. `'parent'` keeps the element inside its parent's box. */
 		bounds?: DragBounds;
-		/** When true, the element springs back to its rest position on release. */
 		snapBack?: boolean;
-		/** When true, release velocity carries the element on before it settles. */
 		momentum?: boolean;
-		/** How far the element may rubber-band past a bound, from 0 to 1. */
 		elastic?: number;
-		/** The spring used on release and for keyboard movement. */
 		spring?: SpringInput;
-		/** A CSS selector for a drag handle, or a snippet rendered as the handle. When set, only the handle starts a pointer drag. */
 		handle?: string | Snippet;
-		/** Turns pointer and keyboard dragging off. */
 		disabled?: boolean;
-		/** The current offset from rest, in pixels. Two-way bindable. */
 		position?: Point;
-		/** Called when `position` changes, from a drag or from the keyboard. */
 		onPositionChange?: (position: Point) => void;
-		/** Called when a pointer drag starts. */
 		onDragStart?: (state: DragState) => void;
-		/** Called as the pointer moves during a drag. */
 		onDrag?: (state: DragState) => void;
-		/** Called when a pointer drag ends. */
 		onDragEnd?: (state: DragState) => void;
-		/** The draggable content. */
 		children?: Snippet;
 	}
 

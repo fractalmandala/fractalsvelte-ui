@@ -1,18 +1,14 @@
 <!-- @component A decorative background layer drawn from pure CSS gradients: grid, dots, lines or a cross. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
 	import { type Tone } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** The repeating motif, drawn with CSS gradients. */
 		form?: 'grid' | 'dots' | 'lines' | 'cross';
-		/** Tile size of the pattern, as a CSS length. */
 		tile?: string;
-		/** A mask that fades the pattern out. */
 		fade?: 'none' | 'radial' | 'top' | 'bottom' | 'edges';
-		/** Colour of the pattern, taken from the shared tone axis. */
 		tone?: Tone;
 	}
 

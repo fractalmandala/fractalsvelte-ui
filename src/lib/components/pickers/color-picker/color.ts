@@ -1,15 +1,9 @@
-/** Colour conversion for the colour picker. Internal model is HSV + alpha; output is a CSS colour string. */
-
 export type ColorFormat = 'hex' | 'rgb' | 'oklch';
 
 export interface Hsv {
-	/** Hue, 0–360. */
 	h: number;
-	/** Saturation, 0–1. */
 	s: number;
-	/** Value (brightness), 0–1. */
 	v: number;
-	/** Alpha, 0–1. */
 	a: number;
 }
 
@@ -99,7 +93,6 @@ function fmt(n: number, digits = 3): string {
 	return String(Object.is(r, -0) ? 0 : r);
 }
 
-/** Format HSV as a CSS colour string in `format`. */
 export function formatColor(hsv: Hsv, format: ColorFormat): string {
 	const { r, g, b, a } = hsvToRgb(hsv);
 	const alpha = a < 1 - 1e-6;
@@ -116,7 +109,6 @@ export function formatColor(hsv: Hsv, format: ColorFormat): string {
 	return alpha ? `oklch(${core} / ${fmt(a, 3)})` : `oklch(${core})`;
 }
 
-/** Opaque CSS colour of the same hue, saturation and value — used for the alpha slider's solid end. */
 export function formatSolid(hsv: Hsv, format: ColorFormat = 'hex'): string {
 	return formatColor({ ...hsv, a: 1 }, format);
 }
@@ -235,7 +227,6 @@ function hslToHsv(h: number, s: number, l: number): Hsv {
 	return { h: ((h % 360) + 360) % 360, s: sv, v, a: 1 };
 }
 
-/** Parse a CSS colour string (hex, rgb, rgba, hsl, oklch) into HSV, or `null` if it is not recognised. */
 export function parseColor(input: string): Hsv | null {
 	const text = input.trim();
 	if (!text) return null;

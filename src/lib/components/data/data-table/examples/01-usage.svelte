@@ -35,4 +35,4 @@
 	];
 </script>
 
-<DataTable {columns} {rows} rowKey="id" caption="Recent deployments" pageSize={6} />
+<DataTable {columns} {rows} rowKey="id" caption="Recent deployments" pageSize={6} gap="gap-md" />

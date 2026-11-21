@@ -1,4 +1,4 @@
-<!-- @example States and forms :: A disabled option, a disabled control, and a named group that submits with a form. -->
+<!-- @example States, surfaces and forms :: A disabled option, a disabled control, a control whose track, indicator, padding, corner and resting ink are its own, and a named group that submits with a form. -->
 <script lang="ts">
 	import { SegmentedControl } from '@fractaldesign/fractalsvelte-ui';
 
@@ -28,5 +28,18 @@
 	<div class="box gap-xs">
 		<p class="text-sm text-secondary">Archived project (disabled)</p>
 		<SegmentedControl {options} value="staging" disabled label="Archived environment" />
+	</div>
+	<div class="box gap-xs">
+		<p class="text-sm text-secondary">Tinted track, curved ends</p>
+		<SegmentedControl
+			{options}
+			value="staging"
+			surface="paneled"
+			indicatorSurface="elevated"
+			pad="pad-md"
+			shape="curved"
+			childTextColor="text-muted"
+			label="Draft environment"
+		/>
 	</div>
 </div>

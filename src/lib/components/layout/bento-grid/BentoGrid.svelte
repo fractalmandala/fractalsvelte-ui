@@ -1,20 +1,15 @@
 <!-- @component A dense, staggered bento grid whose items can span columns and rows, and collapse to one column on small screens. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import type {  Snippet  } from 'svelte';
 	import { type Gap } from '../../../internal/tokens.js';
-import { gapValue } from '../../../internal/helpers.js';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { stagger, vars } from '../../../motion/index.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** How many columns the grid has. Collapses to one column when the container is narrower than the md measure. */
 		columns?: number;
-		/** The gap between tiles. */
 		gap?: Gap;
-		/** The height of one grid row, as a CSS length. Items with `rowSpan` occupy this many rows. */
 		rowHeight?: string;
-		/** The bento items. */
 		children?: Snippet;
 	}
 
@@ -30,7 +25,7 @@ import { gapValue } from '../../../internal/helpers.js';
 
 <div
 	class={['bento', className]}
-	{@attach vars({ cols: columns, gap: gapValue(gap), 'row-h': rowHeight })}
+	{@attach vars({ cols: columns, 'row-h': rowHeight })}
 	{@attach stagger()}
 	{...rest}
 >

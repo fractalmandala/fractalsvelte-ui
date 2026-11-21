@@ -1,23 +1,23 @@
 <!-- @component A bar that sticks to the top or bottom of its scroll container and gains glass and elevation only while stuck. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Placement, Surface  } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
 	import { scrollParent } from './sticky-bar.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Which edge of the scroll container the bar sticks to. */
-		position?: 'top' | 'bottom';
-		/** How far the stuck bar sits from that edge, as a CSS length. */
+		position?: Placement;
 		offset?: string;
-		/** The bar's content — a toolbar, a title, or a save row. */
+		surface?: Surface;
 		children?: Snippet;
 	}
 
 	let {
 		position = 'top',
 		offset = '0px',
+		surface = 'glass',
 		class: className,
 		children,
 		...rest
@@ -47,7 +47,7 @@
 	class={[
 		'sticky z-sticky spring pop open',
 		position === 'top' ? 'pin-top enter-up' : 'pin-bottom enter-down',
-		stuck && 'glass rim shad-sm',
+		stuck && surface,
 		className
 	]}
 	data-stuck={stuck || undefined}

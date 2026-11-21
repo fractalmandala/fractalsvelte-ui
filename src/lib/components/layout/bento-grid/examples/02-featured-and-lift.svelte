@@ -4,7 +4,7 @@
 </script>
 
 <BentoGrid columns={3} rowHeight="8rem">
-	<BentoItem colSpan={2} rowSpan={2} featured lift>
+	<BentoItem colSpan={2} rowSpan={2} featured lift pad="pad-lg" surface="glass">
 		<span class="text-sm text-muted">Studio journal</span>
 		<span class="text-md weight-500">How we redesigned the invoice run</span>
 		<span class="text-sm text-secondary">A three-week pass on statuses, reminders and the PDF, written up for the team.</span>

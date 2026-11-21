@@ -1,20 +1,10 @@
-/**
- * The single shared animation-frame loop and the spring integrator.
- * Internal module: `animate()` and `SpringValue` both register tickers here,
- * so however many springs run there is exactly one `requestAnimationFrame`
- * chain, and it stops as soon as nothing is moving.
- */
 import { globalMotion } from './global.svelte.js';
 import type { SpringConfig } from './spring.js';
 
-/** A per-frame callback. Receives the clamped, time-scaled step in seconds; returns `false` when idle. */
 export type Ticker = (dt: number) => boolean;
 
-/** Largest real frame gap simulated in one frame (a backgrounded tab must not explode the simulation). */
 const MAX_DT = 1 / 15;
-/** Fixed integration sub-step (seconds). */
 const STEP = 1 / 240;
-/** Upper bound on sub-steps per frame. */
 const MAX_STEPS = 1200;
 
 const tickers = new Set<Ticker>();
@@ -38,7 +28,6 @@ function loop(now: number): void {
 	}
 }
 
-/** Register a ticker; starts the loop if it was idle. Browser-only. */
 export function addTicker(ticker: Ticker): void {
 	tickers.add(ticker);
 	if (frame === 0 && typeof requestAnimationFrame === 'function') {
@@ -46,21 +35,15 @@ export function addTicker(ticker: Ticker): void {
 	}
 }
 
-/** Remove a ticker. The loop stops on its own once the set is empty. */
 export function removeTicker(ticker: Ticker): void {
 	tickers.delete(ticker);
 }
 
-/** Mutable spring state: position and velocity. */
 export interface SpringState {
 	x: number;
 	v: number;
 }
 
-/**
- * Advance `state` toward `target` by `dt` seconds with fixed-step RK4
- * (sub-steps of at most 1/240 s). Mutates and returns `state`.
- */
 export function integrate(state: SpringState, target: number, config: SpringConfig, dt: number): SpringState {
 	const { stiffness: k, damping: c, mass: m } = config;
 	const steps = Math.min(MAX_STEPS, Math.max(1, Math.ceil(dt / STEP)));

@@ -1,20 +1,17 @@
 <!-- @component A header cell (<th scope="col">) with alignment, numeric and width helpers. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLThAttributes } from 'svelte/elements';
+	import type {  TextAlign  } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLThAttributes  } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
 	import { cellAlign, type TableAlign } from './table.js';
 	
 
 	interface Props extends Omit<HTMLThAttributes, 'align'> {
-		/** Horizontal alignment of the header text. Match it to the column's cells. */
-		align?: TableAlign;
-		/** A numeric column: right-aligned, so it lines up with `numeric` cells. */
+		align?: TextAlign;
 		numeric?: boolean;
-		/** A fixed column width (any CSS length, e.g. `8rem` or `20%`). */
 		width?: string;
-		/** The header text. */
 		children?: Snippet;
 	}
 

@@ -1,29 +1,20 @@
 <!-- @component A group of disclosures that open with a spring height, one or many at a time. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import { roving } from '../../../internal/roving.js';
-	import {
-		setAccordion,
-		lookClass,
-		type AccordionVariant
-	} from './accordion.svelte.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import { roving } from '../../../internal/helpers.js';
+	import { setAccordion, rootClass } from './accordion.svelte.js';
+	import type { Grouping, Pad, Surface } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** `single` keeps one item open; `multiple` allows several. */
 		multiple?: boolean;
-		/** The open item value (`single`) or values (`multiple`). */
 		value?: string | string[] | null;
-		/** Called when the open item or items change. */
 		onValueChange?: (value: string | string[] | null) => void;
-		/** When single, allow the open panel to be closed. */
 		collapsible?: boolean;
-		/** How items are grouped: separate cards, one contained panel, or a flush stack. */
-		look?: AccordionVariant;
-		/** The heading level wrapping each item's trigger button. */
+		grouping?: Grouping;
+		surface?: Surface;
 		headingLevel?: 2 | 3 | 4 | 5 | 6;
-		/** The `AccordionItem`s. */
 		children?: Snippet;
 	}
 
@@ -32,7 +23,8 @@
 		value = $bindable(null),
 		onValueChange,
 		collapsible = true,
-		look = 'contained',
+		grouping = 'contained',
+		surface = 'outlined',
 		headingLevel = 3,
 		class: className,
 		children,
@@ -66,7 +58,8 @@
 	setAccordion({
 		uid,
 		get multiple() { return multiple; },
-		get look() { return look; },
+		get grouping() { return grouping; },
+		get surface() { return surface; },
 		get headingLevel() { return headingLevel; },
 		get collapsible() { return collapsible; },
 		value: () => value,
@@ -76,7 +69,7 @@
 </script>
 
 <div
-	class={[lookClass[look], className]}
+	class={[rootClass[grouping], className]}
 	{@attach roving({ selector: '[data-accordion-trigger]', orientation: 'vertical', loop: false })}
 	{...rest}
 >

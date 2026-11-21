@@ -1,26 +1,19 @@
 <!-- @component One pane of the group, with its default, minimum, maximum and collapse sizes. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { untrack } from 'svelte';
 	import { vars } from '../../../motion/index.js';
 	import { getResizable, type PaneEntry } from './resizable.svelte.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** The starting size in percent. Panes without one share what the others leave. */
 		defaultSize?: number;
-		/** The smallest size in percent the pane may be dragged to. */
 		minSize?: number;
-		/** The largest size in percent the pane may be dragged to. */
 		maxSize?: number;
-		/** Lets the pane collapse to `collapsedSize` when dragged past its minimum, or toggled with Enter on its handle. */
 		collapsible?: boolean;
-		/** The size in percent the pane rests at when collapsed. `0` hides it entirely. */
 		collapsedSize?: number;
-		/** Whether the pane is collapsed. Bindable; set it to open or close the pane with a spring. */
 		collapsed?: boolean;
-		/** The pane's content. */
 		children?: Snippet;
 	}
 

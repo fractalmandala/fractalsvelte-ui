@@ -1,27 +1,23 @@
 <!-- @component A list of term and definition pairs, laid out as a stack or as aligned rows. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Orientation } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  ChildTextColor, ChildTextSize, Orientation, TextSize  } from '../../../internal/tokens.js';
 
 	interface DescriptionItem {
-		/** The term. */
 		term: string;
-		/** The definition. */
 		description: string;
 	}
 
 	interface Props extends HTMLAttributes<HTMLDListElement> {
-		/** Term and definition pairs. When omitted, `children` are rendered inside the list. */
 		items?: DescriptionItem[];
-		/** `vertical` stacks the term over the definition; `horizontal` places them on one row. */
 		orientation?: Orientation;
-		/** How many columns of pairs to lay out. */
 		columns?: '1' | '2' | '3' | '4';
-		/** Draws a hairline between pairs. */
 		dividers?: boolean;
-		/** Custom terms and definitions, used when `items` is omitted. */
+		textSize?: TextSize;
+		childTextSize?: ChildTextSize;
+		childTextColor?: ChildTextColor;
 		children?: Snippet;
 	}
 
@@ -30,6 +26,9 @@
 		orientation = 'vertical',
 		columns = '1',
 		dividers = false,
+		textSize = 'text-md',
+		childTextSize = 'text-sm',
+		childTextColor = 'text-secondary',
 		class: className,
 		children,
 		...rest
@@ -57,8 +56,8 @@
 	{#if items}
 		{#each items as item, i (item.term + String(i))}
 			<div class={pairClass}>
-				<dt class="text-sm text-secondary weight-500">{item.term}</dt>
-				<dd class="text-md">{item.description}</dd>
+				<dt class={['weight-500', childTextSize, childTextColor]}>{item.term}</dt>
+				<dd class={textSize}>{item.description}</dd>
 			</div>
 		{/each}
 	{:else}

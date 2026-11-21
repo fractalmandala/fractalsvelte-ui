@@ -5,13 +5,15 @@
 :where(.avatar) { background-color: color-mix(in oklab, oklch(0.7 0.13 var(--avatar-hue, 268)) 20%, var(--bg-panel)); color: color-mix(in oklab, oklch(0.62 0.16 var(--avatar-hue, 268)) 70%, var(--text-primary)); }
 .avatar::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--text-primary) 10%, transparent); pointer-events: none; }
 .avatar > img { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: inherit; }
-.avatar-xs { --avatar-size: var(--h-bs); }
-.avatar-sm { --avatar-size: var(--h-lg); }
-.avatar-md { --avatar-size: var(--h-xl); }
-.avatar-lg { --avatar-size: var(--h-2xl); }
-.avatar-xl { --avatar-size: var(--h-3xl); }
-/* Circle avatars use the system .round shape. */
-.avatar.rounded { border-radius: var(--radius-avatar); }
+/* The size prop is the canon height class; each rung feeds --avatar-size. */
+.avatar.h-xs { --avatar-size: var(--h-xs); }
+.avatar.h-sm { --avatar-size: var(--h-sm); }
+.avatar.h-md { --avatar-size: var(--h-md); }
+.avatar.h-bs { --avatar-size: var(--h-bs); }
+.avatar.h-lg { --avatar-size: var(--h-lg); }
+.avatar.h-xl { --avatar-size: var(--h-xl); }
+.avatar.h-2xl { --avatar-size: var(--h-2xl); }
+.avatar.h-3xl { --avatar-size: var(--h-3xl); }
 .avatar.square { border-radius: 0; }
 .avatar-status { position: absolute; right: 4%; bottom: 4%; font-size: calc(var(--avatar-size) * 0.5); box-shadow: 0 0 0 2px var(--avatar-ring, var(--bg-surface)); }
 .avatar-group.gap-overlap.row { --avatar-ring: var(--bg-surface); }

@@ -1,4 +1,4 @@
-<!-- @example Submenus and placement :: A nested submenu opened to the side, every placement, and a controlled solid menu. -->
+<!-- @example Submenus and placement :: A nested submenu opened to the side with its own inset, every placement, and a controlled solid menu. -->
 <script lang="ts">
 	import { luShare, luStar } from '@fractaldesign/icons/lucide';
 	import {
@@ -43,12 +43,20 @@
 	</div>
 
 	<div class="row wrap gap-sm ycenter">
-		<DropdownMenu bind:open surface="solid" onOpenChange={(next) => (open = next)}>
+		<DropdownMenu bind:open surface="overlayed" onOpenChange={(next) => (open = next)}>
 			{#snippet trigger({ props })}
 				<Button variant="secondary" {...props}>{open ? 'Close actions' : 'Project actions'}</Button>
 			{/snippet}
 			<MenuItem icon={luStar} onclick={() => (log = 'Starred')}>Star project</MenuItem>
-			<MenuSub bind:open={shareOpen} icon={luShare} label="Share" surface="solid" onOpenChange={(next) => (shareOpen = next)}>
+			<MenuSub
+				bind:open={shareOpen}
+				icon={luShare}
+				label="Share"
+				surface="overlayed"
+				textColor="text-secondary"
+				childTextColor="text-muted"
+				onOpenChange={(next) => (shareOpen = next)}
+			>
 				<MenuItem onclick={() => (log = 'Copied link')}>Copy link</MenuItem>
 				<MenuItem onclick={() => (log = 'Invited by email')}>Invite by email</MenuItem>
 				<MenuItem disabled>Share to Slack (offline)</MenuItem>

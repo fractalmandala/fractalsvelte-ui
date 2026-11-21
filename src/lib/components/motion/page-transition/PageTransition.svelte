@@ -1,8 +1,8 @@
 <!-- @component Declarative route transitions for SvelteKit, with a keyed spring fallback when view transitions are unavailable. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import {
 		reducedMotion,
 		setupViewTransitions,
@@ -18,13 +18,9 @@
 	} from '../../../motion/index.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** SvelteKit's `onNavigate` from `$app/navigation`. Omit when using only the keyed fallback. */
 		onNavigate?: OnNavigateLike;
-		/** A fixed transition type, or a function of the navigation (for example back → `slide-back`). */
 		transition?: ViewTransitionType | ((navigation: { from: { url: URL } | null; to: { url: URL } | null; type: string; delta?: number }) => ViewTransitionType);
-		/** When set, children are keyed by this value so a spring can play when view transitions are unavailable. */
 		key?: string | number;
-		/** The page or panel content. Omit when the component is only wiring route transitions. */
 		children?: Snippet;
 	}
 

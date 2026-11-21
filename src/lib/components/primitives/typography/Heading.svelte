@@ -1,15 +1,12 @@
 <!-- @component A page heading at level 1 to 4; scale sets the visual size independently of the semantic level. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 
 	interface Props extends HTMLAttributes<HTMLHeadingElement> {
-		/** The heading level, 1 to 4. Pick the one that fits the page outline. */
 		level?: 1 | 2 | 3 | 4;
-		/** The visual scale, 1 to 4. Follows `level` when omitted. */
 		scale?: 1 | 2 | 3 | 4;
-		/** The heading text. */
 		children?: Snippet;
 	}
 

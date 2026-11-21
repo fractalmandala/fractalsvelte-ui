@@ -1,17 +1,25 @@
 <!-- @component Supporting text under the title. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type { TextColor, TextSize } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLParagraphElement> {
-		/** The supporting text under the title. */
+		textSize?: TextSize;
+		textColor?: TextColor;
 		children?: Snippet;
 	}
 
-	let { class: className, children, ...rest }: Props = $props();
+	let {
+		textSize = 'text-sm',
+		textColor = 'text-muted',
+		class: className,
+		children,
+		...rest
+	}: Props = $props();
 </script>
 
-<p class={['text-sm text-muted lh14', className]} {...rest}>
+<p class={['lh14', textSize, textColor, className]} {...rest}>
 	{@render children?.()}
 </p>

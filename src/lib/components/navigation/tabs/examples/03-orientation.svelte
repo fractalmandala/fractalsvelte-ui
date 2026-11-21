@@ -5,7 +5,7 @@
 	let value = $state<string | null>('studio');
 </script>
 
-<Tabs bind:value orientation="vertical" variant="underline">
+<Tabs bind:value orientation="vertical" grouping="flush">
 	<div class="row gap-lg ytop">
 		<TabList>
 			<Tab value="studio">Studio</Tab>

@@ -1,21 +1,21 @@
 <!-- @component One tab button, paired with a TabPanel of the same value. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLButtonAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLButtonAttributes  } from 'svelte/elements';
 	
+	import type {  AlignContent, Gap } from '../../../internal/tokens.js';
 	import { getTabs } from './tabs.svelte.js';
 
 	interface Props extends HTMLButtonAttributes {
-		/** The value this tab represents, paired with its `TabPanel`. */
 		value: string;
-		/** Prevents the tab from being selected. */
 		disabled?: boolean;
-		/** The tab label. */
+		gap?: Gap;
+		alignContent?: AlignContent;
 		children?: Snippet;
 	}
 
-	let { value, disabled = false, class: className, children, ...rest }: Props = $props();
+	let { value, disabled = false, gap = 'gap-sm', alignContent = 'xcenter', class: className, children, ...rest }: Props = $props();
 
 	const tabs = getTabs();
 	const selected = $derived(tabs.value() === value);
@@ -38,9 +38,11 @@
 	aria-controls={panelId}
 	disabled={disabled || undefined}
 	class={[
-		'bare relative z-raised row ycenter xcenter gap-sm px-md weight-500 focus-ring select-none',
+		'bare relative z-raised row ycenter px-md weight-500 focus-ring select-none',
+		gap,
+		alignContent,
 		tabs.size,
-		selected ? '' : 'text-secondary',
+		selected ? '' : tabs.textColor,
 		disabled && 'disabled',
 		className
 	]}

@@ -8,6 +8,8 @@
 	description="You will lose access to its projects. An owner can invite you back."
 	confirmLabel="Leave workspace"
 	cancelLabel="Stay"
+	confirmButtonProps={{ variant: 'themed' }}
+	cancelButtonProps={{ variant: 'outline' }}
 >
 	{#snippet trigger({ props })}
 		<Button variant="outline" {...props}>Leave workspace</Button>

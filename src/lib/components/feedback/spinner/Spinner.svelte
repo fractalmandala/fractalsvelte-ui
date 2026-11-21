@@ -1,19 +1,14 @@
 <!-- @component A compact indicator that work is underway, as a ring, a row of dots, or a row of bars. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
 	import { type Size, type Tone } from '../../../internal/tokens.js';
-import { toneText } from '../../../internal/helpers.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** The visual style of the spinner. */
 		form?: 'ring' | 'dots' | 'bars';
-		/** The size of the spinner. */
 		size?: Size;
-		/** The colour of the spinner. */
 		tone?: Tone;
-		/** A visually hidden label, announced to assistive technology. Defaults to "Loading". */
 		label?: string;
 	}
 
@@ -36,7 +31,7 @@ import { toneText } from '../../../internal/helpers.js';
 </script>
 
 <div
-	class={['row ycenter', size, toneText[tone], className]}
+	class={['row ycenter', size, `text-${`tone`}`, className]}
 	role="status"
 	aria-label={label}
 	{...rest}

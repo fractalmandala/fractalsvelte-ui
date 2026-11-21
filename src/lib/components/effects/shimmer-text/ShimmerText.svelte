@@ -1,16 +1,13 @@
 <!-- @component A highlight that sweeps through text, for loading or "AI thinking" labels. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
 
 	interface Props extends HTMLAttributes<HTMLSpanElement> {
-		/** Seconds for one sweep of the highlight. */
 		duration?: number;
-		/** Width of the highlight, as a CSS length along the gradient. */
 		spread?: string;
-		/** The label the highlight sweeps through. */
 		children?: Snippet;
 	}
 

@@ -6,6 +6,7 @@
 
 import path from 'node:path';
 import {
+	commentsPath,
 	componentFolders,
 	findDocs,
 	insertDocs,
@@ -17,7 +18,7 @@ import {
 	writeSource
 } from './lib/comments.ts';
 import type { DocEntry } from './lib/comments.ts';
-import { readText } from './lib/util.ts';
+import { PATHS, readText } from './lib/util.ts';
 
 const argv = process.argv.slice(2);
 const [kit = null, name = null] = (argv.find((a) => !a.startsWith('-')) ?? '')
@@ -25,13 +26,24 @@ const [kit = null, name = null] = (argv.find((a) => !a.startsWith('-')) ?? '')
 	.replace(/\/+$/, '')
 	.split('/');
 const scope = { kit: kit || null, name: name || null };
+
+/** A plain folder under `src/lib` — not a kit, but it carries prose too. */
+function foldersUnderLib(): { kit: string | null; slug: string; dir: string; relDir: string }[] {
+	const plain = ['internal', 'motion', 'theme', 'docs'];
+	const wanted = plain.filter((d) => (kit ? kit === d : false));
+	return wanted.map((d) => ({
+		kit: null,
+		slug: d,
+		dir: path.join(PATHS.lib, d),
+		relDir: `src/lib/${d}`
+	}));
+}
 const onlyProps = argv.includes('--props');
 const dryRun = argv.includes('--dry-run');
 const force = argv.includes('--force');
 
-const folders = componentFolders().filter(
-	(f) => (!scope.kit || f.kit === scope.kit) && (!scope.name || f.slug === scope.name)
-);
+const extra = foldersUnderLib();
+const folders = [...componentFolders().filter((f) => (!scope.kit || f.kit === scope.kit) && (!scope.name || f.slug === scope.name)), ...extra];
 if (!folders.length) {
 	console.log('usage: pnpm comments:strip [kit[/name]] [--props] [--dry-run] [--force]');
 	process.exit(2);
@@ -49,10 +61,6 @@ const skipped: string[] = [];
 const plans: { folder: { relDir: string; dir: string }; entries: DocEntry[]; files: Plan[] }[] = [];
 
 for (const folder of folders) {
-	if (readComments(folder.dir) !== null && !force) {
-		skipped.push(`${folder.relDir} — comments.md exists (--force to overwrite)`);
-		continue;
-	}
 	const entries: DocEntry[] = [];
 	const files: Plan[] = [];
 	for (const name of sourceFiles(folder.dir)) {

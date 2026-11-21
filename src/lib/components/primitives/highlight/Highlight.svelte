@@ -1,20 +1,15 @@
 <!-- @component Highlights matching query substrings within text. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Variant } from '../../../internal/tokens.js';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  Variant  } from '../../../internal/tokens.js';
 	import { splitHighlight } from './highlight.js';
 
 	interface Props extends HTMLAttributes<HTMLSpanElement> {
-		/** The full source string to scan. */
 		text: string;
-		/** One substring or a list of substrings to mark. */
 		query?: string | string[];
-		/** Match without regard to case. */
 		ignoreCase?: boolean;
-		/** Highlight every occurrence rather than only the first. */
 		matchAll?: boolean;
-		/** The visual variant applied to matched `<mark>` spans. */
 		variant?: Variant;
 	}
 

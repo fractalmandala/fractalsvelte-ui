@@ -1,4 +1,4 @@
-<!-- @example Clearable :: A clear button appears with text; onValueChange reports every change. -->
+<!-- @example Clearable :: A clear button appears with text; textColor sets the ink of the icon and the clear affordance. -->
 <script lang="ts">
 	import { Input } from '@fractaldesign/fractalsvelte-ui';
 
@@ -10,6 +10,7 @@
 	<Input
 		bind:value
 		clearable
+		textColor="text-secondary"
 		placeholder="Reference"
 		aria-label="Reference"
 		onValueChange={() => changes++}

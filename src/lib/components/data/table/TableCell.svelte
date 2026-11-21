@@ -1,26 +1,32 @@
 <!-- @component A data cell (<td>) with alignment, numeric and muted helpers. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLTdAttributes } from 'svelte/elements';
+	import type {  TextAlign, TextColor  } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLTdAttributes  } from 'svelte/elements';
 	import { cellAlign, type TableAlign } from './table.js';
 	
 
 	interface Props extends Omit<HTMLTdAttributes, 'align'> {
-		/** Horizontal alignment of the content. */
-		align?: TableAlign;
-		/** A number: right-aligned with tabular numerals, so digits line up down the column. */
+		align?: TextAlign;
 		numeric?: boolean;
-		/** Secondary ink, for supporting values (dates, ids, units). */
 		muted?: boolean;
-		/** The content. */
+		textColor?: TextColor;
 		children?: Snippet;
 	}
 
-	let { align, numeric = false, muted = false, class: className, children, ...rest }: Props = $props();
+	let {
+		align,
+		numeric = false,
+		muted = false,
+		textColor = 'text-secondary',
+		class: className,
+		children,
+		...rest
+	}: Props = $props();
 
 </script>
 
-<td class={[cellAlign(align, numeric), numeric && 'tabular-nums', muted && 'text-secondary', className]} {...rest}>
+<td class={[cellAlign(align, numeric), numeric && 'tabular-nums', muted && textColor, className]} {...rest}>
 	{@render children?.()}
 </td>

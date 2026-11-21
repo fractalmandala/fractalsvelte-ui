@@ -1,17 +1,13 @@
 <!-- @component A single beam of light that travels around the border of its parent. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { vars } from '../../../motion/index.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Seconds for one trip around the border. */
 		duration?: number;
-		/** Length of the beam along the border, as a CSS share of the conic gradient. */
 		length?: string;
-		/** Seconds to wait before the first trip. */
 		delay?: number;
-		/** Travels the other way around the border. */
 		reverse?: boolean;
 	}
 

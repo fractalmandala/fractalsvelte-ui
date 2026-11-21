@@ -1,16 +1,18 @@
 <!-- @component The flyout body for an item, rendered in the shared viewport. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import { untrack } from 'svelte';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { getNavigationMenu, getNavigationMenuItem } from './navigation-menu.js';
+	import type { Pad } from '../../../internal/tokens.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The flyout contents, shown in the shared viewport while this item is open. */
+		pad?: Pad;
 		children?: Snippet;
 	}
 
-	let { children, class: className, ...rest }: Props = $props();
+	let { pad = 'pad-bs', children, class: className, ...rest }: Props = $props();
 
 	const nav = getNavigationMenu();
 	const item = getNavigationMenuItem();
@@ -28,7 +30,7 @@
 		const target = nav.viewport();
 		if (!el || !target) return;
 		if (el.parentElement !== target) target.appendChild(el);
-		const unregister = nav.registerPanel();
+		const unregister = untrack(() => nav.registerPanel());
 		return () => {
 			unregister();
 			if (el.parentElement === target) target.removeChild(el);
@@ -42,7 +44,7 @@
 		id={item.contentId}
 		data-content={item.value}
 		data-active={active ? '' : undefined}
-		class={['pad-bs px-md', className]}
+		class={[pad, 'px-md', className]}
 		{...rest}
 	>
 		{@render children?.()}

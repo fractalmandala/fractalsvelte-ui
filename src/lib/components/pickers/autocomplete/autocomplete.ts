@@ -1,4 +1,3 @@
-/** One suggestion, or a bare string that is its own label and value. */
 export interface AutocompleteOption {
 	value: string;
 	label: string;
@@ -6,7 +5,6 @@ export interface AutocompleteOption {
 	disabled?: boolean;
 }
 
-/** Turn the shorthand form (`'harbor'`) into the full one. */
 export function normalizeAutocompleteOptions(
 	options: readonly (string | AutocompleteOption)[]
 ): AutocompleteOption[] {

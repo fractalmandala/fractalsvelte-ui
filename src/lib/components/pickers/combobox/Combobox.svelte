@@ -1,56 +1,41 @@
 <!-- @component A searchable field with a filtered list of options, following the ARIA 1.2 combobox pattern. -->
 
 <script lang="ts" generics="T">
-	import type { Snippet } from 'svelte';
-	import type { HTMLInputAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLInputAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck, luChevronDown, luLoaderCircle, luX } from '@fractaldesign/icons/lucide';
 	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
-	import { defaultSize, type Shape, type Size, type TextSize } from '../../../internal/tokens.js';
+	import { defaultSize, type ChildTextSize, type Pad, type Shape, type Size, type Surface, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
 import { getFieldContext } from '../../inputs/field/field.js';
+	import { frameClasses } from '../../inputs/input/frame.js';
 	import { groupOptions, valueKey, type SelectOption } from '../select/options.js';
 
 	interface Props extends Omit<HTMLInputAttributes, 'value' | 'size' | 'children' | 'type' | 'name' | 'form' | 'disabled'> {
-		/** The choices. Options sharing a `group` are listed together under that heading. */
 		options: SelectOption<T>[];
-		/** The chosen value. Bindable. */
 		value?: T | null;
-		/** Called with the new value whenever the person chooses or clears it. */
 		onValueChange?: (value: T | null) => void;
-		/** The text in the field. Bindable. */
 		inputValue?: string;
-		/** Called whenever the person types, with the new field text — useful for loading options asynchronously. */
 		onInputChange?: (value: string) => void;
-		/** Called whenever `inputValue` changes, including when a choice fills the field. */
 		onInputValueChange?: (value: string) => void;
-		/** Decides which options match the field text. Defaults to a case-insensitive label match. */
 		filter?: (option: SelectOption<T>, query: string) => boolean;
-		/** Lets the person commit the typed text as the value, even when it matches no option. */
 		allowCustom?: boolean;
-		/** Shows a loading indicator in the list, for async option loading. */
 		loading?: boolean;
-		/** Content shown when the filter matches nothing and the list is not loading. */
 		empty?: Snippet;
-		/** The text shown while the field is empty. */
 		placeholder?: string;
-		/** The control height. Text follows this unless `textSize` is set. @default 'lg' */
 		size?: Size;
-		/** The text scale, independent of the control height. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** The corner shape of the field. @default 'modern' */
+		childTextSize?: ChildTextSize;
+		childTextColor?: TextColor;
 		shape?: Shape;
-		/** Marks the field as failing validation: a danger border and `aria-invalid`. */
+		variant?: Variant;
+		surface?: Surface;
 		invalid?: boolean;
-		/** Shows a button that clears the value and the field. */
 		clearable?: boolean;
-		/** The name of the hidden input that carries the value in a form submission. */
 		name?: string;
-		/** Whether the list is showing. Bindable. */
 		open?: boolean;
-		/** Called when the list opens or closes. */
 		onOpenChange?: (open: boolean) => void;
-			/** Blocks typing and opening the list, and dims the field. */
-		disabled?: boolean | null;
+			disabled?: boolean | null;
 }
 
 	let {
@@ -67,7 +52,11 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		placeholder = 'Search…',
 		size,
 		textSize,
+		childTextSize = 'text-xs',
+		childTextColor = 'text-muted',
 		shape,
+		variant,
+		surface = 'glass',
 		invalid,
 		clearable = false,
 		name,
@@ -83,6 +72,19 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	const resolvedSize = $derived(size ?? fieldCtx?.size ?? defaultSize);
 	const resolvedShape = $derived(shape ?? fieldCtx?.shape ?? 'modern');
 	const resolvedInvalid = $derived(invalid ?? fieldCtx?.invalid ?? false);
+	const resolvedVariant = $derived<Variant>(variant ?? fieldCtx?.variant ?? 'outline');
+	const frame = $derived([
+		...frameClasses({
+			variant: resolvedVariant,
+			size: resolvedSize,
+			textSize,
+			shape: resolvedShape,
+			invalid: resolvedInvalid,
+			disabled: Boolean(disabled)
+		}),
+		'font-sans relative anchor xright',
+		className
+	]);
 
 	const uid = $props.id();
 	const inputId = $derived(idProp ?? `${uid}-input`);
@@ -260,14 +262,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 
 <div
 	bind:this={field}
-	class={[
-		'field anchor relative row ycenter xright bg-input border',
-		resolvedSize, textSize,
-		resolvedShape,
-		resolvedInvalid && 'is-invalid',
-		disabled && 'disabled',
-		className
-	]}
+	class={frame}
 	aria-invalid={resolvedInvalid || undefined}
 	{@attach anchor(uid)}
 >
@@ -297,7 +292,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		{#if clearable && (hasValue || inputValue) && !disabled}
 			<button
 				type="button"
-				class="pointer-auto btn-icon h-md ghost round text-muted"
+				class={['pointer-auto btn-icon ghost', resolvedSize, resolvedShape, childTextColor]}
 				aria-label="Clear"
 				onclick={clear}
 			>
@@ -306,7 +301,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		{/if}
 		<button
 			type="button"
-			class="pointer-auto btn-icon h-md ghost round text-muted"
+			class={['pointer-auto btn-icon ghost', resolvedSize, resolvedShape, childTextColor]}
 			tabindex="-1"
 			aria-label={open ? 'Close options' : 'Open options'}
 			disabled={disabled}
@@ -315,7 +310,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 				input?.focus();
 			}}
 		>
-			<Icon icon={luChevronDown} class={['caret text-muted', open && 'open']} />
+			<Icon icon={luChevronDown} class={['caret', childTextColor, open && 'open']} />
 		</button>
 	</span>
 </div>
@@ -328,14 +323,17 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	tabindex="-1"
 	aria-labelledby={inputId}
 	class={[
-		'floating at-bottom-start match-anchor pop enter-down spring-snappy glass border rim shad-lg modern pad-xs scroll-y scroll-thin box gap-xs focus-none',
+		'floating at-bottom-start match-anchor pop enter-down spring-snappy scroll-y scroll-thin box gap-xs focus-none',
+		surface,
+		resolvedShape,
+		'pad-xs',
 		textSize
 	]}
 	{@attach floating(uid)}
 	{@attach popoverSync(() => open, onPopoverChange)}
 >
 	{#if loading}
-		<div class="row ycenter gap-sm px-sm py-sm text-sm text-muted">
+		<div class={['row ycenter gap-sm px-sm py-sm', childTextSize, childTextColor]}>
 			<Icon icon={luLoaderCircle} class="anim-spin" />
 			Searching…
 		</div>
@@ -343,7 +341,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 	{#each groups as g, gi (g.group ?? `__${gi}`)}
 		<div role="group" aria-labelledby={g.group ? `${uid}-g${gi}` : undefined} class="box">
 			{#if g.group}
-				<div id={`${uid}-g${gi}`} class="text-xs text-muted weight-500 px-sm pt-sm pb-xs select-none">{g.group}</div>
+				<div id={`${uid}-g${gi}`} class={['weight-500 px-sm pt-sm pb-xs select-none', childTextSize, childTextColor]}>{g.group}</div>
 			{/if}
 			{#each g.options as option (valueKey(option.value))}
 				{@const on = Object.is(value, option.value)}
@@ -365,7 +363,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 					}}
 				>
 					{#if option.icon}
-						<Icon icon={option.icon} class="text-secondary shrink-0" />
+						<Icon icon={option.icon} class={['shrink-0', childTextColor]} />
 					{/if}
 					<span class="box grow wmin0">
 						<span class="truncate">
@@ -374,7 +372,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 							{/each}
 						</span>
 						{#if option.description}
-							<span class="text-xs text-muted truncate">{option.description}</span>
+							<span class={['truncate', childTextSize, childTextColor]}>{option.description}</span>
 						{/if}
 					</span>
 					{#if on}
@@ -385,7 +383,7 @@ import { getFieldContext } from '../../inputs/field/field.js';
 		</div>
 	{:else}
 		{#if !loading}
-			<div class="px-sm py-sm text-sm text-muted">
+			<div class={['px-sm py-sm', childTextSize, childTextColor]}>
 				{#if empty}{@render empty()}{:else}No matches{/if}
 			</div>
 		{/if}

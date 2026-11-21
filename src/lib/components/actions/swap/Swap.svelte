@@ -1,13 +1,12 @@
 <!-- @component Two-state toggle button that animates between active and inactive content. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLButtonAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLButtonAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck, luPlus } from '@fractaldesign/icons/lucide';
 	import { press } from '../../../motion/index.js';
-	import { defaultTextColor } from '../../../internal/helpers.js';
-	import type { Shape, Size, TextColor, TextSize, Variant } from '../../../internal/tokens.js';
+	import type {  AlignContent, Shape, Size, TextColor, TextSize, Variant  } from '../../../internal/tokens.js';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'children' | 'disabled'> {
 		active?: boolean;
@@ -17,6 +16,7 @@
 		size?: Size;
 		textSize?: TextSize;
 		textColor?: TextColor;
+		alignContent?: AlignContent;
 		shape?: Shape;
 		disabled?: boolean;
 		label?: string;
@@ -32,6 +32,7 @@
 		size = 'h-lg',
 		textSize,
 		textColor,
+		alignContent = 'xcenter',
 		shape = 'modern',
 		disabled = false,
 		label = 'Toggle state',
@@ -42,7 +43,6 @@
 		...rest
 	}: Props = $props();
 
-	const resolvedTextColor = $derived(textColor ?? defaultTextColor(variant));
 
 	function toggle(event: MouseEvent & { currentTarget: HTMLButtonElement }) {
 		if (disabled) return;
@@ -57,7 +57,7 @@
 	aria-label={label}
 	aria-pressed={active}
 	{disabled}
-	class={['button btn-icon row xcenter ycenter', variant, size, textSize, resolvedTextColor, shape, className]}
+	class={['button btn-icon row ycenter', alignContent, variant, size, textSize, shape, className]}
 	{@attach press()}
 	onclick={toggle}
 	{...rest}

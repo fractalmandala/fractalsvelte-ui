@@ -1,50 +1,28 @@
 import { getContext, setContext } from 'svelte';
-import type { Shape, Size } from '../../../internal/tokens.js';
+import type { Shape, Size, Variant } from '../../../internal/tokens.js';
 
-/** The look a `Field` can pass down to the control inside it. */
-export type FieldVariant = 'outline' | 'filled' | 'ghost';
-
-/** The old name for `FieldVariant`, kept while components still use it. */
-export type FieldLook = FieldVariant;
-
-/** What a `Field` shares with the control inside it. Every member is reactive. */
 export interface FieldContext {
-	/** The id the control should carry — the label's `for` points at it. */
 	readonly controlId: string;
-	/** The id of the label element, for controls that are groups (`aria-labelledby`). */
 	readonly labelId: string | undefined;
-	/** The ids of the hint or error text, for `aria-describedby`. */
 	readonly describedBy: string | undefined;
-	/** Whether the field has an error. */
 	readonly invalid: boolean;
-	/** Whether the field is required. */
 	readonly required: boolean;
-	/** Whether the field is disabled. */
 	readonly disabled: boolean;
-	/** The control height, inherited when the control does not set its own. */
 	readonly size: Size | undefined;
-	/** The corner shape, inherited when the control does not set its own. */
 	readonly shape: Shape | undefined;
-	/** The field look, inherited when the control does not set its own. */
-	readonly variant: FieldVariant | undefined;
+	readonly variant: Variant | undefined;
 }
 
 const KEY = Symbol('fractalsvelte-field');
 
-/** Provide a field context to descendants. Called by `Field`. */
 export function setFieldContext(context: FieldContext): void {
 	setContext(KEY, context);
 }
 
-/**
- * The nearest `Field`'s context, or `undefined` outside one. Call it during
- * component initialisation.
- */
 export function getFieldContext(): FieldContext | undefined {
 	return getContext<FieldContext | undefined>(KEY);
 }
 
-/** A control's own settings, which win over the field's. */
 export interface FieldControlOwn {
 	id?: string | null;
 	invalid?: boolean | null;
@@ -53,10 +31,9 @@ export interface FieldControlOwn {
 	describedby?: string | null;
 	size?: Size | null;
 	shape?: Shape | null;
-	variant?: FieldVariant | null;
+	variant?: Variant | null;
 }
 
-/** The merged attributes a control puts on its native element. */
 export interface FieldControl {
 	readonly id: string;
 	readonly labelId: string | undefined;
@@ -64,23 +41,12 @@ export interface FieldControl {
 	readonly required: boolean;
 	readonly disabled: boolean;
 	readonly describedby: string | undefined;
-	/** Whether a `Field` is wrapping the control. */
 	readonly inField: boolean;
-	/** Own size, else the field's, else `undefined` (the control applies its default). */
 	readonly size: Size | undefined;
-	/** Own shape, else the field's, else `undefined`. */
 	readonly shape: Shape | undefined;
-	/** Own variant, else the field's, else `undefined`. */
-	readonly variant: FieldVariant | undefined;
+	readonly variant: Variant | undefined;
 }
 
-/**
- * Merge a control's own props with the surrounding `Field`: the control's value
- * wins; otherwise the field's applies. Call it during component initialisation.
- *
- * @param fallbackId An id for the control when neither it nor a field supplies one (`$props.id()`).
- * @param own A getter for the control's own props, so the result stays reactive.
- */
 export function useFieldControl(fallbackId: string, own: () => FieldControlOwn): FieldControl {
 	const field = getFieldContext();
 	return {

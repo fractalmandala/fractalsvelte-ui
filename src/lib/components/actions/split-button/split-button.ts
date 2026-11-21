@@ -8,4 +8,3 @@ export interface SplitButtonItem {
 	danger?: boolean;
 }
 
-export type SplitButtonPlacement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';

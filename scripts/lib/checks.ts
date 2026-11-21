@@ -318,6 +318,31 @@ export function checkImports(code: string, file: string, lineBase: number, isExa
 
 const GLYPHS = /[✓✔✗✘✕✖☰▾▴▸◂▶◀★☆⨯]/;
 
+/**
+ * Idioms the library has left behind: Svelte 4 patterns, state that a module
+ * shares across requests, props copied into state. Every one is a literal
+ * pattern, so there is nothing to guess about.
+ */
+export function checkIdioms(src: string, file: string, markupOnly = false): Diag[] {
+	const out: Diag[] = [];
+	const push = (rule: string, at: number, message: string, fix: string) =>
+		out.push({ rule, severity: 'error', file, line: lineAt(src, at), message, fix });
+
+	const scriptFree = src.replace(/<script[\s\S]*?<\/script>/g, (m) => m.replace(/[^\n]/g, ' '));
+	const markup = scriptFree.replace(/<!--[\s\S]*?-->/g, (m) => m.replace(/[^\n]/g, ' '));
+
+	for (const m of markup.matchAll(/<slot[\s>/]/g)) push('svelte/legacy', m.index ?? 0, '<slot>', 'use a snippet: {#snippet name()} and {@render name()}');
+	for (const m of markup.matchAll(/\son:[a-z][\w-]*\s*=/g)) push('svelte/legacy', m.index ?? 0, `on:${(m[0].match(/on:([\w-]+)/) ?? [])[1]} directive`, 'use the onclick attribute; call event.preventDefault() yourself');
+	for (const m of markup.matchAll(/\suse:[a-zA-Z]/g)) push('svelte/legacy', m.index ?? 0, 'use: action', '{@attach fn} — an attachment also spreads through props');
+	for (const m of src.matchAll(/createEventDispatcher/g)) push('svelte/legacy', m.index ?? 0, 'createEventDispatcher', 'use a callback prop (onValueChange)');
+	for (const m of src.matchAll(/^\s*\$:/gm)) push('svelte/legacy', m.index ?? 0, '$: reactive statement', 'use $derived or $effect');
+	for (const m of src.matchAll(/=\s*\$state(?:\.raw)?\(\s*props\./g)) push('svelte/props-in-state', m.index ?? 0, 'a prop copied into $state', 'read the prop, or $bindable() when the child writes back');
+	if (!markupOnly)
+		for (const m of src.matchAll(/export\s+(?:const|let)\s+[\w$]+\s*=\s*\$state/g))
+			push('svelte/module-state', m.index ?? 0, 'module-level $state exported from a .svelte.ts', 'create it in a component and share it through context — the server shares a module across requests');
+	return out;
+}
+
 export function checkFile(full: string, allow: Allowlist | null): Diag[] {
 	const file = rel(full);
 	const src = readText(full);
@@ -337,8 +362,11 @@ export function checkFile(full: string, allow: Allowlist | null): Diag[] {
 				out.push({ rule: 'style/inline', severity: 'error', file, line: lineAt(src, m.index ?? 0), message: 'style="…" attribute', fix: 'use classes; pass dynamic values as custom properties with the vars() attachment' });
 			for (const m of markup.matchAll(/\sstyle:([\w-]+)/g))
 				out.push({ rule: 'style/inline', severity: 'error', file, line: lineAt(src, m.index ?? 0), message: `style:${m[1]} directive`, fix: 'use classes; pass dynamic values as custom properties with the vars() attachment' });
-			for (const m of noComments.matchAll(/<svg[\s>/]/g))
+			for (const m of noComments.matchAll(/<svg[\s>/]/g)) {
+				const before = noComments.slice(Math.max(0, (m.index ?? 0) - 80), m.index ?? 0);
+				if (/image\/svg\+xml|encodeURIComponent\s*\(\s*$/.test(before)) continue;
 				out.push({ rule: 'icons/inline-svg', severity: 'error', file, line: lineAt(src, m.index ?? 0), message: 'inline <svg>', fix: "use <Icon icon={luName} /> from '@fractaldesign/icons'" });
+			}
 			// visible text only: strip tags and expressions
 			const text = markup.replace(/<[^>]*>/g, (m) => m.replace(/[^\n]/g, ' ')).replace(/\{[^}]*\}/g, (m) => m.replace(/[^\n]/g, ' '));
 			const g = text.search(GLYPHS);
@@ -346,17 +374,22 @@ export function checkFile(full: string, allow: Allowlist | null): Diag[] {
 				out.push({ rule: 'icons/glyph', severity: 'warning', file, line: lineAt(src, g), message: `unicode glyph "${text[g]}" used as an icon`, fix: "use <Icon icon={luName} /> from '@fractaldesign/icons'" });
 			for (const m of markup.matchAll(/\.style\.(cssText|[a-zA-Z]+)\s*=(?!=)|setAttribute\(\s*['"`]style['"`]/g))
 				out.push({ rule: 'style/js-write', severity: 'error', file, line: lineAt(src, m.index ?? 0), message: `writes a real style property in markup (${m[0].trim()})`, fix: "write a custom property — setProperty('--x', v) or vars()" });
+			out.push(...checkIdioms(src, file));
 			for (const s of extractScripts(src)) {
 				out.push(...checkScriptAst(s.content, file, s.line, inMotion));
 				out.push(...checkImports(s.content, file, s.line, isExample));
 			}
 			if (allow) out.push(...checkSvelteClasses(full, src, allow));
 		} else if (full.endsWith('.ts')) {
+			out.push(...checkIdioms(src, file, true));
 			out.push(...checkScriptAst(src, file, 1, inMotion));
 			out.push(...checkImports(src, file, 1, isExample));
 			const noComments = src.replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, (m) => m.replace(/[^\n]/g, ' '));
-			for (const m of noComments.matchAll(/<svg[\s>/]/g))
+			for (const m of noComments.matchAll(/<svg[\s>/]/g)) {
+				const before = noComments.slice(Math.max(0, (m.index ?? 0) - 80), m.index ?? 0);
+				if (/image\/svg\+xml|encodeURIComponent\s*\(\s*$/.test(before)) continue;
 				out.push({ rule: 'icons/inline-svg', severity: 'error', file, line: lineAt(src, m.index ?? 0), message: 'inline <svg> markup in a string', fix: "use <Icon icon={luName} /> from '@fractaldesign/icons'" });
+			}
 		}
 	} catch (err) {
 		out.push({ rule: 'analysis/crash', severity: 'error', file, line: null, message: `could not analyse: ${(err as Error).message}`, fix: 'fix the syntax error' });
@@ -372,6 +405,8 @@ export interface GateContext {
 	slugs: Set<string>;
 	/** export name → component ids exporting it. */
 	exportOwners: Map<string, string[]>;
+	/** component id → the concatenated example corpus of the same-kit components it composes. */
+	inherited: Map<string, string>;
 }
 
 const DOC_KEYS = new Set(['name', 'summary', 'description', 'parts', 'features', 'accessibility', 'keyboard', 'api', 'related', 'status']);
@@ -408,6 +443,11 @@ export function checkComponent(a: ComponentAnalysis, ctx: GateContext): Diag[] {
 	for (const e of a.examples) {
 		if (!e.headerOk)
 			err('examples/header', f(`examples/${e.file}`), 1, 'first line is not an example header', 'start with <!-- @example Title :: One sentence describing what it shows. -->');
+		const body = (readText(e.full) ?? '').split('\n').slice(1).join('\n').replace(/`(?:\\.|[^`\\])*`/g, (m) => m.replace(/[^\n]/g, ' '));
+		// a `//` inside a URL or a string is not a comment
+		const stray = body.search(/<!--|(?<![:\w"'`])\/\/|(?<![:\w"'`])\/\*/);
+		if (stray >= 0)
+			err('examples/comment', f(`examples/${e.file}`), lineAt(body, stray) + 1, 'a comment in an example', 'the @example header is the only comment an example carries; move the explanation into the header sentence');
 	}
 
 	// ── index.ts (rule 1)
@@ -435,8 +475,11 @@ export function checkComponent(a: ComponentAnalysis, ctx: GateContext): Diag[] {
 			continue;
 		}
 		for (const prop of p.props) {
-			if (!prop.description)
-				err('props/undocumented', f(p.file), prop.line, `prop "${prop.name}" has no JSDoc description`, `/** One sentence: what ${prop.name} does. */`);
+			const text = (prop.description ?? '').trim();
+			if (!text)
+				err('props/undocumented', f(p.file), prop.line, `prop "${prop.name}" has no description`, 'one sentence in the folder\'s comments.md: what it does, or its default');
+			else if (text.split(/\s+/).length <= 2 || text.toLowerCase().replace(/[^a-z]/g, '') === prop.name.toLowerCase())
+				err('props/undocumented', f(p.file), prop.line, `prop "${prop.name}" is documented by "${text}", which says nothing a reader could not guess`, 'say what it does, its unit, or its default — or delete the description');
 		}
 	}
 
@@ -498,7 +541,9 @@ export function checkComponent(a: ComponentAnalysis, ctx: GateContext): Diag[] {
 
 	// ── coverage (rule 5)
 	if (a.examples.length) {
-		const corpus = a.examples.map((e) => e.source).join('\n');
+		const own = a.examples.map((e) => e.source).join('\n');
+		const inherited = ctx.inherited.get(`${a.ref.kit}/${a.ref.slug}`) ?? '';
+		const corpus = `${own}\n${inherited}`;
 		for (const p of a.parts) {
 			for (const prop of p.props) {
 				if (EXEMPT.has(prop.name)) continue;

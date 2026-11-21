@@ -1,21 +1,20 @@
 <!-- @component A toggling item that stays open after it is changed. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck } from '@fractaldesign/icons/lucide';
+	import type { ChildTextColor, ChildTextSize, Size } from '../../../internal/tokens.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** Whether the item is checked. */
 		checked?: boolean;
-		/** Called when the item is toggled. */
 		onCheckedChange?: (checked: boolean) => void;
-		/** A keyboard shortcut, shown at the trailing edge. */
 		shortcut?: string;
-		/** Disables the item. */
+		size?: Size;
+		childTextSize?: ChildTextSize;
+		childTextColor?: ChildTextColor;
 		disabled?: boolean;
-		/** The label. */
 		children?: Snippet;
 	}
 
@@ -23,6 +22,9 @@
 		checked = $bindable(false),
 		onCheckedChange,
 		shortcut,
+		size = 'h-md',
+		childTextSize = 'text-xs',
+		childTextColor = 'text-muted',
 		disabled = false,
 		children,
 		class: className,
@@ -54,13 +56,13 @@
 	{onkeydown}
 	{...rest}
 >
-	<span class="box xcenter ycenter h-md square shrink-0">
+	<span class={['box xcenter ycenter square shrink-0', size]}>
 		{#if checked}
 			<Icon icon={luCheck} class="text-theme" />
 		{/if}
 	</span>
 	<span class="grow truncate">{@render children?.()}</span>
 	{#if shortcut}
-		<kbd class="kbd shrink-0 font-mono text-xs text-muted">{shortcut}</kbd>
+		<kbd class={['kbd shrink-0 font-mono', childTextSize, childTextColor]}>{shortcut}</kbd>
 	{/if}
 </div>

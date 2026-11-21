@@ -1,20 +1,15 @@
 <!-- @component A single disclosure whose panel opens and closes with a spring height. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import type { CollapsibleTriggerProps } from './collapsible.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  CollapsibleTriggerProps  } from './collapsible.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Whether the panel is open. */
 		open?: boolean;
-		/** Called when the panel opens or closes. */
 		onOpenChange?: (open: boolean) => void;
-		/** The trigger. Receives `open`, `disabled`, `props` to spread, and `toggle`. */
 		trigger?: Snippet<[CollapsibleTriggerProps]>;
-		/** When true, the trigger does nothing and the panel stays as it is. */
 		disabled?: boolean;
-		/** The panel content. */
 		children?: Snippet;
 	}
 

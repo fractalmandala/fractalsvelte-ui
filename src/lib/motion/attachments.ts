@@ -1,11 +1,3 @@
-/**
- * Motion attachments — `{@attach …}` factories for gestures, scroll and layout.
- *
- * Every attachment writes ONLY CSS custom properties (plus, for `inView`, a
- * state class); the stylesheet's `.motion` / `.tilt` classes turn them into
- * real transforms. Every attachment cleans up on teardown and honours reduced
- * motion (`prefers-reduced-motion` or `globalMotion.scale === 0`).
- */
 import { tick } from 'svelte';
 import type { Attachment } from 'svelte/attachments';
 import { animate, getMotion, getVelocity, setMotion } from './animate.js';
@@ -27,7 +19,6 @@ function clamp(n: number, lo: number, hi: number): number {
 
 const passive: AddEventListenerOptions = { passive: true };
 
-/** A job in the shared scroll frame: every `read` runs before any `write`. */
 interface FrameJob {
 	read(): void;
 	write(): void;
@@ -47,7 +38,6 @@ function requestScrollFrame(): void {
 	if (scrollFrame === 0) scrollFrame = requestAnimationFrame(runScrollFrame);
 }
 
-/** Register a scroll-linked job; shares one passive scroll/resize listener and one rAF across all jobs. */
 function addScrollJob(job: FrameJob): () => void {
 	if (scrollJobs.size === 0) {
 		window.addEventListener('scroll', requestScrollFrame, passive);
@@ -66,7 +56,6 @@ function addScrollJob(job: FrameJob): () => void {
 	};
 }
 
-/** IntersectionObserver wrapper shared by `inView` and `reveal`. Returns a disconnect function. */
 function observe(
 	node: Element,
 	opts: { once: boolean; amount: number; margin: string | undefined },
@@ -104,7 +93,6 @@ function observe(
 	return () => io.disconnect();
 }
 
-/** rAF-coalesce a pointer handler: only the latest event per frame is processed. */
 function throttled(fn: (e: PointerEvent) => void): { push(e: PointerEvent): void; cancel(): void } {
 	let frame = 0;
 	let last: PointerEvent | null = null;
@@ -128,18 +116,6 @@ function throttled(fn: (e: PointerEvent) => void): { push(e: PointerEvent): void
 
 // ───────────────────────────── vars ─────────────────────────────
 
-/**
- * Bind CSS custom properties to an element — the sanctioned way to pass
- * dynamic values to the stylesheet. Keys may be given with or without the
- * leading `--`; `null`/`undefined` removes the property. Numbers are written
- * unitless. Called inline in a template it re-runs whenever its arguments change.
- *
- * @example
- * ```svelte
- * <div class="fill" {@attach vars({ value: progress })}></div>
- * ```
- * @param values Custom property values by name.
- */
 export function vars(values: Record<string, string | number | null | undefined>): Attachment<HTMLElement> {
 	return (node) => {
 		const written: string[] = [];
@@ -160,12 +136,6 @@ export function vars(values: Record<string, string | number | null | undefined>)
 
 // ───────────────────────────── magnetic ─────────────────────────────
 
-/**
- * Pull the element toward the pointer while it is within `radius` px of the
- * element's bounds; it springs back when the pointer moves away. Mouse and
- * pen only. Requires the `.motion` class. Disabled under reduced motion.
- * @param options `strength` (0..1, default `0.35`), `radius` (px beyond the bounds, default `40`), `spring` (default `'snappy'`).
- */
 export function magnetic(
 	options: { strength?: number; radius?: number; spring?: SpringInput } = {}
 ): Attachment<HTMLElement> {
@@ -211,13 +181,6 @@ export function magnetic(
 
 // ───────────────────────────── tilt ─────────────────────────────
 
-/**
- * 3D tilt toward the pointer. Writes `--rx`/`--ry` (and `--ms` for the lift
- * scale). Requires the `.tilt` class (plus `.motion` for the scale). With
- * `glare`, also writes the pointer position as `--px`/`--py` percentages for
- * a highlight layer. Disabled under reduced motion.
- * @param options `max` tilt in degrees (default `10`), `scale` while hovered (default `1.02`), `spring` (default `'snappy'`), `glare` (default `false`).
- */
 export function tilt(
 	options: { max?: number; scale?: number; spring?: SpringInput; glare?: boolean } = {}
 ): Attachment<HTMLElement> {
@@ -273,12 +236,6 @@ export function tilt(
 
 // ───────────────────────────── press ─────────────────────────────
 
-/**
- * Spring the element's scale down while pressed — pointer, or Enter/Space
- * from the keyboard — and back on release. Requires the `.motion` class.
- * Disabled under reduced motion.
- * @param options `scale` while pressed (default `0.96`), `spring` (default `'stiff'`).
- */
 export function press(options: { scale?: number; spring?: SpringInput } = {}): Attachment<HTMLElement> {
 	const scale = options.scale ?? 0.96;
 	const spring = options.spring ?? 'stiff';
@@ -325,12 +282,6 @@ export function press(options: { scale?: number; spring?: SpringInput } = {}): A
 
 // ───────────────────────────── hover ─────────────────────────────
 
-/**
- * Spring lift while hovered (mouse/pen) or keyboard-focused (`:focus-visible`
- * on the element or a descendant). Requires the `.motion` class. Disabled
- * under reduced motion.
- * @param options `scale` (default `1.02`), `y` offset in px (default `-4`, i.e. up), `spring` (default `'snappy'`).
- */
 export function hover(options: { scale?: number; y?: number; spring?: SpringInput } = {}): Attachment<HTMLElement> {
 	const scale = options.scale ?? 1.02;
 	const y = options.y ?? -4;
@@ -379,14 +330,6 @@ export function hover(options: { scale?: number; y?: number; spring?: SpringInpu
 
 // ───────────────────────────── pointer ─────────────────────────────
 
-/**
- * Track the pointer over the element as `--px`/`--py` (for spotlights and
- * gradients), rAF-throttled. With `unit: 'fraction'` (default) the values
- * are `0..1` across the element's box — use `calc(var(--px) * 100%)`; with
- * `unit: 'px'` they are unitless pixel offsets from the top-left corner —
- * use `calc(var(--px) * 1px)`. Not motion, so it runs under reduced motion too.
- * @param options `unit`: `'fraction'` (default) or `'px'`.
- */
 export function pointer(options: { unit?: 'px' | 'fraction' } = {}): Attachment<HTMLElement> {
 	const unit = options.unit ?? 'fraction';
 	return (node) => {
@@ -415,12 +358,6 @@ export function pointer(options: { unit?: 'px' | 'fraction' } = {}): Attachment<
 
 // ───────────────────────────── inView ─────────────────────────────
 
-/**
- * Toggle a class (default `in`) when the element scrolls into view, via
- * IntersectionObserver — pair it with CSS enter states. Where
- * IntersectionObserver is unavailable the class is added immediately.
- * @param options `once` (default `true`: stop observing after the first entry), `amount` visible fraction (default `0.2`), `margin` (root margin), `class` (default `'in'`), `onEnter`, `onLeave`.
- */
 export function inView(
 	options: {
 		once?: boolean;
@@ -449,13 +386,6 @@ export function inView(
 
 // ───────────────────────────── reveal ─────────────────────────────
 
-/**
- * Spring the element in from an offset state when it scrolls into view. The
- * element starts at `{ x, y, scale, opacity }` and springs to rest. With
- * `once: false` it springs back out when it leaves. Requires the `.motion`
- * class. Under reduced motion the element is simply shown at rest.
- * @param options `x` (px, default `0`), `y` (px, default `24`), `scale` (default `1`), `opacity` (default `0`), `delay` (ms, default `0`), `spring` (default `'gentle'`), `once` (default `true`), `amount` (default `0.2`).
- */
 export function reveal(
 	options: {
 		x?: number;
@@ -501,13 +431,6 @@ export function reveal(
 
 // ───────────────────────────── stagger ─────────────────────────────
 
-/**
- * Number a container's items for staggered CSS motion: writes `--i` (the
- * item's stagger index) on each item and `--stagger` (the step, e.g. `60ms`)
- * on the container, so CSS can use `transition-delay: calc(var(--i) * var(--stagger))`.
- * Re-indexes when the child list changes. Under reduced motion `--stagger` is `0ms`.
- * @param options `selector` for items (default: direct children), `step` in ms (default `60`), `from`: `'first'` (default), `'last'` or `'center'`.
- */
 export function stagger(
 	options: { selector?: string; step?: number; from?: 'first' | 'last' | 'center' } = {}
 ): Attachment<HTMLElement> {
@@ -541,19 +464,12 @@ export function stagger(
 
 // ───────────────────────────── drag ─────────────────────────────
 
-/** The drag gesture's state, passed to the drag callbacks. */
 export interface DragState {
-	/** Current offset on x (px, the `--mx` channel). */
 	x: number;
-	/** Current offset on y (px, the `--my` channel). */
 	y: number;
-	/** Pointer movement on x since the drag started (px). */
 	dx: number;
-	/** Pointer movement on y since the drag started (px). */
 	dy: number;
-	/** Pointer velocity on x (px/s). */
 	vx: number;
-	/** Pointer velocity on y (px/s). */
 	vy: number;
 }
 
@@ -564,21 +480,6 @@ interface Limits {
 	bottom: number;
 }
 
-/**
- * Make the element draggable with springs. Uses pointer capture; the element
- * should carry `.motion` (for the offset), `touch-none` (so touch drags are
- * not scrolls) and usually `select-none`.
- *
- * Bounds are offsets relative to the resting position: `'parent'` keeps it
- * inside its parent's box, a function returns a container `DOMRect`, or pass
- * explicit `{ left, right, top, bottom }` offset limits. Past a bound the
- * element rubber-bands by `elastic`. On release with `momentum`, the release
- * velocity carries it on and it springs to rest inside the bounds; with
- * `snapBack` it springs home. A drag that moved suppresses the following click.
- * Under reduced motion dragging still works but release settles instantly.
- *
- * @param options `axis` (`'both'`), `bounds`, `snapBack` (`false`), `momentum` (`true`), `elastic` (0..1, `0.35`), `spring` (`'snappy'`), `disabled`, `onDragStart`, `onDrag`, `onDragEnd`.
- */
 export function drag(
 	options: {
 		axis?: 'x' | 'y' | 'both';
@@ -754,14 +655,6 @@ export function drag(
 
 // ───────────────────────────── parallax ─────────────────────────────
 
-/**
- * Scroll-linked parallax: offsets the element by `speed` × its distance from
- * the viewport centre, written to `--my` (or `--mx`). Positive speeds lag
- * behind the scroll (background feel), negative ones lead it. Shares one
- * passive scroll listener and one rAF (all reads before all writes) with every
- * other scroll attachment. Requires the `.motion` class. Off under reduced motion.
- * @param options `speed` (-1..1, default `0.2`), `axis` (`'y'` default, or `'x'`).
- */
 export function parallax(options: { speed?: number; axis?: 'x' | 'y' } = {}): Attachment<HTMLElement> {
 	const speed = clamp(options.speed ?? 0.2, -1, 1);
 	const axis = options.axis ?? 'y';
@@ -795,13 +688,6 @@ export function parallax(options: { speed?: number; axis?: 'x' | 'y' } = {}): At
 
 // ───────────────────────────── scrollProgress ─────────────────────────────
 
-/**
- * Write scroll progress `0..1` to `--value` on the element (progress bars,
- * scroll-linked fills). `target: 'page'` (default) tracks the document's
- * scroll; `'element'` tracks the element's own passage through the viewport
- * (0 as it enters, 1 as it leaves). Shares the scroll frame with `parallax`.
- * @param options `target` (`'page'` | `'element'`), `axis` (`'y'` default, or `'x'`).
- */
 export function scrollProgress(
 	options: { target?: 'page' | 'element'; axis?: 'x' | 'y' } = {}
 ): Attachment<HTMLElement> {
@@ -840,33 +726,10 @@ export function scrollProgress(
 
 // ───────────────────────────── FLIP ─────────────────────────────
 
-/**
- * FLIP layout animation with springs. Attach `flip.attach` to a container;
- * call `read()` before the DOM changes and `play()` after it (`await tick()`
- * first), or just `await flip.run(() => …)`. Items are matched across the
- * change by `data-flip-id`; each springs from its old position (and size, as a
- * uniform scale when the aspect ratio is kept) to its new one — interruptible,
- * carrying velocity. New items fade/scale in. Items need the `.motion` class.
- * Under reduced motion layout changes are instant.
- *
- * @example
- * ```svelte
- * <script lang="ts">
- * 	const flip = createFlip({ spring: 'snappy' });
- * 	let items = $state(['a', 'b', 'c']);
- * 	const shuffle = () => flip.run(() => { items = items.toReversed(); });
- * </script>
- * <ul {@attach flip.attach}>
- * 	{#each items as id (id)}<li class="motion" data-flip-id={id}>{id}</li>{/each}
- * </ul>
- * ```
- * @param options `spring` (default `'snappy'`), `selector` for items (default `[data-flip-id]`).
- */
 export function createFlip(options: { spring?: SpringInput; selector?: string } = {}): {
 	attach: Attachment<HTMLElement>;
 	read(): void;
 	play(): void;
-	/** read → run fn → await tick → play */
 	run(fn: () => void | Promise<void>): Promise<void>;
 } {
 	const spring = options.spring ?? 'snappy';

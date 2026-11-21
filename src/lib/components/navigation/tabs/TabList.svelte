@@ -1,16 +1,14 @@
 <!-- @component The tab list: hosts the sliding indicator and the roving keyboard focus. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { animate } from '../../../motion/index.js';
-	import { roving } from '../../../internal/roving.js';
+	import { roving } from '../../../internal/helpers.js';
 	import { getTabs } from './tabs.svelte.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Accessible name of the tab list, when there is no visible label. */
 		label?: string;
-		/** The `Tab`s. */
 		children?: Snippet;
 	}
 
@@ -34,7 +32,7 @@
 		const g = group.getBoundingClientRect();
 		const b = active.getBoundingClientRect();
 		const vertical = tabs.orientation === 'vertical';
-		const rule = tabs.variant === 'underline';
+		const rule = tabs.grouping === 'flush';
 		animate(
 			mark,
 			{
@@ -51,7 +49,8 @@
 	$effect(() => {
 		tabs.value();
 		tabs.orientation;
-		tabs.variant;
+		tabs.grouping;
+		tabs.surface;
 		tabs.size;
 		const frame = requestAnimationFrame(() => place());
 		const group = root;
@@ -74,21 +73,21 @@
 
 	const listClass = $derived.by(() => {
 		const vertical = tabs.orientation === 'vertical';
-		const variant = tabs.variant;
+		const grouping = tabs.grouping;
 		return [
 			'relative',
 			vertical ? 'column' : 'row',
-			variant === 'enclosed' && 'pad-xs bg-input border modern',
-			variant === 'pill' && 'gap-xs',
-			variant === 'underline' && (vertical ? 'bl' : 'bb'),
+			grouping === 'contained' && ['pad-xs', tabs.surface],
+			grouping === 'separated' && 'gap-xs',
+			grouping === 'flush' && (vertical ? 'bl' : 'bb'),
 			className
 		];
 	});
 
 	const indicatorClass = $derived(
-		tabs.variant === 'underline'
+		tabs.grouping === 'flush'
 			? 'indicator rule'
-			: 'indicator modern bg-overlay rim shad-xs'
+			: ['indicator', tabs.surface]
 	);
 </script>
 

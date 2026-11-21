@@ -3,11 +3,11 @@
 	import { Avatar } from '@fractaldesign/fractalsvelte-ui';
 
 	const people = [
-		{ name: 'Maya Chen', size: 'xs' },
-		{ name: 'Omar Haddad', size: 'sm' },
-		{ name: 'Priya Shah', size: 'md' },
-		{ name: 'Jonas Berg', size: 'lg' },
-		{ name: 'Elena Rossi', size: 'xl' }
+		{ name: 'Maya Chen', size: 'h-xs' },
+		{ name: 'Omar Haddad', size: 'h-sm' },
+		{ name: 'Priya Shah', size: 'h-md' },
+		{ name: 'Jonas Berg', size: 'h-lg' },
+		{ name: 'Elena Rossi', size: 'h-xl' }
 	] as const;
 </script>
 

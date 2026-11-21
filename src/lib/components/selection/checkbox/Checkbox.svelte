@@ -1,38 +1,29 @@
 <!-- @component A native checkbox with a label, a description and a check that springs in. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLInputAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLInputAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck, luMinus } from '@fractaldesign/icons/lucide';
 	import { springFade, springScale } from '../../../motion/index.js';
-	import { type Size, type TextSize } from '../../../internal/tokens.js';
+	import { type ChildTextSize, type Gap, type Size, type TextColor, type TextSize } from '../../../internal/tokens.js';
 
 	interface Props extends Omit<HTMLInputAttributes, 'type' | 'size' | 'children' | 'checked' | 'indeterminate' | 'name' | 'value' | 'disabled'> {
-		/** Whether the box is checked. Two-way bindable. */
 		checked?: boolean;
-		/** Shows the mixed state: a dash instead of a check. Cleared by the next user toggle. Two-way bindable. */
 		indeterminate?: boolean;
-		/** The visible label, drawn beside the box. */
 		label?: string;
-		/** Secondary text under the label, in a quieter ink. */
 		description?: string;
-		/** The box and text scale. */
 		size?: Size;
-		/** The text scale, independent of the box. Follows `size` when omitted. */
 		textSize?: TextSize;
-		/** Marks the box as failing validation: a danger border and `aria-invalid`. */
+		childTextSize?: ChildTextSize;
+		childTextColor?: TextColor;
+		gap?: Gap;
 		invalid?: boolean;
-		/** The field name submitted with a form. */
 		name?: string;
-		/** The value submitted with a form when checked. */
 		value?: string;
-		/** Called after the user toggles the box, with the new checked state. */
 		onCheckedChange?: (checked: boolean) => void;
-		/** Rich label content, used in place of `label`. */
 		children?: Snippet;
-			/** Blocks pointer and keyboard input, and dims the label. */
-		disabled?: boolean | null;
+			disabled?: boolean | null;
 }
 
 	let {
@@ -42,6 +33,9 @@
 		description,
 		size = 'h-lg',
 		textSize,
+		childTextSize = 'text-sm',
+		childTextColor = 'text-secondary',
+		gap = 'gap-sm',
 		invalid = false,
 		name,
 		value,
@@ -58,7 +52,7 @@
 </script>
 
 <label
-	class={['inline-flex gap-sm', description ? 'ytop' : 'ycenter', 'row', textSize, disabled ? 'disabled' : 'pointer', className]}
+	class={['inline-flex', gap, description ? 'ytop' : 'ycenter', 'row', textSize, disabled ? 'disabled' : 'pointer', className]}
 >
 	<span class={['checkbox-box', description && 'mt-xs']}>
 		<input
@@ -84,7 +78,7 @@
 		<span class="column xleft gap-xs">
 			<span class=" lh13 weight-500">{#if children}{@render children()}{:else}{label}{/if}</span>
 			{#if description}
-				<span id="{id}-desc" class="text-secondary text-sm lh14">{description}</span>
+				<span id="{id}-desc" class={['lh14', childTextColor, childTextSize]}>{description}</span>
 			{/if}
 		</span>
 	{/if}

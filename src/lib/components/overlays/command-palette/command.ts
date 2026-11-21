@@ -1,26 +1,13 @@
 import type { IconData } from '@fractaldesign/icons';
 
-/** A command in the palette. */
 export interface Command {
-	/** A stable id, used as the option's DOM id suffix. */
 	id: string;
-	/** The visible label, also used for ranking and highlighting. */
 	label: string;
-	/** An optional section heading. Commands that share a group are listed together. */
 	group?: string;
-	/** An icon drawn before the label. */
 	icon?: IconData;
-	/** A keyboard shortcut, shown at the trailing edge. */
 	shortcut?: string;
-	/** Extra text used by the fuzzy scorer, not shown. */
 	keywords?: string;
-	/** Called when the command is chosen. The palette then closes. */
 	onSelect: () => void;
-}
-
-export interface ScoredCommand {
-	command: Command;
-	score: number;
 }
 
 export interface CommandGroup {
@@ -28,7 +15,6 @@ export interface CommandGroup {
 	commands: Command[];
 }
 
-/** A small fuzzy scorer: substring beats subsequence; word starts and consecutive runs score higher. */
 export function fuzzy(query: string, text: string): number {
 	const q = query.trim().toLowerCase();
 	const t = text.toLowerCase();
@@ -51,7 +37,6 @@ export function fuzzy(query: string, text: string): number {
 	return Math.min(0.68, (score / (q.length * 2.6)) * 0.68);
 }
 
-/** Rank a command against the query, using its label and keywords. `0` means no match. */
 export function scoreCommand(query: string, command: Command): number {
 	const q = query.trim();
 	if (!q) return 1;
@@ -60,7 +45,6 @@ export function scoreCommand(query: string, command: Command): number {
 	return Math.max(label, keys);
 }
 
-/** Group scored commands, preserving rank order within and between groups. */
 export function groupCommands(query: string, commands: Command[]): CommandGroup[] {
 	const scored = commands
 		.map((command) => ({ command, score: scoreCommand(query, command) }))
@@ -81,7 +65,6 @@ export function groupCommands(query: string, commands: Command[]): CommandGroup[
 	return groups;
 }
 
-/** Highlight the matched characters of a label against the query. */
 export function marks(label: string, query: string): { text: string; hit: boolean }[] {
 	const q = query.trim();
 	if (!q) return [{ text: label, hit: false }];
@@ -110,7 +93,6 @@ export function marks(label: string, query: string): { text: string; hit: boolea
 	return parts.length ? parts : [{ text: label, hit: false }];
 }
 
-/** Whether a keyboard event matches a shortcut like `mod+k` or `shift+mod+p`. */
 export function matchesShortcut(event: KeyboardEvent, shortcut: string): boolean {
 	const parts = shortcut
 		.toLowerCase()

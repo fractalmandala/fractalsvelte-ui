@@ -1,11 +1,11 @@
-<!-- @example Text size :: The text scale can be set independently of the frame height. -->
+<!-- @example Text size :: The text scale can be set independently of the frame height, and the prefix follows it. -->
 <script lang="ts">
 	import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '@fractaldesign/fractalsvelte-ui';
 </script>
 
 <div class="box gap-sm measure-sm">
 	<InputGroup size="h-lg" textSize="text-xs">
-		<InputGroupAddon align="start"><InputGroupText>https://</InputGroupText></InputGroupAddon>
+		<InputGroupAddon align="start"><InputGroupText textColor="text-secondary">https://</InputGroupText></InputGroupAddon>
 		<InputGroupInput value="acme.fractal.app" aria-label="Extra-small type" />
 	</InputGroup>
 	<InputGroup size="h-lg" textSize="text-sm">

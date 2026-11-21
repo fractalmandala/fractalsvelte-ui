@@ -1,20 +1,17 @@
 <!-- @component A placeholder for content that has not loaded yet, shaped as text, a circle or a rectangle. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type { Shape } from '../../../internal/tokens.js';
 	import { SpringValue, vars } from '../../../motion/index.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** The placeholder shape: lines of text, a circle, or a rectangle. */
 		form?: 'text' | 'circle' | 'rect';
-		/** How many lines to draw when `form` is `text`. */
 		lines?: number;
-		/** The loading animation. `none` is a still placeholder. */
 		animate?: 'shimmer' | 'pulse' | 'none';
-		/** Cross-fades from the placeholder to `children` when true. */
+		shape?: Shape;
 		loaded?: boolean;
-		/** The real content, revealed when `loaded` is true. */
 		children?: Snippet;
 	}
 
@@ -22,6 +19,7 @@
 		form = 'text',
 		lines = 3,
 		animate = 'shimmer',
+		shape = 'round',
 		loaded = false,
 		children,
 		class: className,
@@ -42,7 +40,7 @@
 	<div class="motion box gap-sm" {@attach vars({ mo: 1 - fade.current })}>
 		{#each { length: count } as _, i (i)}
 			<div
-				class={['bone', form === 'text' && 'text', form === 'circle' && 'round', motion]}
+				class={['bone', form === 'text' && 'text', form === 'circle' && shape, motion]}
 				{@attach vars({ w: form === 'text' && i === count - 1 && count > 1 ? '64%' : undefined })}
 			></div>
 		{/each}

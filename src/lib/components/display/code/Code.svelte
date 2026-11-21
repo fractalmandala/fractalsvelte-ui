@@ -1,34 +1,34 @@
 <!-- @component A highlighted code block with a copy button, or a short inline snippet. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import { maxHeightStyle } from '../../../internal/helpers.js';
+	import type { ComponentProps } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { luCheck, luCopy } from '@fractaldesign/icons/lucide';
 	import { Button } from '../../actions/button/index.js';
 	import { highlight, type HighlightLang } from '../../../internal/highlight.js';
 	import { vars } from '../../../motion/index.js';
-	import { type Size } from '../../../internal/tokens.js';
-import { maxHeightClass, maxHeightStyle } from '../../../internal/helpers.js';
+	import { type Pad, type Shape, type Size, type Surface, type TextColor, type TextSize } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** The source to display. */
 		code: string;
-		/** The language used to highlight the source. */
 		lang?: HighlightLang;
-		/** An optional file name shown in the toolbar. */
 		filename?: string;
-		/** Draws a gutter of line numbers. */
 		showLineNumbers?: boolean;
-		/** 1-based line numbers to mark, or a string such as "3-5,8". */
 		highlightLines?: number[] | string;
-		/** Soft-wraps long lines instead of scrolling horizontally. */
 		wrap?: boolean;
-		/** Caps the height and scrolls the rest: a ladder word (`lg`) or any CSS length (`24rem`). */
 		maxHeight?: Size | string;
-		/** `block` is a highlighted panel with a copy button; `inline` is a short snippet in running text. */
 		form?: 'block' | 'inline';
+		textSize?: TextSize;
+		textColor?: TextColor;
+		shape?: Shape;
+		surface?: Surface;
+		pad?: Pad;
+		copyButtonProps?: ComponentProps<typeof Button>;
 	}
 
 	let {
+		copyButtonProps,
 		code,
 		lang = 'ts',
 		filename,
@@ -37,6 +37,11 @@ import { maxHeightClass, maxHeightStyle } from '../../../internal/helpers.js';
 		wrap = false,
 		maxHeight,
 		form = 'block',
+		textSize = 'text-sm',
+		textColor = 'text-secondary',
+		shape = 'curved',
+		surface = 'paneled',
+		pad = 'pad-xs',
 		class: className,
 		...rest
 	}: Props = $props();
@@ -86,35 +91,28 @@ import { maxHeightClass, maxHeightStyle } from '../../../internal/helpers.js';
 		return out;
 	}
 
-	const blockClasses = $derived([
-		'box',
-		'divided',
-		'border-subtle',
-		'curved',
-		'overflow-hidden',
-		'bg-panel',
-		className
-	]);
+	const blockClasses = $derived(['box', 'ta-l', 'divided', surface, shape, 'overflow-hidden', className]);
 	const preClasses = $derived([
 		'code',
 		'scroll-y',
 		'scroll-thin',
 		showLineNumbers && 'numbered',
 		wrap && 'soft-wrap',
-		maxHeightClass(maxHeight),
+		maxHeight && `max-h-${String(maxHeight).replace(/^h-/, '')}`,
 		maxHeight && 'capped'
 	]);
 </script>
 
 {#if form === 'inline'}
-	<code class={['font-mono', 'text-sm', 'pad-xs', 'bg-panel', 'curved', className]} {...rest}>{code}</code>
+	<code class={['font-mono ta-l', textSize, surface, pad, shape, className]} {...rest}>{code}</code>
 {:else}
 	<figure class={blockClasses} {...rest}>
-		<figcaption class="row xbetween ycenter gap-sm pad-sm">
-			<span class="text-sm text-secondary truncate">{filename ?? lang}</span>
+		<figcaption class={['row xbetween ycenter gap-sm', 'pad-sm']}>
+			<span class={['truncate', textSize, textColor]}>{filename ?? lang}</span>
 			<Button
 				variant="ghost"
 				size="h-xs"
+				{...copyButtonProps}
 				class="btn-icon"
 				icon={copied ? luCheck : luCopy}
 				onclick={copyCode}
@@ -128,15 +126,7 @@ import { maxHeightClass, maxHeightStyle } from '../../../internal/helpers.js';
 			aria-label={filename ?? `${lang} code`}
 			{@attach vars({ 'max-height': maxHeightStyle(maxHeight) })}
 		>
-			{#each lines as line, i (i)}
-				<span class={['code-line', marked.has(i + 1) && 'marked']}>
-					<span>
-						{#each line as tok, j (j)}
-							{#if tok.cls}<span class={tok.cls}>{tok.text}</span>{:else}{tok.text}{/if}
-						{/each}
-					</span>
-				</span>
-			{/each}
+		{#each lines as line, i (i)}<span class={['code-line', marked.has(i + 1) && 'marked']}><span>{#each line as tok, j (j)}{#if tok.cls}<span class={tok.cls}>{tok.text}</span>{:else}{tok.text}{/if}{/each}</span></span>{/each}
 		</pre>
 	</figure>
 {/if}

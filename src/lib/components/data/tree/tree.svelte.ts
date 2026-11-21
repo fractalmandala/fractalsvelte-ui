@@ -1,34 +1,24 @@
 import type { IconData } from '@fractaldesign/icons';
 
-/** One node in a tree. */
 export interface TreeItem {
-	/** Stable unique id. */
 	id: string;
-	/** The visible label. */
 	label: string;
-	/** An optional leading icon. */
 	icon?: IconData;
-	/** Child nodes. Omit or leave empty for a leaf, unless `hasChildren` is set. */
 	children?: TreeItem[];
-	/** When true, the node cannot be selected, expanded or checked. */
 	disabled?: boolean;
-	/** When true, the node is expandable even if `children` have not been loaded yet. */
 	hasChildren?: boolean;
 }
 
-/** A visible (expanded-path) node, with its depth and parent. */
 export interface VisibleNode {
 	item: TreeItem;
 	level: number;
 	parent: TreeItem | null;
 }
 
-/** Children of a node, preferring lazily loaded ones. */
 export function childrenOf(item: TreeItem, loaded: Map<string, TreeItem[]>): TreeItem[] {
 	return loaded.get(item.id) ?? item.children ?? [];
 }
 
-/** Whether the node can expand (has children, or can load them). */
 export function isExpandable(
 	item: TreeItem,
 	loaded: Map<string, TreeItem[]>,
@@ -41,7 +31,6 @@ export function isExpandable(
 	return canLoad && item.children === undefined && item.hasChildren !== false;
 }
 
-/** Walk the tree in document order, descending only into expanded nodes. */
 export function flattenVisible(
 	items: TreeItem[],
 	expanded: Set<string>,
@@ -61,20 +50,6 @@ export function flattenVisible(
 	return out;
 }
 
-/** All descendant ids, depth-first. */
-export function descendantIds(item: TreeItem, loaded: Map<string, TreeItem[]>): string[] {
-	const out: string[] = [];
-	const walk = (nodes: TreeItem[]) => {
-		for (const child of nodes) {
-			out.push(child.id);
-			walk(childrenOf(child, loaded));
-		}
-	};
-	walk(childrenOf(item, loaded));
-	return out;
-}
-
-/** Find a node by id. */
 export function findItem(
 	items: TreeItem[],
 	id: string,
@@ -88,17 +63,12 @@ export function findItem(
 	return null;
 }
 
-/** Selected keys as a Set, whether the value is a single id or a Set. */
 export function asSet(selected: string | Set<string> | null | undefined): Set<string> {
 	if (selected == null) return new Set();
 	if (selected instanceof Set) return selected;
 	return new Set([selected]);
 }
 
-/**
- * Toggle a node and propagate to descendants and ancestors.
- * Checking a parent checks every descendant; a parent is checked when every child is.
- */
 export function toggleChecked(
 	checked: Set<string>,
 	item: TreeItem,
@@ -133,7 +103,6 @@ export function toggleChecked(
 	return next;
 }
 
-/** The checkbox state of a node, after descendant propagation. */
 export function checkState(
 	item: TreeItem,
 	checked: Set<string>,

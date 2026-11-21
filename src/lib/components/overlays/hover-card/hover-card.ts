@@ -1,6 +1,5 @@
 import type { Placement } from '../../../internal/tokens.js';
 
-/** Enter class so the card originates from the trigger side. */
 export const enterFrom: Record<Placement, string> = {
 	top: 'enter-up',
 	'top-start': 'enter-up',

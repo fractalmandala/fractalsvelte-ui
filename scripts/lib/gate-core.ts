@@ -15,7 +15,21 @@ import {
 	loadAllowlist
 } from './checks.ts';
 import type { Diag, GateContext } from './checks.ts';
-import { PATHS, ROOT, cssCodeLines, listDir, readText } from './util.ts';
+import {
+	checkAnnotations,
+	checkDeadExports,
+	checkDeadProperties,
+	checkDuplicateTypes,
+	checkPropLiterals,
+	checkBannedPropNames,
+	checkChildProps,
+	checkComposedSurfaces,
+	checkOwnVocabularies,
+	checkSurfaceComposition,
+	checkIdentityMaps,
+	checkPropTypes
+} from './rules.ts';
+import { PATHS, ROOT, cssCodeLines, listDir, readText, walkFiles } from './util.ts';
 
 export interface Scope {
 	kit: string | null;
@@ -107,7 +121,7 @@ export async function runGate(scope: Scope, pre?: { lib: Library; layers: LayerB
 			exportOwners.set(e.name, owners);
 		}
 	}
-	const ctx: GateContext = { allow, kits: lib.kits, slugs: new Set(lib.components.map((c) => c.ref.slug)), exportOwners };
+	const ctx: GateContext = { allow, kits: lib.kits, slugs: new Set(lib.components.map((c) => c.ref.slug)), exportOwners, inherited: inheritedCorpora(lib) };
 
 	if (!allow.registryFound) {
 		result.groups.push({
@@ -118,9 +132,31 @@ export async function runGate(scope: Scope, pre?: { lib: Library; layers: LayerB
 	}
 
 	for (const c of selected) {
-		const diagnostics = sortDiags(uniq(checkComponent(c, ctx)));
+		const diagnostics = sortDiags(uniq([...checkComponent(c, ctx), ...checkPropTypes(c), ...checkPropLiterals(c), ...checkSurfaceComposition(c), ...checkOwnVocabularies(c), ...checkBannedPropNames(c), ...checkComposedSurfaces(c), ...checkChildProps(c)]));
 		result.groups.push({ id: `${c.ref.kit}/${c.ref.slug}`, kind: 'component', diagnostics });
 	}
+
+	// decisions that are about the source rather than one component
+	const sources = walkFiles(PATHS.lib, (n) => n.endsWith('.ts') || n.endsWith('.svelte')).filter(
+		(full) => !full.startsWith(PATHS.generated) && !full.endsWith('.d.ts')
+	);
+	const corpus = walkFiles(path.join(ROOT, 'src'), (n) => n.endsWith('.ts') || n.endsWith('.svelte'))
+		.filter((full) => !full.startsWith(PATHS.generated) && !full.endsWith('.d.ts'))
+		.map((full) => readText(full) ?? '')
+		.join('\n');
+	const sheets = [
+		...walkFiles(PATHS.kitLayers, (n) => n.endsWith('.css')),
+		...walkFiles(PATHS.fsDistStyles, (n) => n.endsWith('.css'))
+	];
+	const decisionDiags: Diag[] = [
+		...checkAnnotations(sources),
+		...checkDeadExports(sources, corpus),
+		...checkIdentityMaps(sources),
+		...checkDeadProperties(sources, sheets),
+		...checkDuplicateTypes(sources)
+	];
+	if (decisionDiags.length)
+		result.groups.push({ id: '(decision rules)', kind: 'library', diagnostics: sortDiags(uniq(decisionDiags)) });
 
 	const styles = checkKitFragments(layers, lib.kits, scope.kit);
 	if (styles.length || !scope.kit) result.groups.push({ id: '(styles)', kind: 'styles', diagnostics: sortDiags(styles) });
@@ -178,4 +214,51 @@ export function formatGate(r: GateResult, opts: { quiet?: boolean } = {}): strin
 		lines.push(`budget: fractalsvelte-ui extension CSS ${r.budget.fractalsvelte} lines vs fractalstyler ${r.budget.fractalstyler} lines (${pct}%)`);
 	}
 	return lines.join('\n');
+}
+
+// ── composition: what a component inherits from its kit's ancestors ──────────
+
+/**
+ * A component's examples need not repeat the axes its siblings already show: the
+ * core primitive of a kit demonstrates the full set, and the components built on
+ * it inherit that demonstration. The graph is read from the imports, so nothing
+ * has to be written down.
+ */
+function inheritedCorpora(lib: Library): Map<string, string> {
+	const id = (c: ComponentAnalysis) => `${c.ref.kit}/${c.ref.slug}`;
+	const byId = new Map(lib.components.map((c) => [id(c), c]));
+
+	const deps = new Map<string, ComponentAnalysis[]>();
+	for (const c of lib.components) {
+		const files = [...c.svelteFiles, ...c.tsFiles].map((n) => path.join(c.ref.dir, n));
+		for (const sub of listDir(c.ref.dir, 'dir'))
+			if (sub !== 'examples') files.push(...walkFiles(path.join(c.ref.dir, sub), (n) => n.endsWith('.svelte') || n.endsWith('.ts')));
+
+		const found = new Set<ComponentAnalysis>();
+		for (const full of files) {
+			const src = readText(full) ?? '';
+			for (const m of src.matchAll(/from '([^']+)'/g)) {
+				const abs = path.resolve(path.dirname(full), m[1]).replace(/\.js$/, '');
+				for (const other of lib.components) {
+					if (other === c || other.ref.kit !== c.ref.kit) continue;
+					if (abs === path.join(other.ref.dir, 'index') || abs.startsWith(other.ref.dir + path.sep)) found.add(other);
+				}
+			}
+		}
+		deps.set(id(c), [...found]);
+	}
+
+	const corpusOf = (key: string, seen: Set<string>): string => {
+		if (seen.has(key)) return '';
+		seen.add(key);
+		const c = byId.get(key);
+		if (!c) return '';
+		const own = c.examples.map((e) => e.source).join('\n');
+		return [own, ...(deps.get(key) ?? []).map((d) => corpusOf(id(d), seen))].join('\n');
+	};
+
+	const inherited = new Map<string, string>();
+	for (const c of lib.components)
+		inherited.set(id(c), (deps.get(id(c)) ?? []).map((d) => corpusOf(id(d), new Set([id(c)]))).join('\n'));
+	return inherited;
 }

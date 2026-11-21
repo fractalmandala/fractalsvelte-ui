@@ -1,4 +1,4 @@
-<!-- @example Sizes :: Track thickness follows the text scale, from xs to xl. -->
+<!-- @example Sizes and type :: Track thickness follows the size ladder; the label and the value carry their own type scale and ink. -->
 <script lang="ts">
 	import { Meter } from '@fractaldesign/fractalsvelte-ui';
 </script>
@@ -12,4 +12,13 @@
 	<Meter size="h-bs" value={56} label="bs" showValue />
 	<Meter size="h-2xl" value={56} label="2xl" showValue />
 	<Meter size="h-3xl" value={56} label="3xl" showValue />
+	<Meter
+		size="h-lg"
+		value={56}
+		label="Set apart"
+		textSize="text-md"
+		textColor="text-primary"
+		childTextColor="text-secondary"
+		showValue
+	/>
 </div>

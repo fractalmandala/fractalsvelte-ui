@@ -1,4 +1,4 @@
-<!-- @example Scrollbar and height :: Hover and hidden scrollbars, and every step of the measure ladder. -->
+  --><!-- @example Scrollbar and height :: Hover and hidden scrollbars, and every step of the measure ladder. The remaining measure steps are shown so every maxHeight value appears. -->
 <script lang="ts">
 	import { ScrollArea } from '@fractaldesign/fractalsvelte-ui';
 
@@ -33,7 +33,6 @@
 			</div>
 		</ScrollArea>
 	</div>
-	<!-- Remaining measure steps, used so every maxHeight value appears. -->
 	<div class="box gap-xs">
 		<span class="text-sm weight-500">lg, xl and 2xl caps</span>
 		<div class="box gap-md">

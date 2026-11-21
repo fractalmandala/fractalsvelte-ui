@@ -1,21 +1,15 @@
 <!-- @component Types and deletes its way through a list of words, with a blinking caret. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { reducedMotion } from '../../../motion/index.js';
 
 	interface Props extends HTMLAttributes<HTMLSpanElement> {
-		/** The words to type, in order. */
 		words: string[];
-		/** Milliseconds spent typing each character. */
 		speed?: number;
-		/** Milliseconds spent deleting each character. */
 		deleteSpeed?: number;
-		/** How long to hold a completed word before deleting it, in milliseconds. */
 		pause?: number;
-		/** Starts again from the first word after the last one is deleted. When off, the last word stays. */
 		loop?: boolean;
-		/** Shows a blinking caret after the typed text. */
 		cursor?: boolean;
 	}
 

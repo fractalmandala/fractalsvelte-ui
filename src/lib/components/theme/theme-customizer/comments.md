@@ -51,6 +51,16 @@ The JSDoc for this folder’s source lives here. `pnpm comments:restore` puts it
 - `value` :: The settings. Bindable. Leave it undefined to read and write the shared `theme`.
 - `onValueChange` :: Called with the new settings whenever a control changes.
 - `sections` :: Which sections to show, in order. Defaults to every section.
+- `textSize` :: The scale of the section headings, the slider labels and the preview's total. @default 'text-sm'
+- `textColor` :: The ink of the slider names and the preview's total; secondary by default so the controls below them stay the focus. @default 'text-secondary'
+- `childTextSize` :: The scale of the preview's caption, one step below the panel's own text. @default 'text-xs'
+- `childTextColor` :: The ink of the slider values and the preview's caption; muted by default. @default 'text-muted'
+- `surface` :: The recipe of the panel — fill, border and shadow in one. @default 'paneled'
+- `pad` :: The panel's own inset.
+- `gap` :: The space between the panel's sections.
+- `previewButtonProps` :: Props passed on to the three buttons inside the preview, so a caller can restyle the sample without touching the panel. Spread after the panel's own defaults, so it wins.
+- `resetButtonProps` :: Props passed on to the Reset button.
+- `copyButtonProps` :: Props passed on to both copy buttons, which do one job with two payloads.
 
 ## sections.ts
 

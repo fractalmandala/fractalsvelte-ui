@@ -1,25 +1,22 @@
 <!-- @component A short hint on hover or focus, using popover="hint" and a shared warm group. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
 	import { type Placement } from '../../../internal/tokens.js';
-import { placementClass } from '../../../internal/helpers.js';
-	import type { OverlayTrigger } from '../dialog/dialog.js';
+	import type {  OverlayTrigger  } from '../dialog/dialog.js';
+	import type { Surface, TextSize } from '../../../internal/tokens.js';
 	import { enterFrom, hintPopover, markWarm, openDelay } from './tooltip.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The hint. A string, or a snippet for richer content. */
 		content?: string | Snippet;
-		/** Where the hint sits relative to the trigger. */
 		placement?: Placement;
-		/** How long to wait, in milliseconds, before opening on hover or focus. Adjacent tooltips skip this while the group is warm. */
 		delay?: number;
-		/** How long to wait, in milliseconds, before closing after hover or focus leaves. */
 		closeDelay?: number;
-		/** The element the hint describes. Spread `props` onto your own control. */
 		trigger?: Snippet<[OverlayTrigger]>;
+		surface?: Surface;
+		textSize?: TextSize;
 	}
 
 	let {
@@ -27,6 +24,8 @@ import { placementClass } from '../../../internal/helpers.js';
 		placement = 'top',
 		delay = 300,
 		closeDelay = 100,
+		surface = 'glass',
+		textSize = 'text-sm',
 		trigger,
 		class: className,
 		...rest
@@ -107,8 +106,10 @@ import { placementClass } from '../../../internal/helpers.js';
 	id={uid}
 	role="tooltip"
 	class={[
-		'floating pop spring-snappy glass border rim shad-md radius-md px-sm py-xs max-w-xs pointer-none text-sm lh15',
-		placementClass[placement],
+		'floating pop spring-snappy radius-md px-sm py-xs max-w-xs pointer-none lh15',
+		surface,
+		textSize,
+		`at-${`placement`}`,
 		enterFrom[placement],
 		className
 	]}

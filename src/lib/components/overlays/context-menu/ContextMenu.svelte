@@ -1,37 +1,26 @@
 <!-- @component A menu that opens at the pointer on right-click, long-press or Shift+F10, using the same item parts as the dropdown menu. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
-	import { roving } from '../../../internal/roving.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import { anchor, floating, popoverSync, roving } from '../../../internal/helpers.js';
+	import type { Pad, Surface } from '../../../internal/tokens.js';
 	import { vars } from '../../../motion/index.js';
-	import { surfaceClass, type OverlaySurface } from '../dialog/dialog.js';
-	import { menuRoving, setMenu } from '../dropdown-menu/menu.js';
+		import { menuRoving, setMenu } from '../dropdown-menu/menu.js';
 
 	interface ContextTrigger {
-		/** Spread onto the trigger element: ARIA wiring and the pointer and keyboard handlers. */
 		props: HTMLAttributes<HTMLElement>;
-		/** Whether the menu is open. */
 		isOpen: boolean;
-		/** Opens the menu. */
 		open: () => void;
-		/** Closes the menu. */
 		close: () => void;
-		/** Opens it if closed, closes it if open. */
 		toggle: () => void;
 	}
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** Whether the menu is open. Bind it, or let the pointer and keyboard gestures drive it. */
 		open?: boolean;
-		/** Called whenever the menu opens or closes. */
 		onOpenChange?: (open: boolean) => void;
-		/** The menu fill: frosted glass, or opaque. */
-		surface?: OverlaySurface;
-		/** The element that opens the menu on right-click, long-press or Shift+F10. Spread `props` onto it. */
+		surface?: Surface;
 		trigger?: Snippet<[ContextTrigger]>;
-		/** The items, labels, separators and submenus — the same parts as the dropdown menu. */
 		children?: Snippet;
 	}
 
@@ -144,8 +133,9 @@
 	role="menu"
 	tabindex="-1"
 	class={[
-		'floating pop enter-scale spring-snappy border rim shad-lg radius-lg pad-xs wmin-xs box gap-xs focus-none',
-		surfaceClass[surface],
+		'floating pop enter-scale spring-snappy radius-lg wmin-xs box gap-xs focus-none',
+		'pad-xs',
+		surface,
 		className
 	]}
 	{@attach floating(uid, 'var(--space-sm)')}

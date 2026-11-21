@@ -1,30 +1,26 @@
 <!-- @component A centred placeholder for a view that has nothing to show yet, with an optional next step. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
-	import type { IconData } from '@fractaldesign/icons';
-	import { type Pad, type Size, type TextSize } from '../../../internal/tokens.js';
+	import type {  IconData  } from '@fractaldesign/icons';
+	import { type AlignContent, type ChildTextColor, type Gap, type Measure, type Pad, type Size, type TextColor, type TextSize } from '../../../internal/tokens.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
-		/** An icon drawn above the title. */
 		icon?: IconData;
-		/** The heading, such as "No deployments yet". */
 		title?: string;
-		/** A short explanation, set under the title. */
 		description?: string;
-		/** The scale of the icon. */
 		size?: Size;
-		/** Padding on the shared pad ladder. */
 		pad?: Pad;
-		/** Text scale on the shared text ladder. */
+		gap?: Gap;
+		alignContent?: AlignContent;
+		measure?: Measure;
 		textSize?: TextSize;
-		/** An optional frame around the block: a hairline, or a dashed one. */
+		textColor?: TextColor;
+		childTextColor?: ChildTextColor;
 		frame?: 'none' | 'bordered' | 'dashed';
-		/** Controls drawn under the description — usually the next action. */
 		actions?: Snippet;
-		/** Alternative body content; used when `description` is not enough. */
 		children?: Snippet;
 	}
 
@@ -34,7 +30,12 @@
 		description,
 		size = 'h-lg',
 		pad = 'pad-lg',
+		gap = 'gap-md',
+		alignContent = 'xcenter',
+		measure = 'measure-sm',
 		textSize,
+		textColor = 'text-muted',
+		childTextColor = 'text-secondary',
 		frame = 'none',
 		actions,
 		children,
@@ -53,29 +54,31 @@
 		'h-3xl': 'text-4xl'
 	};
 
+	const bodySize = $derived(textSize ?? 'text-sm');
+
 	const frameClass = $derived(
 		frame === 'bordered' ? 'border modern' : frame === 'dashed' ? 'border-dashed modern' : ''
 	);
 </script>
 
 <div
-	class={['box xcenter gap-md ta-c', pad, textSize, frameClass, className]}
+	class={['box ta-c', alignContent, gap, pad, textSize, frameClass, className]}
 	{...rest}
 >
 	{#if icon}
-		<span class={['text-muted lh14', iconScale[size]]}>
+		<span class={['lh14', textColor, iconScale[size]]}>
 			<Icon icon={icon} />
 		</span>
 	{/if}
-	<div class="box xcenter gap-xs measure-sm">
+	<div class={['box xcenter gap-xs', measure]}>
 		{#if title}
 			<p class="weight-600 lh14">{title}</p>
 		{/if}
 		{#if description}
-			<p class="text-sm text-secondary lh15">{description}</p>
+			<p class={['lh15', bodySize, childTextColor]}>{description}</p>
 		{/if}
 		{#if children}
-			<div class="text-sm text-secondary lh15">{@render children()}</div>
+			<div class={['lh15', bodySize, childTextColor]}>{@render children()}</div>
 		{/if}
 	</div>
 	{#if actions}

@@ -17,8 +17,8 @@
 
 <div class="box gap-lg">
 	{#each variants as { density, striped, hoverable } (density)}
-		<Table {density} {striped} {hoverable}>
-			<TableCaption>Latency at {density} density</TableCaption>
+		<Table {density} {striped} {hoverable} surface="outlined" shape="curved">
+			<TableCaption textSize="text-md" textColor="text-muted">Latency at {density} density</TableCaption>
 			<TableHead>
 				<TableRow>
 					<TableHeader>Region</TableHeader>

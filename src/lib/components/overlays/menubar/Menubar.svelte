@@ -1,24 +1,19 @@
 <!-- @component A persistent application menu bar with the WAI-ARIA menubar pattern, on the Popover API. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import { roving } from '../../../internal/roving.js';
-	import type { OverlaySurface } from '../dialog/dialog.js';
-	import { menubarRoving, setMenubar, type MenubarIntent } from './menubar.js';
+	import type { Gap, Surface } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import { roving } from '../../../internal/helpers.js';
+		import { menubarRoving, setMenubar, type MenubarIntent } from './menubar.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-		/** The open menu's value, or `null` when every menu is closed. Bindable. */
 		value?: string | null;
-		/** Called whenever the open menu changes. */
 		onValueChange?: (value: string | null) => void;
-		/** Whether arrow keys wrap from the last trigger to the first. */
 		loop?: boolean;
-		/** The fill of every menu panel, unless a menu overrides it. */
-		surface?: OverlaySurface;
-		/** The accessible name of the menubar. */
+		surface?: Surface;
+		gap?: Gap;
 		label?: string;
-		/** The `MenubarMenu` children. */
 		children?: Snippet;
 	}
 
@@ -27,6 +22,7 @@
 		onValueChange,
 		loop = true,
 		surface = 'glass',
+		gap = 'gap-xs',
 		label = 'Application',
 		class: className,
 		children,
@@ -88,7 +84,7 @@
 	role="menubar"
 	aria-label={label}
 	aria-orientation="horizontal"
-	class={['row gap-xs', className]}
+	class={['row', gap, className]}
 	{@attach roving({ ...menubarRoving, loop, onNavigate })}
 	{...rest}
 >

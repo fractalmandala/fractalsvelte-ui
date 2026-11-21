@@ -15,7 +15,7 @@
 	<div class="pad-lg"></div>
 	{#each items as item}
 		<Reveal from={item.direction} distance={item.distance} once={false} amount={0.35} spring="gentle">
-			<article class="card rim shad-sm pad-md">
+			<article class="rim shad-sm pad-md">
 				<p class="text-sm text-muted">{item.title}</p>
 				<p class="weight-500">{item.deck}</p>
 			</article>

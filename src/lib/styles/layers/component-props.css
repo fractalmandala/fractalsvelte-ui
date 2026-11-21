@@ -1,3 +1,8 @@
+/* A filled variant carries its own ink; :where() keeps specificity 0 so an explicit
+   text-* prop still wins. */
+:where(.primary) { color: var(--text-inverse); }
+:where(.themed, .info, .success, .warning, .danger) { color: var(--text-white); }
+
 .primary {
   background-color: var(--bg-button);
   border: 1px solid var(--bg-button);

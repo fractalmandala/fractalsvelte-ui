@@ -1,7 +1,7 @@
 <!-- @example Controlled :: Bind value to keep the mode in your own state, and react in onValueChange. -->
 <script lang="ts">
 	import { ModeToggle, ThemeProvider } from '@fractaldesign/fractalsvelte-ui';
-	import type { ThemeMode } from '@fractaldesign/fractalsvelte-ui/theme';
+	import type {  ThemeMode  } from '@fractaldesign/fractalsvelte-ui/theme';
 
 	let mode = $state<ThemeMode>('light');
 	let changes = $state(0);

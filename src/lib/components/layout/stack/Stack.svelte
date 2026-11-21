@@ -1,26 +1,18 @@
 <!-- @component Arranges children in a vertical or horizontal flex stack with spacing, alignment and optional hairlines. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Orientation  } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { type Align, type Gap } from '../../../internal/tokens.js';
-import { gapValue } from '../../../internal/helpers.js';
-	import { vars } from '../../../motion/index.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Stack axis: vertical column or horizontal row. */
-		direction?: 'vertical' | 'horizontal';
-		/** Space between items on the shared gap ladder. */
+		direction?: Orientation;
 		gap?: Gap;
-		/** Cross-axis alignment. */
 		align?: 'start' | 'center' | 'end' | 'stretch';
-		/** Main-axis distribution. */
 		justify?: Align;
-		/** Wrap children onto multiple lines when stacking horizontally. */
 		wrap?: boolean;
-		/** Draw hairline borders between adjacent stack children. */
 		dividers?: boolean;
-		/** Stack children. */
 		children?: Snippet;
 	}
 
@@ -73,6 +65,6 @@ import { gapValue } from '../../../internal/helpers.js';
 	]);
 </script>
 
-<div class={classes} {@attach vars(dividers ? { gap: gapValue(gap) } : {})} {...rest}>
+<div class={classes}  {...rest}>
 	{@render children?.()}
 </div>

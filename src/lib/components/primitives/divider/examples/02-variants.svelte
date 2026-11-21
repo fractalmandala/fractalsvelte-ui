@@ -5,11 +5,11 @@
 
 <div class="box measure-sm gap-xs">
 	<p class="text-sm text-muted">Solid</p>
-	<Divider look="solid" spacing="h-xs" />
+	<Divider line="solid" spacing="h-xs" />
 	<p class="text-sm text-muted">Dashed</p>
-	<Divider look="dashed" spacing="h-xs" />
+	<Divider line="dashed" spacing="h-xs" />
 	<p class="text-sm text-muted">Subtle</p>
-	<Divider look="subtle" spacing="h-xs" />
+	<Divider line="subtle" spacing="h-xs" />
 	<p class="text-sm text-muted">Strong</p>
-	<Divider look="strong" spacing="h-xs" />
+	<Divider line="strong" spacing="h-xs" />
 </div>

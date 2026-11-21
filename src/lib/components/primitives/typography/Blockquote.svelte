@@ -1,17 +1,18 @@
 <!-- @component A quoted passage with a leading hairline. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type {  TextColor  } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLQuoteElement> {
-		/** The quoted text, and an optional citation. */
+		textColor?: TextColor;
 		children?: Snippet;
 	}
 
-	let { class: className, children, ...rest }: Props = $props();
+	let { textColor = 'text-secondary', class: className, children, ...rest }: Props = $props();
 </script>
 
-<blockquote class={['bl pl-bs text-secondary', className]} {...rest}>
+<blockquote class={['bl pl-bs', textColor, className]} {...rest}>
 	{@render children?.()}
 </blockquote>

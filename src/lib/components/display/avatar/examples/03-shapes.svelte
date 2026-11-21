@@ -4,9 +4,9 @@
 </script>
 
 <div class="row ycenter gap-lg">
-	{#each ['circle', 'rounded', 'square'] as const as shape}
+	{#each ['round', 'curved', 'rect'] as const as shape}
 		<div class="box xcenter gap-xs">
-			<Avatar name="Priya Shah" {shape} size="lg" />
+			<Avatar name="Priya Shah" {shape} size="h-lg" />
 			<span class="text-xs text-muted">{shape}</span>
 		</div>
 	{/each}

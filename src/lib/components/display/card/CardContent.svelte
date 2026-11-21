@@ -1,19 +1,21 @@
 <!-- @component The body of the card. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type { Gap, TextColor } from '../../../internal/tokens.js';
 	import { bodyClass, getCardContext } from './context.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** The card's body. */
+		textColor?: TextColor;
+		gap?: Gap;
 		children?: Snippet;
 	}
 
-	let { class: className, children, ...rest }: Props = $props();
+	let { textColor = 'text-secondary', gap = 'gap-sm', class: className, children, ...rest }: Props = $props();
 	const card = getCardContext();
 </script>
 
-<div class={['box gap-sm text-secondary lh15', bodyClass[card.size], className]} {...rest}>
+<div class={['box lh15', gap, textColor, bodyClass[card.size], className]} {...rest}>
 	{@render children?.()}
 </div>

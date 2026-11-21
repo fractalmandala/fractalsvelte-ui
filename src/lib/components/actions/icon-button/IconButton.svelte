@@ -1,12 +1,11 @@
 <!-- @component A square, icon-only button with a required accessible label. -->
 
 <script lang="ts">
-	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
+	import type {  HTMLAnchorAttributes, HTMLButtonAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
-	import type { IconData } from '@fractaldesign/icons';
+	import type {  IconData  } from '@fractaldesign/icons';
 	import { luLoaderCircle } from '@fractaldesign/icons/lucide';
 	import { press } from '../../../motion/index.js';
-	import { defaultTextColor } from '../../../internal/helpers.js';
 	import { type Shape, type Size, type TextColor, type TextSize, type Variant } from '../../../internal/tokens.js';
 
 	interface Props extends Omit<HTMLButtonAttributes, 'disabled'> {
@@ -42,13 +41,12 @@
 		...rest
 	}: Props = $props();
 
-	const resolvedTextColor = $derived(textColor ?? defaultTextColor(variant));
 	const classes = $derived([
 		'button btn-icon no-scaling',
 		variant,
 		size,
 		textSize,
-		resolvedTextColor,
+		textColor,
 		shape,
 		'inline-flex',
 		pressable && 'motion',

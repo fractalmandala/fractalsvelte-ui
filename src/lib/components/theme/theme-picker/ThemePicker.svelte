@@ -1,9 +1,9 @@
 <!-- @component A swatch grid of the named themes, each previewing its accent, with a spring-in selected ring. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { roving } from '../../../internal/helpers.js';
-import { type Size } from '../../../internal/tokens.js';
+import { type Gap, type Size, type TextColor, type TextSize } from '../../../internal/tokens.js';
 	import { vars } from '../../../motion/index.js';
 	import { theme, themes, type ThemeName } from '../../../theme/index.js';
 
@@ -11,6 +11,9 @@ import { type Size } from '../../../internal/tokens.js';
 		value?: ThemeName;
 		onValueChange?: (value: ThemeName) => void;
 		size?: Size;
+		gap?: Gap;
+		textSize?: TextSize;
+		textColor?: TextColor;
 		showLabels?: boolean;
 		label?: string;
 	}
@@ -19,6 +22,9 @@ import { type Size } from '../../../internal/tokens.js';
 		value = $bindable(),
 		onValueChange,
 		size = 'h-lg',
+		gap = 'gap-sm',
+		textSize = 'text-sm',
+		textColor = 'text-secondary',
 		showLabels = false,
 		label = 'Theme',
 		class: className,
@@ -38,7 +44,7 @@ import { type Size } from '../../../internal/tokens.js';
 <div
 	role="radiogroup"
 	aria-label={label}
-	class={['row wrap gap-sm', size, className]}
+	class={['row wrap', gap, size, className]}
 	{@attach roving({ orientation: 'both', onNavigate: (item) => item.click() })}
 	{...rest}
 >
@@ -56,7 +62,7 @@ import { type Size } from '../../../internal/tokens.js';
 		>
 			<span class={['orb', on && 'selected']}></span>
 			{#if showLabels}
-				<span class="text-sm text-secondary">{preset.label}</span>
+				<span class={[textSize, textColor]}>{preset.label}</span>
 			{/if}
 		</button>
 	{/each}

@@ -1,19 +1,27 @@
 <!-- @component The table caption — its accessible name; can be visually hidden. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import type { TextColor, TextSize } from '../../../internal/tokens.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** Hides the caption visually while keeping it as the table's accessible name. */
 		visuallyHidden?: boolean;
-		/** The caption text. */
+		textSize?: TextSize;
+		textColor?: TextColor;
 		children?: Snippet;
 	}
 
-	let { visuallyHidden = false, class: className, children, ...rest }: Props = $props();
+	let {
+		visuallyHidden = false,
+		textSize = 'text-sm',
+		textColor = 'text-secondary',
+		class: className,
+		children,
+		...rest
+	}: Props = $props();
 </script>
 
-<caption class={[visuallyHidden ? 'sr-only' : 'text-sm text-secondary weight-500', className]} {...rest}>
+<caption class={[visuallyHidden ? 'sr-only' : [textSize, textColor, 'weight-500'], className]} {...rest}>
 	{@render children?.()}
 </caption>

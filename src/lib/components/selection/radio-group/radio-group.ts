@@ -1,7 +1,6 @@
 import { createContext } from 'svelte';
-import type { Size, TextSize } from '../../../internal/tokens.js';
+import type { ChildTextSize, Pad, Shape, Size, Surface, TextColor, TextSize } from '../../../internal/tokens.js';
 
-/** The state a `RadioGroup` shares with its `Radio` parts. */
 export interface RadioGroupState {
 	readonly name: string;
 	readonly value: string | undefined;
@@ -9,8 +8,11 @@ export interface RadioGroupState {
 	readonly size: Size;
 	readonly disabled: boolean;
 	readonly invalid: boolean;
-	/** The text scale the group passes down. */
 	readonly textSize: TextSize | undefined;
+	readonly childTextSize: ChildTextSize;
+	readonly childTextColor: TextColor;
+	readonly shape: Shape;
+	readonly surface: Surface;
 	select(value: string): void;
 }
 

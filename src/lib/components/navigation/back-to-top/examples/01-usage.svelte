@@ -19,5 +19,5 @@
 		Scroll this page past the threshold to bring the button up in the bottom corner. The ring around
 		it fills as you continue, and the button returns you to the top.
 	</p>
-	<BackToTop threshold={320} {size} label="Back to top" />
+	<BackToTop threshold={320} {size} ringSize="h-2xl" shape="round" label="Back to top" />
 </div>

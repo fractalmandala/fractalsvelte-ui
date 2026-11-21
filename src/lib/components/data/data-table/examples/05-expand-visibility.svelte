@@ -71,6 +71,17 @@
 		hoverable={false}
 		density="cozy"
 		pageSize={6}
+		surface="elevated"
+		menuSurface="paneled"
+		shape="curved"
+		measure="measure-sm"
+		size="h-md"
+		skeletonSize="h-lg"
+		textSize="text-sm"
+		metaTextSize="text-md"
+		childTextSize="text-sm"
+		textColor="text-muted"
+		childTextColor="text-secondary"
 	>
 		{#snippet empty()}
 			<div class="box xcenter gap-sm">

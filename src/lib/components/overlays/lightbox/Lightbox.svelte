@@ -1,7 +1,8 @@
 <!-- @component Full-viewport modal media viewer with keyboard navigation, zoom, counter, and thumbnail strip. -->
 
 <script lang="ts">
-	import type { HTMLDialogAttributes } from 'svelte/elements';
+	import type {  ComponentProps  } from 'svelte';
+	import type {  HTMLDialogAttributes  } from 'svelte/elements';
 	import {
 		luChevronLeft,
 		luChevronRight,
@@ -12,25 +13,28 @@
 	import { IconButton } from '../../actions/icon-button/index.js';
 	import { dialogSync } from '../../../internal/helpers.js';
 	import { vars } from '../../../motion/index.js';
-	import type { LightboxItem } from './lightbox.js';
+	import type {  AlignContent, Pad, Shape, Size, Surface, TextSize  } from '../../../internal/tokens.js';
+	import type {  LightboxItem  } from './lightbox.js';
 
 	interface Props extends Omit<HTMLDialogAttributes, 'open' | 'children'> {
-		/** Media items rendered in the viewer. */
 		items: LightboxItem[];
-		/** Whether the lightbox modal is open; bindable. */
 		open?: boolean;
-		/** Called when open state changes (backdrop click, Escape, close button). */
 		onOpenChange?: (open: boolean) => void;
-		/** Currently displayed zero-based slide index; bindable. */
 		index?: number;
-		/** Called when the active slide changes. */
 		onIndexChange?: (index: number) => void;
-		/** Wrap navigation from last slide back to first and vice versa. */
 		loop?: boolean;
-		/** Show clickable thumbnail preview row beneath the main slide. */
 		showThumbnails?: boolean;
-		/** Show `current / total` counter in the top bar. */
 		showCounter?: boolean;
+		shape?: Shape;
+		surface?: Surface;
+		pad?: Pad;
+		alignContent?: AlignContent;
+		textSize?: TextSize;
+		size?: Size;
+		zoomButtonProps?: Partial<ComponentProps<typeof IconButton>>;
+		closeButtonProps?: Partial<ComponentProps<typeof IconButton>>;
+		prevButtonProps?: Partial<ComponentProps<typeof IconButton>>;
+		nextButtonProps?: Partial<ComponentProps<typeof IconButton>>;
 	}
 
 	let {
@@ -42,6 +46,16 @@
 		loop = true,
 		showThumbnails = true,
 		showCounter = true,
+		shape = 'curved',
+		surface = 'overlayed',
+		pad = 'pad-lg',
+		alignContent = 'xbetween',
+		textSize = 'text-sm',
+		size = 'h-xl',
+		zoomButtonProps,
+		closeButtonProps,
+		prevButtonProps,
+		nextButtonProps,
 		class: className,
 		...rest
 	}: Props = $props();
@@ -93,7 +107,7 @@
 
 <dialog
 	aria-label={currentItem?.alt ?? 'Media lightbox'}
-	class={['dialog lightbox-stage column xbetween pad-lg', className]}
+	class={['dialog lightbox-stage column', alignContent, pad, className]}
 	{@attach dialogSync(() => open, setOpen, { modal: true, dismissible: true })}
 	onkeydown={onKeyDown}
 	{...rest}
@@ -101,7 +115,7 @@
 	<div class="row ycenter xbetween wfull">
 		<div class="row ycenter gap-sm">
 			{#if showCounter && total > 0}
-				<span class="text-sm weight-500 tabular-nums bg-overlay border modern px-sm py-xs">
+				<span class={['weight-500 tabular-nums px-sm py-xs', surface, shape, textSize]}>
 					{safeIndex + 1} / {total}
 				</span>
 			{/if}
@@ -113,6 +127,7 @@
 				icon={zoom > 1 ? luZoomOut : luZoomIn}
 				label={zoom > 1 ? 'Reset zoom' : 'Zoom in'}
 				onclick={toggleZoom}
+				{...zoomButtonProps}
 			/>
 			<IconButton
 				variant="secondary"
@@ -120,6 +135,7 @@
 				icon={luX}
 				label="Close lightbox"
 				onclick={() => setOpen(false)}
+				{...closeButtonProps}
 			/>
 		</div>
 	</div>
@@ -132,6 +148,7 @@
 			label="Previous image"
 			disabled={!hasPrev}
 			onclick={() => go(safeIndex - 1)}
+			{...prevButtonProps}
 		/>
 
 		<div class="column xcenter ycenter gap-sm grow min0 overflow-hidden">
@@ -139,12 +156,12 @@
 				<img
 					src={currentItem.src}
 					alt={currentItem.alt ?? ''}
-					class="lightbox-media curved"
+					class={['lightbox-media', shape]}
 					{@attach vars({ zoom })}
 					ondblclick={toggleZoom}
 				/>
 				{#if currentItem.caption}
-					<p class="text-sm bg-overlay border modern px-md py-xs">{currentItem.caption}</p>
+					<p class={['px-md py-xs', surface, shape, textSize]}>{currentItem.caption}</p>
 				{/if}
 			{/if}
 		</div>
@@ -156,6 +173,7 @@
 			label="Next image"
 			disabled={!hasNext}
 			onclick={() => go(safeIndex + 1)}
+			{...nextButtonProps}
 		/>
 	</div>
 
@@ -165,7 +183,9 @@
 				<button
 					type="button"
 					class={[
-						'bare h-xl square modern overflow-hidden pointer focus-ring',
+						'bare square overflow-hidden pointer focus-ring',
+						size,
+						shape,
 						i === safeIndex ? 'border-strong' : 'border-subtle'
 					]}
 					aria-label={`View slide ${i + 1}`}

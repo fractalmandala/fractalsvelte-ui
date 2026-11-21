@@ -1,4 +1,4 @@
-<!-- @example Counter :: maxlength with a live counter; onValueChange reports edits. -->
+<!-- @example Counter :: maxlength with a live counter in its own ink; onValueChange reports edits. -->
 <script lang="ts">
 	import { Textarea } from '@fractaldesign/fractalsvelte-ui';
 
@@ -12,6 +12,8 @@
 		counter
 		maxlength={80}
 		rows={3}
+		gap="gap-sm"
+		textColor="text-secondary"
 		aria-label="Bio"
 		onValueChange={() => edits++}
 	/>

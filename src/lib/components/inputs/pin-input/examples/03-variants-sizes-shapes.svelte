@@ -4,8 +4,8 @@
 </script>
 
 <div class="box gap-sm">
-	{#each ['outline', 'filled', 'ghost'] as const as look (look)}
-		<PinInput {look} length={4} value="2048" aria-label={`${look} code`} />
+	{#each ['outline', 'secondary', 'ghost'] as const as variant (variant)}
+		<PinInput {variant} length={4} value="2048" aria-label={`${variant} code`} />
 	{/each}
 	{#each ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const as size (size)}
 		<PinInput {size} length={4} value="1847" aria-label={`Size ${size}`} />

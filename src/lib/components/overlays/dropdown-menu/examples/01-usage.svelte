@@ -1,4 +1,4 @@
-<!-- @example Usage :: A file menu with icons, shortcuts, a disabled item, a link and a separator. -->
+<!-- @example Usage :: A file menu with icons, shortcuts, a disabled item, a link and a separator, on a wider inset with its own label and hint scales. -->
 <script lang="ts">
 	import { luCopy, luDownload, luFile, luFolder, luTrash2 } from '@fractaldesign/icons/lucide';
 	import {
@@ -17,8 +17,18 @@
 		{#snippet trigger({ props })}
 			<Button variant="outline" {...props}>File</Button>
 		{/snippet}
-		<MenuLabel>Harbour invoices</MenuLabel>
-		<MenuItem icon={luFile} shortcut="⌘N" onclick={() => (log = 'New document')}>New document</MenuItem>
+		<MenuLabel textSize="text-xs" textColor="text-secondary">Harbour invoices</MenuLabel>
+		<MenuItem
+			icon={luFile}
+			shortcut="⌘N"
+			size="h-lg"
+			textColor="text-secondary"
+			childTextSize="text-sm"
+			childTextColor="text-muted"
+			onclick={() => (log = 'New document')}
+		>
+			New document
+		</MenuItem>
 		<MenuItem icon={luFolder} shortcut="⌘O" onclick={() => (log = 'Open…')}>Open…</MenuItem>
 		<MenuItem icon={luCopy} shortcut="⌘⇧S" onclick={() => (log = 'Duplicate')}>Duplicate</MenuItem>
 		<MenuSeparator />

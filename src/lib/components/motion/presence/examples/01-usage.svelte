@@ -8,7 +8,7 @@
 <div class="box gap-md measure-sm">
 	<Button variant="secondary" onclick={() => (show = !show)}>{show ? 'Dismiss notice' : 'Show notice'}</Button>
 	<Presence {show}>
-		<div class="card rim shad-sm pad-md">
+		<div class="rim shad-sm pad-md">
 			<p class="weight-500">Copy is with the night editor</p>
 			<p class="text-sm text-secondary">The Tuesday leader is locked for 11 o'clock.</p>
 		</div>

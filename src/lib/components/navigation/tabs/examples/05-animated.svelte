@@ -5,7 +5,7 @@
 	let value = $state<string | null>('departures');
 </script>
 
-<Tabs bind:value animated variant="underline">
+<Tabs bind:value animated grouping="flush">
 	<TabList label="Board">
 		<Tab value="departures">Departures</Tab>
 		<Tab value="arrivals">Arrivals</Tab>

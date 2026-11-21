@@ -1,29 +1,41 @@
 <!-- @component A command in the menu — icon, label, shortcut, optional link. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon, type IconData } from '@fractaldesign/icons';
+	import type { ChildTextColor, ChildTextSize, Size, TextColor } from '../../../internal/tokens.js';
 	import { getMenu } from './menu.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
-		/** An icon drawn before the label. */
 		icon?: IconData;
-		/** A keyboard shortcut, shown at the trailing edge. */
 		shortcut?: string;
-		/** Disables the item. */
 		disabled?: boolean;
-		/** Indent the label to line up with items that have an icon. */
 		inset?: boolean;
-		/** Renders the item as a link. The menu closes after it is followed. */
+		size?: Size;
+		textColor?: TextColor;
+		childTextSize?: ChildTextSize;
+		childTextColor?: ChildTextColor;
 		href?: string;
-		/** Called when the item is chosen. The menu then closes, unless the event is cancelled. */
 		onclick?: (event: MouseEvent | KeyboardEvent) => void;
-		/** The label. */
 		children?: Snippet;
 	}
 
-	let { icon, shortcut, disabled = false, inset = false, href, onclick, children, class: className, ...rest }: Props = $props();
+	let {
+		icon,
+		shortcut,
+		disabled = false,
+		inset = false,
+		size = 'h-md',
+		textColor = 'text-secondary',
+		childTextSize = 'text-xs',
+		childTextColor = 'text-muted',
+		href,
+		onclick,
+		children,
+		class: className,
+		...rest
+	}: Props = $props();
 
 	const menu = getMenu();
 
@@ -61,13 +73,13 @@
 		{...rest}
 	>
 		{#if icon}
-			<Icon {icon} class="text-secondary shrink-0" />
+			<Icon {icon} class={['shrink-0', textColor]} />
 		{:else if inset}
-			<span class="h-md square shrink-0"></span>
+			<span class={['square shrink-0', size]}></span>
 		{/if}
 		<span class="grow truncate">{@render children?.()}</span>
 		{#if shortcut}
-			<kbd class="kbd shrink-0 font-mono text-xs text-muted">{shortcut}</kbd>
+			<kbd class={['kbd shrink-0 font-mono', childTextSize, childTextColor]}>{shortcut}</kbd>
 		{/if}
 	</a>
 {:else}
@@ -82,13 +94,13 @@
 		{...rest}
 	>
 		{#if icon}
-			<Icon {icon} class="text-secondary shrink-0" />
+			<Icon {icon} class={['shrink-0', textColor]} />
 		{:else if inset}
-			<span class="h-md square shrink-0"></span>
+			<span class={['square shrink-0', size]}></span>
 		{/if}
 		<span class="grow truncate">{@render children?.()}</span>
 		{#if shortcut}
-			<kbd class="kbd shrink-0 font-mono text-xs text-muted">{shortcut}</kbd>
+			<kbd class={['kbd shrink-0 font-mono', childTextSize, childTextColor]}>{shortcut}</kbd>
 		{/if}
 	</div>
 {/if}

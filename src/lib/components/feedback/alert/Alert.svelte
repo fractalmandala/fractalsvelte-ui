@@ -1,39 +1,43 @@
 <!-- @component An inline message that tells people something about the page they are on. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
-	import type { IconData } from '@fractaldesign/icons';
+	import type {  IconData  } from '@fractaldesign/icons';
+	import type {  ChildTextSize, Gap, Pad, Shape, TextSize, Variant  } from '../../../internal/tokens.js';
 	import { luCircleAlert, luCircleCheck, luInfo, luTriangleAlert, luX } from '@fractaldesign/icons/lucide';
 	import { springSlide } from '../../../motion/index.js';
 	import { type Tone } from '../../../internal/tokens.js';
-import { toneText } from '../../../internal/helpers.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
-		/** The meaning of the message. `danger` and `warning` are announced assertively; the rest politely. */
 		tone?: Tone;
-		/** The fill style: a tinted `soft` fill, a hairline `outline`, or a full-strength `solid` fill. */
-		look?: 'soft' | 'outline' | 'solid';
-		/** A short heading, set above the message. */
+		variant?: Variant;
+		shape?: Shape;
+		pad?: Pad;
+		gap?: Gap;
+		textSize?: TextSize;
+		childTextSize?: ChildTextSize;
 		title?: string;
-		/** The leading icon. Defaults to one that matches the tone; pass `false` for none. */
 		icon?: IconData | false;
-		/** Shows a close button. The alert springs closed when it is pressed. */
+		iconSize?: TextSize;
 		dismissible?: boolean;
-		/** Called after the alert has been dismissed. */
 		onDismiss?: () => void;
-		/** Controls drawn below the message — buttons or links. */
 		actions?: Snippet;
-		/** The message. */
 		children?: Snippet;
 	}
 
 	let {
 		tone = 'info',
-		look = 'soft',
+		variant = 'secondary',
+		shape = 'modern',
+		pad = 'pad-md',
+		gap = 'gap-md',
+		textSize = 'text-md',
+		childTextSize = 'text-sm',
 		title,
 		icon,
+		iconSize = 'text-bs',
 		dismissible = false,
 		onDismiss,
 		actions,
@@ -50,7 +54,7 @@ import { toneText } from '../../../internal/helpers.js';
 		warning: luTriangleAlert,
 		danger: luCircleAlert
 	};
-	const fills = { soft: 'msg', outline: 'msg outline', solid: 'msg solid ink-auto' } as const;
+	const fills: Record<string, string> = { secondary: 'msg', outline: 'msg outline', primary: 'msg solid ink-auto' };
 
 	let open = $state(true);
 	const glyph = $derived(icon === undefined ? defaults[tone] : icon);
@@ -64,29 +68,29 @@ import { toneText } from '../../../internal/helpers.js';
 
 {#if open}
 	<div
-		class={['row gap-md pad-md modern', fills[look], tone, className]}
+		class={['row', gap, pad, shape, fills[variant] ?? fills.secondary, tone, className]}
 		role={role ?? (urgent ? 'alert' : 'status')}
 		out:springSlide
 		{...rest}
 	>
 		{#if glyph}
-			<span class={['shrink-0 text-bs lh14', look === 'solid' ? '' : toneText[tone]]}>
+			<span class={['shrink-0 lh14', iconSize, variant === 'primary' ? '' : `text-${`tone`}`]}>
 				<Icon icon={glyph} />
 			</span>
 		{/if}
 		<div class="box grow wmin0 gap-xs">
 			{#if title}
-				<p class="weight-600 text-md lh14">{title}</p>
+				<p class={['weight-600 lh14', textSize]}>{title}</p>
 			{/if}
 			{#if children}
-				<div class="text-sm lh15">{@render children()}</div>
+				<div class={['lh15', childTextSize]}>{@render children()}</div>
 			{/if}
 			{#if actions}
 				<div class="row ycenter wrap gap-sm mt-xs">{@render actions()}</div>
 			{/if}
 		</div>
 		{#if dismissible}
-			<button type="button" class="dismiss focus-ring text-bs" aria-label="Dismiss" onclick={dismiss}>
+			<button type="button" class={['dismiss focus-ring', iconSize]} aria-label="Dismiss" onclick={dismiss}>
 				<Icon icon={luX} />
 			</button>
 		{/if}

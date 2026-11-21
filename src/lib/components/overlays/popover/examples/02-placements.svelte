@@ -20,7 +20,7 @@
 
 <div class="row wrap gap-sm xcenter">
 	{#each placements as placement (placement)}
-		<Popover {placement} offset="var(--space-md)" surface="solid">
+		<Popover {placement} offset="var(--space-md)" surface="overlayed">
 			{#snippet target({ props })}
 				<Button variant="outline" size="h-sm" {...props}>{placement}</Button>
 			{/snippet}

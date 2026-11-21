@@ -5,6 +5,5 @@ export type {
 	CropMatrix,
 	CropPoint,
 	CropRect,
-	CropShape,
 	CropSize
 } from './crop.js';

@@ -1,4 +1,4 @@
-<!-- @example Activation, size and disabled :: Manual activation waits for Enter or Space; every size on the control ladder, and a disabled tab. -->
+<!-- @example Activation, size and disabled :: Manual activation waits for Enter or Space; every size on the control ladder, a tab's own gap and alignment, a panel inset, and a disabled tab. -->
 <script lang="ts">
 	import { Tabs, TabList, Tab, TabPanel } from '@fractaldesign/fractalsvelte-ui';
 
@@ -10,13 +10,13 @@
 <div class="box gap-xl">
 	<div class="box gap-sm">
 		<p class="text-sm text-muted weight-500">Manual activation</p>
-		<Tabs bind:value={manual} activation="manual" variant="pill">
+		<Tabs bind:value={manual} activation="manual" grouping="separated" textColor="text-muted" gap="gap-md">
 			<TabList label="Broadcast">
-				<Tab value="live">Live</Tab>
+				<Tab value="live" gap="gap-bs" alignContent="xleft">Live</Tab>
 				<Tab value="scheduled">Scheduled</Tab>
 				<Tab value="archived" disabled>Archived</Tab>
 			</TabList>
-			<TabPanel value="live">
+			<TabPanel value="live" pad="pad-lg">
 				<p class="text-body-sm text-secondary">
 					The midday briefing is on air. Arrow keys move focus; Enter or Space selects the tab.
 				</p>
@@ -31,7 +31,7 @@
 	</div>
 	<div class="box gap-sm">
 		<p class="text-sm text-muted weight-500">Sizes</p>
-		<Tabs bind:value={size} {size} variant="enclosed">
+		<Tabs bind:value={size} {size} grouping="contained">
 			<TabList>
 				{#each sizes as step (step)}
 					<Tab value={step}>{step}</Tab>

@@ -1,27 +1,19 @@
 <!-- @component A scroll-linked offset layer, with a group for stacking a scene at several speeds. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { Attachment } from 'svelte/attachments';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  Snippet  } from 'svelte';
+	import type {  Attachment  } from 'svelte/attachments';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { parallax, reducedMotion } from '../../../motion/index.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** How strongly the layer lags the scroll (positive) or leads it (negative). Typical range is -1 to 1. */
 		speed?: number;
-		/** The axis of travel. */
 		axis?: 'x' | 'y';
-		/** The layer content. */
 		children?: Snippet;
 	}
 
 	let { speed = 0.2, axis = 'y', class: className, children, ...rest }: Props = $props();
 
-	/**
-	 * CSS scroll-driven animation (`animation-timeline: view()` + `.parallax-view`)
-	 * where the platform supports it; otherwise the `parallax()` attachment and
-	 * the `.motion` channels.
-	 */
 	const layer = (s: number, ax: 'x' | 'y'): Attachment<HTMLElement> => (node) => {
 		const css =
 			typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('animation-timeline: view()');

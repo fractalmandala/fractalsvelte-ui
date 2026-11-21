@@ -19,7 +19,7 @@
 			change is written to the shared audit log.
 		</p>
 	</div>
-	<StickyBar position="bottom" offset="var(--space-sm)" class="px-md py-sm bg-surface">
+	<StickyBar position="bottom" offset="var(--space-sm)" surface="elevated" class="px-md py-sm bg-surface">
 		<div class="row ycenter xbetween gap-sm">
 			<span class="text-sm text-secondary">Unsaved changes to workspace roles.</span>
 			<Button size="h-sm">Save changes</Button>

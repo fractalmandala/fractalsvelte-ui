@@ -1,39 +1,39 @@
 <!-- @component A sequence of steps, with a connector that fills as each one is completed. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  ComponentProps, Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { Icon } from '@fractaldesign/icons';
 	import { luCheck } from '@fractaldesign/icons/lucide';
 	import { Button } from '../../actions/button/index.js';
 	import { vars } from '../../../motion/index.js';
-	import type { Orientation } from '../../../internal/tokens.js';
-	import type { StepItem, StepStatus } from './steps.js';
+	import type { ChildTextColor, ChildTextSize, Orientation, Shape, Size, TextColor, TextSize } from '../../../internal/tokens.js';
+	import type {  StepItem, StepStatus  } from './steps.js';
 
 	interface Props extends HTMLAttributes<HTMLElement> {
-		/** The steps, in order. */
 		steps: StepItem[];
-		/** The current step's value. Two-way bindable. */
 		value?: string | null;
-		/** Called whenever the current step changes. */
 		onValueChange?: (value: string | null) => void;
-		/** Lays the steps out in a row or a column. */
 		orientation?: Orientation;
-		/** When true, only the current step and earlier ones can be selected. */
 		linear?: boolean;
-		/** When true, a step's marker is a button that selects it, subject to `linear`. */
 		clickable?: boolean;
-		/** Render Back / Next / Finish workflow buttons underneath the stepper. */
 		showControls?: boolean;
-		/** Custom snippet displayed once all steps have been completed. */
 		completedContent?: Snippet;
-		/** Called when finishing the last step via `showControls`. */
 		onComplete?: () => void;
-		/** Accessible name of the stepper. */
 		label?: string;
+		size?: Size;
+		shape?: Shape;
+		textSize?: TextSize;
+		textColor?: TextColor;
+		childTextSize?: ChildTextSize;
+		childTextColor?: ChildTextColor;
+		backButtonProps?: ComponentProps<typeof Button>;
+		nextButtonProps?: ComponentProps<typeof Button>;
 	}
 
 	let {
+		backButtonProps,
+		nextButtonProps,
 		steps,
 		value = $bindable(null),
 		onValueChange,
@@ -44,6 +44,12 @@
 		completedContent,
 		onComplete,
 		label,
+		size = 'h-lg',
+		shape = 'round',
+		textSize = 'text-sm',
+		textColor = 'text-muted',
+		childTextSize = 'text-xs',
+		childTextColor = 'text-muted',
 		class: className,
 		...rest
 	}: Props = $props();
@@ -115,6 +121,13 @@
 		upcoming: 'bg-surface text-muted border',
 		error: 'danger border-none'
 	};
+
+	const labelClass: Record<StepStatus, string> = {
+		complete: '',
+		current: '',
+		upcoming: '',
+		error: 'text-danger'
+	};
 </script>
 
 <nav aria-label={label} class={className} {...rest}>
@@ -129,7 +142,10 @@
 						<button
 							type="button"
 							class={[
-								'bare round inline-flex xcenter ycenter shrink-0 square h-lg text-sm weight-500 focus-ring',
+								'bare inline-flex xcenter ycenter shrink-0 square weight-500 focus-ring',
+								shape,
+								size,
+								textSize,
 								markerClass[status],
 								!allowed && 'disabled'
 							]}
@@ -149,7 +165,10 @@
 					{:else}
 						<div
 							class={[
-								'round inline-flex xcenter ycenter shrink-0 square h-lg text-sm weight-500',
+								'inline-flex xcenter ycenter shrink-0 square weight-500',
+								shape,
+								size,
+								textSize,
 								markerClass[status]
 							]}
 							aria-current={status === 'current' ? 'step' : undefined}
@@ -174,11 +193,11 @@
 					{/if}
 				</div>
 				<div class={['min0', !vertical && 'pr-md']}>
-					<p class={['text-sm weight-500', status === 'upcoming' ? 'text-muted' : status === 'error' ? 'text-danger' : '']}>
+					<p class={[textSize, 'weight-500', status === 'upcoming' ? textColor : labelClass[status]]}>
 						{step.label}
 					</p>
 					{#if step.description}
-						<p class="text-xs text-muted">{step.description}</p>
+						<p class={[childTextSize, childTextColor]}>{step.description}</p>
 					{/if}
 				</div>
 			</li>
@@ -191,10 +210,10 @@
 	{/if}
 	{#if showControls && steps.length > 0}
 		<div class="row ycenter xbetween pt-md">
-			<Button variant="outline" size="h-sm" disabled={currentIndex <= 0 && !finished} onclick={stepPrev}>
+			<Button variant="outline" size="h-sm" disabled={currentIndex <= 0 && !finished} onclick={stepPrev} {...backButtonProps}>
 				Back
 			</Button>
-			<Button variant="themed" size="h-sm" disabled={finished} onclick={stepNext}>
+			<Button variant="themed" size="h-sm" disabled={finished} onclick={stepNext} {...nextButtonProps}>
 				{currentIndex >= steps.length - 1 ? 'Finish' : 'Next'}
 			</Button>
 		</div>

@@ -4,7 +4,7 @@
 </script>
 
 <div class="relative pad-xl">
-	<Draggable class="card rim shad-md pad-md measure-sm">
+	<Draggable class="rim shad-md pad-md measure-sm">
 		<p class="weight-500">Proof this caption</p>
 		<p class="text-sm text-secondary">Drag it off the crop, or tab to it and use the arrows.</p>
 	</Draggable>

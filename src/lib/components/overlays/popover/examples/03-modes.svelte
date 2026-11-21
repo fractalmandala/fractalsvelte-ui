@@ -1,4 +1,4 @@
-<!-- @example Click, hover and manual :: The three open modes, including a panel that matches the trigger's width. -->
+<!-- @example Click, hover and manual :: The three open modes, a wider inset, and a panel that matches the trigger's width. -->
 <script lang="ts">
 	import { Button, Popover } from '@fractaldesign/fractalsvelte-ui';
 
@@ -22,7 +22,13 @@
 	</Popover>
 
 	<Button variant="secondary" onclick={() => (open = !open)}>{open ? 'Hide details' : 'Show details'}</Button>
-	<Popover trigger="manual" bind:open matchWidth placement="bottom-start" onOpenChange={(next) => (log = next ? 'Manual popover is open' : 'Manual popover is closed')}>
+	<Popover
+		trigger="manual"
+		bind:open
+		matchWidth
+		placement="bottom-start"
+		onOpenChange={(next) => (log = next ? 'Manual popover is open' : 'Manual popover is closed')}
+	>
 		{#snippet target()}
 			<span class="text-sm text-secondary">The November invoice run</span>
 		{/snippet}

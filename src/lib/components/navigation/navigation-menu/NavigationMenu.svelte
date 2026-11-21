@@ -1,31 +1,23 @@
 <!-- @component A site navigation with delayed flyout panels, a sliding indicator, and a viewport that springs between sizes. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import { anchor, floating, popoverSync } from '../../../internal/helpers.js';
-	import { roving } from '../../../internal/roving.js';
-	import type { Orientation } from '../../../internal/tokens.js';
+	import { untrack } from 'svelte';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import { anchor, floating, popoverSync, roving } from '../../../internal/helpers.js';
+	import type {  Gap, Orientation, Surface  } from '../../../internal/tokens.js';
 	import { animate } from '../../../motion/index.js';
-	import { surfaceClass, type OverlaySurface } from '../../overlays/dialog/dialog.js';
 	import { navigationMenuRoving, setNavigationMenu } from './navigation-menu.js';
 
 	interface Props extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
-		/** The open item's value, or `null` when every panel is closed. Bindable. */
 		value?: string | null;
-		/** Called whenever the open item changes. */
 		onValueChange?: (value: string | null) => void;
-		/** How long to wait, in milliseconds, before opening a panel on hover. */
 		delayDuration?: number;
-		/** How long, in milliseconds, the menu stays warm after a panel opens, so the next trigger opens instantly. */
 		skipDelayDuration?: number;
-		/** Lays the list out in a row or a column, and places the viewport beside it. */
 		orientation?: Orientation;
-		/** The fill of the shared viewport. */
-		surface?: OverlaySurface;
-		/** The accessible name of the navigation. */
+		surface?: Surface;
+		gap?: Gap;
 		label?: string;
-		/** The items and top-level links. */
 		children?: Snippet;
 	}
 
@@ -36,6 +28,7 @@
 		skipDelayDuration = 300,
 		orientation = 'horizontal',
 		surface = 'glass',
+		gap = 'gap-xs',
 		label = 'Main',
 		class: className,
 		children,
@@ -136,7 +129,9 @@
 	$effect(() => {
 		value;
 		orientation;
-		generation;
+		// a panel registering is not a reason to re-place on its own: `value` drives the
+		// placement, and subscribing here made registration re-trigger itself
+		untrack(() => generation);
 		const frame = requestAnimationFrame(() => {
 			placeIndicator();
 			placeViewport();
@@ -208,7 +203,7 @@
 <nav
 	bind:this={root}
 	aria-label={label}
-	class={['relative', vertical ? 'row gap-xs' : 'box gap-xs', className]}
+	class={['relative', vertical ? 'row' : 'box', gap, className]}
 	onkeydown={onKeydown}
 	{...rest}
 >
@@ -219,9 +214,9 @@
 		role="region"
 		aria-label="Navigation panel"
 		class={[
-			'floating viewport pop spring-snappy border rim shad-lg radius-lg',
+			'floating viewport pop spring-snappy radius-lg',
 			vertical ? 'at-right-start enter-right' : 'at-bottom-start enter-down',
-			surfaceClass[surface]
+			surface
 		]}
 		{@attach floating(uid, 'var(--space-sm)')}
 		{@attach popoverSync(

@@ -61,6 +61,7 @@ The JSDoc for this folder’s source lives here. `pnpm comments:restore` puts it
 - `textSize` :: The text scale of every item, independent of the control height. Follows `size` when omitted.
 - `textColor` :: The text colour of every item. Defaults to `text-inverse` on dark variants, `text-primary` on light ones.
 - `shape` :: The corner shape of every item.
+- `gap` :: Space between the items when they are not attached. @default 'gap-sm'
 - `orientation` :: The direction items run in, and which arrow keys move focus.
 - `attached` :: Joins the items into one segmented control. When false they sit apart with a small gap.
 - `disabled` :: Disables every item.

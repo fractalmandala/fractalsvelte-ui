@@ -45,6 +45,7 @@ The JSDoc for this folder’s source lives here. `pnpm comments:restore` puts it
 - `external` :: Marks the link as leaving the site: opens it in a new tab with a safe `rel`, adds an arrow icon and a screen-reader hint.
 - `look` :: The ink. `theme` is the accent colour, `plain` is the body ink that warms to the accent on hover, `subtle` is secondary ink that darkens on hover.
 - `underline` :: When the underline shows.
-- `textSize` :: The text scale.
-- `textColor` :: The text colour.
+- `textSize` :: The text scale; the link inherits the surrounding body size when omitted.
+- `textColor` :: The ink, used instead of the one `look` sets — for a muted footnote or a destructive link.
+- `iconProps` :: Props forwarded to the arrow Icon that marks an external link, so a caller can change its size or add a class alongside the default gap.
 - `children` :: The link text.

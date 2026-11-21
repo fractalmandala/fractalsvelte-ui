@@ -1,15 +1,12 @@
 <!-- @component The bare text input inside the frame. -->
 
 <script lang="ts">
-	import type { HTMLInputAttributes } from 'svelte/elements';
+	import type {  HTMLInputAttributes  } from 'svelte/elements';
 	import { getInputGroupContext } from './context.js';
 
 	interface Props extends Omit<HTMLInputAttributes, 'size' | 'value' | 'children'> {
-		/** The text. Bindable; works controlled and uncontrolled. */
 		value?: string;
-		/** Called with the new text whenever it changes. */
 		onValueChange?: (value: string) => void;
-		/** The underlying `<input>` element. Bindable, for focusing from code. */
 		ref?: HTMLInputElement | null;
 	}
 

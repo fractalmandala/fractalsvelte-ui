@@ -13,15 +13,18 @@ export const VARIANTS = [
 ] as const;
 export type Variant = (typeof VARIANTS)[number];
 
-export const STEPS = ['xs', 'sm', 'md', 'bs', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'] as const;
-export type Step = (typeof STEPS)[number];
+export const SPACES = ['xs', 'sm', 'md', 'bs', 'lg', 'xl', '2xl', '3xl'] as const;
+export type Space = (typeof SPACES)[number];
+
+export const GROUPINGS = ['contained', 'separated', 'flush'] as const;
+export type Grouping = (typeof GROUPINGS)[number];
+
+export const TEXTALIGNS = ['left', 'center', 'right'] as const;
+export type TextAlign = (typeof TEXTALIGNS)[number];
 
 export const SIZES = ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl', 'h-2xl', 'h-3xl'] as const;
 export type Size = (typeof SIZES)[number];
 export const defaultSize: Size = 'h-lg';
-
-export const ACTION_SIZES = ['h-xs', 'h-sm', 'h-md', 'h-bs', 'h-lg', 'h-xl'] as const;
-export type ActionSize = (typeof ACTION_SIZES)[number];
 
 export const GAPS = ['', 'gap-xs', 'gap-sm', 'gap-md', 'gap-bs', 'gap-lg', 'gap-xl', 'gap-2xl', 'gap-3xl'] as const;
 export type Gap = (typeof GAPS)[number];
@@ -32,6 +35,9 @@ export type Shape = (typeof SHAPES)[number];
 
 export const TONES = ['neutral', 'info', 'success', 'warning', 'danger'] as const;
 export type Tone = (typeof TONES)[number];
+
+export const RESIZES = ['none', 'vertical', 'horizontal', 'both'] as const;
+export type Resize = (typeof RESIZES)[number];
 
 export const MEASURES = ['measure-xs', 'measure-sm', 'measure-md', 'measure-bs', 'measure-lg', 'measure-xl', 'measure-2xl', 'measure-3xl', 'measure-4xl', 'measure-full'] as const;
 export type Measure = (typeof MEASURES)[number];
@@ -141,29 +147,3 @@ export const ALIGNCONTENTS = [
 ] as const;
 export type AlignContent = (typeof ALIGNCONTENTS)[number];
 
-/** The five rungs a control's height-and-text ladder covers. */
-export const CONTROL_SCALE = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
-export type ControlScale = (typeof CONTROL_SCALE)[number];
-
-/** The control height class for each rung of the scale. */
-export const heightClass: Record<ControlScale, string> = {
-	xs: 'h-md',
-	sm: 'h-bs',
-	md: 'h-lg',
-	lg: 'h-xl',
-	xl: 'h-2xl'
-};
-
-/** The text scale class for each `Size`. */
-export const textClass: Record<ControlScale, string> = {
-	xs: 'text-xs',
-	sm: 'text-sm',
-	md: 'text-md',
-	lg: 'text-bs',
-	xl: 'text-lg'
-};
-
-/** Height from `size` and text from `textSize` (or `size` when omitted). */
-export function controlSize(size: ControlScale, textSize?: ControlScale): string {
-	return `${heightClass[size]} ${textClass[textSize ?? size]}`;
-}

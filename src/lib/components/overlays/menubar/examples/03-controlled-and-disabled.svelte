@@ -1,4 +1,4 @@
-<!-- @example Controlled, disabled and custom triggers :: A bound open menu, a solid surface, a disabled menu, a custom trigger, and a bar that does not wrap. -->
+<!-- @example Controlled, disabled and custom triggers :: A bound open menu with its own trigger size, type, corner and inset, a solid surface, a disabled menu, a custom trigger, and a bar that does not wrap. -->
 <script lang="ts">
 	import { Button, Menubar, MenubarMenu, MenuItem } from '@fractaldesign/fractalsvelte-ui';
 
@@ -10,10 +10,10 @@
 		bind:value
 		onValueChange={(next) => (value = next)}
 		loop={false}
-		surface="solid"
+		surface="overlayed"
 		label="Atlas tools"
 	>
-		<MenubarMenu value="file" label="File">
+		<MenubarMenu value="file" label="File" size="h-md" textSize="text-md" shape="curved">
 			<MenuItem>New chart</MenuItem>
 			<MenuItem>Open catalogue…</MenuItem>
 		</MenubarMenu>

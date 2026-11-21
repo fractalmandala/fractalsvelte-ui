@@ -1,7 +1,7 @@
 <!-- @component A hairline between groups of controls, drawn across the toolbar cross axis. -->
 
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type {  HTMLAttributes  } from 'svelte/elements';
 	import { getToolbar } from './toolbar.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {}

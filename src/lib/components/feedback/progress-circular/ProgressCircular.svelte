@@ -1,27 +1,21 @@
 <!-- @component Circular progress ring with determinate fill, indeterminate spin, and centered readout. -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import { type Size, type Tone } from '../../../internal/tokens.js';
+	import type {  Snippet  } from 'svelte';
+	import type {  HTMLAttributes  } from 'svelte/elements';
+	import { type Size, type TextColor, type TextSize, type Tone } from '../../../internal/tokens.js';
 	import { vars } from '../../../motion/index.js';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/** Current progress value, or `null`/`undefined` for indeterminate spinner motion. */
 		value?: number | null;
-		/** Lower bound of the range. */
 		min?: number;
-		/** Upper bound of the range. */
 		max?: number;
-		/** Semantic color tone. */
 		tone?: Tone;
-		/** Outer ring diameter on the shared size ladder. */
 		size?: Size;
-		/** Render percentage text in the ring center when `children` is omitted. */
+		textSize?: TextSize;
+		textColor?: TextColor;
 		showValue?: boolean;
-		/** Accessible label naming the progress indicator. */
 		label?: string;
-		/** Custom center content inside the ring. */
 		children?: Snippet;
 	}
 
@@ -31,6 +25,8 @@
 		max = 100,
 		tone = 'info',
 		size = 'h-2xl',
+		textSize = 'text-xs',
+		textColor = 'text-secondary',
 		showValue = false,
 		label,
 		children,
@@ -63,11 +59,11 @@
 		{@attach vars({ value: fraction })}
 	></div>
 	{#if children || (showValue && !indeterminate)}
-		<div class={['cover row xcenter ycenter tabular-nums text-secondary', size]}>
+		<div class={['cover row xcenter ycenter tabular-nums', size, textColor]}>
 			{#if children}
 				{@render children()}
 			{:else}
-				<span class="text-xs weight-500">{pct}%</span>
+				<span class={['weight-500', textSize]}>{pct}%</span>
 			{/if}
 		</div>
 	{/if}
